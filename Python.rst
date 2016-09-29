@@ -1,4 +1,4 @@
-Python support
+Python支持
 ==============
 
 .. toctree::
@@ -10,11 +10,11 @@ Python support
   Tracebacker
   PythonModuleAlias
 
-.. seealso:: :ref:`Python configuration options <OptionsPython>`
+.. 也可以看看:: :ref:`Python配置选项 <OptionsPython>`
 
 .. _PythonAppDict:
 
-Application dictionary
+应用字典
 ----------------------
 
 You can use the application dictionary mechanism to avoid setting up your application in your configuration.
@@ -45,7 +45,7 @@ The value of every item can be a callable, or its name as a string.
 
 .. _Virtualenv:
 
-Virtualenv support
+Virtualenv支持
 ------------------
 
 `virtualenv <virtualenvwww_>`_ is a mechanism that lets you isolate one (or more) Python applications' libraries (and interpreters, when not using uWSGI) from each other.
@@ -53,7 +53,7 @@ Virtualenvs should be used by any respectable modern Python application.
 
 .. _virtualenvwww: http://www.virtualenv.org/
 
-Quickstart
+快速入门
 ^^^^^^^^^^
 
 1. Create your virtualenv::
@@ -101,7 +101,7 @@ You should encode strings or use bytes literals:
 
 .. _PythonPaste:
 
-Paste support
+Paste支持
 -------------
 
 If you are a user or developer of Paste-compatible frameworks, such as Pyramid_, Pylons_ and Turbogears_ or applications using them, you can use the uWSGI ``--paste`` option to conveniently deploy your application.
@@ -127,7 +127,7 @@ That's it! No additional configuration or Python modules to write.
 
 .. _PythonPecan:
 
-Pecan support
+Pecan支持
 -------------
 
 If you are a user or developer of the Pecan_ WSGI framework, you can use the uWSGI ``--pecan`` option to conveniently deploy your application.
@@ -146,12 +146,12 @@ For example, if you have a virtualenv in :file:`/opt/pecanenv` containing a Peca
 
   in which case you'll have to set the ``debug`` option in your pecan configuration file to False -- or revert to single process environment.
 
-Using the django-uwsgi Django app
+使用Django应用django-uwsgi
 --------------------------------
 
-First of all you need to get the ``django_uwsgi`` app from https://github.com/unbit/django-uwsgi (once it was in the ``django`` directory of the distribution).
+首先，你需要从https://github.com/unbit/django-uwsgi获取``django_uwsgi`` app (一旦它在发行的``django``目录中)。
 
-Install it with ``pip install django-uwsgi`` and add it into your ``INSTALLED_APPS``.
+通过``pip install django-uwsgi``安装，并且将其添加到你的``INSTALLED_APPS``中。
 
 .. code-block:: py
 
@@ -162,7 +162,7 @@ Install it with ``pip install django-uwsgi`` and add it into your ``INSTALLED_AP
         # ...
     )
     
-Then modify your ``urls.py`` accordingly. For example:
+然后相应地修改``urls.py``。例如：
 
 .. code-block:: py
 
@@ -171,9 +171,9 @@ Then modify your ``urls.py`` accordingly. For example:
     url(r'^admin/', include(admin.site.urls)),
     # ...
 
-Be sure to place the URL pattern for django_uwsgi *before* the one for the admin site, or it will never match.
+确保将django_uwsgid的URL模式放在admin site的模式*之前*，否则将永远匹配不上它。
 
-``/admin/uwsgi/`` will then serve uWSGI statistics and has a button for graceful reloading of the server (when running under a Master). Note that memory usage is reported only when the ``memory-report`` option is enabled.
+然后，``/admin/uwsgi/``将提供uWSGI静态文件，并且有一个优雅重载服务器（当运行在Master之下时）的按钮。注意，只有在启用了``memory-report``选项的情况下，才会报告内存使用情况。
 
-`Read the documentation for django-uwsgi at rtfd.org <http://django-uwsgi.rtfd.org/>`_
+`阅读django-uwsgi位于rtfd.org <http://django-uwsgi.rtfd.org/>的文档`_
 

@@ -1,13 +1,13 @@
 The uWSGI Spooler
 =================
 
-Updated to uWSGI 2.0.1
+更新至uWSGI 2.0.1
 
-Supported on: Perl, Python, Ruby
+支持语言：Perl, Python, Ruby
 
-The Spooler is a queue manager built into uWSGI that works like a printing/mail system. 
+Spooler是内置于uWSGI的队列管理器，它的工作方式像打印/邮件系统。
 
-You can enqueue massive sending of emails, image processing, video encoding, etc. and let the spooler do the hard work in background while your users get their requests served by normal workers.
+你可以排队大量的邮件发送、图像处理、视频编码等等，并且让spooler在后台为你努力工作，同时用户的请求会被正常的worker处理。
 
 A spooler works by defining a directory in which "spool files" will be written, every time the spooler find a file in its directory it will parse it and will run a specific function.
 
