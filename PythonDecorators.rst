@@ -1,7 +1,7 @@
 uWSGI API - Python装饰器
 =============================
 
-:doc:`The uWSGI API<PythonModule>`非常底层，因为它必须是语言无关的。
+ :doc:`The uWSGI API<PythonModule>` 非常底层，因为它必须是语言无关的。
 
 也就是说，对于许多语言，例如Python，太底层并不是一件好事。
 
@@ -13,7 +13,7 @@ uWSGI API - Python装饰器
 小抄
 -----
 
-基于信号量的装饰器在第一个可用worker中执行信号处理器。如果你已经启动了spooler，那么你可以在其中执行信号处理器，让worker不用管它，只要管理正常的请求即可。简单传递``target='spooler'``给装饰器。
+基于信号量的装饰器在第一个可用worker中执行信号处理器。如果你已经启动了spooler，那么你可以在其中执行信号处理器，让worker不用管它，只要管理正常的请求即可。简单传递 ``target='spooler'`` 给装饰器。
 
 .. code-block:: py
 
@@ -25,7 +25,7 @@ uWSGI API - Python装饰器
 例子：一个Django会话清理器和视频解码器
 ---------------------------------------------------
 
-让我们定义一个:file:`task.py`模块，然后将其放进Django项目目录中。
+让我们定义一个 :file:`task.py` 模块，然后将其放进Django项目目录中。
 
 .. code-block:: py
 
@@ -78,7 +78,7 @@ uWSGI API - Python装饰器
     ; bind on a tcp socket
     socket = 127.0.0.1:3031
 
-唯一一个特别重要的选项是``import``这个。它的工作方式与``module``相同，但跳过了WSGI的可调用搜索。你可以用它在加载WSGI应用之前预加载模块。你可以指定无限数目的'''import'''指令。
+唯一一个特别重要的选项是 ``import`` 这个。它的工作方式与 ``module`` 相同，但跳过了WSGI的可调用搜索。你可以用它在加载WSGI应用之前预加载模块。你可以指定无限数目的 '''import''' 指令。
 
 例子：web2py + spooler + timer
 ---------------------------------
@@ -135,7 +135,7 @@ uwsgidecorators API参考
 
 .. function:: postfork(func)
 
-   uWSGI是一个预启动 (或者说是"滥用fork")的服务器，因此，你可能需要在每次``fork()``之后执行一个修正任务。这就是``postfork``装饰器的用武之处。你可以声明多个``postfork``任务。每个被装饰器装饰的函数将在每个``fork()``之后依次执行。
+   uWSGI是一个预启动 (或者说是"滥用fork")的服务器，因此，你可能需要在每次 ``fork()`` 之后执行一个修正任务。这就是 ``postfork`` 装饰器的用武之处。你可以声明多个 ``postfork`` 任务。每个被装饰器装饰的函数将在每个 ``fork()`` 之后依次执行。
 
    .. code-block:: py
 
@@ -149,7 +149,7 @@ uwsgidecorators API参考
 
 .. function:: spool(func)
 
-   uWSGI的:doc:`spooler<Spooler>`是非常有用的。与Celery或其他队列相比，它非常“原始”。``spool``装饰器会帮到你！
+   uWSGI的 :doc:`spooler<Spooler>` 是非常有用的。与Celery或其他队列相比，它非常“原始”。 ``spool`` 装饰器会帮到你！
 
    .. code-block:: py
 
@@ -169,13 +169,13 @@ uwsgidecorators API参考
       a_long_long_task.spool(foo='bar',hello='world')
       a_longer_task.spool({'pippo':'pluto'})
 
-   上面的函数将会自动返回``uwsgi.SPOOL_OK``，因此，根据其返回状态，它们将独立执行一次。
+   上面的函数将会自动返回 ``uwsgi.SPOOL_OK`` ，因此，根据其返回状态，它们将独立执行一次。
 
 .. XXX: What does the above mean?
 
 .. function:: spoolforever(func)
 
-   当你想要持续的执行一个spool任务时，使用``spoolforever``。一个``@spoolforever``任务将总是返回``uwsgi.SPOOL_RETRY``。
+   当你想要持续的执行一个spool任务时，使用 ``spoolforever`` 。一个 ``@spoolforever`` 任务将总是返回 ``uwsgi.SPOOL_RETRY`` 。
 
    .. code-block:: py
 
@@ -207,7 +207,7 @@ uwsgidecorators API参考
 
 .. function:: rpc("name", func)
 
-   uWSGI的:doc:`RPC`是远程调用uWSGI实例中托管的应用中的函数最快的方式。使用@rpc装饰器，你可以容易地定义导出函数。
+   uWSGI的 :doc:`RPC` 是远程调用uWSGI实例中托管的应用中的函数最快的方式。使用@rpc装饰器，你可以容易地定义导出函数。
 
    .. code-block:: py
       
@@ -217,7 +217,7 @@ uwsgidecorators API参考
 
 .. function:: signal(num)(func)
 
-   你可以轻松地为:doc:`信号框架<Signals>`注册信号。
+   你可以轻松地为 :doc:`信号框架<Signals>` 注册信号。
 
    .. code-block:: py
       
@@ -244,7 +244,7 @@ uwsgidecorators API参考
 .. function:: cron(min, hour, day, mon, wday, func)
 
       
-   为:doc:`CronInterface`轻松注册函数。
+   为 :doc:`CronInterface` 轻松注册函数。
 
    .. code-block:: py
 
@@ -252,7 +252,7 @@ uwsgidecorators API参考
       def execute_me_at_three_and_fiftynine(num):
           print("it's 3:59 in the morning")
 
-   从1.2起，支持一种新的语法来模拟类``crontab``间隔 (每个第N分钟，等等。)。在uWSGI中，可以像这样指定``*/5 * * * *``：
+   从1.2起，支持一种新的语法来模拟类 ``crontab`` 间隔 (每个第N分钟，等等。)。在uWSGI中，可以像这样指定 ``*/5 * * * *`` ：
 
    .. code-block:: py
 
@@ -272,7 +272,7 @@ uwsgidecorators API参考
 
 .. function:: erlang(process_name, func)
 
-   将一个函数映射为一个:doc:`Erlang<Erlang>`进程。
+   将一个函数映射为一个 :doc:`Erlang<Erlang>` 进程。
 
    .. code-block:: py
 
@@ -285,7 +285,7 @@ uwsgidecorators API参考
 
     标记函数在一个单独的线程中执行。
 
-    .. 重要:: 必须在uWSGI中使用``enable-threads``或者``threads <n>``选项来启用线程。
+    .. 重要:: 必须在uWSGI中使用 ``enable-threads`` 或者 ``threads <n>`` 选项来启用线程。
 
     .. code-block:: py
 
@@ -304,7 +304,7 @@ uwsgidecorators API参考
         a_running_thread()
         a_running_thread_with_args("uWSGI")
 
-    你也可以将``@thread``和``@postfork``结合在一起，从而在一个新生成的worker中的一个新线程里生成postfork处理器。
+    你也可以将 ``@thread`` 和 ``@postfork`` 结合在一起，从而在一个新生成的worker中的一个新线程里生成postfork处理器。
 
     .. code-block:: py
 
@@ -328,7 +328,7 @@ uwsgidecorators API参考
 
 .. function:: mulefunc([mulespec], func)
 
-    卸载函数的执行到:doc:`mule<Mules>`.当卸载函数被调用，它将会立即返回，而执行将会被委托给一个mule。
+    卸载函数的执行到 :doc:`mule<Mules>` .当卸载函数被调用，它将会立即返回，而执行将会被委托给一个mule。
 
     .. code-block:: py
 
@@ -350,7 +350,7 @@ uwsgidecorators API参考
 
 .. function:: harakiri(time, func)
 
-    从uWSGI 1.3-dev开始，添加了一个可定制的二次:term:`harakiri`子系统。如果一个给定的调用执行时间太长，那么你可以使用这个装饰器去灭掉一个worker。
+    从uWSGI 1.3-dev开始，添加了一个可定制的二次 :term:`harakiri` 子系统。如果一个给定的调用执行时间太长，那么你可以使用这个装饰器去灭掉一个worker。
 
     .. code-block:: py
 

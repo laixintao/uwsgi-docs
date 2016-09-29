@@ -1,7 +1,7 @@
-The Art of Graceful Reloading
+优雅重载的艺术
 =============================
 
-Author: Roberto De Ioris
+作者：Roberto De Ioris
 
 The following article is language-agnostic, and albeit uWSGI-specific, some of
 its initial considerations apply to other application servers and platforms
@@ -10,7 +10,7 @@ too.
 All of the described techniques assume a modern (>= 1.4) uWSGI release with
 the master process enabled.
 
-What is a "graceful reload"?
+什么是“优雅重载”？
 ****************************
 
 During the life-cycle of your webapp you will reload it hundreds of times.
