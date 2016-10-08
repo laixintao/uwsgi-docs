@@ -51,7 +51,7 @@ modern servers/application servers do it (more or less).
 But, as always, the world is an ugly place and lot of problems arise, and the
 "inherited sockets" approach is often not enough.
 
-Things go wrong
+出问题了
 ***************
 
 We have seen that holding the uWSGI sockets alive allows the proxy webserver
@@ -75,7 +75,7 @@ so uWSGI will not start, or will start sending wrong things or errors...
 
 Reloads (brutal or graceful) can easily fail.
 
-The listen queue
+监听队列
 ****************
 
 Let's start with the dream of every webapp developer: *success*.
@@ -111,7 +111,7 @@ To raise kernel limits, you should check your OS docs. Some examples:
    This is only one of the reasons to tune the listen queue, but do not blindly
    set it to huge values as a way to increase availability.
 
-Proxy timeouts
+代理超时
 **************
 
 This is another thing you need to check if your reloads take a lot of time.

@@ -1,4 +1,4 @@
-uWSGI Options
+uWSGI选项
 ^^^^^^^^^^^^^
 
 This is an automatically generated reference list of the uWSGI options.

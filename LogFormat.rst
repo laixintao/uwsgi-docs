@@ -1,4 +1,4 @@
-Formatting uWSGI requests logs 
+格式化uWSGI请求日志
 ==============================
 
 uWSGI has a ``--logformat`` option for building custom request loglines. The

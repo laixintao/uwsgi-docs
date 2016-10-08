@@ -1,4 +1,4 @@
-Supported languages and platforms
+支持的语言和平台
 =================================
 
 .. list-table:: 

@@ -1,7 +1,7 @@
-uWSGI internal routing
+uWSGI内部路由
 ======================
 
-``Updated to 1.9``
+``更新至1.9``
 
 As of uWSGI 1.9, a programmable internal routing subsystem is available (older
 releases after 1.1 have a less featureful version).  You can use the internal

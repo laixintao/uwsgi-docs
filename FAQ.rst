@@ -1,7 +1,7 @@
-Frequently Asked Questions (FAQ)
+常见问题 (FAQ)
 ================================
 
-Why should I choose uWSGI?
+我应该选择uWSGI吗？
 --------------------------
 
 Because you can! :) uWSGI wants to be a complete web application deployment

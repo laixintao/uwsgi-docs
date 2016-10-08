@@ -1,4 +1,4 @@
-The uWSGI Spooler
+uWSGI Spooler
 =================
 
 更新至uWSGI 2.0.1
@@ -9,15 +9,15 @@ Spooler是内置于uWSGI的队列管理器，它的工作方式像打印/邮件�
 
 你可以排队大量的邮件发送、图像处理、视频编码等等，并且让spooler在后台为你努力工作，同时用户的请求会被正常的worker处理。
 
-A spooler works by defining a directory in which "spool files" will be written, every time the spooler find a file in its directory it will parse it and will run a specific function.
+spooler通过定义"spooler文件"将会写入的目录来工作，每次spooler在它的目录下找到一个文件，它就会解析它，然后运行一个特定的函数。
 
-You can have multiple spoolers mapped to different directories and even multiple spoolers mapped to the same one.
+你可以让多个spooler映射到不同的目录，甚至可以让多个spooler映射到相同的目录。
 
-The ``--spooler <directory>`` option allows you to generate a spooler process, while the ``--spooler-processes <n>`` allows you to set how many processes to spawn for every spooler.
+``--spooler <directory>``选项允许你生成一个spooler进程，而``--spooler-processes <n>``允许你设置为每个spooler生成多少个进程。
 
-The spooler is able to manage uWSGI signals too, so you can use it as a target for your handlers.
+spooler也能够管理uWSGI信号量，因此，你可以把它当成你的处理器的目标使用。
 
-This configuration will generate a spooler for your instance (myspool directory must exists)
+这个配置将为你的实例生成一个spooler (myspool目录必须存在)
 
 .. code-block:: ini
 
@@ -25,7 +25,7 @@ This configuration will generate a spooler for your instance (myspool directory 
    spooler = myspool
    ...
    
-while this one will create two spoolers:
+而这个将创建两个spooler：
 
 .. code-block:: ini
 
@@ -34,15 +34,14 @@ while this one will create two spoolers:
    spooler = myspool2
    ...
 
-having multiple spoolers allows you to prioritize tasks (and eventually parallelize them)
+拥有多个spooler使你能够把任务区分优先次序（甚至对其并行处理）
 
-Spool files
+spool文件
 -----------
 
-Spool files are serialized hashes/dictionaries of strings. The spooler will parse them and pass the resulting hash/dictionary to the spooler function (see below).
+spool文件是序列化的字符串哈希/字典。spooler将对其进行解析，然后将得到的哈希/字典传递给spooler函数（见下文）。
 
-The serialization format is the same used for the 'uwsgi' protocol, so you are limited to 64k (even if there is a trick for passing bigger values, see the 'body' magic key below). The modifier1
-for spooler packets is the 17, so a {'hello' => 'world'} hash will be encoded as:
+序列化格式与'uwsgi'协议使用的格式相同，因此，最多只能64k (即使有窍门传递更大的值，见下面的'body'魔法键)。用于spooler包的modifier1是17, 因此，一个{'hello' => 'world'}哈希将会被编码成：
 
 ========= ============== ==============
 header    key1           value1
@@ -50,30 +49,28 @@ header    key1           value1
 17|14|0|0 |5|0|h|e|l|l|o |5|0|w|o|r|l|d
 ========= ============== ==============
 
-A locking system allows you to safely manually remove spool files if something goes wrong, or to move them between spooler directories.
+一个锁定系统允许你在出现问题的时候安全地手工移除spool文件，或者在两个spooler目录之间移动。
 
-Spool dirs over NFS are allowed, but if you do not have proper NFS locking in place, avoid mapping the same spooler NFS directory to spooler on different machines.
+允许跨NFS的spool目录，但是如果你在适当的位置上没有合适的NFS锁，那么请避免映射相同的spooler NFS目录到不同机器上的spooler。
 
-Setting the spooler function/callable
+设置spooler函数/调用
 -------------------------------------
 
-Because there are dozens of different ways to enqueue spooler requests, we're going to cover receiving the requests first. 
+由于有几十种不同的方式来排队spooler请求，因此我们将首先涵盖接收请求。
 
-To have a fully operational spooler you need to define a "spooler function/callable" to process the requests. 
+想要有个全面运作的spooler，那么你需要定义一个"spooler函数/调用"来处理请求。
 
-Regardless of the the number of configured spoolers, the same function will be executed.
-It is up to the developer to instruct it to recognize tasks.
-If you don't process requests, the spool directory will just fill up.
+无论配置的spooler数目是多少，都会执行相同的函数。由开发者指示它识别任务。如果你不处理请求，那么spool目录就会只是填满。
 
-This function must returns an integer value:
+这个函数必须返回一个整数值：
 
-* -2 (SPOOL_OK) -- the task has been completed, the spool file will be removed
-* -1 (SPOOL_RETRY) -- something is temporarily wrong, the task will be retried at the next spooler iteration
-* 0 (SPOOL_IGNORE) -- ignore this task, if multiple languages are loaded in the instance all of them will fight for managing the task. This return values allows you to skip a task in specific languages.
+* -2 (SPOOL_OK) —— 任务已完成，将会移除spool文件
+* -1 (SPOOL_RETRY) —— 暂时错误，在下一个spooler迭代将会重试该任务。
+* 0 (SPOOL_IGNORE) —— 忽略此任务，如果实例中加载了多个语言，那么它们所有都会竞争管理该任务。这个返回值允许你跳过特定的语言的任务。
 
-Any other value will be interpreted as -1 (retry).
+任何其他值都会被解析成-1 (重试)。
 
-Each language plugin has its own way to define the spooler function:
+每个语言插件都有它自己定义spooler函数的方法：
 
 Perl:
 
@@ -114,15 +111,14 @@ Ruby:
    end
 
 
-Spooler functions must be defined in the master process, so if you are in lazy-apps mode, be sure to place it in a file that is parsed
-early in the server setup. (in Python you can use --shared-import, in Ruby --shared-require, in Perl --perl-exec).
+spooler函数必须在master进程中定义，因此，如果是在lazy-apps模式下，那么确保将其放到一个文件中，该文件要在服务器设置之初被解析。(在Python中，你可以使用--shared-import，在Ruby中，使用--shared-require，在Perl中，使用--perl-exec)。
 
-Python has support for importing code directly in the spooler with the ``--spooler-python-import`` option.
+Python支持使用 ``--spooler-python-import`` 选项，直接在spooler中导入代码。
 
-Enqueueing requests to a spooler
+排队请求到一个spooler
 --------------------------------
 
-The 'spool' api function allows you to enqueue a hash/dictionary into the spooler specified by the instance:
+'spool' api函数允许你排队一个哈希/目录到实例指定的spooler：
 
 .. code-block:: ini
 
@@ -152,7 +148,7 @@ The 'spool' api function allows you to enqueue a hash/dictionary into the spoole
    # ruby
    UWSGI.spool(foo => 'bar', name => 'Kratos', surname => 'the same of Zeus')
    
-Some keys have a special meaning:
+一些键有特殊含义：
 
 * 'spooler' => specify the ABSOLUTE path of the spooler that has to manage this task
 * 'at' => unix time at which the task must be executed (read: the task will not be run until the 'at' time is passed)
@@ -163,7 +159,7 @@ Some keys have a special meaning:
 
    Spool arguments must be strings (or bytes for python3). The API functions will try to cast non-string values to strings/bytes, but do not rely on that functionality!
 
-External spoolers
+外部spooler
 -----------------
 
 You could want to implement a centralized spooler for your server across many uWSGI instances.
@@ -221,7 +217,7 @@ We will use the Perl ``Net::uwsgi`` module (exposing a handy uwsgi_spool functio
    
 (thanks brianhorakh for the example)
 
-Priorities
+优先级
 ----------
 
 We have already seen that you can use the 'priority' key to give order in spooler parsing.
@@ -255,7 +251,7 @@ Remember, priorities only work for subdirectories named as 'numbers' and you nee
 
 The uWSGI spooler gives special names to tasks so the ordering of enqueuing is always respected.
 
-Options
+选项
 -------
 ``spooler=directory``
 run a spooler on the specified directory
@@ -291,7 +287,7 @@ set the spooler frequency
 ``spooler-python-import=???``
 import a python module directly in the spooler
 
-Tips and tricks
+技巧和窍门
 ---------------
 
 You can re-enqueue a spooler request by returning ``uwsgi.SPOOL_RETRY`` in your callable:

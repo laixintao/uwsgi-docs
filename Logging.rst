@@ -1,4 +1,4 @@
-Logging
+日志记录
 =======
 
 .. seealso:: :doc:`LogFormat`
