@@ -70,7 +70,7 @@ or if you are using a modular build (like the one of your distro)
 
    uwsgi --plugins http,psgi --http :8080 --http-modifier1 5 --psgi myapp.pl
    
-.. note:: Do not use --http when you have a frontend webserver, use --http-socket. Continue reading the quickstart to understand why.
+.. 注意:: Do not use --http when you have a frontend webserver, use --http-socket. Continue reading the quickstart to understand why.
 
 What is that '--http-modifier1 5' thing ???
 *******************************************

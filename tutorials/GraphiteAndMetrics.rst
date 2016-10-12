@@ -197,7 +197,7 @@ then run the bundler tool (if you are not confident with the ruby world it is a 
 
    bundle install
 
-.. note:: if the eventmachine gem installation fails, add "gem 'eventmachine'" in the Gemfile as the first gem and run bundle update. This will ensure latest eventmachine version will be installed
+.. 注意:: if the eventmachine gem installation fails, add "gem 'eventmachine'" in the Gemfile as the first gem and run bundle update. This will ensure latest eventmachine version will be installed
 
 After bundle has installed all of the gems, you have to copy the graphiti example configuration:
 

@@ -5,7 +5,7 @@ Use the ``https <socket>,<certificate>,<key>`` option. This option may be
 specified multiple times.  First generate your server key, certificate signing
 request, and self-sign the certificate using the OpenSSL toolset:
 
-.. note:: You'll want a real SSL certificate for production use.
+.. 注意:: You'll want a real SSL certificate for production use.
 
 ::
   
@@ -26,7 +26,7 @@ privileges after binding like thus::
 uWSGI will bind to 443 on any IP, then drop privileges to those of ``roberto``,
 and use the shared socket 0 (``=0``) for HTTPS.
 
-.. note:: The =0 syntax is currently undocumented.
+.. 注意:: The =0 syntax is currently undocumented.
 
 Setting SSL/TLS ciphers
 -----------------------
@@ -92,5 +92,5 @@ Then configure uWSGI for certificate client authentication
   https = =0,foobar.crt,foobar.key,HIGH,!ca.crt
   http-to = /tmp/uwsgi.sock
 
-.. note:: If you don't want the client certificate authentication to be
+.. 注意:: If you don't want the client certificate authentication to be
    mandatory, remove the '!' before ca.crt in the https options.

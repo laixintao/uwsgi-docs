@@ -84,7 +84,7 @@ will check for python modules changes every 2 seconds and eventually restart the
 
 And again:
 
-.. warning:: Use this only in development.
+.. 警告:: Use this only in development.
 
 
 Full-Stack CGI setup

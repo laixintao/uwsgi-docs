@@ -85,7 +85,7 @@ Check the uWSGI cache for a specified key. If the value is found, it will be ret
 
 Set the specified environment variable for a new dynamic app.
 
-.. note:: To allow this in Python applications you need to enable the ``reload-os-env`` uWSGI option.
+.. 注意:: To allow this in Python applications you need to enable the ``reload-os-env`` uWSGI option.
 
 Dynamically load a Django app without using a WSGI file/module::
 
@@ -100,7 +100,7 @@ Dynamically load a Django app without using a WSGI file/module::
 ``UWSGI_APPID``
 ---------------
 
-.. note:: Available since 0.9.9.
+.. 注意:: Available since 0.9.9.
 
 Bypass ``SCRIPT_NAME`` and :doc:`VirtualHosting` to let the user choose the mountpoint without limitations (or headaches).
 

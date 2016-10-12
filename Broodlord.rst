@@ -54,7 +54,7 @@ This will allow you to run up to 40 additional zerg workers for your apps.
 `--vassal-sos`
 --------------
 
-.. note::
+.. 注意::
 
    This flag has been added in 2.0.7.
 

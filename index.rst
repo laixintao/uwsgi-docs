@@ -1,41 +1,37 @@
-The uWSGI project
+uWSGI项目
 =================
 
-The uWSGI project aims at developing a full stack for building hosting services.
+uWSGI项目旨在为构建托管服务开发全栈。
 
-Application servers (for various programming languages and protocols), proxies, process managers and monitors are all implemented
-using a common api and a common configuration style.
+使用通用的API和通用的配置风格来实现应用服务器 (对于各种编程语言和协议)，代理，进程管理器和监控器。
 
-Thanks to its pluggable architecture it can be extended to support more platforms and languages.
+由于其可插拔架构，可以对其扩展以支持更多的平台和语言。
 
-Currently, you can write plugins in C, C++ and Objective-C.
+目前，你可以用C, C++和Objective-C来编写插件。
 
-The "WSGI" part in the name is a tribute to the namesake Python standard, as it has been the first developed plugin for the project.
+名字中的"WSGI"部分归功于同名Python标准，因为它是该项目第一个开发的插件。
 
-Versatility, performance, low-resource usage and reliability are the strengths of the project (and the only rules followed).
+通用性、高性能、低资源使用和可靠性是该项目的强项（也是唯一遵循的法则）。
 
-Included components (updated to latest stable release)
+包含的组件（更新至最新的稳定版本）
 ======================================================
 
-The Core (implements configuration, processes management, sockets creation, monitoring, logging, shared memory areas, ipc, cluster membership and the :doc:`SubscriptionServer`)
+核心 (实现配置、进程管理、socket创建、监控、日志记录、共享内存块、ipc、集群成员和 :doc:`SubscriptionServer`)
 
-Request plugins (implement application server interfaces for various languages and platforms: WSGI, PSGI, Rack, Lua WSAPI, CGI, PHP, Go ...)
+请求插件 (为各种语言和平台实现应用服务器接口：WSGI, PSGI, Rack, Lua WSAPI, CGI, PHP, Go ...)
 
-Gateways (implement load balancers, proxies and routers)
+网关 (实现负载均衡器、代理和路由器)
 
-The :doc:`Emperor <Emperor>` (implements massive instances management and monitoring)
+:doc:`Emperor <Emperor>` (实现大量实例管理和监控)
 
-Loop engines (implement events and concurrency, components can be run in preforking, threaded, asynchronous/evented and green thread/coroutine modes. Various technologies are supported, including uGreen, Greenlet, Stackless, :doc:`Gevent <Gevent>`, Coro::AnyEvent, :doc:`Tornado <Tornado>`, Goroutines and Fibers)
+循环引擎 (实现事件和并发，组件可以在reforking, threaded, asynchronous/evented和green thread/coroutine模式下运行。支持多种技术，包括uGreen, Greenlet, Stackless, :doc:`Gevent <Gevent>`, Coro::AnyEvent, :doc:`Tornado <Tornado>`, Goroutines和Fibers)
 
-.. note::
+.. 注意::
 
-  uWSGI is a very active project with a fast release cycle. For this reason the code and the documentation may not always be in sync.
-  We try to make our best to have good documentation but it is a hard work. Sorry for that.
-  If you are in trouble, the mailing list is the best source for help regarding uWSGI.
-  Contributors for documentation (in addition to code) are always welcome.
+  uWSGI是一个具有快速发布周期的非常活跃的项目。出于这个原因，代码和文档可能不总是同步。我们试着尽最大的努力维护好文档，但这是一个艰苦的工作。为此表示歉意。如果你碰到问题了，那么邮件列表是寻求有关uWSGI的帮助的最佳来源。欢迎文档（除代码之外）贡献者。
 
 
-Quickstarts
+快速入门
 ===========
 
 .. toctree::
@@ -47,7 +43,7 @@ Quickstarts
    Snippets
 
 
-Table of Contents
+目录
 =================
 
 .. toctree::
@@ -85,7 +81,7 @@ Table of Contents
    Glossary
    ThirdPartyPlugins
 
-Tutorials
+教程
 =========
 
 .. toctree::
@@ -101,7 +97,7 @@ Tutorials
    tutorials/GraphiteAndMetrics
 
 
-Articles
+文章
 ========
 
 .. toctree::
@@ -115,7 +111,7 @@ Articles
 
 
 
-uWSGI Subsystems
+uWSGI子系统
 ================
 
 .. toctree::
@@ -173,7 +169,7 @@ Securing uWSGI
    TunTapRouter
 
 
-Keeping an eye on your apps
+密切关注你的应用
 ===========================
 
 .. toctree::
@@ -187,7 +183,7 @@ Keeping an eye on your apps
    Metrics
 
 
-Async and loop engines
+异步和循环引擎
 ======================
 
 .. toctree::
@@ -202,7 +198,7 @@ Async and loop engines
 
 
 
-Web Server support
+Web服务器支持
 ==================
 
 .. toctree::
@@ -219,7 +215,7 @@ Web Server support
    OpenBSDhttpd
 
 
-Language support
+语言支持
 ==================
 
 .. toctree::
@@ -243,7 +239,7 @@ Language support
    GlusterFS
    Rados
 
-Other plugins
+其他插件
 =============
 
 .. toctree::
@@ -254,7 +250,7 @@ Other plugins
    LDAP
 
 
-Broken/deprecated features
+中断/弃用特性
 ==========================
 
 .. toctree::
@@ -265,10 +261,10 @@ Broken/deprecated features
    Go
 
 
-Release Notes
+发布说明
 =============
 
-Stable releases
+稳定版本
 ---------------
 
 .. toctree::
@@ -316,11 +312,11 @@ Stable releases
 
 
 
-Contact
+联系
 =======
 
 ================== =
-Mailing list       http://lists.unbit.it/cgi-bin/mailman/listinfo/uwsgi
+邮件列表       http://lists.unbit.it/cgi-bin/mailman/listinfo/uwsgi
 Gmane mirror       http://dir.gmane.org/gmane.comp.python.wsgi.uwsgi.general
 IRC                #uwsgi @ irc.freenode.org. The owner of the channel is `unbit`.
 Twitter            http://twitter.com/unbit
@@ -329,12 +325,12 @@ Commercial support http://unbit.com/
 
 .
 
-Commercial support
+商业支持
 ==================
 
-You can buy commercial support from http://unbit.com
+你可以从http://unbit.com购买商业支持。
 
-Donate
+捐赠
 ======
 
 uWSGI development is sponsored by the Italian ISP `Unbit <http://unbit.it/>`_ and its customers. You can buy commercial support and licensing. If you are not an Unbit customer, or you cannot/do not want to buy a commercial uWSGI license, consider making a donation. Obviously please feel free to ask for new features in your donation.

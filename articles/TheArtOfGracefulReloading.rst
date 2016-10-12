@@ -106,7 +106,7 @@ To raise kernel limits, you should check your OS docs. Some examples:
 * sysctl ``kern.ipc.somaxconn`` on FreeBSD
 * ``/proc/sys/net/core/somaxconn`` on Linux.
 
-.. note::
+.. 注意::
 
    This is only one of the reasons to tune the listen queue, but do not blindly
    set it to huge values as a way to increase availability.
@@ -183,7 +183,7 @@ defaults.
 The following approaches will show you how to accomplish zero-downtime/wait
 reloads in both preforking and lazy modes.
 
-.. note:: 
+.. 注意:: 
 
     Each approach has pros and cons, choose carefully.
 
@@ -209,7 +209,7 @@ In lazy mode, it will:
 2. Restart all of them (this means you cannot change uWSGI options during
    this kind of reload).
 
-.. warning::
+.. 警告::
 
     lazy is discouraged!
 
@@ -429,7 +429,7 @@ The ``writefifo`` command allows writing to FIFOs  without failing if the
 other peers are not connected (this is different from a simple ``write``
 command that would fail or completely block when dealing with bad FIFOs).
 
-.. note::
+.. 注意::
 
     Both features have been added only in uWSGI 1.9.21, with older releases you can
     use the ``--hook-post-app`` option instead of ``--hook-accepting1-once``, but

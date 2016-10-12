@@ -80,7 +80,7 @@ If you are building an infrastructure for untrusted users or you simply need mor
 
 The keys must be named after the domain/key we are subscribing to serve, plus the .pem extension.
 
-.. note:: If you're subscribing to a pool for an application listening on a specified port you need to use the ``domain_port.pem`` scheme for your key files. Generally all of the DNS-allowed chars are supported, all of the others are mapped to an underscore.
+.. 注意:: If you're subscribing to a pool for an application listening on a specified port you need to use the ``domain_port.pem`` scheme for your key files. Generally all of the DNS-allowed chars are supported, all of the others are mapped to an underscore.
 
 An example of an RSA protected server looks like this:
 
@@ -112,7 +112,7 @@ Let's analyze the ``subscribe-to`` usage:
 * ``5`` is the modifier1 value for our psgi app
 * ``SHA1:/home/private/test.uwsgi.it_8000.pem`` is the <digest>:<rsa> couple for authenticating to the server (the <rsa> field is the private key path).
 
-.. note:: Please make sure you're using the same digest method (SHA1 in the examples above) both on the server and on the client.
+.. 注意:: Please make sure you're using the same digest method (SHA1 in the examples above) both on the server and on the client.
 
 To avoid replay attacks, each subscription packet has an increasing number (normally the unix time) avoiding the allowance of duplicated packets.
 Even if an attacker manages to sniff a subscription packet it will be unusable as it is already processed previously.

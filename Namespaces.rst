@@ -171,7 +171,7 @@ Another important thing is that you can see all the jail processes from your rea
 you can easily do it.
 
 
-.. note::
+.. 注意::
 
    A good way to limit hardware usage of jails is to combine them with the cgroups subsystem.
 

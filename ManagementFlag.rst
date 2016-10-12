@@ -1,11 +1,11 @@
 Management Flags
 ================
 
-.. warning:: This feature may be currently broken or deprecated.
+.. 警告:: This feature may be currently broken or deprecated.
 
 You can modify the behavior of some aspects of the uWSGI stack remotely, without taking the server offline using the Management Flag system.
 
-.. note:: A more comprehensive re-setup system may be in the works.
+.. 注意:: A more comprehensive re-setup system may be in the works.
 
 All the flags take an unsigned 32-bit value (so the block size is always 4) that contains the value to set for the flag.
 If you do not specify this value, only sending the uWSGI header, the server will count it as a read request.

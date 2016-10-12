@@ -1,7 +1,7 @@
 uWSGI Go support (1.4 only)
 ===========================
 
-.. warning:: Starting from 1.9.20, the Go plugin has been superseded by the :doc:`GCCGO` plugin.
+.. 警告:: Starting from 1.9.20, the Go plugin has been superseded by the :doc:`GCCGO` plugin.
 
 Starting from uWSGI 1.4-dev you can host Go web applications in your uWSGI
 stack.  You can download Go from http://golang.org/ .  Currently Linux

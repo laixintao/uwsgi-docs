@@ -28,7 +28,7 @@ socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using default protocol
+``help``: 使用默认协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -40,7 +40,7 @@ uwsgi-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using uwsgi protocol
+``help``: 使用uwsgi协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -50,7 +50,7 @@ suwsgi-socket
 
 ``parser``: uwsgi_opt_add_ssl_socket
 
-``help``: bind to the specified UNIX/TCP socket using uwsgi protocol over SSL
+``help``: 通过SSL使用uwsgi协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -70,7 +70,7 @@ http-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using HTTP protocol
+``help``: 使用HTTP协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -100,7 +100,7 @@ http11-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using HTTP 1.1 (Keep-Alive) protocol
+``help``: 使用HTTP 1.1 (Keep-Alive)协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -110,7 +110,7 @@ https-socket
 
 ``parser``: uwsgi_opt_add_ssl_socket
 
-``help``: bind to the specified UNIX/TCP socket using HTTPS protocol
+``help``: 使用HTTPS协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -140,7 +140,7 @@ fastcgi-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using FastCGI protocol
+``help``: 使用FastCGI协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -150,7 +150,7 @@ fastcgi-nph-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using FastCGI protocol (nph mode)
+``help``: 使用FastCGI协议绑定到指定UNIX/TCP socket上 (nph模式)
 
 
 
@@ -190,7 +190,7 @@ scgi-nph-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using SCGI protocol (nph mode)
+``help``: 使用SCGI协议绑定到指定UNIX/TCP socket上 (nph模式)
 
 
 
@@ -220,7 +220,7 @@ raw-socket
 
 ``parser``: uwsgi_opt_add_socket_no_defer
 
-``help``: bind to the specified UNIX/TCP socket using RAW protocol
+``help``: 使用RAW协议绑定到指定UNIX/TCP socket上
 
 
 
@@ -6144,7 +6144,7 @@ alarm-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled alarms
+``help``: 列出已启用告警
 
 
 
@@ -6154,7 +6154,7 @@ alarms-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled alarms
+``help``: 列出已启用告警
 
 
 
@@ -6164,7 +6164,7 @@ alarm-msg-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: set the max size of an alarm message (default 8192)
+``help``: 设置告警消息的最大大小 (默认：8192)
 
 
 
@@ -6216,7 +6216,7 @@ log-reopen
 
 ``parser``: uwsgi_opt_true
 
-``help``: reopen log after reload
+``help``: 重新加载后重新打开日志
 
 
 
@@ -6226,7 +6226,7 @@ log-truncate
 
 ``parser``: uwsgi_opt_true
 
-``help``: truncate log on startup
+``help``: 启动时清除日志
 
 
 
@@ -6238,7 +6238,7 @@ log-maxsize
 
 ``flags``: UWSGI_OPT_MASTER|UWSGI_OPT_LOG_MASTER
 
-``help``: set maximum logfile size
+``help``: 设置最大日志文件大小
 
 
 
@@ -6288,7 +6288,7 @@ log-zero
 
 ``parser``: uwsgi_opt_true
 
-``help``: log responses without body
+``help``: 记录没有body的响应
 
 
 
@@ -6298,7 +6298,7 @@ log-slow
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: log requests slower than the specified number of milliseconds
+``help``: 记录慢于指定毫秒数的请求
 
 
 
@@ -6308,7 +6308,7 @@ log-4xx
 
 ``parser``: uwsgi_opt_true
 
-``help``: log requests with a 4xx response
+``help``: 记录响应为4xx的请求
 
 
 
@@ -6318,7 +6318,7 @@ log-5xx
 
 ``parser``: uwsgi_opt_true
 
-``help``: log requests with a 5xx response
+``help``: 记录响应为5xx的请求
 
 
 
@@ -6328,7 +6328,7 @@ log-big
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: log requestes bigger than the specified size
+``help``: 记录大于指定大小的请求
 
 
 
@@ -6338,7 +6338,7 @@ log-sendfile
 
 ``parser``: uwsgi_opt_true
 
-``help``: log sendfile requests
+``help``: 记录sendfile请求
 
 
 
@@ -6428,7 +6428,7 @@ chdir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: chdir to specified directory before apps loading
+``help``: 应用加载前chdir到指定目录
 
 
 
@@ -6448,7 +6448,7 @@ lazy
 
 ``parser``: uwsgi_opt_true
 
-``help``: set lazy mode (load apps in workers instead of master)
+``help``: 设置lazy模式 (在worker而不是master中加载应用)
 
 
 
@@ -6458,7 +6458,7 @@ lazy-apps
 
 ``parser``: uwsgi_opt_true
 
-``help``: load apps in each worker instead of the master
+``help``: 在每个worker而不是master中加载应用
 
 
 
@@ -6470,7 +6470,7 @@ cheap
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: set cheap mode (spawn workers only after the first request)
+``help``: 设置cheap模式 (spawn workers only after the first request)
 
 
 
@@ -11482,7 +11482,7 @@ module
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a WSGI module
+``help``: 加载一个WSGI模块
 
 
 
@@ -11494,7 +11494,7 @@ wsgi
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a WSGI module
+``help``: 加载一个WSGI模块
 
 
 
@@ -11516,7 +11516,7 @@ test
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: test a module import
+``help``: 测试模块导入
 
 
 
@@ -11528,7 +11528,7 @@ home
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set PYTHONHOME/virtualenv
+``help``: 设置PYTHONHOME/virtualenv
 
 
 
@@ -11540,7 +11540,7 @@ virtualenv
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set PYTHONHOME/virtualenv
+``help``: 设置PYTHONHOME/virtualenv
 
 
 
@@ -11552,7 +11552,7 @@ venv
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set PYTHONHOME/virtualenv
+``help``: 设置PYTHONHOME/virtualenv
 
 
 
@@ -11564,7 +11564,7 @@ pyhome
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set PYTHONHOME/virtualenv
+``help``: 设置PYTHONHOME/virtualenv
 
 
 
@@ -11574,7 +11574,7 @@ py-programname
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set python program name
+``help``: 设置Python程序名
 
 
 
@@ -11584,7 +11584,7 @@ py-program-name
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set python program name
+``help``: 设置Python程序名
 
 
 
@@ -11644,7 +11644,7 @@ import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module
+``help``: 导入一个python模块
 
 
 
@@ -11654,7 +11654,7 @@ pyimport
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module
+``help``: 导入一个python模块
 
 
 
@@ -11664,7 +11664,7 @@ py-import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module
+``help``: 导入一个python模块
 
 
 
@@ -11674,7 +11674,7 @@ python-import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module
+``help``: 导入一个python模块
 
 
 
@@ -11684,7 +11684,7 @@ shared-import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module in all of the processes
+``help``: 在所有进程中导入一个python模块
 
 
 
@@ -11694,7 +11694,7 @@ shared-pyimport
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module in all of the processes
+``help``: 在所有进程中导入一个python模块
 
 
 
@@ -11704,7 +11704,7 @@ shared-py-import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module in all of the processes
+``help``: 在所有进程中导入一个python模块
 
 
 
@@ -11714,7 +11714,7 @@ shared-python-import
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import a python module in all of the processes
+``help``: 在所有进程中导入一个python模块
 
 
 

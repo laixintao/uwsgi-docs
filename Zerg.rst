@@ -1,11 +1,11 @@
 Zerg mode
 =========
 
-.. note::
+.. 注意::
 
   Yes, that's Zerg as in the "quantity-over-quality" Starcraft race. If you haven't played Starcraft, be prepared for some nonsense.
 
-  .. note::
+  .. 注意::
 
     Also note that this nonsense is mostly limited to the nomenclature. Zerg Mode is serious business.
 
@@ -22,7 +22,7 @@ Enabling the zerg server
 
 If you want an uWSGI instance to be rushed by zerg, you have to enable the Zerg server. It will be bound to an UNIX socket and will pass uwsgi socket file descriptors to the Zerg workers connecting to it.
 
-.. warning:: The socket must be an UNIX socket because it must be capable of passing through file descriptors. A TCP socket simply will not work.
+.. 警告:: The socket must be an UNIX socket because it must be capable of passing through file descriptors. A TCP socket simply will not work.
 
 For security reasons the UNIX socket does not inherit the ``chmod-socket`` option, but will always use the current umask.
 

@@ -83,7 +83,7 @@ run them.
  uwsgi --emperor "/etc/vassals/domains/*/conf/uwsgi.xml"
  uwsgi --emperor "/etc/vassals/*.ini"
 
-.. note:: Remember to quote the pattern, otherwise your shell will most likely
+.. 注意:: Remember to quote the pattern, otherwise your shell will most likely
    interpret it and expand it at invocation time, which is not what you want.
 
 As the Emperor can search for configuration files in subdirectory hierarchies,

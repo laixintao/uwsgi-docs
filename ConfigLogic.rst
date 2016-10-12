@@ -17,7 +17,7 @@ Each of these statements exports a context value you can access with the
 special placeholder ``%(_)``. For example, the "for" statement sets ``%(_)`` to
 the current iterated value.
 
-.. warning:: Recursive logic is not supported and will cause uWSGI to promptly exit.
+.. 警告:: Recursive logic is not supported and will cause uWSGI to promptly exit.
 
 for
 ---
@@ -103,7 +103,7 @@ to the filename found.
   route = .* redirect:/offline
   endif =
 
-.. note:: The above example uses :doc:`InternalRouting`.
+.. 注意:: The above example uses :doc:`InternalRouting`.
 
 if-file
 -------

@@ -67,8 +67,8 @@ uwsgi.register_signal的第三个参数是'signal targer'。
 它指示系统“谁”必须运行处理程序。默认情况下，目标是targer是表示“第一个可用worker”的'worker'。下面是可用的目标：
 
 - workerN (只在workder N上运行信号处理程序)
-- worker/worker0 (默认，在第一个可用的workder上运行信号处理程序)
-- workers (在所有workder上运行信号处理程序)
+- worker/worker0 (默认，在第一个可用的worker上运行信号处理程序)
+- workers (在所有worker上运行信号处理程序)
 - active-workers (在所有活跃的 [non-cheaped] worker上运行信号处理程序)
 - spooler (在第一个可用的spooler上运行信号处理程序)
 - mules (在所有的mule上运行信号处理程序)

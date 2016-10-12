@@ -1,19 +1,19 @@
-The uwsgi Protocol
+uwsgi协议
 ==================
 
-The uwsgi (lowercase!) protocol is the native protocol used by the uWSGI server.
+uwsgi协议是uWSGI服务器使用的本地协议。
 
-It is a binary protocol that can carry any type of data. The first 4 bytes of a uwsgi packet describe the type of the data contained by the packet.
+它是一个二进制协议，可以携带任何类型的数据。一个uwsgi分组的头4个字节描述了这个分组包含的数据类型。
 
-**Every uwsgi request generates a response in the uwsgi format.**
+**每个uwsgi请求生成一个uwsgi格式的响应。**
 
-Even the web server handlers obey this rule, as an HTTP response is a valid uwsgi packet (look at the ``modifier1`` = 72).
+甚至是web服务器处理程序也遵循这个规则，因为一个HTTP响应是一个有效的uwsgi包 (看下 ``modifier1`` = 72)。
 
-The protocol works mainly via TCP but the master process can bind to a UDP Unicast/Multicast for :doc:`SNMP` or cluster management/messaging requests.
+该协议主要通过TCP工作，但是master经常可以为 :doc:`SNMP` 或者集群管理/消息请求绑定到一个UDP单播/组播。
 
-SCTP support is being worked on.
+SCTP支持正在开发中。
 
-uwsgi packet header
+uwsgi包头
 -------------------
 
 .. code-block:: c
@@ -25,9 +25,9 @@ uwsgi packet header
     };
 
 
-Unless otherwise specified the ``datasize`` value contains the size (16-bit little endian) of the packet body.
+除非另有指定的 ``datasize`` 值包含了包体大小 (小端的16位)。
 
-Packet descriptions
+包描述
 -------------------
 
 
@@ -40,7 +40,7 @@ Packet descriptions
      - ``packet type``
    
    * - 0
-     - size of WSGI block vars (HTTP request body excluded)
+     - size of WSGI block vars (HTTP请求体除外)
      - 0
      - Standard WSGI request followed by the HTTP request body
    
@@ -263,7 +263,7 @@ Packet descriptions
 The uwsgi vars
 --------------
 
-The uwsgi block vars represent a dictionary/hash. Every key-value is encoded in this way:
+The uwsgi block vars represent a dictionary/hash. 每个键值对都以这种方式进行编码：
 
 .. code-block:: c
 

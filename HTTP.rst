@@ -119,13 +119,13 @@ dedicated full-featured web server.  If you host static assets in the cloud or
 on a CDN, using uWSGI's HTTP capabilities you can definitely avoid configuring
 a full webserver.
 
-.. note:: If you use Amazon's ELB (Elastic Load Balancer) in HTTP mode in
+.. 注意:: If you use Amazon's ELB (Elastic Load Balancer) in HTTP mode in
    front of uWSGI in HTTP mode, either a valid ``Content-Length`` *must be set*
    by the backend, or chunked encoding must be used, e.g., with
    ``http-auto-chunked``. The ELB "health test" may still fail in HTTP mode
    regardless, in which case a TCP health test can be used instead.
 
-.. note:: In particular, the Django backend does not set ``Content-Length`` by
+.. 注意:: In particular, the Django backend does not set ``Content-Length`` by
    default, while most others do. If running behind ELB, either use chunked
    encoding as above, or force Django to specify ``Content-Length`` with the
    "Conditional GET" Django middleware.

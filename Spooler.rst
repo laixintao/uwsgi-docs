@@ -150,12 +150,12 @@ Python支持使用 ``--spooler-python-import`` 选项，直接在spooler中导�
    
 一些键有特殊含义：
 
-* 'spooler' => specify the ABSOLUTE path of the spooler that has to manage this task
-* 'at' => unix time at which the task must be executed (read: the task will not be run until the 'at' time is passed)
+* 'spooler' => 指定必须管理这个任务的spooler的绝对路径
+* 'at' => 必须执行该任务的unix时间 (读：该任务将不会运行，直到过去'at'时间)
 * 'priority' => this will be the subdirectory in the spooler directory in which the task will be placed, you can use that trick to give a good-enough prioritization to tasks (for better approach use multiple spoolers)
 * 'body' => use this key for objects bigger than 64k, the blob will be appended to the serialzed uwsgi packet and passed back to the spooler function as the 'body' argument
 
-.. note::
+.. 注意::
 
    Spool arguments must be strings (or bytes for python3). The API functions will try to cast non-string values to strings/bytes, but do not rely on that functionality!
 

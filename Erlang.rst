@@ -1,7 +1,7 @@
 Integrating uWSGI with Erlang
 =============================
 
-.. warning:: Erlang support is broken as of 1.9.20. A new solution is being worked on.
+.. 警告:: Erlang support is broken as of 1.9.20. A new solution is being worked on.
 
 The uWSGI server can act as an Erlang C-Node and exchange messages and RPC with Erlang nodes.
 

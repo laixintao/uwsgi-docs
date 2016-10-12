@@ -94,7 +94,7 @@ If your ``libpypy-c.so`` is outside of the PyPy home (and in a directory not rea
    
 With this approach you are able to use the library from a specific PyPy build and the home from another one.
 
-.. note:: Remember to prefix --pypy-lib with ./ if you want to point to a .so file in your current directory!
+.. 注意:: Remember to prefix --pypy-lib with ./ if you want to point to a .so file in your current directory!
 
 The PyPy setup file
 ^^^^^^^^^^^^^^^^^^^

@@ -99,7 +99,7 @@ and load it into the uWSGI symbol table.
    
 From now on, the "foo_hello" symbol is available in the uWSGI symbol table, ready to be called by the 'call' hooks.
 
-.. warning::
+.. 警告::
 
    As --dlopen is a wrapper for the ``dlopen()`` function, beware of absolute paths and library search paths. If you do not want headaches, use always absolute paths when dealing with shared libraries.
 

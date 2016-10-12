@@ -96,7 +96,7 @@ crons only if it is the Lord of the specified Legion:
 Unique crons
 ************
 
-.. note:: This feature is available since 1.9.11.
+.. 注意:: This feature is available since 1.9.11.
 
 
 Some commands can take a long time to finish or just hang doing their thing. Sometimes this is okay, but there are also cases when running multiple instances of the same command can be dangerous.
@@ -116,7 +116,7 @@ To fix this we can simply replace ``cron`` with ``unique-cron`` and uWSGI will m
 Harakiri
 ********
 
-.. note:: Available since 1.9.11.
+.. 注意:: Available since 1.9.11.
 
 ``--cron-harakiri`` will enforce a time limit on executed commands. If any command is taking longer it will be killed.
 
@@ -132,7 +132,7 @@ This will kill the cron command after 10 seconds. Note that ``cron-harakiri`` is
 New syntax for cron options
 ***************************
 
-.. note:: Available since 1.9.11
+.. 注意:: Available since 1.9.11
 
 To allow better control over crons, a new option was added to uWSGI:
 

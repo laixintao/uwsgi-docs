@@ -17,7 +17,7 @@ This is the original module. It is solid, but incredibly ugly and does not follo
 Options
 ^^^^^^^
 
-.. note::
+.. 注意::
    
    All of the options can be set per-host or per-location.
 
@@ -86,11 +86,11 @@ the first one (0):
 
    plugins = 0:php
 
-.. note::
+.. 注意::
 
    `mod_proxy_uwsgi` is considered stable starting from uWSGI 2.0.6
 
-.. note::
+.. 注意::
 
   If you want to use this module (and help the uWSGI project), report any bugs
   you find, rather than falling back to the ancient (and ugly) mod_uwsgi
@@ -102,7 +102,7 @@ Starting from Apache 2.4.9, support for Unix sockets has been added. The syntax 
   ProxyPass / unix:/var/lib/uwsgi/app1.sock|uwsgi://uwsgi-uds-app1/
   ProxyPass / unix:/var/lib/uwsgi/app2.sock|uwsgi://uwsgi-uds-app2/
 
-.. note::
+.. 注意::
 
   As per apache documentation, the hostname part of the proxy address is
   ignored. However, if one wants to have different sockets for different apps
@@ -117,6 +117,6 @@ mod_Ruwsgi
 
 This module is based on the SCGI module written by Roger Florkowski.
 
-.. note::
+.. 注意::
 
   This module is currently undocumented.

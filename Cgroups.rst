@@ -5,7 +5,7 @@ Linux cgroups are an amazing feature available in recent Linux kernels. They
 allow you to "jail" your processes in constrained environments with limited
 CPU, memory, scheduling priority, IO, etc..
 
-.. note:: uWSGI has to be run as root to use cgroups. ``uid`` and ``gid`` are very, very necessary.
+.. 注意:: uWSGI has to be run as root to use cgroups. ``uid`` and ``gid`` are very, very necessary.
 
 Enabling cgroups
 ----------------

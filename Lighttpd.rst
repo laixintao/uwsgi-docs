@@ -1,7 +1,7 @@
 Lighttpd support
 ================
 
-.. note:: Lighttpd support is experimental.
+.. 注意:: Lighttpd support is experimental.
 
 The uwsgi handler for Lighttpd lives in the ``/lighttpd`` directory of the
 uWSGI distribution.

@@ -17,7 +17,7 @@ Python支持
 应用字典
 ----------------------
 
-You can use the application dictionary mechanism to avoid setting up your application in your configuration.
+你可以使用应用字典机制来避免在配置中设置你的应用。
 
 .. code-block:: python
 
@@ -37,9 +37,9 @@ You can use the application dictionary mechanism to avoid setting up your applic
   }
 
 
-Passing this Python module name (that is, it should be importable and without the ``.py`` extension) to uWSGI's ``module`` / ``wsgi`` option, uWSGI will search the ``uwsgi.applications`` dictionary for the URL prefix/callable mappings.
+将这个Python模块名 (即，它应该是可导入的，并且没有 ``.py`` 扩展名)传递给uWSGI的 ``module`` / ``wsgi`` 选项，uWSGI将会为URL前缀/可回调映射搜索 ``uwsgi.applications`` 字典。
   
-The value of every item can be a callable, or its name as a string.
+每一个项的值可以使一个可回调对象，或者字符串类型的名字。
 
 .. TODO: Where is the string looked up from?
 
@@ -48,33 +48,32 @@ The value of every item can be a callable, or its name as a string.
 Virtualenv支持
 ------------------
 
-`virtualenv <virtualenvwww_>`_ is a mechanism that lets you isolate one (or more) Python applications' libraries (and interpreters, when not using uWSGI) from each other.
-Virtualenvs should be used by any respectable modern Python application.
+`virtualenv <virtualenvwww_>`_ 是一种机制，它允许你彼此隔离一个 (或多个) Python应用的库 (当不使用uWSGI时，还有解释器)。任何可敬的现代Python应用都应该使用virtualenv。
 
 .. _virtualenvwww: http://www.virtualenv.org/
 
 快速入门
 ^^^^^^^^^^
 
-1. Create your virtualenv::
+1. 创建你的virtualenv::
 
     $ virtualenv myenv
     New python executable in myenv/bin/python
     Installing setuptools...............done.
     Installing pip.........done.
 
-2. Install all the modules you need (using `Flask <http://flask.pocoo.org/>`_ as an example)::
+2. 安装所有所需的模块 (以 `Flask <http://flask.pocoo.org/>`_ 为例)::
 
     $ ./myenv/bin/pip install flask
     $ # Many modern Python projects ship with a `requirements.txt` file that you can use with pip like this:
     $ ./myenv/bin/pip install -r requirements.txt
 
-3. Copy your WSGI module into this new environment (under :file:`lib/python2.{x}` if you do not want to modify your ``PYTHONPATH``).
+3. 将你的WSGI模块拷贝到这个新环境中 (如果你不想要修改你的 ``PYTHONPATH``，那就是在 :file:`lib/python2.{x}` 之下)。
   
-  .. note:: It's common for many deployments that your application will live outside the virtualenv. How to configure this is not quite documented yet, but it's probably very easy.
+  .. 注意:: 对于许多部署而言，应用运行在virtualenv之外是常见的。如何配置它尚未有文档说明，但是它可能非常容易。
   .. TODO: Document that.
 
-  Run the uwsgi server using the ``home``/``virtualenv`` option (``-H`` for short)::
+  使用 ``home``/``virtualenv`` 选项 (简称 ``-H``)来运行uwsgi服务器::
 
     $ uwsgi -H myenv -s 127.0.0.1:3031 -M -w envapp
 
@@ -116,7 +115,7 @@ For example, if you have a virtualenv in :file:`/opt/tg2env` containing a Turbog
 
 That's it! No additional configuration or Python modules to write.
 
-.. warning::
+.. 警告::
 
   If you setup multiple process/workers (:term:`master` mode) you will receive an error::
 
@@ -138,7 +137,7 @@ For example, if you have a virtualenv in :file:`/opt/pecanenv` containing a Peca
 
   uwsgi --pecan /opt/pecanenv/addressbook/development.py --socket :3031 -H /opt/pecanenv
 
-.. warning::
+.. 警告::
 
   If you setup multiple process/workers (:term:`master` mode) you will receive an error::
 

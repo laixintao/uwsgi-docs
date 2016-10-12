@@ -4,7 +4,7 @@ Configuring uWSGI with LDAP
 uWSGI can be configured using LDAP. LDAP is a flexible way to centralize
 configuration of large clusters of uWSGI servers. 
 
-.. note::
+.. 注意::
 
   LDAP support must be enabled while :doc:`building<Build>` uWSGI. The
   `libldap` library is required.

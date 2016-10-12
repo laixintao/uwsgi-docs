@@ -1,7 +1,7 @@
 WebCaching framework
 ===========================
 
-.. note::
+.. 注意::
 
     This is a port of the old caching subsystem to the new uWSGI caching API documented here :doc:`Caching`.
     Using the options here will create a new-style cache named "default".

@@ -304,7 +304,7 @@ The PHP plugin has been extended to support a fork-server so you can have a pool
 
 Thanks to the vassal attributes in uWSGI 2.1 we can choose from which parent a vassal will call fork().
 
-.. note::
+.. 注意::
 
     You need Linux kernel >= 3.4 (the feature requires ``PR_SET_CHILD_SUBREAPER``) for "solid" use. Otherwise your Emperor will not be able to correctly wait() on children (and this will slow-down your vassal's respawns, and could lead to various form of race conditions).
 

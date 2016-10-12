@@ -74,9 +74,9 @@ Then invoke uWSGI (with ``--plugins`` if you built Ruby support as a plugin):
     ./uwsgi -s :3031 -M -p 4 -m --post-buffering 4096 --rack config.ru
     ./uwsgi --plugins rack -s :3031 -M -p 4 -m --post-buffering 4096 --rack config.ru
 
-.. note:: ``post-buffering`` is required by the Rack specification.
+.. 注意:: ``post-buffering`` is required by the Rack specification.
 
-.. note:: As Sinatra has a built-in logging system, you may wish to disable uWSGI's logging of requests with the ``disable-logging`` option.
+.. 注意:: As Sinatra has a built-in logging system, you may wish to disable uWSGI's logging of requests with the ``disable-logging`` option.
 
 
 Running Ruby on Rails applications on uWSGI

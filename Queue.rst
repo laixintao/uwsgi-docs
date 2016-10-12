@@ -31,7 +31,7 @@ Using the queue as a shared array
 Using the queue as a shared stack
 ---------------------------------
 
-.. warning:: Remember that :py:meth:`uwsgi.queue_pop` and :py:meth:`uwsgi.queue_last` will remove the item or items from the queue.
+.. 警告:: Remember that :py:meth:`uwsgi.queue_pop` and :py:meth:`uwsgi.queue_last` will remove the item or items from the queue.
 
 .. code-block:: py
 
@@ -50,7 +50,7 @@ Using the queue as a shared stack
 Using the queue as a FIFO queue    
 -------------------------------
 
-.. note:: Currently you can only pull, not push. To enqueue an item, use :py:meth:`uwsgi.queue_set`.
+.. 注意:: Currently you can only pull, not push. To enqueue an item, use :py:meth:`uwsgi.queue_set`.
 
 .. code-block:: py
 

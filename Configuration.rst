@@ -3,7 +3,7 @@ Configuring uWSGI
 
 uWSGI can be configured using several different methods. All configuration methods may be mixed and matched in the same invocation of uWSGI.
 
-.. note:: Some of the configuration methods may require a specific plugin (ie. sqlite and ldap).
+.. 注意:: Some of the configuration methods may require a specific plugin (ie. sqlite and ldap).
 
 .. seealso:: :doc:`ConfigLogic`
 
@@ -36,7 +36,7 @@ uWSGI supports loading configuration files over several methods other than simpl
   uwsgi --yaml fd://0 # file descriptor
   uwsgi --json 'exec://nc 192.168.11.2:33000' # arbitrary executable
 
-.. note::
+.. 注意::
 
   More esoteric file sources, such as the :doc:`Emperor<Emperor>`, embedded
   configuration (in two flavors), dynamic library symbols and ELF sections
@@ -264,7 +264,7 @@ Environment variables
 When passed as environment variables, options are capitalized and prefixed with
 `UWSGI_`, and dashes are substituted with underscores.
 
-.. note::
+.. 注意::
 
    Several values for the same configuration variable are not supported with
    this method.
@@ -385,7 +385,7 @@ And then load this using::
 
   uwsgi --json myconf.json:app2
 
-.. note::
+.. 注意::
 
    The `Jansson`_ library is required during uWSGI build time to enable JSON
    support.  By default the presence of the library will be auto-detected and
@@ -428,7 +428,7 @@ And then load this using::
 SQLite configuration
 --------------------
 
-.. note::
+.. 注意::
 
   Under construction.
 

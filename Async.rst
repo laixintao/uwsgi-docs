@@ -1,7 +1,7 @@
 uWSGI asynchronous/non-blocking modes (updated to uWSGI 1.9)
 ============================================================
 
-.. warning::
+.. 警告::
 
   Beware! Async modes will not speed up your app, they are aimed at improving concurrency.
   Do not expect that enabling some of the modes will work flawlessly, asynchronous/evented/non-blocking
@@ -88,7 +88,7 @@ we use that term.
 The switch between cores needs app cooperation. There are various ways to accomplish that, and generally, if you are using
 a loop engine, all is automagic (or requires very little effort).
 
-.. warning:: 
+.. 警告:: 
 
   If you are in doubt, **do not use async mode**.
 

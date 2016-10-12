@@ -43,7 +43,7 @@ Things to know (best practices and "issues") READ IT !!!
 
 * By default uWSGI allocates a very small buffer (4096 bytes) for the headers of each request. If you start receiving "invalid request block size" in your logs, it could mean you need a bigger buffer. Increase it (up to 65535) with the ``buffer-size`` option. 
 
-  .. note::
+  .. 注意::
 
      If you receive '21573' as the request block size in your logs, it could mean you are using the HTTP protocol to speak with an instance speaking the uwsgi protocol. Don't do this.
 
