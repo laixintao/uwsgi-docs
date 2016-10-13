@@ -1,13 +1,13 @@
-The uWSGI queue framework
+uWSGI队列框架
 =========================
 
-In addition to the :doc:`caching framework <Caching>`, uWSGI includes a shared queue.
+除了 :doc:`caching framework <Caching>` ，uWSGI还有一个共享队列。
 
-At the low level it is a simple block-based shared array, with two optional counters, one for stack-style, LIFO usage, the other one for FIFO.
+在低层次，它是一个简单的基于块的共享数组，有两个可选的计数器，一个用于对于堆栈式，LIFO，另一个用于FIFO。
 
-The array is circular, so when one of the two pointers reaches the end (or the beginning), it is reset. Remember this!
+数组是环形的，因此，当两个指针的任意一个到达了尾部（或者首部），它会被重置。记住这点！
 
-To enable the queue, use the ``queue`` option. Queue blocks are 8 KiB by default. Use ``queue-blocksize`` to change this.
+要启用队列，则使用 ``queue`` 选项。默认情况下，队列块是8KiB。使用 ``queue-blocksize`` 来修改其大小。
 
 .. code-block:: sh
 
@@ -16,7 +16,7 @@ To enable the queue, use the ``queue`` option. Queue blocks are 8 KiB by default
     # 42 slots, 128 KiB of data each
     uwsgi --socket :3031 --queue 42 --queue-blocksize 131072
 
-Using the queue as a shared array
+将队列当成共享数组使用
 ---------------------------------
 
 .. code-block:: py
@@ -28,10 +28,10 @@ Using the queue as a shared array
     print uwsgi.queue_get(17)
 
 
-Using the queue as a shared stack
+将队列当成共享堆栈使用
 ---------------------------------
 
-.. 警告:: Remember that :py:meth:`uwsgi.queue_pop` and :py:meth:`uwsgi.queue_last` will remove the item or items from the queue.
+.. 警告::记住， :py:meth:`uwsgi.queue_pop` 和 :py:meth:`uwsgi.queue_last` 将会从队列中移除项。
 
 .. code-block:: py
 
@@ -47,10 +47,10 @@ Using the queue as a shared stack
     # Pop the last N items from the stack
     items = uwsgi.queue_last(3)
 
-Using the queue as a FIFO queue    
+将队列当成一个FIFO队列使用
 -------------------------------
 
-.. 注意:: Currently you can only pull, not push. To enqueue an item, use :py:meth:`uwsgi.queue_set`.
+.. 注意:: 当前，你只能pull，不能push。要入队一个元素，请使用 :py:meth:`uwsgi.queue_set` 。
 
 .. code-block:: py
 
@@ -59,9 +59,9 @@ Using the queue as a FIFO queue
     # Get the current pull/slot position (this is independent from the stack-based one)
     print uwsgi.queue_pull_slot()
 
-Notes
+注释
 -----
 
-* You can get the queue size with :py:data:`uwsgi.queue_size`.
-* Use the ``queue-store`` option to persist the queue on disk. Use ``queue-store-sync`` (in master cycles -- usually seconds) to force disk syncing of the queue.
-* The ``tests/queue.py`` application is a fully working example.
+* 你可以通过使用 :py:data:`uwsgi.queue_size` 获取队列大小。
+* 使用 ``queue-store`` 选项将队列在磁盘上持久化。使用 ``queue-store-sync`` (在master循环中 —— 通常是秒) 来强制磁盘同步队列。
+* ``tests/queue.py`` 应用是一个完整的可用例子。
