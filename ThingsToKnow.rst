@@ -1,7 +1,7 @@
 Things to know (best practices and "issues") READ IT !!!
 ========================================================
 
-* The ``http`` and ``http-socket`` options are entirely different beasts.
+*  ``http`` 和 ``http-socket`` 选项是完全不同的options are entirely different beasts.
   The first one spawns an additional process forwarding requests to a series of workers (think about it as a form of shield, at the same level of apache or nginx), while the second one sets workers to natively speak the http protocol.
   TL/DR: if you plan to expose uWSGI directly to the public, use ``--http``, if you want to proxy it behind a webserver speaking http with backends, use ``--http-socket``.
   .. seealso:: :doc:`HTTP`
@@ -9,9 +9,9 @@ Things to know (best practices and "issues") READ IT !!!
 * Til uWSGI 2.1, by default, sending the ``SIGTERM`` signal to uWSGI means "brutally reload the stack" while the convention is to shut an application down on ``SIGTERM``. To shutdown uWSGI use ``SIGINT`` or ``SIGQUIT`` instead.
   If you absolutely can not live with uWSGI being so disrespectful towards ``SIGTERM``, by all means enable the ``die-on-term`` option. Fortunately, this bad choice has been fixed in uWSGI 2.1
 
-* If you plan to host multiple applications do yourself a favor and check the :doc:`Emperor` docs.
+* 如果你计划托管多个应用，那么就当做是帮你自己一个忙，看看 :doc:`Emperor` 文档。
 
-* Always use uwsgitop, through :doc:`StatsServer` or something similar to monitor your apps' health.
+* 始终使用uwsgitop，通过 :doc:`StatsServer` 或一些类似的东东来监控你的应用健康度。
 
 * uWSGI can include features in the core or as loadable plugins. uWSGI packages supplied with OS distributions tend to be modular. In such setups, be sure to load the plugins you require with the ``plugins`` option. A good symptom to recognize an unloaded plugin is messages like "Unavailable modifier requested" in your logs. If you are using distribution supplied packages, double check that you have installed the plugin for your language of choice.
 
@@ -51,12 +51,10 @@ Things to know (best practices and "issues") READ IT !!!
 
 * Some Linux distributions (read: Debian 4 Etch, RHEL / CentOS 5) make a mix of newer kernels with very old userspace. This kind of combination can make the uWSGI build system spit out errors (most notably on ``unshare()``, pthread locking, ``inotify``...). You can force uWSGI to configure itself for an older system prefixing the 'make' (or whatever way you use to build it) with ``CFLAGS="-DOBSOLETE_LINUX_KERNEL"``
 
-* By default, stdin is remapped to ``/dev/null`` on uWSGI startup. If you need a valid stdin (for debugging, piping and so on) add ``--honour-stdin``.
+* 默认情况下，在uWSGI启动的适合，stdin被重新映射到 ``/dev/null`` 。如果你需要一个有效的stdin (用于调试、管道等等)，那么添加 ``--honour-stdin`` 。
 
-* You can easily add non-existent options to your config files (as placeholders, custom options, or app-related configuration items). This is a really handy feature, but can lead to headaches on typos. The strict mode (``--strict``) will disable this feature, and only valid uWSGI options are tolerated.
+* 你可以轻松地添加不存在的选项到你的配置文件中 (例如占位符、自定义选项或者应用相关的配置项)。这是一个非常方便的特性，但一旦有错别字，那就头疼了。strict模式 (``--strict``) 将禁用此特性，并且只允许有效的uWSGI选项。
 
-* Some plugins (most notably Python and Perl) have code auto-reloading facilities. Although they might sound very appealing, you MUST use them only under development as they are really heavy-weight. For example the Python --py-autoreload option will scan your whole module tree at every check cycle.
+* 一些插件 (最明显的是Python和Perl) 具有代码自动重载机制。虽然这也许听起来很诱人，但是你必须只在开发阶段使用它们，因为它们真的很重。例如，Python的--py-autoreload选项将会在每个检查周期中扫描你整个模块树。
 
-* ``wsgi.file_wrapper`` is an optimization of the WSGI standard. In some corner case it can raise an error.
-  For example when returning an in-memory bytes buffer (`io.Bytesio <https://docs.python.org/3/library/io.html#io.BytesIO>`_) in Python 3.5.
-  See this `issue <https://github.com/unbit/uwsgi/issues/1126>`_. You can disable it by setting the option ``wsgi-disable-file-wrapper`` to ``true``.
+* ``wsgi.file_wrapper`` 是WSGI标准的一个优化。在个别情况下，它会引发错误。例如，当在Python 3.5中返回一个内存中字节缓存 (`io.Bytesio <https://docs.python.org/3/library/io.html#io.BytesIO>`_) 的时候。看看这个 `issue <https://github.com/unbit/uwsgi/issues/1126>`_ 。你可以通过设置选项 ``wsgi-disable-file-wrapper`` 为 ``true`` 来禁用它。

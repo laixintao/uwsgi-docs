@@ -1,20 +1,20 @@
-uwsgi protocol magic variables
+uwsgi协议魔术变量
 ==============================
 
-You can dynamically tune or configure various aspects of the uWSGI server using special variables passed by the web server (or in general by a uwsgi compliant client).
+你可以通过使用web服务器（或一般使用一个uwsgi兼容的客户端）传递的专用的变量来动态调整或配置uWSGI服务器的各个方面。
 
-* For Nginx, the ``uwsgi_param <name> <value>;`` directive is used.
-* For Apache, the ``SetEnv <name> <value>`` directive is used.
+* 对于Nginx，使用 ``uwsgi_param <name> <value>;`` 指令。
+* 对于Apache，使用 ``SetEnv <name> <value>`` 指令。
 
 ``UWSGI_SCHEME``
 ----------------
 
-Set the URL scheme when it cannot be reliably determined. This may be used to force HTTPS (with the value ``https``), for instance.
+当不能可靠确定时，设置URL方案。例如，这可以用来强制使用HTTPS (使用值 ``https``)。
 
 ``UWSGI_SCRIPT``
 ----------------
 
-Load the specified script as a new application mapped to ``SCRIPT_NAME``. The app will obviously only be loaded once, not on each request.
+将指定的脚本作为一个映射到 ``SCRIPT_NAME`` 的新应用加载。该应用将明显只加载一次，而不是在每个请求都加载。
 
 ::
 
@@ -22,7 +22,7 @@ Load the specified script as a new application mapped to ``SCRIPT_NAME``. The ap
   uwsgi_param SCRIPT_NAME  /testapp;
 
 
-``UWSGI_MODULE`` and ``UWSGI_CALLABLE``
+``UWSGI_MODULE`` 和 ``UWSGI_CALLABLE``
 ---------------------------------------
 
 Load a new app (defined as ``module:callable``) mapped into ``SCRIPT_NAME``.

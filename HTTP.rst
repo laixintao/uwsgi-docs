@@ -1,4 +1,4 @@
-Native HTTP support
+原生HTTP支持
 ===================
 
 
@@ -7,39 +7,27 @@ Native HTTP support
 
    HTTPS
 
-HTTP sockets
+HTTP socket
 ------------
 
-The ``http-socket <bind>`` option will make uWSGI natively speak HTTP.  If your
-web server does not support the :doc:`uwsgi protocol <Protocol>` but is able to
-speak to upstream HTTP proxies, or if you are using a service like Webfaction
-or Heroku to host your application, you can use ``http-socket``.  If you plan
-to expose your app to the world with uWSGI only, use the ``http`` option
-instead, as the router/proxy/load-balancer will then be your shield.
+``http-socket <bind>`` 选项将会让uWSGI和原生HTTP通信。如果你的web服务器不支持 :doc:`uwsgi protocol <Protocol>` ，但是可以与上游HTTP代理通信，或者如果你正在用诸如Webfaction或者Heroku这样的服务来托管你的应用，那么你可以使用 ``http-socket`` 。如果你计划只通过uWSGI开放你的应用，那么用 ``http`` 选项来代替，因为路由器/代理/负载均衡器将会保护你。
 
-The uWSGI HTTP/HTTPS router
+uWSGI HTTP/HTTPS路由器
 ---------------------------
 
-uWSGI includes an HTTP/HTTPS router/proxy/load-balancer that can forward
-requests to uWSGI workers.  The server can be used in two ways: embedded and
-standalone.  In embedded mode, it will automatically spawn workers and setup
-the communication socket. In standalone mode you have to specify the address of
-a uwsgi socket to connect to.
+uWSGI包含一个HTTP/HTTPS路由器/代理/负载均衡器，它能转发请求到uWSGI worker。可以以两种方式使用服务器：嵌入或独立使用。在嵌入模式下，它会自动生成worker，并安装通信socket。在独立使用模式下，你必须指定要连接的uwsgi socket地址。
 
-Embedded mode::
+嵌入模式::
 
   ./uwsgi --http 127.0.0.1:8080 --master --module mywsgiapp --processes 4
 
-This will spawn a HTTP server on port 8080 that forwards requests to a pool of
-4 uWSGI workers managed by the master process.
+这将会生成一个监听8080端口的HTTP服务器，它会转发请求到由master进程管理的4个uWSGI worker组成的池中。
 
-Standalone mode::
+独立使用模式::
 
   ./uwsgi --master --http 127.0.0.1:8080 --http-to /tmp/uwsgi.sock
 
-This will spawn a HTTP router (governed by a master for your safety) that will
-forward requests to the uwsgi socket ``/tmp/uwsgi.sock``. You can bind to
-multiple addresses/ports.
+这将会生成一个HTTP路由器（出于安全起见，由master管理），它将转发请求到uwsgi socket ``/tmp/uwsgi.sock`` 。你可以绑定到多个地址/端口。
 
 .. code-block:: ini
 
@@ -53,7 +41,7 @@ multiple addresses/ports.
   
   http-to = /tmp/uwsgi.sock
 
-And load-balance to multiple nodes:
+以及，到多个节点的负载均衡：
 
 .. code-block:: ini
 
@@ -78,7 +66,7 @@ And load-balance to multiple nodes:
 * You can use the ``http-modifier1`` option to pass a custom `modifier1` value
   to workers.
 
-HTTPS support
+HTTPS支持
 -------------
 
 see :doc:`HTTPS`
@@ -101,14 +89,14 @@ rules are respected. This is not a smart http 1.1 parser (to avoid parsing the
 whole response) but assumes the developer is generating the right headers.
 ``http11-socket`` has been added to support RTSP protocol for video streaming.
 
-HTTP auto gzip
+HTTP自动gzip
 -------------
 
 With the ``http-auto-gzip`` option, uWSGI can automatically gzip content if the
 uWSGI-encoding header is set to gzip while ``Content-Length`` and
 ``Content-Encoding`` are not set.
 
-Can I use uWSGI's HTTP capabilities in production?
+我可以在生产上使用uWSGI的HTTP能力吗？
 --------------------------------------------------
 
 If you need a load balancer/proxy it can be a very good idea. It will
