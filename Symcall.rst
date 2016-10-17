@@ -1,4 +1,4 @@
-The Symcall plugin
+Symcall插件
 ==================
 
 The symcall plugin (modifier 18) is a convenience plugin allowing you to write native uWSGI request handlers without the need of developing a full uWSGI plugin.

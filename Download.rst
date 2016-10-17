@@ -1,4 +1,4 @@
-Getting uWSGI
+获取uWSGI
 =============
 
 These are the current versions of uWSGI.

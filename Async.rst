@@ -1,4 +1,4 @@
-uWSGI asynchronous/non-blocking modes (updated to uWSGI 1.9)
+uWSGI异步/非堵塞模式 (已更新至uWSGI 1.9)
 ============================================================
 
 .. 警告::
@@ -9,12 +9,12 @@ uWSGI asynchronous/non-blocking modes (updated to uWSGI 1.9)
   into consideration, you are doing it wrong. Do not trust people suggesting you to blindly use
   async/evented/non-blocking systems!
  
-Glossary
+词汇表
 --------
 
 uWSGI, following its modular approach, splits async engines into two families.
 
-Suspend/Resume engines
+挂起/恢复引擎
 **********************
 
 They simply implement coroutine/green threads techniques. They have no event engine, so you have to use
@@ -45,7 +45,7 @@ like uWSGI dealing with this is extremely complex. For that reason, callback app
 possible)
 Software based on callbacks (like :doc:`Tornado`) can be used to combine them with some form of suspend engine.
 
-I/O engines (or event systems)
+I/O引擎（或事件系统）
 ******************************
 
 uWSGI includes an highly optimized evented technology, but can use alternative approaches too.
@@ -59,7 +59,7 @@ Currently supported I/O engines are:
 * :doc:`libuv` (work in progress)
 * :doc:`libev` (work in progress)
 
-Loop engines
+循环引擎
 ************
 
 Loop engines are packages/libraries exporting both suspend/resume techniques and an event system. When loaded, they override
@@ -73,7 +73,7 @@ Currently uWSGI supports the following loop engines:
 Although they are generally used by a specific language, pure-C uWSGI plugins (like the CGI one) can use them
 to increase concurrency without problems.
 
-Async switches
+异步开关
 --------------
 
 To enable async mode, you use the ``--async`` option (or some shortcut for it, exported by loop engine plugins).
@@ -92,7 +92,7 @@ a loop engine, all is automagic (or requires very little effort).
 
   If you are in doubt, **do not use async mode**.
 
-Running uWSGI in Async mode
+异步模式下运行uWSGI
 ---------------------------
 
 To start uWSGI in async mode, pass the ``--async`` option with the number of "async cores" you want.
@@ -118,7 +118,7 @@ Every time the application does ``yield`` from the response function, the execut
 
 If you run the ``tests.cpubound_async`` app on a non-async server, it will block all processing: will not accept other requests until the heavy cycle of 10000 ``<h1>``\ s is done.
 
-Waiting for I/O
+等待I/O
 ---------------
 
 If you are not under a loop engine, you can use the uWSGI API to wait for I/O events.
@@ -137,7 +137,7 @@ These functions may be called in succession to wait for multiple file descriptor
   uwsgi.wait_fd_read(fd2)
   yield ""  # yield the app, let uWSGI do its magic
 
-Sleeping
+休眠
 --------
 
 On occasion you might want to sleep in your app, for example to throttle bandwidth.
@@ -146,7 +146,7 @@ Instead of using the blocking ``time.sleep(N)`` function, use ``uwsgi.async_slee
 
 .. seealso:: See :file:`tests/sleeping_async.py` for an example.
 
-Suspend/Resume
+挂起/恢复
 --------------
 
 Yielding from the main application routine is not very practical, as most of the time your app is more advanced than a simple callable and is formed of tons of functions and various levels of call depth.
@@ -160,7 +160,7 @@ Worry not! You can force a suspend (using coroutine/green thread) by simply call
 
 ``uwsgi.suspend()`` will automatically call the chosen suspend engine (uGreen, greenlet, etc.).
 
-Static files
+静态文件
 ------------
 
 :doc:`Static file server<StaticFiles>` will automatically use the loaded async engine.

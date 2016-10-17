@@ -1,4 +1,4 @@
-The asyncio loop engine (CPython >= 3.4, uWSGI >= 2.0.4)
+asyncio循环引擎 (CPython >= 3.4, uWSGI >= 2.0.4)
 ========================================================
 
 .. 警告::

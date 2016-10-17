@@ -1,4 +1,4 @@
-The uWSGI cron-like interface
+uWSGI类cron接口
 =============================
 
 uWSGI's :term:`master` has an internal cron-like facility that can generate

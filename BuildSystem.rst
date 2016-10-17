@@ -1,4 +1,4 @@
-The uWSGI build system
+uWSGI构建系统
 ======================
 
 - This is updated to 1.9.13

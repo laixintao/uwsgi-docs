@@ -1,4 +1,4 @@
-Running CGI scripts on uWSGI
+在uWSGI上运行CGI脚本
 ============================
 
 The CGI plugin provides the ability to run CGI scripts using the uWSGI server.

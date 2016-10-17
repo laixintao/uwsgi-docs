@@ -1,4 +1,4 @@
-Configuring uWSGI
+配置uWSGI
 =================
 
 uWSGI can be configured using several different methods. All configuration methods may be mixed and matched in the same invocation of uWSGI.

@@ -1,4 +1,4 @@
-The uWSGI C api
+uWSGI C API
 ===============
 
 the wsgi_request struct

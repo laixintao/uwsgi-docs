@@ -1,4 +1,4 @@
-uGreen -- uWSGI Green Threads
+uGreen -- uWSGI Green线程
 =============================
 
 uGreen is an implementation of `green threads`_ on top of the :doc:`uWSGI async platform<Async>`.

@@ -1,4 +1,4 @@
-The Tornado loop engine
+Tornado循环引擎
 =======================
 
 Available from: ```uWSGI 1.9.19-dev```

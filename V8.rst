@@ -1,4 +1,4 @@
-uWSGI V8 support
+uWSGI V8支持
 ================
 
 Building

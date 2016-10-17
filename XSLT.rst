@@ -1,4 +1,4 @@
-The XSLT plugin
+XSLT插件
 ===============
 
 Since uWSGI 1.9.1 a new plugin named "xslt" is available, implementing XML Stylesheet Transformation both as request handler and routing instruction.

@@ -1,4 +1,4 @@
-Running uWSGI in a Linux CGroup
+在Linux CGroup中运行uWSGI
 ===============================
 
 Linux cgroups are an amazing feature available in recent Linux kernels. They

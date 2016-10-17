@@ -1,4 +1,4 @@
-Web server integration
+Web服务器集成
 ======================
 
 uWSGI supports several methods of integrating with web servers. It is also capable of serving HTTP requests by itself.
