@@ -1,4 +1,4 @@
-The uWSGI alarm subsystem (from 1.3) 
+uWSGI告警系统 (自1.3起) 
 ====================================
 
 As of 1.3, uWSGI includes an alarm system. This subsystem allows the
@@ -11,7 +11,7 @@ An event monitor is something waiting for a specific condition (like an event on
 
 As soon as the condition is true an action (like sending an email) is triggered.
 
-Embedded event monitors
+嵌入式时间监控器
 ***********************
 
 Event monitors can be added via plugins, the uWSGI core includes the following:
@@ -22,7 +22,7 @@ Event monitors can be added via plugins, the uWSGI core includes the following:
 * ``alarm-segfault`` (since 1.9.9) triggers an alarm when uWSGI segfaults.
 * ``alarm-cheap`` Use main alarm thread rather than creating dedicated threads for each curl-based alarm
 
-Defining an alarm
+定义告警
 *****************
 
 You can define an unlimited number of alarms. Each alarm has a unique name.
@@ -71,7 +71,7 @@ In our previous example we defined two conditions using regexps applied to log
 lines. The first one will trigger both alarms when the listen queue is full,
 while the second will only invoke 'mailme' when a worker commits harakiri.
 
-Damnit, this... this is the rawest thing I've seen...
+该死，这……这是我见过的最原始的东东……
 *****************************************************
 
 You may be right. But if you throw away your "being a cool programmer with a
@@ -114,7 +114,7 @@ Check this Rack middleware:
    end               
 
 
-Protecting from bad rules
+不受糟糕的规则之害
 *************************
 
 Such a versatile system could be open to a lot of ugly bugs, mainly infinite
@@ -126,7 +126,7 @@ If you are building a plugin, be sure to prepend your log messages with the
 '[uwsgi-alarm' string. These lines will be skipped and directly passed to the
 log subsystem. A convenience API function is available: ``uwsgi_log_alarm()``.
 
-How does log-alarm work?
+记录告警是如何工作的呢？
 ************************
 
 Enabling log-alarm automatically puts the uWSGI instance in :term:`log-master
@@ -135,7 +135,7 @@ the master just before passing the log line to the log plugin. Blocking alarm
 plugins should run in a thread (like the curl and xmpp one), while the simple
 ones (like signal and cmd) may run directly in the master.
 
-Available plugins and their syntax
+可用插件及其语法
 **********************************
 
 cmd
