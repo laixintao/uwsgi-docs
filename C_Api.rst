@@ -1,10 +1,10 @@
 uWSGI C API
 ===============
 
-the wsgi_request struct
+wsgi_request结构
 ***********************
 
-the uwsgi_server struct
+uwsgi_server结构
 ***********************
 
 Headers and response
@@ -22,7 +22,7 @@ non-blocking I/O
 Offloading
 **********
 
-Request body
+请求体
 ************
 
 Cookies
@@ -40,7 +40,7 @@ Locking
 Zlib
 ****
 
-Alarms
+告警
 ******
 
 Websockets
