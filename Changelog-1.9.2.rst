@@ -3,7 +3,7 @@ uWSGI 1.9.2
 
 Changelog 20130326
 
-Bugfixes
+错误修复
 ********
 
 Fixed python3 response headers managament (wrong refcnt)
@@ -12,8 +12,8 @@ Fixed readline() on request body when postbuffering is in place
 
 Fixed ruby fiber plugin
 
-New features
-************
+新特性
+********
 
 route-run and the cachestore routing action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -56,7 +56,7 @@ The SSI plugin (beta)
 
 Check official docs :doc:`SSI`
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.2 has been released on 20130326 and can be downloaded from:

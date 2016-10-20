@@ -13,7 +13,7 @@ Changes
 - reverted EPOLLEXCLUSIVE patch, requires more investigation
 
 
-Availability
+可用性
 ------------
 
 You can download uWSGI 2.0.13.1 from http://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz

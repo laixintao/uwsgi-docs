@@ -21,7 +21,7 @@ Waiting for decision:
 - the matheval support could be removed soon (unless we find some specific use that could require it), substituted by some form of simple math directly implemented in the option parser
 - the admin plugin should be substituted with something more advanced. An api for defining dynamic options is on-work
 
-Bugfixes
+错误修复
 ********
 
 - completely skip cgroups initialization when non-root
@@ -34,8 +34,8 @@ Bugfixes
 - manage dot_segments in HTTP parser
 - improved srand() usage
 
-New features
-************
+新特性
+********
 
 The Metrics subsystem
 ^^^^^^^^^^^^^^^^^^^^^
@@ -169,7 +169,7 @@ or gzip ?
    ; return the cache item (transformation will be applied to it)
    route-run = cache:key=foo.html,no_content_length=1
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.19 has been released on 20131109, you can download it from:

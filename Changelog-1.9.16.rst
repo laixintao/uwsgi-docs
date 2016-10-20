@@ -33,8 +33,8 @@ Bugfixes/Improvements
 - report thunder lock status
 - allow custom priority in rsyslog plugin
 
-New features
-************
+新特性
+********
 
 FreeBSD jails native support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -164,7 +164,7 @@ syscalls.
 Check :doc:`Hooks`
 
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.16 has been released on September 14th 2013. You can download it from:

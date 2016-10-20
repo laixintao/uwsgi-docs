@@ -1,4 +1,4 @@
-Serving static files with uWSGI (updated to 1.9)
+使用uWSGI提供静态文件 (更新至1.9)
 ================================================
 
 Unfortunately you cannot live without serving static files via some protocol (HTTP, SPDY or something else).

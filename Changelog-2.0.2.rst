@@ -5,7 +5,7 @@ uWSGI 2.0.2
 Changelog 20140226
 
 
-Bugfixes
+错误修复
 --------
 
 * fixed python3 support on older compilers/libc
@@ -41,7 +41,7 @@ If the Plack module is not available, a simple do-based code is used (very simil
 
 Many thanks to Ævar Arnfjörð Bjarmason of booking.com for having discovered the problem
 
-Availability
+可用性
 ************
 
 uWSGI 2.0.2 can be downloaded from: http://projects.unbit.it/downloads/uwsgi-2.0.2.tar.gz

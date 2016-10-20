@@ -1,4 +1,4 @@
-Setting up Django and your web server with uWSGI and nginx
+使用uWSGI和nginx来设置Django和你的web服务器
 ==========================================================
 
 .. highlight:: bash
@@ -17,7 +17,7 @@ nginx_ (pronounced *engine-x*) is a free, open-source, high-performance HTTP ser
 .. _nginx: http://nginx.org/
 
 
-Some notes about this tutorial
+本教程的一些注释
 ------------------------------
 
 .. admonition:: Note
@@ -53,7 +53,7 @@ versions. You will though need to obtain that Django wsgi module yourself, and
 you may find that the Django project directory structure is slightly different.
 
 
-Concept
+概念
 -------
 
 A web server faces the outside world. It can serve files (HTML, images, CSS,
@@ -71,7 +71,7 @@ protocol. At the end, our complete stack of components will look like this::
 
     the web client <-> the web server <-> the socket <-> uwsgi <-> Django
 
-Before you start setting up uWSGI
+在你开始设置uWSGI之前
 ---------------------------------
 
 virtualenv
@@ -98,7 +98,7 @@ project:
     django-admin.py startproject mysite 
     cd mysite
 
-About the domain and port
+关于域名和端口
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In this tutorial we will call your domain ``example.com``. Substitute your own
@@ -109,10 +109,10 @@ the Django runserver does by default. You can use whatever port you want of
 course, but I have chosen this one so it doesn't conflict with anything a web
 server might be doing already.
 
-Basic uWSGI installation and configuration
+基本的uWSGI安装和配置
 ------------------------------------------
 
-Install uWSGI into your virtualenv
+把uWSGI安装到你的virtualenv中
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
@@ -124,7 +124,7 @@ any. Remember that you will need to have Python development packages installed.
 In the case of Debian, or Debian-derived systems such as Ubuntu, what you need 
 to have installed is ``pythonX.Y-dev``, where X.Y is your version of Python.
 
-Basic test
+基础测试
 ^^^^^^^^^^
 
 Create a file called ``test.py``::
@@ -158,7 +158,7 @@ to check. If so, it means the following stack of components works::
 
     the web client <-> uWSGI <-> Python
 
-Test your Django project
+测试你的Django项目
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now we want uWSGI to do the same thing, but to run a Django site instead of the
@@ -183,10 +183,10 @@ correctly::
 Now normally we won't have the browser speaking directly to uWSGI. That's a job
 for the webserver, which will act as a go-between.
 
-Basic nginx
+基本的nginx
 -----------
 
-Install nginx
+安装nginx
 ^^^^^^^^^^^^^
 
 .. code-block:: bash
@@ -204,7 +204,7 @@ If something else *is* already serving on port 80 and you want to use nginx
 there, you'll have to reconfigure nginx to serve on a different port. For this
 tutorial though, we're going to be using port 8000.
 
-Configure nginx for your site
+为你的站点配置nginx
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You will need the ``uwsgi_params`` file, which is available in the ``nginx``
@@ -263,7 +263,7 @@ Symlink to this file from /etc/nginx/sites-enabled so nginx can see it:
 
     sudo ln -s ~/path/to/your/mysite/mysite_nginx.conf /etc/nginx/sites-enabled/
 
-Deploying static files
+部署静态文件
 ^^^^^^^^^^^^^^^^
 
 Before running nginx, you have to collect all Django static files in the static 
@@ -281,10 +281,10 @@ and then run
 
 
 
-Basic nginx test
+基本的nginx测试
 ^^^^^^^^^^^^^^^^
 
-Restart nginx:
+重启nginx:
 
 .. code-block:: bash
 
@@ -298,7 +298,7 @@ least that nginx is serving files correctly.
 It is worth not just restarting nginx, but actually stopping and then starting
 it again, which will inform you if there is a problem, and where it is.
 
-nginx and uWSGI and test.py
+nginx和uWSGI以及test.py
 ---------------------------
 
 Let's get nginx to speak to the "hello world" ``test.py`` application.
@@ -326,7 +326,7 @@ http://example.com:8001 - but quite probably, it won't work because your browser
 speaks http, not uWSGI, though you should see output from uWSGI in your
 terminal.
 
-Using Unix sockets instead of ports
+使用Unix socket而不是端口
 -----------------------------------
 
 So far we have used a TCP port socket, because it's simpler, but in fact it's
@@ -349,7 +349,7 @@ This time the ``socket`` option tells uWSGI which file to use.
 
 Try http://example.com:8000/ in the browser.
 
-If that doesn't work
+如果那不行
 ^^^^^^^^^^^^^^^^^^^^
 
 Check your nginx error log(/var/log/nginx/error.log). If you see something like::
@@ -375,10 +375,10 @@ properly.
 It's worth keeping the output of the nginx log running in a terminal window so
 you can easily refer to it while troubleshooting.
 
-Running the Django application with uwsgi and nginx
+使用uwsgi和nginx运行Django应用
 ---------------------------------------------------
 
-Let's run our Django application:
+运行我们的Django应用：
 
 .. code-block:: bash
 
@@ -387,7 +387,7 @@ Let's run our Django application:
 Now uWSGI and nginx should be serving up not just a "Hello World" module, but
 your Django project.
 
-Configuring uWSGI to run with a .ini file
+配置uWSGI以允许.ini文件
 -----------------------------------------
 
 We can put the same options that we used with uWSGI into a file, and then ask
@@ -426,7 +426,7 @@ And run uswgi using this file:
 
 Once again, test that the Django site works as expected.
 
-Install uWSGI system-wide
+系统级安装uWSGI
 -------------------------
 
 So far, uWSGI is only installed in our virtualenv; we'll need it installed
@@ -455,7 +455,7 @@ Check again that you can still run uWSGI just like you did before:
 
     uwsgi --ini mysite_uwsgi.ini # the --ini option is used to specify a file
 
-Emperor mode
+Emperor模式
 ------------
 
 uWSGI can run in 'emperor' mode. In this mode it keeps an eye on a directory of
@@ -488,7 +488,7 @@ The options mean:
  
 Check the site; it should be running.
 
-Make uWSGI startup when the system boots
+系统启动时运行uWSGI
 ----------------------------------------
 
 The last step is to make it all happen automatically at system startup time.
@@ -503,7 +503,7 @@ before the line "exit 0".
 
 And that should be it!
 
-Further configuration
+进一步的配置
 ---------------------
 
 It is important to understand that this has been a *tutorial*, to get you

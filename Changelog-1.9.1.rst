@@ -3,7 +3,7 @@ uWSGI 1.9.1
 
 First minor release for the 1.9 tree.
 
-Bugfixes
+错误修复
 ********
 
 Fixed --req-logger after a graceful reload

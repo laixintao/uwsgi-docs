@@ -9,25 +9,24 @@ Python/WSGI应用快速入门
 
     要遵循此快速入门，你至少需要uWSGI 1.4。更老的版本不再维护，并且有灰常多bug！
 
-Installing uWSGI with Python support
+安装uWSGI以及Python支持
 ************************************
 
-.. tip::
+.. 小技巧::
 
-    When you start learning uWSGI, try to build from official sources: using distribution-supplied packages may bring you
-    plenty of headaches. When things are clear, you can use modular builds (like the ones available in your distribution).
+    当你开始学习uWSGI时，试着从官方来源进行构建：使用发布版本提供的包可能会让你很头疼。当你清楚了解uWSGI时，你可以使用模块化构建 (就像你的发布版本中可用的那个一样)。
 
-uWSGI is a (big) C application, so you need a C compiler (like gcc or clang) and the Python development headers.
+uWSGI是一个（大的）C应用，因此，你需要一个C编译器 (例如gcc或者clang)，以及Python开发头文件。
 
-On a Debian-based distro an
+在基于Debian的发行版上，
 
 .. code-block:: sh
 
    apt-get install build-essential python-dev
 
-will be enough.
+就够了。
 
-You have various ways to install uWSGI for Python:
+你有多种方式为Python安装uWSGI：
 
 * via pip
 
@@ -35,15 +34,15 @@ You have various ways to install uWSGI for Python:
 
       pip install uwsgi
 
-* using the network installer
+* 使用网络安装器
 
   .. code-block:: sh
 
       curl http://uwsgi.it/install | bash -s default /tmp/uwsgi
 
-  (this will install the uWSGI binary into ``/tmp/uwsgi``, feel free to change it).
+  (这将会把uWSGI二进制安装到 ``/tmp/uwsgi`` ，你可以随意修改它)。
 
-* via downloading a source tarball and "making" it
+* 通过下载源tarball文件，然后执行"make"命令
 
   .. code-block:: sh
 
@@ -52,19 +51,16 @@ You have various ways to install uWSGI for Python:
       cd <dir>
       make
 
-  (after the build you will have a ``uwsgi`` binary in the current directory).
+  (构建之后，当前目录下，你会获得一个 ``uwsgi`` 二进制文件)。
 
-Installing via your package distribution is not covered (would be impossible to make everyone happy), but all of the general rules apply.
+未涵盖通过包发布来安装(不可能取悦所有人)，但是所有的一般规则都适用。
 
-One thing you may want to take into account when testing this quickstart with distro-supplied packages, is that very probably your distribution
-has built uWSGI in modular way (every feature is a different plugin that must be loaded). To complete this quickstart,
-you have to prepend ``--plugin python,http`` to the first series of examples, and ``--plugin python`` when the HTTP router is removed (if this
-doesn't make sense to you, just continue reading).
+当使用发行版提供的包来测试这个快速入门时，你也许想要考虑一件事，就是非常有可能你的发行版本以模块化的方式构建了uWSGI (每个特性都是一个必须加载的不同插件)。要完成这个快速入门，你必须在第一个系列的例子前面加上 ``--plugin python,http`` ，以及当移除了HTTP路由器时加上 ``--plugin python``  (如果这对你没意义，那就请继续往下读)。
 
 第一个WSGI应用
 **************************
 
-Let's start with a simple "Hello World" example:
+让我们从一个简单的"Hello World"开始：
 
 .. code-block:: python
 
@@ -72,61 +68,57 @@ Let's start with a simple "Hello World" example:
        start_response('200 OK', [('Content-Type','text/html')])
        return [b"Hello World"]
 
-(save it as ``foobar.py``).
+(将其保存为 ``foobar.py``)。
 
-As you can see, it is composed of a single Python function. It is called "application" as this is default function
-that the uWSGI Python loader will search for (but you can obviously customize it).
+正如你所见，它由一个简单的Python函数组成。之所以称之为 "application"，是因为它是uWSGI Python加载器将会搜索的默认函数 (但你显然可以自定义)。
 
 将其部署在HTTP端口9090
 ***************************
 
-Now start uWSGI to run an HTTP server/router passing requests to your WSGI application:
+现在，启动uWSGI来运行一个HTTP服务器/路由器，它会传递请求到你的WSGI应用：
 
 .. code-block:: sh
 
    uwsgi --http :9090 --wsgi-file foobar.py
 
-That's all.
+就这样。
 
-.. 注意:: Do not use ``--http`` when you have a frontend webserver or you are doing some form of benchmark, use ``--http-socket``. Continue reading the quickstart to understand why.
+.. 注意:: 当你有一个前端web服务器，或者你正进行某些形式的基准时，不要使用 ``--http`` ，使用 ``--http-socket`` 。继续阅读快速入门来了解原因。
 
 
 添加并发和监控
 *********************************
 
-The first tuning you would like to make is adding concurrency (by default uWSGI starts with a single process and a single thread).
+你想进行的第一个调整可能是增加并发性 (默认情况下，uWSGI启动一个单一的进程和一个单一的线程)。
 
-You can add more processes with the ``--processes`` option or more threads with the ``--threads`` option (or you can have both).
+你可以用 ``--processes`` 选项添加更多的进程，或者使用 ``--threads`` 选项添加更多的线程 (或者可以同时添加)。
 
 .. code-block:: sh
 
    uwsgi --http :9090 --wsgi-file foobar.py --master --processes 4 --threads 2
 
-This will spawn 4 processes (each with 2 threads), a master process (will respawn your processes when they die) and the HTTP router (seen before).
+这将会生成4个进程 (每个进程有2个线程)，一个master进程 (在Inc死掉的时候会生成它们) 和HTTP路由器 (见前面)。
 
-One important task is monitoring. Understanding what is going on is vital in production deployment. The stats subsystem allows
-you to export uWSGI's internal statistics as JSON:
+一个重要的任务是监控。在生产部署上，了解正在发生的事情是至关重要的。stats子系统允许你将uWSGI的内部统计数据作为JSON导出：
 
 .. code-block:: sh
 
    uwsgi --http :9090 --wsgi-file foobar.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
 
-Make some request to your app and then telnet to the port 9191, you'll get lots of fun information. You may want to use
-"uwsgitop" (just ``pip install`` it), which is a top-like tool for monitoring instances.
+对你的应用进行几次请求，然后telnet到端口9191，你会获得大量有趣的信息。你可能想要使用"uwsgitop" (仅需 ``pip install`` 来安装它)，这是一个类似于top的工具，用来监控实例。
 
-.. attention::
+.. 注意::
 
-    Bind the stats socket to a private address (unless you know what you are doing), otherwise everyone could access it!
+    绑定stats socket到一个私有地址 (除非你知道你在做什么)，否则，每个人都能够访问它！
 
 将它放在一个完整的web服务器之后
 *******************************
 
-Even though uWSGI HTTP router is solid and high-performance, you may want to put your application behind a fully-capable webserver.
+即使uWSGI HTTP路由器是稳定并且高性能的，但是你或许想要将你的应用放在一个全功能的web服务器之后。
 
-uWSGI natively speaks HTTP, FastCGI, SCGI and its specific protocol named "uwsgi" (yes, wrong naming choice).
-The best performing protocol is obviously uwsgi, already supported by nginx and Cherokee (while various Apache modules are available).
+uWSGI原生支持HTTP, FastCGI, SCGI及其特定的名为"uwsgi"的协议 (是哒，错误的命名选择)。最好的协议显然是uwsgi，nginx和Cherokee已经支持它了 (虽然有各种Apache模块可用)
 
-A common nginx config is the following:
+一个常用的nginx配置如下：
 
 .. code-block:: c
 
@@ -135,18 +127,17 @@ A common nginx config is the following:
        uwsgi_pass 127.0.0.1:3031;
    }
 
-This means "pass every request to the server bound to port 3031 speaking the uwsgi protocol".
+这表示“传递每一个请求给绑定到3031端口并使用uwsgi协议的服务器”。
 
-Now we can spawn uWSGI to natively speak the uwsgi protocol:
+现在，我们可以生成uWSGI来本地使用uwsgi协议：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --wsgi-file foobar.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
 
-If you'll run ``ps aux``, you will see one process less. The HTTP router has been removed as our "workers" (the processes assigned to uWSGI)
-natively speak the uwsgi protocol.
+如果你要运行 ``ps aux`` ，那么你会看到一个进程。已经移除了HTTP路由器，因为我们的“worker” (被分配给uWSGI的进程) 本地使用uwsgi协议。
 
-If your proxy/webserver/router speaks HTTP, you have to tell uWSGI to natively speak the http protocol (this is different from --http that will spawn a proxy by itself):
+如果你的代理/web服务器/路由器使用HTTP，那么你必须告诉uWSGI本地使用http协议 (这与会自己生成一个代理的--http不同):
 
 .. code-block:: sh
 
@@ -155,27 +146,26 @@ If your proxy/webserver/router speaks HTTP, you have to tell uWSGI to natively s
 开机自动启动uWSGI
 ************************************
 
-If you are thinking about firing up vi and writing an init.d script for spawning uWSGI, just sit (and calm) down and make sure your system doesn't offer a better (more modern) approach first.
+如果你在想打开vi，然后写一个init.d脚本来生成uWSGI，那么请坐下(并且冷静下来)，先确保你的系统没有提供一个更好（更现代）的方法。
 
-Each distribution has chosen a startup system (:doc:`Upstart<Upstart>`, :doc:`Systemd`...) and there are tons of process managers available (supervisord, god, monit, circus...).
+每个发行版本都选择了一个启动系统 (:doc:`Upstart<Upstart>`, :doc:`Systemd`...) ，并且有大量可用的进程管理器 (supervisord, god, monit, circus...)。
 
-uWSGI will integrate very well with all of them (we hope), but if you plan to deploy a big number of apps check the uWSGI :doc:`Emperor<Emperor>` - it is more or less the dream of every devops engineer.
+uWSGI会跟它们都很好地集成 (我们希望是这样的)，但如果你计划部署大量的应用，那么看看uWSGI :doc:`Emperor<Emperor>` - 它或多或少是每个devops工程师的梦想。
 
 部署Django
 ****************
 
-Django is very probably the most used Python web framework around. Deploying it is pretty easy (we continue our configuration with 4 processes with 2 threads each).
+Django大概是最常使用的Python web框架了。部署它是相当容易的 (我们继续配置4个进程，每个进程有2个线程)。
 
-We suppose the Django project is in ``/home/foobar/myproject``:
+假设Django工程位于 ``/home/foobar/myproject``:
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --chdir /home/foobar/myproject/ --wsgi-file myproject/wsgi.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
 
-(with ``--chdir`` we move to a specific directory). In Django this is required to correctly load modules.
+(使用 ``--chdir`` ，我们移到指定的目录下)。在Django中，需要使用它来正确加载模块。
 
-Argh! What the hell is this?! Yes, you're right, you're right... dealing with such long command lines is unpractical, foolish and error-prone.
-Never fear! uWSGI supports various configuration styles. In this quickstart we will use .ini files.
+哎呀！这是什么鬼？！是哒，你是对的，对的……处理这样长的命令行并不实际，并且愚蠢而易于犯错。不要害怕！uWSGI支持多种配置风格。在这个入门中，我们会使用.ini文件。
 
 .. code-block:: ini
 
@@ -187,22 +177,21 @@ Never fear! uWSGI supports various configuration styles. In this quickstart we w
     threads = 2
     stats = 127.0.0.1:9191
 
-A lot better!
+好得多了！
 
-Just run it:
+仅需运行：
 
 .. code-block:: sh
 
    uwsgi yourfile.ini
 
-If the file ``/home/foobar/myproject/myproject/wsgi.py`` (or whatever you have called your project) does not exist, you are very probably
-using an old (< 1.4) version of Django. In such a case you need a little bit more configuration:
+如果文件 ``/home/foobar/myproject/myproject/wsgi.py`` (或者任何你的工程的名字) 并不存在，那么你很有可能使用的是Django的一个老(< 1.4)版本。在这种情况下，你需要多一点配置：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --chdir /home/foobar/myproject/ --pythonpath .. --env DJANGO_SETTINGS_MODULE=myproject.settings --module "django.core.handlers.wsgi:WSGIHandler()" --processes 4 --threads 2 --stats 127.0.0.1:9191
 
-Or, using the .ini file:
+或者，使用.ini文件：
 
 .. code-block:: ini
 
@@ -216,16 +205,15 @@ Or, using the .ini file:
    threads = 2
    stats = 127.0.0.1:9191
 
-Older (< 1.4) Django releases need to set ``env``, ``module`` and the ``pythonpath`` (``..`` allow us to reach
-the ``myproject.settings`` module).
+更老的(< 1.4)Django发布版本需要设置 ``env``, ``module`` 和 ``pythonpath`` (``..`` 允许我们访问 ``myproject.settings`` 模块)。
 
 
 部署Flask
 ***************
 
-Flask is a popular Python web microframework.
+Flask是一个流行的Python web微框架。
 
-Save the following example as ``myflaskapp.py``:
+将下面例子保存为 ``myflaskapp.py``:
 
 .. code-block:: python
 
@@ -237,19 +225,18 @@ Save the following example as ``myflaskapp.py``:
    def index():
        return "<span style='color:red'>I am app 1</span>"
 
-Flask exports its WSGI function (the one we called "application" at the beginning of this quickstart) as "app", so we need to instruct uWSGI to use it.
-We still continue to use the 4 processes/2 threads and the uwsgi socket as the base:
+Flask将其WSGI函数 (就是那个在这个快速入门开始的地方我们称为"application"的那个)导出为"app"，因此，我们需要指示uWSGI使用它。我们仍然使用4个进程/2个线程，以及uwsgi socket：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --wsgi-file myflaskapp.py --callable app --processes 4 --threads 2 --stats 127.0.0.1:9191
 
-(the only addition is the ``--callable`` option).
+(唯一添加的是 ``--callable`` 选项)。
 
 部署web2py
 ****************
 
-Again a popular choice. Unzip the web2py source distribution on a directory of choice and write a uWSGI config file:
+又一个流行选择。解压缩web2py源发布版本到所选的目录下，然后编写一个uWSGI配置文件：
 
 .. code-block:: ini
 
@@ -262,15 +249,13 @@ Again a popular choice. Unzip the web2py source distribution on a directory of c
 
 .. 注意::
 
-    On recent web2py releases you may need to copy the ``wsgihandler.py`` script out of the ``handlers`` directory.
+    在近期的web2py发布版本中，你可能需要将 ``wsgihandler.py`` 脚本拷贝出 ``handlers`` 目录。
 
-We used the HTTP router again. Just go to port 9090 with your browser and you will see the web2py welcome page.
+再次使用HTTP路由器。仅需在浏览器中访问端口9090，你就能看到web2py欢迎页面。
 
-Click on the administrative interface and... oops, it does not work as it requires HTTPS. Do not worry, the uWSGI router
-is HTTPS-capable (be sure you have OpenSSL development headers: install them and rebuild uWSGI, the build system
-will automatically detect it).
+点击管理员界面，然后……哎哟，不能用，因为需要HTTPS。不要担心，uWSGI路由器是可以使用HTTPS的 (确保你有OpenSSL开发头文件：安装它们，然后重新构建uWSGI，构建系统将会自动检测到它)。
 
-First of all generate your key and certificate:
+首先，生成密钥和证书：
 
 .. code-block:: sh
 
@@ -278,7 +263,7 @@ First of all generate your key and certificate:
    openssl req -new -key foobar.key -out foobar.csr
    openssl x509 -req -days 365 -in foobar.csr -signkey foobar.key -out foobar.crt
 
-Now you have 2 files (well 3, counting the ``foobar.csr``), ``foobar.key`` and ``foobar.crt``. Change the uWSGI config:
+现在，你有了2个文件 (好吧，算上 ``foobar.csr`` ，是3个)， ``foobar.key`` 和 ``foobar.crt`` 。修改uWSGI配置：
 
 .. code-block:: ini
 
@@ -289,31 +274,28 @@ Now you have 2 files (well 3, counting the ``foobar.csr``), ``foobar.key`` and `
    master = true
    processes = 8
 
-Re-run uWSGI and connect to port 9090 using ``https://`` with your browser.
+重新运行uWSGI，并且在浏览器中使用 ``https://`` 访问9090端口。
 
 关于Python线程的注意事项
 ************************
 
-If you start uWSGI without threads, the Python GIL will not be enabled, so threads generated by your application
-will never run. You may not like that choice, but remember that uWSGI is a language-independent server, so most of its choices
-are for maintaining it "agnostic".
+如果你在不使用线程的情况下启动uWSGI，那么Python GIL将不会启动，因此，你的应用生成的线程将不会运行。你或许不会喜欢这个选择，但是记住，uWSGI是一个语言无关的服务器，因此它的大多数选择都是为了维护它的“不可知论”。
 
-But do not worry, there are basically no choices made by the uWSGI developers that cannot be changed with an option.
+但是，不用担心，uWSGI开发者做的选择基本上没有选项不能改变的。（也就是说，基本上你可以通过选项改变它）
 
-If you want to maintain Python threads support without starting multiple threads for your application, just add
-the ``--enable-threads`` option (or ``enable-threads = true`` in ini style).
+如果你想要维护Python线程支持，而不为你的应用启动多线程，那么仅需添加 ``--enable-threads`` 选项 (或者在ini风格的文件中添加 ``enable-threads = true`` )。
 
 virtualenv
 ***********
 
-uWSGI can be configured to search for Python modules in a specific virtualenv.
+可以配置uWSGI在指定的virtualenv中搜索Python模块。
 
-Just add ``virtualenv = <path>`` to your options.
+仅需添加 ``virtualenv = <path>`` 到你的选项中。
 
 安全性和可用性
 *************************
 
-**Always** avoid running your uWSGI instances as root. You can drop privileges using the ``uid`` and ``gid`` options:
+**总是** 避免以root用户运行你的uWSGI实例。你可以使用 ``uid`` 和 ``gid`` 选项来去除权限：
 
 .. code-block:: ini
 
@@ -326,8 +308,7 @@ Just add ``virtualenv = <path>`` to your options.
    master = true
    processes = 8
 
-If you need to bind to privileged ports (like 443 for HTTPS), use shared sockets. They are created before dropping
-privileges and can be referenced with the ``=N`` syntax, where ``N`` is the socket number (starting from 0):
+如果你需要绑定到特许端口 (例如用于HTTPS的443)，那么使用共享socket。它们在去除权限之前创建，并且可以通过 ``=N`` 语法引用，其中， ``N`` 是socket号 (从0开始)：
 
 .. code-block:: ini
 
@@ -341,8 +322,7 @@ privileges and can be referenced with the ``=N`` syntax, where ``N`` is the sock
    master = true
    processes = 8
 
-A common problem with webapp deployment is "stuck requests". All of your threads/workers are stuck (blocked on request) and your app cannot accept more requests.
-To avoid that problem you can set a ``harakiri`` timer. It is a monitor (managed by the master process) that will destroy processes stuck for more than the specified number of seconds (choose ``harakiri`` value carefully). For example, you may want to destroy workers blocked for more than 30 seconds:
+web应用部署的一个常见问题是“卡住的请求”。你所有的线程/worker都卡住了 (请求阻塞) ，而你的应用无法接收更多的请求。要避免这个问题，你可以设置一个 ``harakiri`` 定时器。它是一个监控器 (由master进程管理)，会摧毁那些卡住超过指定秒数的进程 (小心选择 ``harakiri`` 值)。例如，你也许想要摧毁那些阻塞超过30秒的worker：
 
 .. code-block:: ini
 
@@ -357,37 +337,36 @@ To avoid that problem you can set a ``harakiri`` timer. It is a monitor (managed
    processes = 8
    harakiri = 30
 
-In addition to this, since uWSGI 1.9, the stats server exports the whole set of request variables, so you can see (in realtime) what your instance is doing (for each worker, thread or async core).
+除此之外，自uWSGI 1.9起，stats服务器导出了全部请求变量，因此，你可以（实时）看到你的实例正在做什么 (对于每个worker, thread 或者异步核)。
 
 
 卸载
 **********
 
-:doc:`OffloadSubsystem` allows you to free your workers as soon as possible when some specific pattern matches and can be delegated
-to a pure-c thread. Examples are sending static file from the file system, transferring data from the network to the client and so on.
+:doc:`OffloadSubsystem` 允许你在特定模式匹配的适合尽快地释放你的worker，并且可以被委派给一个纯C线程。举几个栗子，从文件系统发送静态文件，从网络传输数据到客户端，等等。
 
-Offloading is very complex, but its use is transparent to the end user. If you want to try just add ``--offload-threads <n>`` where <n> is the number of threads to spawn (1 per CPU is a good value to start with).
+卸载是非常复杂的，但它的使用对最终用户是透明的。如果你想试一试，那么仅需添加 ``--offload-threads <n>`` ，其中，<n>是要生成的线程数 (每个CPU1个是开始的一个不错的值)。
 
-When offload threads are enabled, all of the parts that can be optimized will be automatically detected.
+当启用了卸载线程，将会自动检测所有可以被优化的部分。
 
-Bonus: multiple Python versions for the same uWSGI binary
+彩蛋：对不同Python版本使用相同的uWSGI二进制文件
 *********************************************************
 
-As we have seen, uWSGI is composed of a small core and various plugins. Plugins can be embedded in the binary or loaded dynamically. When you build uWSGI for Python, a series of plugins plus the Python one are embedded in the final binary.
+正如我们所见的，uWSGI是由一个小核心和各种插件组成的。插件可以嵌入到二进制文件中，或者动态加载。当你为Python构建uWSGI的时候，一系列的插件，加上Python本身将会嵌入到最后的二进制文件中。
 
-This could be a problem if you want to support multiple Python versions without building a binary for each one.
+如果你想要支持多个Python版本，而不想为每个版本构建一个二进制文件的适合，这会是个问题。
 
-The best approach would be having a little binary with the language-independent features built in, and one plugin for each Python version that will be loaded on-demand.
+最好的方法可能是使用一个小的二进制文件，其中内建语言无关的特性，然后为每个Python版本准备一个插件，按需加载。
 
-In the uWSGI source directory:
+在uWSGI源代码目录中：
 
 .. code-block:: sh
 
    make PROFILE=nolang
    
-This will build a uwsgi binary with all the default plugins built-in except the Python one.
+这将会构建一个uwsgi二进制文件，它内建了除了Python之外所有默认的插件。
 
-Now, from the same directory, we start building Python plugins:
+现在，在相同的目录下，我们开始构建Python插件：
 
 .. code-block:: sh
 
@@ -395,9 +374,9 @@ Now, from the same directory, we start building Python plugins:
    PYTHON=python2.7 ./uwsgi --build-plugin "plugins/python python27"
    PYTHON=python2.6 ./uwsgi --build-plugin "plugins/python python26"
 
-You will end up with three files: ``python34_plugin.so``, ``python27_plugin.so``, ``python26_plugin.so``. Copy these into your desired directory. (By default, uWSGI searches for plugins in the current working directory.)
+最后，你将获得三个文件： ``python34_plugin.so``, ``python27_plugin.so``, ``python26_plugin.so`` 。拷贝这些到你想要的目录下。 (默认情况下，uWSGI会在当前工作目录下搜索插件。)
 
-Now in your configurations files you can simply add (at the very top) the `plugins-dir` and `plugin` directives.
+现在，在你的配置文件中，你可以简单地添加 (在最顶部)  `plugins-dir` 和 `plugin` 指令。
 
 .. code-block:: ini
 
@@ -405,10 +384,9 @@ Now in your configurations files you can simply add (at the very top) the `plugi
    plugins-dir = <path_to_your_plugin_directory>
    plugin = python26
    
-This will load the ``python26_plugin.so`` plugin library from the directory into which you copied the plugins.
+这将会从目录下加载 ``python26_plugin.so`` 插件库到你拷贝插件到的那里。
 
 现在……
 **********
 
-You should already be able to go into production with such few concepts, but uWSGI is an enormous project with hundreds of features
-and configurations. If you want to be a better sysadmin, continue reading the full docs.
+有了这些概念，你应该已经能够投入生产了，但是uWSGI是一个庞大的项目，它有数百种特性和配置。如果你想成为一个更好的系统管理员，那么继续阅读整个文档吧。

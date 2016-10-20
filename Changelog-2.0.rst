@@ -17,8 +17,8 @@ Bugfixes and improvements
 - various Lua fixes
 - a tons of coverity-governed bugfixes made by Riccardo Magliocchetti
 
-New features
-************
+新特性
+********
 
 --attach-daemon2
 ^^^^^^^^^^^^^^^^
@@ -117,7 +117,7 @@ all of the takes a path to the relevant ssl files.
 Check: :doc:`SNI`
 
 
-Availability
+可用性
 ************
 
 uWSGI 2.0 has been released on 20131230 and can be downloaded from:

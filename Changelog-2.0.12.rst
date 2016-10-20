@@ -3,7 +3,7 @@ uWSGI 2.0.12
 
 [20151230]
 
-Bugfixes
+错误修复
 --------
 
 - 'rpcvar' routing action correctly returns NEXT on empty response
@@ -62,7 +62,7 @@ This options for config logic allows you to define options only when a regexp ov
    
 
 
-Availability
+可用性
 ------------
 
 You can download uWSGI 2.0.12 from http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz

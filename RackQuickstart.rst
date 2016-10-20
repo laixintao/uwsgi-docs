@@ -1,4 +1,4 @@
-Quickstart for ruby/Rack applications
+ruby/Rack应用快速入门
 =====================================
 
 The following instructions will guide you through installing and running a Ruby-based uWSGI distribution aimed at running Rack apps.

@@ -1,7 +1,7 @@
 获取uWSGI
 =============
 
-These are the current versions of uWSGI.
+这些是uWSGI的当前版本。
 
 ========================  ==========  ===================================================
 Release                   Date        Link

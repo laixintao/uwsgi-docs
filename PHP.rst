@@ -1,4 +1,4 @@
-Running PHP scripts in uWSGI
+在uWSGI中运行PHP脚本
 ============================
 
 You can safely run PHP scripts using uWSGI's :doc:`CGI<CGI>` support. The downside of this approach is the latency caused by the spawn of a new PHP interpreter at each request.

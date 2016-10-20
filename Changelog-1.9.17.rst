@@ -4,7 +4,7 @@ uWSGI 1.9.17
 Changelog [20130917]
 
 
-Bugfixes
+错误修复
 ********
 
 - the 'pty' client is now blocking (safer approach)
@@ -14,8 +14,8 @@ Bugfixes
 
 
 
-New features
-************
+新特性
+********
 
 The Master FIFO
 ^^^^^^^^^^^^^^^
@@ -123,7 +123,7 @@ you can directly send logs to a file descriptors:
    req-logger = fd:17
 
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.17 has been released on Semptember 22th 2013

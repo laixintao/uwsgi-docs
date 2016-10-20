@@ -7,7 +7,7 @@ The examples assume a modular uWSGI build. You can ignore the 'plugins' option, 
 
 Recipes are tested over uWSGI 1.9.7. Older versions may not work.
 
-Let's start
+我们开始吧
 ***********
 
 This is a simple perl/PSGI Dancer app we deploy on an http-socket with 4 processes.

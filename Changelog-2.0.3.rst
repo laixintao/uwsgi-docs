@@ -3,7 +3,7 @@ uWSGI 2.0.3
 
 Changelog 20140317
 
-Bugfixes
+错误修复
 ********
 
 * fixed spooler 'at' key usage
@@ -17,8 +17,8 @@ Bugfixes
 * do not wait for a whole Emperor cycle before checking for each waitpid
 * fix a regression with caller() not indicating the starting *.psgi program (Ævar Arnfjörð Bjarmason)
 
-New features
-************
+新特性
+********
 
 Emperor SIGWINCH and SIGURG
 ---------------------------
@@ -73,7 +73,7 @@ Smarter Emperor on bad conditions
 Now the Emperor completely destroys internal vassal-related structures when it is impossible to correctly kill a broken vassal
 (both for inconsistent Emperor state or for internal system problems)
 
-Availability
+可用性
 ************
 
 You can download uWSGI 2.0.3 from: http://projects.unbit.it/downloads/uwsgi-2.0.3.tar.gz

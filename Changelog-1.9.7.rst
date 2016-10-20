@@ -2,7 +2,7 @@ uWSGI 1.9.7
 ===========
 
 
-Bugfixes
+错误修复
 ********
 
 - fixed teajs engine build
@@ -32,8 +32,8 @@ Bugfixes
 - honour SCRIPT_NAME the in the PSGI plugin when multiple perl apps are mounted
 
 
-New features
-************
+新特性
+********
 
 
 Legion cron
@@ -169,7 +169,7 @@ performance and response time. For this reason the plugin is now builtin by defa
 In addition to this the remote spooler plugin (allowing external process to enqueue jobs) has been added too in the default build profile.
 
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.7 will be available since 20130422 at this url:
