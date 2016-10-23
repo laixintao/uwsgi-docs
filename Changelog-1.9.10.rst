@@ -37,6 +37,8 @@ https://github.com/unbit/uwsgi/blob/master/t/routing/errorlimiter.ini
 可用性
 ************
 
-uWSGI 1.9.10 will be available since 20130511 at the following url:
+uWSGI 1.9.10于20130511发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.10.tar.gz

@@ -191,7 +191,8 @@ You can combine multiple wrappers using routing.
 
 可用性
 ************
+uWSGI 1.9.11于20130526发布
 
-uWSGI 1.9.11 will be available since 20130526 at:
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.11.tar.gz

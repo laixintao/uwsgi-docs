@@ -385,6 +385,8 @@ This is useful when waiting for the emperor to move a veth to the vassal namespa
 Availability
 ^^^^^^^^^^^^
 
-uWSGI 1.9.15 has been released on August 29th 2013. You can download it from:
+uWSGI 1.9.15于2013年08月29日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.15.tar.gz

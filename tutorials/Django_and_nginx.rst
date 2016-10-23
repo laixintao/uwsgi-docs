@@ -3,16 +3,13 @@
 
 .. highlight:: bash
 
-This tutorial is aimed at the Django user who wants to set up a production web
-server. It takes you through the steps required to set up Django so that it
-works nicely with uWSGI and nginx. It covers all three components, providing a
-complete stack of web application and server software.
+本教程针对那些想要设置一个生产web服务器的Django用户。它介绍了设置Django以使得其与uWSGI和nginx工作良好的必要步骤。它涵盖了所有三个组成部分，提供了一个web应用和服务器软件的完整栈。
 
-Django_ is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
+Django_ 是一个高层次的Python Web框架，鼓励快速开发和干净实用的设计。
 
 .. _Django: http://djangoproject.com/
 
-nginx_ (pronounced *engine-x*) is a free, open-source, high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server.
+nginx_ (发音为 *engine-x*) 是一个免费开源并且高性能的HTTP服务器和反向代理，还是一个IMAP/POP3代理服务器。
 
 .. _nginx: http://nginx.org/
 
@@ -20,14 +17,11 @@ nginx_ (pronounced *engine-x*) is a free, open-source, high-performance HTTP ser
 本教程的一些注释
 ------------------------------
 
-.. admonition:: Note
+.. admonition:: 注意
 
-    This is a **tutorial**. It is not intended to provide a reference guide,
-    never mind an exhaustive reference, to the subject of deployment.
+    这是一个 **教程** 。它并不打算提供一个参考指南，对于部署主题，不要想着有一个详尽的参考。
 
-nginx and uWSGI are good choices for Django deployment, but they are not the
-only ones, or the 'official' ones. There are excellent alternatives to both, and
-you are encouraged to investigate them.
+对于Django部署而言，nginx和uWSGI是不错的选择，但它们并非唯一的选择，也不是“官方”选择。对于它们两个，都有不错的替代品，因此鼓励你去详细研究一下。
 
 The way we deploy Django here is a good way, but it is **not** the *only* way;
 for some purposes it is probably not even the best way.
@@ -38,7 +32,7 @@ whatever software you use for deploying Django. By providing you with a working
 setup, and rehearsing the steps you must take to get there, it will offer you a
 basis for exploring other ways to achieve this.
 
-.. admonition:: Note
+.. admonition:: 注意
 
 	This tutorial makes some assumptions about the system you are using.
 

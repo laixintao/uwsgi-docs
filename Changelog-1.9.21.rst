@@ -184,6 +184,8 @@ TODO for 2.0
 可用性
 ************
 
-uWSGI 1.9.21 has been released on December 11th 2013 and can be downloaded at:
+uWSGI 1.9.21于2013年12月11日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.21.tar.gz

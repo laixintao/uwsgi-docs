@@ -183,6 +183,6 @@ jsp engine). We expect a beta version after the summer. Obviously we shameless c
 可用性
 ************
 
-Download uWSGI 1.9.14 from
+从下面地址下载uWSGI 1.9.14
 
 http://projects.unbit.it/downloads/uwsgi-1.9.14.tar.gz

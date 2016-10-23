@@ -26,7 +26,7 @@ Scrolls are text blob attached to each member of a :doc:`Legion<Legion>` cluster
 use the legion subsystem in their apps and configurations. The addition in 1.9.1 is the uwsgi.scrolls(legion) function returning a list/array
 of the current scrolls defined by the whole cluster. This is still not something fully usable (and useful) more to come soon...
 
-On demand vassals
+按需vassals
 *****************
 
 Another step in better resource usage for massive hosting. You can now tell the :doc:`Emperor<Emperor>` to start vassals only after the first request
@@ -67,7 +67,7 @@ using the previous example, the socket /var/tmp/myapp.socket will be automatical
 This is what (very probably) you will use in very big deployments. Every time a new vassal is added the supplied command is run passing the vassal name
 as the first argument. The STDOUT of the command is used as the socket name.
 
-The --exec-post-app hook
+--exec-post-app钩子
 ************************
 
 In addition to the other --exec-* options (used to run commands at the various server stages), a new one has been added
@@ -106,7 +106,7 @@ An example server is available here:
 https://github.com/unbit/uwsgi/blob/master/contrib/cryptologger.rb
 
 
-The rpc internal routing instruction
+rpc内部路由指令
 ************************************
 
 The "rpc" routing instruction has been added, allowing you to call rpc functions directly from the routing subsystem
@@ -129,7 +129,7 @@ Preliminary support for name resolving in the carbon plugin
 
 You can specify carbon servers using hostnames. The current code is pretty simple. Future updates will support round robin queries.
 
-New routing conditions
+新的路由条件
 **********************
 
 New routing conditions have been added (equal,startswith,endswith,regexp) check the updated docs:
@@ -147,7 +147,7 @@ The 'mongodb' generic plugin
 This is a commodity plugin for packagers not able to access a shared libmongoclient. This basically link it in a new shared object
 that can be used by the others mongodb plugin
 
-Build profiles over network
+通过网络构建profile
 ***************************
 
 You can now reference build profiles using urls (http, https and ftp are supported):
@@ -157,10 +157,12 @@ You can now reference build profiles using urls (http, https and ftp are support
    UWSGI_PROFILE=http://uwsgi.it/psgi.ini make
 
 
-Get it
+获取它
 ******
 
-uWSGI 1.9.1 will be available since 20130324 at this url:
+uWSGI 1.9.1于20130324发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.1.tar.gz
 

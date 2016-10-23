@@ -30,7 +30,7 @@ Both HTTP and HTTPS can be used at the same time (`=0` and `=1` are references t
    uwsgi --shared-socket :80 --shared-socket :443 --http =0 --https2 addr==1,cert=foobart.crt,key=foobar.key,spdy=1 --module werkzeug.testapp:test_app --uid user
 
 
-Notes
+小抄
 *****
 
 * You need at least OpenSSL 1.x to use SPDY (all modern Linux distributions should have it).

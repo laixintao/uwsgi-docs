@@ -95,7 +95,7 @@ Now the hook only needs to check for uwsgi.last_exit_code == 1 and eventually ex
    argv[2] = NULL;
    execvp(uwsgi.binary_path, argv);
    
-Notes
+小抄
 *****
 
 Try to place --fallback-config as soon as possible in your config tree. The various config parsers may fail (calling exit(1)) before the fallback file is registered

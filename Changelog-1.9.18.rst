@@ -255,6 +255,8 @@ You can even use FreeBSD jails too !!!
 可用性
 ************
 
-uWSGI 1.9.18 has been released on October 11th 2013 and can be downloaded from:
+uWSGI 1.9.18于2013年10月11日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.18.tar.gz

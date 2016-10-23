@@ -59,6 +59,8 @@ Check official docs :doc:`SSI`
 可用性
 ************
 
-uWSGI 1.9.2 has been released on 20130326 and can be downloaded from:
+uWSGI 1.9.2于2013年03月26日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.2.tar.gz

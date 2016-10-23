@@ -124,5 +124,8 @@ Check :doc:`Metrics`.
 可用性
 ************
 
-uWSGI 1.9.20 has been released on 20131117 and can be downloaded from
+uWSGI 1.9.20于2013年11月17日发布
+
+你可以从下面地址下载它：
+
 http://projects.unbit.it/downloads/uwsgi-1.9.20.tar.gz.

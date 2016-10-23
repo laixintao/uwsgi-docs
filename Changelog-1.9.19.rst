@@ -172,6 +172,8 @@ or gzip ?
 可用性
 ************
 
-uWSGI 1.9.19 has been released on 20131109, you can download it from:
+uWSGI 1.9.19于2013年11月09日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.19.tar.gz
