@@ -107,7 +107,7 @@ specify them in the build profile.
     embed_files = bootstrap.py,myapp.py,werkzeug=site-packages/werkzeug,jinja2=site-packages/jinja2,flask=site-packages/flask
     embed_config = flaskconfig.ini
 
-.. 注意:: This time we have used the form "name=directory" to force symbols to
+.. note:: This time we have used the form "name=directory" to force symbols to
    a specific names to avoid ending up with a clusterfuck like
    ``site_packages_flask___init___py``.
 

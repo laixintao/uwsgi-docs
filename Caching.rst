@@ -1,7 +1,7 @@
 uWSGI缓存框架
 ===========================
 
-.. 注意::
+.. note::
 
   This page is about "new-generation" cache introduced in uWSGI 1.9.
   For old-style cache (now simply named "web caching") check :doc:`WebCaching`
@@ -49,7 +49,7 @@ value.
 Single block (faster) vs. bitmaps (slower)
 ******************************************
 
-.. 警告:: Bitmap mode is considered production ready only from uWSGI 2.0.2! (That is, it was buggy before that.)
+.. warning:: Bitmap mode is considered production ready only from uWSGI 2.0.2! (That is, it was buggy before that.)
 
 In the standard ("single block") configuration a key can only map to a single
 block. Thus if you have a cache block size of 64k your items can be at most

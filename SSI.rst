@@ -57,7 +57,7 @@ A more versatile approach is using the SSI parser as a routing action.
    http-socket = :9090
    route = ^/(.*) ssi:/var/www/$1.shtml
 
-.. 警告:: As with all of the routing actions, no check on file paths is made to allow a higher level of customization. If you pass untrusted paths to the SSI action, you should sanitize them (you can use routing again, checking for the presence of .. or other dangerous symbols).
+.. warning:: As with all of the routing actions, no check on file paths is made to allow a higher level of customization. If you pass untrusted paths to the SSI action, you should sanitize them (you can use routing again, checking for the presence of .. or other dangerous symbols).
 
 And with the above admonition in mind, when used as a routing action, ``DOCUMENT_ROOT`` or ``PATH_INFO`` are not required, as the parameter passed contains the full filesystem path.
 
@@ -88,7 +88,7 @@ Include the specified file (relative to the current directory).
 cache
 ^^^^^
 
-.. 注意:: This is uWSGI specific/non-standard.
+.. note:: This is uWSGI specific/non-standard.
 
 Arguments: ``key`` ``name``
 

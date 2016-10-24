@@ -195,7 +195,7 @@ Graphiti需要redis，因此，确保你的系统中运行着一个redis服务�
 
    bundle install
 
-.. 注意:: 如果eventmachine gem安装失败，那么在Gemfile中添加"gem 'eventmachine'"以作为第一个gem，然后运行bundle update。这会确保安装最新的eventmachine版本
+.. note:: 如果eventmachine gem安装失败，那么在Gemfile中添加"gem 'eventmachine'"以作为第一个gem，然后运行bundle update。这会确保安装最新的eventmachine版本
 
 在bundle安装了所有的gem之后，你必须拷贝graphiti样例配置：
 

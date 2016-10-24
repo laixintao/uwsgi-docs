@@ -155,7 +155,7 @@ Python支持使用 ``--spooler-python-import`` 选项，直接在spooler中导�
 * 'priority' => this will be the subdirectory in the spooler directory in which the task will be placed, you can use that trick to give a good-enough prioritization to tasks (for better approach use multiple spoolers)
 * 'body' => use this key for objects bigger than 64k, the blob will be appended to the serialzed uwsgi packet and passed back to the spooler function as the 'body' argument
 
-.. 注意::
+.. note::
 
    Spool arguments must be strings (or bytes for python3). The API functions will try to cast non-string values to strings/bytes, but do not rely on that functionality!
 

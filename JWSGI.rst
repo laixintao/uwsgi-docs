@@ -1,7 +1,7 @@
 The JWSGI interface
 ===================
 
-.. 注意:: JWSGI is not a standard. Yet. If you like JWSGI, why not send an RFC to the uWSGI mailing list. We have no specific interest in a standard, but who knows...
+.. note:: JWSGI is not a standard. Yet. If you like JWSGI, why not send an RFC to the uWSGI mailing list. We have no specific interest in a standard, but who knows...
 
 JWSGI is a port of the WSGI/PSGI/Rack way of thinking for Java.
 

@@ -1,11 +1,11 @@
 Zerg模式
 =========
 
-.. 注意::
+.. note::
 
   Yes, that's Zerg as in the "quantity-over-quality" Starcraft race. If you haven't played Starcraft, be prepared for some nonsense.
 
-  .. 注意::
+  .. note::
 
     Also note that this nonsense is mostly limited to the nomenclature. Zerg Mode is serious business.
 
@@ -17,12 +17,12 @@ Enabling Zerg mode you can allow "uwsgi-zerg" instances to attach to your alread
 
 Zerg mode is obviously local only. You cannot use it to add remote instances -- this is a job better done by the :doc:`Fastrouter`, the :doc:`HTTP plugin<HTTP>` or your web server's load balancer.
 
-Enabling the zerg server
+启用zerg服务器
 ------------------------
 
 If you want an uWSGI instance to be rushed by zerg, you have to enable the Zerg server. It will be bound to an UNIX socket and will pass uwsgi socket file descriptors to the Zerg workers connecting to it.
 
-.. 警告:: The socket must be an UNIX socket because it must be capable of passing through file descriptors. A TCP socket simply will not work.
+.. warning:: The socket must be an UNIX socket because it must be capable of passing through file descriptors. A TCP socket simply will not work.
 
 For security reasons the UNIX socket does not inherit the ``chmod-socket`` option, but will always use the current umask.
 
@@ -41,7 +41,7 @@ If you have filesystem permission issues, on Linux you can use the UNIX sockets 
     ./uwsgi -M -p 8 --module welcome --zerg-server @nydus
 
 
-Attaching zergs to the zerg server
+附加zerg到zerg服务器
 ----------------------------------
 
 To add a new instance to your zerg pool, simply use the --zerg option
@@ -57,7 +57,7 @@ When your load returns to normal values, you can simply shutdown all of the uwsg
 
 You can attach an unlimited number of uwsgi-zerg instances.
 
-Fallback if a zerg server is not available
+在zerg服务器不可用的时候回退
 ------------------------------------------
 
 By default a Zerg client will not run if the Zerg server is not available. Thus, if your zerg server dies, and you reload the zerg client, it will simply shutdown.
@@ -68,12 +68,12 @@ With this setup, if a Zerg server is not available, the Zerg client will continu
 
 .. TODO: This needs to be documented better. An example would rock.
 
-Using Zerg as testers
+将Zerg当成测试器使用
 ---------------------
 
 A good trick you can use, is suspending the main instance with the ``SIGTSTP`` signal and loading a new version of your app in a Zerg. If the code is not ok you can simply shutdown the Zerg and resume the main instance.
 
-Zerg Pools
+Zerg池
 ----------
 
 Zergpools are special Zerg servers that only serve Zerg clients, nothing more.

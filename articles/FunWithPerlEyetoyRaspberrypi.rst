@@ -328,6 +328,6 @@ More hacking
 
 The RPI board is really fun to tinker with and uWSGI is a great companion for it (especially its lower-level API functions).
 
-.. 注意::
+.. note::
 
   As an exercise left to the reader: remember you can mmap() the address 0x20200000 to access the Raspberry PI GPIO controller... ready to write a uwsgi-gpio plugin?

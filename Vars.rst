@@ -25,7 +25,7 @@ uwsgi协议魔术变量
 ``UWSGI_MODULE`` 和 ``UWSGI_CALLABLE``
 ---------------------------------------
 
-Load a new app (defined as ``module:callable``) mapped into ``SCRIPT_NAME``.
+加载一个新的应用 (定义为 ``module:callable``)，将其映射到 ``SCRIPT_NAME``.
 
 ::
 
@@ -37,24 +37,24 @@ Load a new app (defined as ``module:callable``) mapped into ``SCRIPT_NAME``.
 ``UWSGI_PYHOME``
 ----------------
 
-Dynamically set the Python :ref:`Virtualenv` for a :doc:`dynamic application<DynamicApps>`.
+为一个 :doc:`dynamic application<DynamicApps>` 动态设置Python :ref:`Virtualenv`。
 
 .. seealso:: :ref:`DynamicVirtualenv`
 
 ``UWSGI_CHDIR``
 ---------------
 
-``chdir()`` to the specified directory before managing the request.
+在管理请求之前 ``chdir()`` 到指定的目录。
 
 ``UWSGI_FILE``
 --------------
 
-Load the specified file as a new dynamic app.
+将指定的文件作为一个新的动态应用加载。
 
 ``UWSGI_TOUCH_RELOAD``
 ----------------------
 
-Reload the uWSGI stack when the specified file's modification time has changed since the last request.
+当指定的文件的修改时间自最后一个请求后发生改变时，重载uWSGI栈。
 
 ::
 
@@ -69,7 +69,7 @@ Reload the uWSGI stack when the specified file's modification time has changed s
 
 .. seealso:: :doc:`Caching`
 
-Check the uWSGI cache for a specified key. If the value is found, it will be returned as raw HTTP output instead of the usual processing of the request.
+为特定的键查看uWSGI换成。如果找到该键，它将会作为原始的HTTP输出返回，而不是请求的一般处理。
 
 ::
 
@@ -83,11 +83,11 @@ Check the uWSGI cache for a specified key. If the value is found, it will be ret
 ``UWSGI_SETENV``
 ----------------
 
-Set the specified environment variable for a new dynamic app.
+为一个新的动态应用设置指定的环境变量。
 
-.. 注意:: To allow this in Python applications you need to enable the ``reload-os-env`` uWSGI option.
+.. note:: 要在Python应用中使用这个功能，你需要启用 ``reload-os-env`` uWSGI选项。
 
-Dynamically load a Django app without using a WSGI file/module::
+在不使用一个WSGI文件/模块的情况下动态加载一个Django应用::
 
   location / {
     include uwsgi_params;
@@ -100,11 +100,11 @@ Dynamically load a Django app without using a WSGI file/module::
 ``UWSGI_APPID``
 ---------------
 
-.. 注意:: Available since 0.9.9.
+.. note:: 自0.9.9起可用。
 
-Bypass ``SCRIPT_NAME`` and :doc:`VirtualHosting` to let the user choose the mountpoint without limitations (or headaches).
+绕过 ``SCRIPT_NAME`` 和 :doc:`VirtualHosting` ，从而让用户在没有限制（或者不头疼）的情况下选择挂载点。
 
-The concept is very generic: ``UWSGI_APPID`` is the identifier of an application. If it is not found in the internal list of apps, it will be loaded.
+这个概念是非常通用的: ``UWSGI_APPID`` 是一个应用的标识符。如果在应用的内部列表中找不到它，那么要加载它。
 
 ::
 

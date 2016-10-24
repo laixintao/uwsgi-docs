@@ -5,7 +5,7 @@ uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
 
 这对于配置uWSGI服务器是有用的，使用它的内部函数，并获取分析数据（以及检测你是否真的在uWSGI下运行）。
 
-.. 注意:: 许多这些函数当前不幸未公开。
+.. note:: 许多这些函数当前不幸未公开。
 
 模块级别的全局
 --------------------
@@ -40,7 +40,7 @@ uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
 
    这是动态应用字典。
 
-   .. 参见:: :ref:`PythonAppDict`
+   .. seealso:: :ref:`PythonAppDict`
 
 .. data:: message_manager_marshal
 
@@ -154,7 +154,7 @@ SNMP函数
 
    Increases or decreases the counter or gauge by a specific amount.
 
-   .. 注意:: uWSGI OID tree starts at 1.3.6.1.4.1.35156.17
+   .. note:: uWSGI OID tree starts at 1.3.6.1.4.1.35156.17
 
 spooler函数
 -----------------
@@ -169,7 +169,7 @@ spooler函数
 
    Send data to the :doc:`Spooler`. Also known as `spool()`.
 
-   .. 注意:: Any of the keyword arguments may also be passed in the message dictionary. This means they're reserved words, in a way...
+   .. note:: Any of the keyword arguments may also be passed in the message dictionary. This means they're reserved words, in a way...
 
 .. function:: set_spooler_frequency(seconds)
 
@@ -193,7 +193,7 @@ spooler函数
 
    Send a generic message using :doc:`Protocol`.
 
-   .. 注意:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_uwsgi_message()``.
+   .. note:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_uwsgi_message()``.
 
 
 .. function:: route()
@@ -203,7 +203,7 @@ spooler函数
 
    Send a generic message to multiple recipients using :doc:`Protocol`.
 
-   .. 注意:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_multi_uwsgi_message()``.
+   .. note:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_multi_uwsgi_message()``.
 
    .. seealso:: :doc:`Clustering` for examples
 

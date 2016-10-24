@@ -5,7 +5,7 @@ The symcall plugin (modifier 18) is a convenience plugin allowing you to write n
 
 You tell it which symbol to load on startup and then it will run it at every request.
 
-.. 注意::
+.. note::
 
    The "symcall" plugin is built-in by default in standard build profiles.
 
@@ -191,7 +191,7 @@ So, let's run it with:
 Here the only new player is ``--hook-as-user call:ourtcl_init`` invoking the specified function after privileges drop.
 
 
-.. 注意::
+.. note::
 
    This code is not thread safe! If you want to improve this tcl library to support multithreading, best approach will be having a TCL interpreter
    for each pthread instead of a global one.
