@@ -11,44 +11,42 @@
 License更改
 **************
 
-uWSGI is now GPL2 + linking exception instead of plain GPL2.
+uWSGI现在是GPL2 + linking exception，而不是纯GPL2了。
 
-This should address some legal issues with users compiling uWSGI as a library (libuwsgi.so) and loading non-GPL compatible plugins/libraries.
+这应该会解决那些将uWSGI作为一个库(libuwsgi.so)进行编译，并加载GPL不兼容的插件/库的用户的一些合法性问题。
 
 默认为非阻塞
 ***********************
 
-All of the I/O of the uWSGI stack (from the core to the plugins) is now fully non-blocking.
+uWSGI栈的所有I/O (从核心到插件) 现在完全是非阻塞的了。
 
-No area in the whole stack is allowed to block (except your app obviously), and plugins must use uWSGI's I/O API.
+整个栈没有一个地方允许阻塞（除非你对应用明显地进行了阻塞），而插件必须使用uWSGI的I/O API。
 
-When you load loop engines like gevent or Coro::AnyEvent, the uWSGI internals are patched to support their specific non-blocking hooks.
+当你加载诸如gevent 或者 Coro::AnyEvent 这样的循环引擎时，应当修改uWSGI内部逻辑，以支持它们特定的非阻塞钩子。
 
-What does this mean for app developers?
+那么，对于应用开发者而言，这又意味着什么呢？
 
-Well, the most important aspect is that network congestions or kernel problems do not block your instances and badly behaving peers
-are closed if they do not unblock in the socket-timeout interval (default 4 seconds).
+嗯，最重要的方面是，网络堵塞，或者内核问题不会阻塞你的实例，并且如果表现糟糕的对端在socket超时间隔(默认是4秒)中阻塞了，会关闭它们.
 
 更新，更快以及更好的解析器
 ********************************
 
-uWSGI 2.0 has support for pluggable protocols. The following protocols are supported and all of them have been updated
-for better performance:
+uWSGI 2.0支持可插拔协议。支持以下协议，并对它们所有都进行了更新，以获取更好的性能：
 
-* ``uwsgi`` -- the classic uwsgi parser, improved for reduced syscall usage
-* ``http`` -- the classic HTTP parser, improved for reduced syscall usage (supports the PROXY1 protocol)
-* ``https`` -- (new) support for native HTTPS
-* ``fastcgi`` -- classic FastCGI parser, improved for reduced syscall usage
-* ``scgi`` -- (new) support for SCGI
-* ``suwsgi`` -- (new) secured uwsgi, uwsgi over SSL (supported by Nginx 1.5)
-* ``puwsgi`` -- (new) persistent uwsgi, uwsgi with persistent connections, supported only internally
-* ``mongrel2`` -- classic zeromq/mongrel2 support, now it is exposed as a plugin
-* ``raw`` -- (new) fake parser, allows you to write applications directly working on file descriptors
+* ``uwsgi`` -- 经典的uwsgi解析器，改善以减少系统调用的使用
+* ``http`` -- 经典的HTTP解析器，改善以减少系统调用的使用 (支持PROXY1协议)
+* ``https`` -- (新的)原生HTTPS支持
+* ``fastcgi`` -- 经典的FastCGI解析器，改善以减少系统调用的使用
+* ``scgi`` -- (新的) SCGI支持
+* ``suwsgi`` -- (新的) 安全的uwsgi，SSL之上的uwsgi (由Nginx 1.5支持)
+* ``puwsgi`` -- (新的) 持久化uwsgi，带有持久化连接的uwsgi，只有内部支持
+* ``mongrel2`` -- 经典的zeromq/mongrel2支持，现在，它作为一个插件公开
+* ``raw`` -- (新的) 假解析器，允许你编写直接运行在文件描述符之上的应用
 
 新的重载方式
 ******************
 
-uWSGI 2.0 introduces a blast of new ways for reloading instances.
+uWSGI 2.0引入了一堆重载实例的新方法。
 
 .. seealso::
 
@@ -74,34 +72,33 @@ uWSGI 2.0 introduces a blast of new ways for reloading instances.
 新的插件构建系统
 ***********************
 
-It is pretty fun (and easy) to write uWSGI plugins, but (funnily enough) the worst aspect was building them, as dealing with build profiles, cflags, ldflags and friends tend to lead to all sorts of bugs and crashes.
+写uWSGI插件是灰常有趣（并且简单）的，但是（有趣的是），最糟糕的方面就是构建它们，因为处理构建配置文件， cflags, ldflags和friends易于导致所有类型的错误和崩溃。
 
-A simplified (and saner) build system for external plugins has been added. Now you only need to call the uwsgi binary you want to build the plugin for:
+已添加一个用于外部插件的简化（且健全）的构建系统。现在，你只需要调用你想要添加插件的uwsgi二进制文件：
 
 .. code-block:: sh
 
    uwsgi --build-plugin <plugin>
    
-where <plugin> is the directory where the plugin sources (and the uwsgiplugin.py file) are stored.
+其中，<plugin>是保存插件源代码（以及uwsgiplugin.py文件）的目录。
 
 .. seealso::
 
    :doc:`ThirdPartyPlugins`
 
-Strict mode
+strict模式
 ***********
 
-while having the freedom of defining custom options in uWSGI config files is a handy features, sometimes typos will
-bring you lot of headaches.
+虽然可以自由地在uWSGI配置文件中定义自定义选项是一种便捷的特性，但有时，打字错误将让你很头疼。
 
-Adding --strict to your instance options will instruct uWSGI config parser to raise an error when not-available options have been specified.
+添加--strict到你的实例选项中将会在指定了不可用的选项的时候，指示uWSGI配置解析器引发一个错误。
 
-If you are in trouble and want to be sure you did not have written wrong options, add --strict and retry
+如果你遇到了麻烦，并且想要确保你并未写错选项，那么添加--strict之后重试
 
 Cygwin支持
 **************
 
-Yes, you can now build and run uWSGI on Windows systems :(
+是哒，现在，你可以在Windows系统上构建并运行uWSGI了 :(
 
 kFreeBSD支持
 ****************
@@ -121,10 +118,10 @@ V8支持
 更新说明
 ---------------
 
-* Snapshotting mode is no longer available. Check the new graceful reloading ways for better approaches.
-* Mongrel2 support is no longer a built-in. you have to build the 'mongrel2' plugin to pair uWSGI with Mongrel2.
-* LDAP and Sqlite support has been moved to two plugins, you need to load them for using their features.
-* Dynamic options are no more.
-* The 'admin' plugin is gone.
-* Probes have been removed, the alarm framework presents better ways to monitor services.
-* The shared area API changed dramatically, check the new sharedarea docs.
+* snapshotting模式不再可用。看看新的优雅地重载方式，以获取更好的方法。
+* 不再内置Mongrel2支持。你必须构建'mongrel2'插件，从而让uWSGI与Mongrel2匹配。
+* LDAP和Sqlite支持已经被移动到两个插件了，你需要加载它们来使用它们的功能。
+* 不再有动态选项。
+* 'admin'插件消失了
+* 已经移除了Probes，告警框架是监控服务更好的方式。
+* 共享区域API发生了很大的改变，查看新的sharedarea文档。
