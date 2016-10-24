@@ -274,7 +274,7 @@ Push metrics to a zabbix server.
 
 The plugin exposes a ``--zabbix-template`` option that will generate a zabbix template (on stdout or in the specified file) containing all of the exposed metrics as trapper items.
 
-.. 注意:: On some Zabbix versions you will need to authorize the IP addresses allowed to push items.
+.. note:: On some Zabbix versions you will need to authorize the IP addresses allowed to push items.
 
 Usage: 
 

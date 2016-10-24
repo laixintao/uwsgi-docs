@@ -31,7 +31,7 @@ uWSGI队列框架
 将队列当成共享堆栈使用
 ---------------------------------
 
-.. 警告::记住， :py:meth:`uwsgi.queue_pop` 和 :py:meth:`uwsgi.queue_last` 将会从队列中移除项。
+.. warning::记住， :py:meth:`uwsgi.queue_pop` 和 :py:meth:`uwsgi.queue_last` 将会从队列中移除项。
 
 .. code-block:: py
 
@@ -50,7 +50,7 @@ uWSGI队列框架
 将队列当成一个FIFO队列使用
 -------------------------------
 
-.. 注意:: 当前，你只能pull，不能push。要入队一个元素，请使用 :py:meth:`uwsgi.queue_set` 。
+.. note:: 当前，你只能pull，不能push。要入队一个元素，请使用 :py:meth:`uwsgi.queue_set` 。
 
 .. code-block:: py
 

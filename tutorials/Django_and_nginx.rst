@@ -129,7 +129,7 @@ Create a file called ``test.py``::
         return [b"Hello World"] # python3
 	#return ["Hello World"] # python2
 
-.. 注意:: Take into account that Python 3 requires ``bytes()``.
+.. note:: Take into account that Python 3 requires ``bytes()``.
 
 Run uWSGI:
 

@@ -17,7 +17,7 @@ Multiple addresses are supported as well.
 
     uwsgi --fastrouter 127.0.0.1:3017 --fastrouter /tmp/uwsgi.sock --fastrouter @foobar
 
-.. 注意:: This is the most useless Fastrouter setup in the world.
+.. note:: This is the most useless Fastrouter setup in the world.
 
 Congratulations! You have just run the most useless Fastrouter setup in the
 world. Simply binding the fastrouter to a couple of addresses will not instruct

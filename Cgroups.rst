@@ -3,7 +3,7 @@
 
 Linux cgroup是在最近的Linux内核中提供的一个惊人的特性。它们允许你在约束环境中，使用有限的CPU, 内存,调度优先级, IO等"jail"你的进程……
 
-.. 注意:: 要使用cgroup，uWSGI必须作为root运行。 ``uid`` 和 ``gid`` 是非常非常必要的。
+.. note:: 要使用cgroup，uWSGI必须作为root运行。 ``uid`` 和 ``gid`` 是非常非常必要的。
 
 启用cgroup
 ----------------

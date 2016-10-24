@@ -71,7 +71,7 @@ Lastly, it binary patches (using ``execve()``) the uWSGI process image with a ne
 
 The server will know that it is a reloaded instance and will skip all the sockets initialization, reusing the previous ones.
 
-.. 注意::
+.. note::
 
    Sending the `SIGTERM` signal will obtain the same result reload-wise but will not wait for the completion of running requests.
 

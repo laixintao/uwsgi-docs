@@ -135,7 +135,7 @@ signal
 .. parsed-literal::
    signal:[signum]
 
-.. 又见:: :doc:`Signals`
+.. seealso:: :doc:`Signals`
 
 mule
 ^^^^
@@ -145,7 +145,7 @@ mule
 .. parsed-literal::
    mule:[mule_id]
 
-.. 又见:: :doc:`Mules`
+.. seealso:: :doc:`Mules`
 
 curl
 ^^^^

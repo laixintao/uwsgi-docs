@@ -86,10 +86,10 @@ HTTP自动gzip
 
 如果你需要一个负载均衡器/代理，那么这会是一个非常棒的想法。它将会自动查找新的uWSGI实例，并且以多种方式进行负载均衡。如果你想将其当成一个真正的web服务器使用，那么你应该考虑到，在uWSGI实例中提供静态文件是可能的，但不如使用一个专用的全功能web服务器那么好用。如果你把静态资产托管到云或者CDN上，使用uWSGI的HTTP功能，你绝对可以避免配置一个完整的web服务器。
 
-.. 注意:: If you use Amazon's ELB (Elastic Load Balancer) in HTTP mode in
+.. note:: If you use Amazon's ELB (Elastic Load Balancer) in HTTP mode in
    front of uWSGI in HTTP mode, either a valid ``Content-Length`` *must be set*
    by the backend, or chunked encoding must be used, e.g., with
    ``http-auto-chunked``. The ELB "health test" may still fail in HTTP mode
    regardless, in which case a TCP health test can be used instead.
 
-.. 注意:: 特别是，默认情况下，Django后端并不设置 ``Content-Length`` ，而其他会。如果在ELB后运行，那么要么使用如上的块解码，要么通过"Conditional GET" Django中间件，强制Django指定 ``Content-Length`` 。
+.. note:: 特别是，默认情况下，Django后端并不设置 ``Content-Length`` ，而其他会。如果在ELB后运行，那么要么使用如上的块解码，要么通过"Conditional GET" Django中间件，强制Django指定 ``Content-Length`` 。

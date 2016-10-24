@@ -1,12 +1,12 @@
 SharedArea ——  uWSGI组件间共享内存页
 =========================================================
 
-.. 警告::
+.. warning::
 
   SharedArea is a very low-level mechanism.
   For an easier-to-use alternative, see the :doc:`Caching<Caching>` and :doc:`Queue<Queue>` frameworks.
   
-.. 警告::
+.. warning::
 
   This page refers to "new generation" sharedarea introduced in uWSGI 1.9.21, the older API is no longer supported.
 

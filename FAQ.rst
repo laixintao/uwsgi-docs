@@ -109,7 +109,7 @@ run in various modes, so avoid comparing it configured in preforking mode
 with another server in non-blocking/async mode if you do not want to look
 ridiculous.
 
-.. 注意::
+.. note::
 
   If you see your tests failing at higher concurrency rates you are probably
   hitting your OS socket backlog queue limit (maximum of 128 slots on Linux,

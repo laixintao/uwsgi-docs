@@ -26,7 +26,7 @@ uWSGI项目旨在为构建托管服务开发全栈。
 
 循环引擎 (实现事件和并发，组件可以在reforking, threaded, asynchronous/evented和green thread/coroutine模式下运行。支持多种技术，包括uGreen, Greenlet, Stackless, :doc:`Gevent <Gevent>`, Coro::AnyEvent, :doc:`Tornado <Tornado>`, Goroutines和Fibers)
 
-.. 注意::
+.. note::
 
   uWSGI是一个具有快速发布周期的非常活跃的项目。出于这个原因，代码和文档可能不总是同步。我们试着尽最大的努力维护好文档，但这是一个艰苦的工作。为此表示歉意。如果你碰到问题了，那么邮件列表是寻求有关uWSGI的帮助的最佳来源。欢迎文档（除代码之外）贡献者。
 

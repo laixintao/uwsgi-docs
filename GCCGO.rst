@@ -128,7 +128,7 @@ Options
 uWSGI API
 *********
 
-.. 注意:: This section may, or may not, be out of date. Who knows!
+.. note:: This section may, or may not, be out of date. Who knows!
 
 Unfortunately only few pieces of the uWSGI API have been ported to the gccgo plugin. More features will be added in time for uWSGI 2.0.
 

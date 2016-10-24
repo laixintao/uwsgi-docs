@@ -105,7 +105,7 @@ Sample configuration:
 ``backlog`` cheaper算法
 -----------------------------
 
-.. 注意:: ``backlog`` is only available on Linux and only on TCP sockets (not UNIX domain sockets).
+.. note:: ``backlog`` is only available on Linux and only on TCP sockets (not UNIX domain sockets).
 
 If the socket's listen queue has more than ``cheaper_overload`` requests
 waiting to be processed, uWSGI will spawn new workers.  If the backlog is lower
@@ -114,7 +114,7 @@ it will begin killing processes one at a time.
 ``busyness`` cheaper算法
 ------------------------------
 
-.. 注意:: This algorithm is optional, it is only available if the ``cheaper_busyness`` plugin is compiled and loaded.
+.. note:: This algorithm is optional, it is only available if the ``cheaper_busyness`` plugin is compiled and loaded.
 
 This plugin implements an algorithm which adds or removes workers based on
 average utilization for a given time period. It's goal is to keep more workers

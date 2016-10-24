@@ -24,12 +24,12 @@ like so:
 
     echo 1 > /sys/kernel/mm/ksm/run
 
-.. 注意::
+.. note::
 
     Remember to do this on machine startup, as the KSM daemon does not run by
     default.
 
-.. 注意::
+.. note::
 
     KSM is an opt-in feature that has to be explicitly requested by processes,
     so just enabling KSM will not be a savior for everything on your machine.

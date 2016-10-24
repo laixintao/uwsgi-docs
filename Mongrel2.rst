@@ -88,7 +88,7 @@ Now launch the command on all the servers you want, Mongrel2 will distribute req
 Async mode
 ----------
 
-.. 警告::
+.. warning::
 
   Async support for ZeroMQ is still under development, as ZeroMQ uses edge triggered events that complicate things in the uWSGI async architecture.
 

@@ -1,21 +1,21 @@
 将你的1.x uWSGI实例升级至2.0 (work in progress)
 ============================================================
 
-The following notes are for users moving from 1.0, 1.2 and 1.4 to uWSGI 2.0.
+下面的说明是提供给那些从1.0, 1.2和1.4更新至uWSGI 2.0的用户的。
 
-Users of the 1.9 tree can skip this document as 2.0 is a "stabilized/freezed" 1.9.
+使用1.9版本树的用户可以跳过此文档，因为2.0是一个“稳定的/冻结的”1.9。
 
-What's new
+新特性
 ----------
 
-License change
+License更改
 **************
 
 uWSGI is now GPL2 + linking exception instead of plain GPL2.
 
 This should address some legal issues with users compiling uWSGI as a library (libuwsgi.so) and loading non-GPL compatible plugins/libraries.
 
-Non-blocking by default
+默认为非阻塞
 ***********************
 
 All of the I/O of the uWSGI stack (from the core to the plugins) is now fully non-blocking.
@@ -29,7 +29,7 @@ What does this mean for app developers?
 Well, the most important aspect is that network congestions or kernel problems do not block your instances and badly behaving peers
 are closed if they do not unblock in the socket-timeout interval (default 4 seconds).
 
-Newer, faster and better parsers
+更新，更快以及更好的解析器
 ********************************
 
 uWSGI 2.0 has support for pluggable protocols. The following protocols are supported and all of them have been updated
@@ -45,7 +45,7 @@ for better performance:
 * ``mongrel2`` -- classic zeromq/mongrel2 support, now it is exposed as a plugin
 * ``raw`` -- (new) fake parser, allows you to write applications directly working on file descriptors
 
-New reloading ways
+新的重载方式
 ******************
 
 uWSGI 2.0 introduces a blast of new ways for reloading instances.
@@ -54,7 +54,7 @@ uWSGI 2.0 introduces a blast of new ways for reloading instances.
 
    :doc:`TheArtOfGracefulReloading`
 
-Other new features
+其他新特性
 ******************
 
 * :doc:`MasterFIFO` -- A signal-free new approach for managing your instances.
@@ -71,7 +71,7 @@ Other new features
 * :doc:`tutorials/GraphiteAndMetrics`
 * :doc:`RPC` -- now supports 64-bit length responses
 
-New plugin build system
+新的插件构建系统
 ***********************
 
 It is pretty fun (and easy) to write uWSGI plugins, but (funnily enough) the worst aspect was building them, as dealing with build profiles, cflags, ldflags and friends tend to lead to all sorts of bugs and crashes.
@@ -98,27 +98,27 @@ Adding --strict to your instance options will instruct uWSGI config parser to ra
 
 If you are in trouble and want to be sure you did not have written wrong options, add --strict and retry
 
-Cygwin support
+Cygwin支持
 **************
 
 Yes, you can now build and run uWSGI on Windows systems :(
 
-kFreeBSD support
+kFreeBSD支持
 ****************
 
-PyPy support
+PyPy支持
 ************
 
-JVM support
+JVM支持
 ***********
 
-Mono support
+Mono支持
 ************
 
-V8 support
+V8支持
 **********
 
-Upgrading Notes
+更新说明
 ---------------
 
 * Snapshotting mode is no longer available. Check the new graceful reloading ways for better approaches.

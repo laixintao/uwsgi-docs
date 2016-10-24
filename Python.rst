@@ -70,7 +70,7 @@ Virtualenv支持
 
 3. 将你的WSGI模块拷贝到这个新环境中 (如果你不想要修改你的 ``PYTHONPATH``，那就是在 :file:`lib/python2.{x}` 之下)。
   
-  .. 注意:: 对于许多部署而言，应用运行在virtualenv之外是常见的。如何配置它尚未有文档说明，但是它可能非常容易。
+  .. note:: 对于许多部署而言，应用运行在virtualenv之外是常见的。如何配置它尚未有文档说明，但是它可能非常容易。
   .. TODO: Document that.
 
   使用 ``home``/``virtualenv`` 选项 (简称 ``-H``)来运行uwsgi服务器::
@@ -115,7 +115,7 @@ For example, if you have a virtualenv in :file:`/opt/tg2env` containing a Turbog
 
 That's it! No additional configuration or Python modules to write.
 
-.. 警告::
+.. warning::
 
   If you setup multiple process/workers (:term:`master` mode) you will receive an error::
 
@@ -137,7 +137,7 @@ For example, if you have a virtualenv in :file:`/opt/pecanenv` containing a Peca
 
   uwsgi --pecan /opt/pecanenv/addressbook/development.py --socket :3031 -H /opt/pecanenv
 
-.. 警告::
+.. warning::
 
   If you setup multiple process/workers (:term:`master` mode) you will receive an error::
 
