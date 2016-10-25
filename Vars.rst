@@ -1,20 +1,20 @@
-uwsgi protocol magic variables
+uwsgi协议魔术变量
 ==============================
 
-You can dynamically tune or configure various aspects of the uWSGI server using special variables passed by the web server (or in general by a uwsgi compliant client).
+你可以通过使用web服务器（或一般使用一个uwsgi兼容的客户端）传递的专用的变量来动态调整或配置uWSGI服务器的各个方面。
 
-* For Nginx, the ``uwsgi_param <name> <value>;`` directive is used.
-* For Apache, the ``SetEnv <name> <value>`` directive is used.
+* 对于Nginx，使用 ``uwsgi_param <name> <value>;`` 指令。
+* 对于Apache，使用 ``SetEnv <name> <value>`` 指令。
 
 ``UWSGI_SCHEME``
 ----------------
 
-Set the URL scheme when it cannot be reliably determined. This may be used to force HTTPS (with the value ``https``), for instance.
+当不能可靠确定时，设置URL方案。例如，这可以用来强制使用HTTPS (使用值 ``https``)。
 
 ``UWSGI_SCRIPT``
 ----------------
 
-Load the specified script as a new application mapped to ``SCRIPT_NAME``. The app will obviously only be loaded once, not on each request.
+将指定的脚本作为一个映射到 ``SCRIPT_NAME`` 的新应用加载。该应用将明显只加载一次，而不是在每个请求都加载。
 
 ::
 
@@ -22,10 +22,10 @@ Load the specified script as a new application mapped to ``SCRIPT_NAME``. The ap
   uwsgi_param SCRIPT_NAME  /testapp;
 
 
-``UWSGI_MODULE`` and ``UWSGI_CALLABLE``
+``UWSGI_MODULE`` 和 ``UWSGI_CALLABLE``
 ---------------------------------------
 
-Load a new app (defined as ``module:callable``) mapped into ``SCRIPT_NAME``.
+加载一个新的应用 (定义为 ``module:callable``)，将其映射到 ``SCRIPT_NAME``.
 
 ::
 
@@ -37,24 +37,24 @@ Load a new app (defined as ``module:callable``) mapped into ``SCRIPT_NAME``.
 ``UWSGI_PYHOME``
 ----------------
 
-Dynamically set the Python :ref:`Virtualenv` for a :doc:`dynamic application<DynamicApps>`.
+为一个 :doc:`dynamic application<DynamicApps>` 动态设置Python :ref:`Virtualenv`。
 
 .. seealso:: :ref:`DynamicVirtualenv`
 
 ``UWSGI_CHDIR``
 ---------------
 
-``chdir()`` to the specified directory before managing the request.
+在管理请求之前 ``chdir()`` 到指定的目录。
 
 ``UWSGI_FILE``
 --------------
 
-Load the specified file as a new dynamic app.
+将指定的文件作为一个新的动态应用加载。
 
 ``UWSGI_TOUCH_RELOAD``
 ----------------------
 
-Reload the uWSGI stack when the specified file's modification time has changed since the last request.
+当指定的文件的修改时间自最后一个请求后发生改变时，重载uWSGI栈。
 
 ::
 
@@ -69,7 +69,7 @@ Reload the uWSGI stack when the specified file's modification time has changed s
 
 .. seealso:: :doc:`Caching`
 
-Check the uWSGI cache for a specified key. If the value is found, it will be returned as raw HTTP output instead of the usual processing of the request.
+为特定的键查看uWSGI换成。如果找到该键，它将会作为原始的HTTP输出返回，而不是请求的一般处理。
 
 ::
 
@@ -83,11 +83,11 @@ Check the uWSGI cache for a specified key. If the value is found, it will be ret
 ``UWSGI_SETENV``
 ----------------
 
-Set the specified environment variable for a new dynamic app.
+为一个新的动态应用设置指定的环境变量。
 
-.. note:: To allow this in Python applications you need to enable the ``reload-os-env`` uWSGI option.
+.. note:: 要在Python应用中使用这个功能，你需要启用 ``reload-os-env`` uWSGI选项。
 
-Dynamically load a Django app without using a WSGI file/module::
+在不使用一个WSGI文件/模块的情况下动态加载一个Django应用::
 
   location / {
     include uwsgi_params;
@@ -100,11 +100,11 @@ Dynamically load a Django app without using a WSGI file/module::
 ``UWSGI_APPID``
 ---------------
 
-.. note:: Available since 0.9.9.
+.. note:: 自0.9.9起可用。
 
-Bypass ``SCRIPT_NAME`` and :doc:`VirtualHosting` to let the user choose the mountpoint without limitations (or headaches).
+绕过 ``SCRIPT_NAME`` 和 :doc:`VirtualHosting` ，从而让用户在没有限制（或者不头疼）的情况下选择挂载点。
 
-The concept is very generic: ``UWSGI_APPID`` is the identifier of an application. If it is not found in the internal list of apps, it will be loaded.
+这个概念是非常通用的: ``UWSGI_APPID`` 是一个应用的标识符。如果在应用的内部列表中找不到它，那么要加载它。
 
 ::
 
