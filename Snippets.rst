@@ -1,13 +1,12 @@
 Snippets
 ========
 
-This is a collection of some of the most "fun" uses of uWSGI features.
+这是uWSGI特性的一些最“有趣”的使用的集合。
 
-X-Sendfile emulation
+X-Sendfile模拟
 --------------------
 
-Even if your frontend proxy/webserver does not support X-Sendfile (or cannot access your static resources) you can emulate
-it using uWSGI's internal offloading (your process/thread will delegate the actual static file serving to offload threads).
+即使你的前端代理/web服务器不支持X-Sendfile (或者不能访问你的静态资源)，但是你可以使用uWSGI的内部卸载（）来模拟它。 (your process/thread will delegate the actual static file serving to offload threads).
 
 .. code-block:: ini
 

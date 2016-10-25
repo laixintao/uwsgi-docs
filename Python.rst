@@ -1,4 +1,4 @@
-Python support
+Python支持
 ==============
 
 .. toctree::
@@ -10,14 +10,14 @@ Python support
   Tracebacker
   PythonModuleAlias
 
-.. seealso:: :ref:`Python configuration options <OptionsPython>`
+.. 也可以看看:: :ref:`Python配置选项 <OptionsPython>`
 
 .. _PythonAppDict:
 
-Application dictionary
+应用字典
 ----------------------
 
-You can use the application dictionary mechanism to avoid setting up your application in your configuration.
+你可以使用应用字典机制来避免在配置中设置你的应用。
 
 .. code-block:: python
 
@@ -37,44 +37,43 @@ You can use the application dictionary mechanism to avoid setting up your applic
   }
 
 
-Passing this Python module name (that is, it should be importable and without the ``.py`` extension) to uWSGI's ``module`` / ``wsgi`` option, uWSGI will search the ``uwsgi.applications`` dictionary for the URL prefix/callable mappings.
+将这个Python模块名 (即，它应该是可导入的，并且没有 ``.py`` 扩展名)传递给uWSGI的 ``module`` / ``wsgi`` 选项，uWSGI将会为URL前缀/可回调映射搜索 ``uwsgi.applications`` 字典。
   
-The value of every item can be a callable, or its name as a string.
+每一个项的值可以使一个可回调对象，或者字符串类型的名字。
 
 .. TODO: Where is the string looked up from?
 
 .. _Virtualenv:
 
-Virtualenv support
+Virtualenv支持
 ------------------
 
-`virtualenv <virtualenvwww_>`_ is a mechanism that lets you isolate one (or more) Python applications' libraries (and interpreters, when not using uWSGI) from each other.
-Virtualenvs should be used by any respectable modern Python application.
+`virtualenv <virtualenvwww_>`_ 是一种机制，它允许你彼此隔离一个 (或多个) Python应用的库 (当不使用uWSGI时，还有解释器)。任何可敬的现代Python应用都应该使用virtualenv。
 
 .. _virtualenvwww: http://www.virtualenv.org/
 
-Quickstart
+快速入门
 ^^^^^^^^^^
 
-1. Create your virtualenv::
+1. 创建你的virtualenv::
 
     $ virtualenv myenv
     New python executable in myenv/bin/python
     Installing setuptools...............done.
     Installing pip.........done.
 
-2. Install all the modules you need (using `Flask <http://flask.pocoo.org/>`_ as an example)::
+2. 安装所有所需的模块 (以 `Flask <http://flask.pocoo.org/>`_ 为例)::
 
     $ ./myenv/bin/pip install flask
     $ # Many modern Python projects ship with a `requirements.txt` file that you can use with pip like this:
     $ ./myenv/bin/pip install -r requirements.txt
 
-3. Copy your WSGI module into this new environment (under :file:`lib/python2.{x}` if you do not want to modify your ``PYTHONPATH``).
+3. 将你的WSGI模块拷贝到这个新环境中 (如果你不想要修改你的 ``PYTHONPATH``，那就是在 :file:`lib/python2.{x}` 之下)。
   
-  .. note:: It's common for many deployments that your application will live outside the virtualenv. How to configure this is not quite documented yet, but it's probably very easy.
+  .. note:: 对于许多部署而言，应用运行在virtualenv之外是常见的。如何配置它尚未有文档说明，但是它可能非常容易。
   .. TODO: Document that.
 
-  Run the uwsgi server using the ``home``/``virtualenv`` option (``-H`` for short)::
+  使用 ``home``/``virtualenv`` 选项 (简称 ``-H``)来运行uwsgi服务器::
 
     $ uwsgi -H myenv -s 127.0.0.1:3031 -M -w envapp
 
@@ -101,7 +100,7 @@ You should encode strings or use bytes literals:
 
 .. _PythonPaste:
 
-Paste support
+Paste支持
 -------------
 
 If you are a user or developer of Paste-compatible frameworks, such as Pyramid_, Pylons_ and Turbogears_ or applications using them, you can use the uWSGI ``--paste`` option to conveniently deploy your application.
@@ -127,7 +126,7 @@ That's it! No additional configuration or Python modules to write.
 
 .. _PythonPecan:
 
-Pecan support
+Pecan支持
 -------------
 
 If you are a user or developer of the Pecan_ WSGI framework, you can use the uWSGI ``--pecan`` option to conveniently deploy your application.
@@ -146,12 +145,12 @@ For example, if you have a virtualenv in :file:`/opt/pecanenv` containing a Peca
 
   in which case you'll have to set the ``debug`` option in your pecan configuration file to False -- or revert to single process environment.
 
-Using the django-uwsgi Django app
+使用Django应用django-uwsgi
 --------------------------------
 
-First of all you need to get the ``django_uwsgi`` app from https://github.com/unbit/django-uwsgi (once it was in the ``django`` directory of the distribution).
+首先，你需要从https://github.com/unbit/django-uwsgi获取``django_uwsgi`` app (一旦它在发行的``django``目录中)。
 
-Install it with ``pip install django-uwsgi`` and add it into your ``INSTALLED_APPS``.
+通过``pip install django-uwsgi``安装，并且将其添加到你的``INSTALLED_APPS``中。
 
 .. code-block:: py
 
@@ -162,7 +161,7 @@ Install it with ``pip install django-uwsgi`` and add it into your ``INSTALLED_AP
         # ...
     )
     
-Then modify your ``urls.py`` accordingly. For example:
+然后相应地修改``urls.py``。例如：
 
 .. code-block:: py
 
@@ -171,9 +170,9 @@ Then modify your ``urls.py`` accordingly. For example:
     url(r'^admin/', include(admin.site.urls)),
     # ...
 
-Be sure to place the URL pattern for django_uwsgi *before* the one for the admin site, or it will never match.
+确保将django_uwsgid的URL模式放在admin site的模式*之前*，否则将永远匹配不上它。
 
-``/admin/uwsgi/`` will then serve uWSGI statistics and has a button for graceful reloading of the server (when running under a Master). Note that memory usage is reported only when the ``memory-report`` option is enabled.
+然后，``/admin/uwsgi/``将提供uWSGI静态文件，并且有一个优雅重载服务器（当运行在Master之下时）的按钮。注意，只有在启用了``memory-report``选项的情况下，才会报告内存使用情况。
 
-`Read the documentation for django-uwsgi at rtfd.org <http://django-uwsgi.rtfd.org/>`_
+`阅读django-uwsgi位于rtfd.org <http://django-uwsgi.rtfd.org/>的文档`_
 
