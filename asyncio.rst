@@ -1,54 +1,53 @@
-The asyncio loop engine (CPython >= 3.4, uWSGI >= 2.0.4)
+asyncio循环引擎 (CPython >= 3.4, uWSGI >= 2.0.4)
 ========================================================
 
 .. warning::
 
-  Status: EXPERIMENTAL, lot of implications, especially in respect to the WSGI standard
+  状态：实验中，有许多隐含式，特别是关于WSGI标准
 
-The ``asyncio`` plugin exposes a loop engine built on top of the ``asyncio`` CPython API (https://docs.python.org/3.4/library/asyncio.html#module-asyncio).
+ ``asyncio`` 插件公开了一个建立在 ``asyncio`` CPython API (https://docs.python.org/3.4/library/asyncio.html#module-asyncio)顶部的一个循环引擎。
 
-As uWSGI is not callback based, you need a suspend engine (currently only the 'greenlet' one is supported) to manage the WSGI callable.
+由于uWSGI并不是基于回调的，因此你需要一个挂起引擎(目前只支持“greenlet”)来管理WSGI callable。
 
-Why not map the WSGI callable to a coroutine?
+为什么不把WSGI callable映射到一个协程呢？
 *********************************************
 
-The reason is pretty simple: this would break WSGI in every possible way. (Let's not go into the details here.)
+理由很简单：这会以各种可能的方式终端。(这里就不深入细节了。)
 
-For this reason each uWSGI core is mapped to a greenlet (running the WSGI callable).
+出于这个原因，每个uWSGI核被映射到一个greenlet (运行WSGI回调)上。
 
-This greenlet registers events and coroutines in the asyncio event loop.
+这个greenlet在asyncio事件循环中注册事件和协程。
 
-Callback vs. coroutines
+Callable VS. 协程
 ***********************
 
-When starting to playing with asyncio you may get confused between callbacks and coroutines.
+当开始使用asyncio时，你可能会对Callable和协程之间感到困惑。
 
-Callbacks are executed when a specific event raises (for example when a file descriptor is ready for read). They are basically standard functions executed
-in the main greenlet (and eventually they can switch back control to a specific uWSGI core).
+当一个特定的事件引发的时候（例如，当一个文件描述符准备用于读的时候），会执行Callable。它们基本上是在主greenlet中执行的标准函数 (最终，它们可以切换控制回特定的uWSGI核上)。
 
-Coroutines are more complex: they are pretty close to a greenlet, but internally they work on Python frames instead of C stacks. From a Python programmer point of view, coroutines are very special generators. Your WSGI callable can spawn coroutines.
+协程更复杂：它们很接近greenlet，但在内部，它们运行在Python帧之上，而不是C堆栈上。自一个Python程序员看来，协程是非常特别的生成器，你的WSGI callable可以生成协程。
 
-Building uWSGI with asyncio support
+利用asyncio支持构建uWSGI
 ***********************************
 
-An 'asyncio' build profile is available in the official source tree (it will build greenlet support too).
+可以在官方源代码树(也将构建greenlet支持)中找到一个'asyncio'构建配置文件。
 
 .. code-block:: sh
 
    CFLAGS="-I/usr/local/include/python3.4" make PYTHON=python3.4 asyncio
    
-or
+或者
 
 .. code-block:: sh
 
    CFLAGS="-I/usr/local/include/python3.4" UWSGI_PROFILE="asyncio" pip3 install uwsgi
    
-be sure to use Python 3.4+ as the Python version and to add the greenlet include directory to ``CFLAGS`` (this may not be needed if you installed greenlet support from your distribution's packages).
+一定要使用Python 3.4+作为Python版本，并且添加greenlet include目录到 ``CFLAGS`` (如果你从发行包中安装了greenlet支持，那么这可能并不需要)。
 
-The first example: a simple callback
+第一个例子：一个简单的回调
 ************************************
 
-Let's start with a simple WSGI callable triggering a function 2 seconds after the callable has returned (magic!).
+让我们从一个简单的WSGI callable开始，它在该 callable返回之后2秒后触发一个函数（神奇！）。
 
 .. code-block:: python
 
@@ -62,20 +61,19 @@ Let's start with a simple WSGI callable triggering a function 2 seconds after th
        asyncio.get_event_loop().call_later(2, two_seconds_elapsed)
        return [b"Hello World"]
        
-Once called, the application function will register a callable in the asyncio event loop and then will return to the client.
+一旦被调用，那么该应用函数将在asyncio事件循环中注册一个 callable，然后会返回到客户端。
 
-After two seconds the event loop will run the function.
+在2秒后，事件循环将会运行该函数。
 
-You can run the example with:
+你可以这样运行这个例子：
 
 .. code-block:: sh
 
    uwsgi --asyncio 10 --http-socket :9090 --greenlet --wsgi-file app.py
    
-``--asyncio`` is a shortcut enabling 10 uWSGI async cores, enabling you to manage up to 10 concurrent requests with a single process.
+``--asyncio`` 是一个快捷方式，它启用10个uWSGI异步核，让你能够用一个单一的进程就可以管理多达10个并发请求。
    
-But how to wait for a callback completion in the WSGI callable?
-We can suspend our WSGI function using greenlets (remember our WSGI callable is wrapped on a greenlet):
+但是，如何在WSGI callable中等待一个回调完成呢？我们可以使用greenlet来挂起我们的WSGI函数 (记住，我们的WSGI callable是封装在一个greenlet中的):
 
 .. code-block:: python
 
@@ -95,7 +93,7 @@ We can suspend our WSGI function using greenlets (remember our WSGI callable is 
        myself.parent.switch()
        return [b"Hello World"]
        
-And we can go even further abusing the uWSGI support for WSGI generators:
+我们可以更进一步，为WSGI生成器滥用uWSGI支持：
 
 .. code-block:: python
 
@@ -116,10 +114,10 @@ And we can go even further abusing the uWSGI support for WSGI generators:
        myself.parent.switch()
        yield b"Two"
 
-Another example: Futures and coroutines
+另一个例子：Future与协程
 ***************************************
 
-You can spawn coroutines from your WSGI callable using the ``asyncio.Task`` facility:
+你可以使用 ``asyncio.Task`` 从你的 WSGI callable中生成协程：
 
 .. code-block:: python
 
@@ -142,7 +140,7 @@ You can spawn coroutines from your WSGI callable using the ``asyncio.Task`` faci
        # back from event loop
        return [b"Hello World"]
 
-Thanks to Futures we can even get results back from coroutines...
+有了Future，我们甚至可以从协程中获取结果……
 
 .. code-block:: python
 
@@ -168,7 +166,7 @@ Thanks to Futures we can even get results back from coroutines...
        # back from event loop
        return [future.result()]
        
-A more advanced example using the ``aiohttp`` module (remember to ``pip install aiohttp`` it, it's not a standard library module)
+一个更高级的使用 ``aiohttp`` 模块的例子 (记住执行 ``pip install aiohttp`` 来安装它，它并不是一个标准库模块)
 
 .. code-block:: python
 
@@ -195,9 +193,9 @@ A more advanced example using the ``aiohttp`` module (remember to ``pip install 
        # this time we use yield, just for fun...
        yield bytes(future.result())
 
-Status
+状态
 ******
 
-* The plugin is considered experimental (the implications of asyncio with WSGI are currently unclear). In the future it could be built by default when Python >= 3.4 is detected.
-* While (more or less) technically possible, mapping a WSGI callable to a Python 3 coroutine is not expected in the near future.
-* The plugin registers hooks for non blocking reads/writes and timers. This means you can automagically use the uWSGI API with asyncio. Check the https://github.com/unbit/uwsgi/blob/master/tests/websockets_chat_asyncio.py example.
+* 该插件被认为是实验性的 (WSGI中使用asyncio的影响目前尚未清楚)。未来，当检测到Python >= 3.4的时候，可能会默认构建。
+* 虽然（或多或少）技术上是可行的，但是在不久的将来，并不期望将一个WSGI callable映射到一个Python 3协程上。
+* 该插件为非阻塞的读/写和定时器注册钩子。这意味着，你可以自动使用uWSGI API和asyncio。看看 https://github.com/unbit/uwsgi/blob/master/tests/websockets_chat_asyncio.py 这个例子。
