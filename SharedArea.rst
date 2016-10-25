@@ -1,4 +1,4 @@
-SharedArea -- share memory pages between uWSGI components
+SharedArea ——  uWSGI组件间共享内存页
 =========================================================
 
 .. warning::
