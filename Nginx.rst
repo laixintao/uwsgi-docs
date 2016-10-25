@@ -1,13 +1,13 @@
-Nginx support
+Nginx支持
 =============
 
 Nginx natively includes support for upstream servers speaking the :doc:`uwsgi protocol<Protocol>` since version 0.8.40.
 
 
-Configuring Nginx
+配置Nginx
 -----------------
 
-Generally you only need to include the uwsgi_params file (included in nginx distribution), and set the address of the uWSGI socket with uwsgi_pass directive
+一般来说，你只需包含uwsgi_params文件 (包含在nginx发行版本中), and set the address of the uWSGI socket with uwsgi_pass directive
 
 ::
 
@@ -24,7 +24,7 @@ Generally you only need to include the uwsgi_params file (included in nginx dist
 
 Then simply reload Nginx and you are ready to rock your uWSGI powered applications through Nginx.
 
-What is the ``uwsgi_params`` file?
+ ``uwsgi_params`` 文件是啥？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It's convenience, nothing more! For your reading pleasure, the contents of the file as of uWSGI 1.3::
@@ -66,7 +66,7 @@ Then modify your uwsgi_pass directive::
 Your requests will be balanced between the uWSGI servers configured.
 
 
-Dynamic apps
+动态应用
 ------------
 
 The uWSGI server can load applications on demand when passed special vars.
@@ -101,7 +101,7 @@ You can even configure multiple apps per-location::
   }  
         
 
-Hosting multiple apps in the same process (aka managing SCRIPT_NAME and PATH_INFO)
+在同一个进程中托管多个应用 (亦称管理SCRIPT_NAME和PATH_INFO)
 ----------------------------------------------------------------------------------
 
 The WSGI standard dictates that ``SCRIPT_NAME`` is the variable used to select a specific application. Unfortunately
@@ -179,7 +179,7 @@ now just mount your apps in uWSGI using the domain name as the mount key
    mount = example.com=app1.py
    mount = foobar.it=app2.py
 
-Static files
+静态文件
 ------------
 
 For best performance and security, remember to configure Nginx to serve static files instead of letting your poor application handle that.
@@ -203,7 +203,7 @@ Some applications need to pass control to the UWSGI server only if the requested
 
   If used incorrectly a configuration like this may cause security problems. For your sanity's sake, double-triple-quadruple check that your application files, configuration files and any other sensitive files are outside of the root of the static files.
 
-Virtual Hosting
+虚拟主机
 ---------------
 
 You can use Nginx's virtual hosting without particular problems.

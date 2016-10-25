@@ -1,4 +1,4 @@
-The Tornado loop engine
+Tornado循环引擎
 =======================
 
 Available from: ```uWSGI 1.9.19-dev```
@@ -19,15 +19,15 @@ Currently the only supported suspend engine is the "greenlet" one. Stackless pyt
 
 PyPy is currently not supported (albeit technically possible thanks to continulets). Drop a mail to Unbit staff if you are interested.
 
-Why ?
-*****
+为什么？
+*******
 The Tornado project includes a simple WSGI server by itself. In the same spirit of the Gevent plugin, the purpose of Loop engines is allowing external prejects
 to use (and abuse) the uWSGI api, for better performance, versatility and (maybe the most important thing) resource usage.
 
 All of the uWSGI subsystems are available (from caching, to websockets, to metrics) in your tornado apps, and the WSGI engine is the battle-tested uWSGI one.
 
 
-Installation
+安装
 ************
 
 The tornado plugin is currently not built-in by default. To have both tornado and greenlet in a single binary you can do
@@ -42,7 +42,7 @@ or (from uWSGI sources, if you already have tornado and greenlet installed)
 
    UWSGI_EMBED_PLUGINS=tornado,greenlet make
 
-Running it
+运行之
 **********
 
 The ``--tornado`` option is exposed by the tornado plugin, allowing you to set optimal parameters:
@@ -90,7 +90,7 @@ Thanks to greenlet we can suspend the execution of our WSGI callable until a tor
         sr('200 OK', [('Content-Type','text/plain')])
         return me.result
 
-Welcome to Callback-Hell
+欢迎来到Callback-Hell
 ************************
 
 As always, it is not the job of uWSGI to judge programming approaches. It is a tool for sysadmins, and sysadmins should be tolerant with developers choices.
@@ -142,7 +142,7 @@ increase concurrency (both in terms of memory usage and performance). Technologi
 to accomplish.
 
 
-WSGI generators (aka yield all over the place)
+WSGI生成器 (aka yield all over the place)
 **********************************************
 
 Take the following WSGI app:
@@ -202,4 +202,4 @@ to use different ports for each workers:
        ...
    
    
-Remember: do no start the IOLoop class. uWSGI will do it by itself as soon as the setup is complete
+记住：不要启动IOLoop类。一旦安装完成，uWSGI将会自己启动它。
