@@ -1,25 +1,26 @@
-钩子(hook)
+Hooks
 =====
 
-(更新至uWSGI 1.9.16)
+(updated to uWSGI 1.9.16)
 
-uWSGI主要的指导思想是变得“模块化”。它大量的特性作为插件暴露出来，既允许用户优化其构建，又鼓励开发者对其进行扩展。
+uWSGI's main directive is being "modular". The vast majority of its features are exposed as plugins, both to allow users to optimize
+their build and to encourage developers to extend it.
 
-写插件可能是一件烦人的任务，特别是当你只需要改变/实现一个单一的功能的时候。
+Writing plugins can be an annoying task, especially if you only need to change/implement a single function.
 
-对于简单的任务，uWSGI公开了一个钩子API，你可以任性地使用它来修改uWSGI的内部行为。
+For simple tasks, uWSGI exposes an hook API you can abuse to modify uWSGI's internal behaviors.
 
 The "hookable" uWSGI phases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-在准备管理请求之前，uWSGI经历各种“阶段”。你可以将一个或多个“钩子”附加到这些阶段。
+Before being ready to manage requests, uWSGI goes through various "phases". You can attach one or more "hooks" to these phases.
 
-每个阶段都可能是“致命的”，如果是这样，那么一个失败的钩子将意味着整个uWSGI实例的失败 (通常调用 ``exit(1)``)。
+Each phase can be "fatal", if so, a failing hook will mean failing of the whole uWSGI instance (generally calling ``exit(1)``).
 
-目前 (2013年9月)，有以下阶段可供选择：
+Currently (September 2013) the following phases are available:
 
-* ``asap`` 在解析完配置文件之后，完成一切事情之前直接运行。它是致命的。
-* ``pre-jail`` 在对放弃特权的任何尝试，或者将进程放到任何形式的jail之前运行。它是致命的。
+* ``asap`` run directly after configuration file has been parsed, before anything else is done. it is fatal.
+* ``pre-jail`` run before any attempt to drop privileges or put the process in some form of jail. it is fatal.
 * ``post-jail`` run soon after any jailing, but before privileges drop. If jailing requires fork(), the parent process run this phase. it is fatal.
 * ``in-jail`` run soon after jayling, but after post-jail. If jailing requires fork(), the chidlren run this phase. it is fatal.
 * ``as-root`` run soon before privileges drop (last chance to run something as root). it is fatal.
@@ -34,7 +35,7 @@ The "hookable" uWSGI phases
 * ``as-emperor`` run soon after the spawn of a vassal in the Emperor process. it is non-fatal.
 * ``as-vassal`` run in the vassal before executing the uwsgi binary. it is fatal.
 
-"硬编码"钩子
+The "hardcoded" hooks
 ^^^^^^^^^^^^^^^^^^^^^
 
 As said before, the purpose of the hook subsystem is to allow attaching "hooks" to the various uWSGI phases.
@@ -44,19 +45,19 @@ There are two kind of hooks. The simple ones are the so-called "hardcoded" ones.
 Currently (September 2013) the following "hardcoded" hooks are available (they run in the order they are shown below):
 
 
-``mount`` —— 文件系统挂载
+``mount`` -- mount filesystems
 ******************************
 
 Arguments: <filesystem> <src> <mountpoint> [flags]
 
 The exposed flags are the ones available for the operating system. As an example on Linux you will options like bind, recursive, readonly etc.
 
-``umount`` —— 文件系统解除挂载
+``umount`` -- unmount filesystems
 *********************************
 
 Arguments: <mountpoint> [flags]
 
-``exec`` 运行shell命令
+``exec`` run shell commands
 ***************************
 
 Arguments: <command> [args...]
@@ -65,7 +66,7 @@ Run the command under ``/bin/sh``.
 
 If for some reason you do not want to use ``/bin/sh`` as the running shell, you can override it with the ``--binsh`` option. You can specify multiple ``--binsh`` options -- they will be tried until one valid shell is found.
 
-``call`` 在当前进程地址空间内调用函数
+``call`` call functions in the current process address space
 ************************************************************
 
 Arguments: <symbol> [args...]
@@ -102,7 +103,7 @@ From now on, the "foo_hello" symbol is available in the uWSGI symbol table, read
 
    As --dlopen is a wrapper for the ``dlopen()`` function, beware of absolute paths and library search paths. If you do not want headaches, use always absolute paths when dealing with shared libraries.
 
-附加“硬编码”钩子
+Attaching "hardcoded" hooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Each hardcoded hook exposes a set of options for each phase (with some exceptions).
@@ -127,7 +128,7 @@ Remember, you can attach all of the hooks you need to a hook-phase pair.
    
 The only exception to the rule are the `as-emperor` and `as-vassal` phases. For various reasons they expose a bunch of handy variants -- see below.
 
-“高级”钩子
+The "advanced" hooks
 ^^^^^^^^^^^^^^^^^^^^
 
 A problem that limits their versatility (a big no-no in the uWSGI state of mind) with hardcoded hooks, is that you cannot control the order of the whole chain (as each phase executes each hooks grouped by type). If you want more control, "advanced" hooks are the best choice.

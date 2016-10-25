@@ -1,4 +1,4 @@
-配置逻辑
+Configuration logic
 ===================
 
 Starting from 1.1 certain logic constructs are available.
