@@ -1,21 +1,20 @@
-Writing uWSGI plugins
+编写uWSGI插件
 =====================
 
-This tutorial will introduce you to uWSGI hacking. A bit of C knowledge and UNIX theory is required.
+本教程将向你介绍uWSGI hacking。需要一点C知识和UNIX理论。
 
-The simplified (and safe) build system used in the tutorial has been added in uWSGI 1.9.21, on older versions you need the raw
-procedure (described at the end of the tutorial)
+本教程中使用的简化（安全）的构建系统已添加到uWSGI 1.9.21中，在旧版本中，你需要原始程序（在教程结束时有描述）
 
-What is an uWSGI plugin?
+uWSGI插件是什么？
 ************************
 
-uWSGI plugins are standard shared libraries (with the classic .so extension) exposing a specific C structure named "uwsgi_plugin".
+uWSGI插件是标准的共享库（带有经典的.so扩展名），公开了一个特定的名为"uwsgi_plugin"的C结构。
 
-This structure exposes a bunch of handy information (like the name of the plugin) and "hooks".
+这个结构公开了一堆便利的信息（例如插件的名字）和“钩子”。
 
-Hooks are simple functions registered to be run at specific server phases.
+钩子是简单函数，注册来在特定的服务器阶段运行。
 
-The minimal plugin you can write it is something like this (the 'foobar' plugin):
+你可以写的最小的插件是像这样的 ('foobar'插件)：
 
 .. code-block:: c
 
@@ -25,20 +24,19 @@ The minimal plugin you can write it is something like this (the 'foobar' plugin)
            .name ="foobar",
    };
    
-It announces itself as 'foobar' and exposes no hooks (yes, it is the most useless plugin out there, except for adding a teensy bit of memory use to uWSGI).
+它将自己声明为'foobar'，并且不公开任何钩子（是哒，它是这最没用的钩子，除了增加了uWSGI小小的内存使用）。
 
-Plugins are not required to define hooks -- they can simply expose functions that can be called using uWSGI advanced facilities (read: :doc:`Hooks`).
+不要求插件定义钩子 —— 它们可以简单地公开可以使用uWSGI高级功能调用的函数 (阅读： :doc:`Hooks`)。
 
-Why (and when) plugins?
+为什么（以及何时）使用插件？
 ***********************
 
-Even if uWSGI is able to directly load shared libraries (with ``--dlopen``) and call their functions as hooks, sometimes you want to interface with
-uWSGI's internal structures.
+即使uWSGI可以直接加载共享库 (使用 ``--dlopen``) ，并且将它们的函数称之为钩子，但是有时候你想要与uWSGI内部结构进行交互。
 
-The first plugin
+第一个插件
 ****************
 
-Our first plugin will be a simple "Hello world" one:
+我们第一个插件将是一个简单的"Hello world":
 
 .. code-block:: c
 
@@ -54,64 +52,64 @@ Our first plugin will be a simple "Hello world" one:
            .init = foo_init,
    };
    
-Save it as ``foobar.c``.
+将其保存为 ``foobar.c`` 。
 
-Build it:
+构建它：
 
 .. code-block:: sh
 
    uwsgi --build-plugin foobar.c
    
-You will end up with a ``foobar_plugin.so`` that you can load in your uWSGI binary.
+你将会获得一个 ``foobar_plugin.so`` ，你可以将它加载到你的uWSGI二进制中。
 
 .. code-block:: sh
 
    uwsgi --plugin ./foobar_plugin.so
    
-If all goes well, you should see "Hello World" on your terminal before uWSGI exiting with an error (as no socket is defined).
+如果一切顺利，那么在uWSGI错误退出（因为没有定义任何socket）之前，你应该会在终端上看到"Hello World"。
 
-The uwsgiplugin.py file
+uwsgiplugin.py文件
 ***********************
 
-How does the magic happen?
+魔法解密
 **************************
 
-As you have seen, the uwsgi binary by itself is able to build plugins without forcing the user/developer to care about build profiles, #ifdef or platform-specific configurations.
+正如所看到的那样，uwsgi二进制本身能够在不强迫用户/开发者关心构建配置文件，#ifdef或者平台特定的配置的情况下构建插件。
 
-This is possible because the uwsgi binary itself contains the raw 'uwsgi.h' file as well as the 'uwsgiconfig.py' script.
+这是有可能的，因为uwsgi二进制本身包含了原始的'uwsgi.h'文件以及'uwsgiconfig.py'脚本。
 
-In addition to this the CFLAGS used when building the binary are stored too.
+除了这个，还存储了构建二进制时使用的CFLAGS。
 
-With these 3 components you have all you need to safely build a uWSGI plugin tuned for your uwsgi binary.
+有了这3个组件，你就可以放心地安全地构建为你的uwsgi二进制调整的uWSGI插件了。
 
-General plugins VS request plugins
+一般的插件 VS 请求插件
 **********************************
 
-The wsgi_request struct
+wsgi_request结构
 ***********************
 
-Headers, body and sendfile
+header, body和sendfile
 **************************
 
 Offloading
 **********
 
-Available hooks
+可用钩子
 ***************
 
-Defining options
+定义选项
 ****************
 
-Using C++
+使用C++
 *********
 
-Using Objective-C
+使用Objective-C
 *****************
 
 socket I/O
 **********
 
-Whenever you make I/O operations on a socket you have to be sure to not-block the currently running thread/core/worker.
+每当你在一个socket上进行I/O操作时，你必须确保不阻塞当前运行的线程/核/worker。
 
-The uwsgi API exposes some functions to ensure safety when dealing with I/O. They would be documented here, but aren't, yet.
+uwsgi API公开了一些函数，用来在处理I/O的时候保证安全性。它们将在这里记录，但目前还木有。
 

@@ -53,7 +53,7 @@ To build the plugin you need mongodb development headers (mongodb-dev on Debian/
 will do the trick
 
 
-Notes
+小抄
 *****
 
 You can configure all of the stats pusher you need, just specify multiple stats-push options

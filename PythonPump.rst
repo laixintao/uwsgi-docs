@@ -1,11 +1,11 @@
-Pump support
+Pump支持
 ============
 
-.. note:: Pump is not a PEP nor a standard.
+.. note:: Pump并不是PEP，也不是标准。
 
-Pump_ is a new project aiming at a "better" WSGI.
+Pump_ 是一个新项目，旨在“更好的”WSGI。
 
-An example Pump app, for your convenience:
+为你方便起见，一个样例Pump应用：
 
 .. code-block:: python
 
@@ -16,12 +16,12 @@ An example Pump app, for your convenience:
             "body": "<h1>Hello!</h1>"
         }
 
-To load a Pump app simply use the ``pump`` option to declare the callable.
+要加载一个Pump应用，只需使用 ``pump`` 选项来声明回调。
 
 .. code-block:: sh
 
     uwsgi --http-socket :8080 -M -p 4 --pump myapp:app
 
-``myapp`` is the name of the module (that must be importable!) and app is the callable. The callable part is optional -- by default uWSGI will search for a callable named 'application'.
+``myapp`` 是模块的名字（必须是可导入的！），而app是回调。回调部分是可选的，默认情况下，uWSGI将会搜索一个名为'application'的回调。
 
 .. _Pump: http://adeel.github.com/pump/

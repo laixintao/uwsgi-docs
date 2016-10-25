@@ -1,4 +1,4 @@
-Serving static files with uWSGI (updated to 1.9)
+使用uWSGI提供静态文件 (更新至1.9)
 ================================================
 
 Unfortunately you cannot live without serving static files via some protocol (HTTP, SPDY or something else).
@@ -273,7 +273,7 @@ You can directly store a static file in the uWSGI cache during startup using the
 
 So please pay attention -- ``load-file-in-cache ./foo.png`` will store the item as ``./foo.png``, not its full path.
 
-Notes
+小抄
 *****
 
 * The static file serving subsystem automatically honours the If-Modified-Since HTTP request header

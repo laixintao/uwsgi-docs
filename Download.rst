@@ -1,13 +1,13 @@
-Getting uWSGI
+获取uWSGI
 =============
 
-These are the current versions of uWSGI.
+这些是uWSGI的当前版本。
 
 ========================  ==========  ===================================================
 Release                   Date        Link
 ========================  ==========  ===================================================
 Unstable/Development      \-          https://github.com/unbit/uwsgi/
-Stable/LTS                2016-10-03  https://projects.unbit.it/downloads/uwsgi-2.0.14.tar.gz
+Stable/LTS                2016-05-13  https://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz
 DOCS                      \-          https://github.com/unbit/uwsgi-docs/
 ========================  ==========  ===================================================
 

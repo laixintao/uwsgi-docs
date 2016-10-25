@@ -1,4 +1,4 @@
-Integration with Graphite/Carbon
+与Graphite/Carbon集成
 ================================
 
 `Graphite <http://graphite.wikidot.com/>`_ is a kick-ass realtime graphing

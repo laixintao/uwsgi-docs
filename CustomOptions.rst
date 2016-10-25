@@ -1,4 +1,4 @@
-Defining new options for your instances
+为你的实例定义新选项
 =======================================
 
 Sometimes the built-in options are not enough. For example, you may need to

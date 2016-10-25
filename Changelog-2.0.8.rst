@@ -3,7 +3,7 @@ uWSGI 2.0.8
 
 Note: this is the first version with disabled-by-default SSL3, if you need it, you can re-enable with ``--ssl-enable3`` option
 
-Bugfixes
+错误修复
 --------
 
 * fixed PHP `SCRIPT_NAME` usage when ``--php-app`` is in place
@@ -18,8 +18,8 @@ Bugfixes
 * fixed mountpoint logic for paths not ending with / (credits: Adriano Di Luzio)
 * fixed Python3 support in spooler decorators (credits: Adriano Di Luzio)
 
-New Features
-------------
+新特性
+********
 
 RTSP and chunked input backports from 2.1 for the HTTP router
 *************************************************************
@@ -78,7 +78,7 @@ Automatically manage HTTP_X_FORWARDED_PROTO
 Albeit a new standard is avavailble in the HTTP world for forwarded sessions (http://tools.ietf.org/html/rfc7239) this release
 adds support for the X-Forwarded-Proto header, automatically setting the request scheme accordingly.
 
-Availability
+可用性
 ------------
 
 uWSGI 2.0.8 has been released on 20141026. Download it from:

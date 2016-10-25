@@ -275,7 +275,7 @@ The plugin exports a 'gridfs' action simply returning an item:
 The options are the same as the request plugin's, with "itemname" being the
 only addition. It specifies the name of the object in the GridFS db.
 
-Notes
+小抄
 *****
 
 * If you do not specify a server address, 127.0.0.1:27017 is assumed.

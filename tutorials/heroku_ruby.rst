@@ -1,14 +1,14 @@
-Running Ruby/Rack webapps on Heroku with uWSGI
+使用uWSGI在Heroku上运行Ruby/Rack
 ==============================================
 
-Prerequisites: a Heroku account (on the cedar platform), git (on the local system) and the heroku toolbelt (or the old/deprecated heroku gem)
+前提条件：一个Heroku账户 (在cedar平台上)，git (本地系统跟上) 以及heroku toolbelt (或者老的/已弃用的heroku gem)
 
-Note: you need a uWSGI version >= 1.4.8 to correctly run ruby/rack apps. Older versions may work, but are not supported.
+注意：需要uWSGI version >= 1.4.8来确保正确运行ruby/rack应用。较老的版本可能可用，但并不支持。
 
-Preparing the environment (a Sinatra application)
+准备环境(一个Sinatra应用)
 *************************************************
 
-On your local system prepare the structure for your sinatra application
+在你的本地系统上，为你的sinatra应用准备结构
 
 .. code-block:: sh
 
@@ -18,9 +18,9 @@ On your local system prepare the structure for your sinatra application
    heroku create --stack cedar
    
 
-the last command will create a new heroku application (you can check it on the web dashboard).
+最后一个命令将会创建一个新的heroku应用 (你可以在网页界面上检查它)。
 
-Next step is creating our Gemfile (this file contains the gem required by the application)
+下一步是创建我们的Gemfile (这个文件包含应用所需的gem)
 
 .. code-block:: rb
 
@@ -29,16 +29,16 @@ Next step is creating our Gemfile (this file contains the gem required by the ap
    gem "uwsgi"
    gem "sinatra"
 
-we now need to run ``bundle install`` to create the Gemfile.lock file
+现在，需要运行 ``bundle install`` 来创建Gemfile.lock文件
 
-let's track the two with git:
+用git来跟踪这两个：
 
 .. code-block:: sh
 
    git add Gemfile
    git add Gemfile.lock
 
-Finally create a config.ru file containing the Sinatra sample app
+最后，创建一个包含Sinatra样例应用的config.ru文件
 
 .. code-block:: rb
 
@@ -50,18 +50,18 @@ Finally create a config.ru file containing the Sinatra sample app
 
    run Sinatra::Application
 
-and track it
+并且，跟踪它
 
 .. code-block:: sh
 
    git add config.ru
 
-Creating the uWSGI config file
+创建uWSGI配置文件
 ******************************
 
-We are now ready to create the uWSGI configuration (we will use the .ini format in a file called uwsgi.ini).
+现在，准备好创建uWSGI配置了 (我们将使用.ini文件格式，称为uwsgi.ini)。
 
-The minimal setup for heroku is the following (check the comments in the file for an explanation)
+heroku的最小化步骤如下 (解释请查看文件中的注释)
 
 .. code-block:: ini
 
@@ -77,7 +77,7 @@ The minimal setup for heroku is the following (check the comments in the file fo
    ; when the app receives the TERM signal let's destroy it (instead of brutal reloading)
    die-on-term = true
 
-but a better setup will be
+但是，更好的安装将是
 
 .. code-block:: ini
 
@@ -101,76 +101,69 @@ but a better setup will be
    ; reload if the rss memory is higher than 100M
    reload-on-rss = 100
 
-Let's track it
+跟踪它：
 
 .. code-block:: sh
 
    git add uwsgi.ini
 
-Deploying to heroku
+部署到heroku
 *******************
 
-We need to create the last file (required by Heroku). It is the Procfile, that instruct the Heroku system on which process to start for a web application.
+需要创建最后一个文件 (Heroku要求的)。它就是Procfile，用来指示Heroku系统为web应用启动哪个进程。
 
-We want to spawn uwsgi (installed as a gem via bundler) using the uwsgi.ini config file
+我们想使用uwsgi.ini配置文件来生成uwsgi (通过bundler作为gem安装)
 
 .. code-block:: sh
 
    web: bundle exec uwsgi uwsgi.ini
 
-track it
+跟踪它：
 
 .. code-block:: sh
 
    git add Procfile
 
-And let's commit all:
+提交所有：
 
 .. code-block:: sh
 
    git commit -a -m "first attempt"
 
-And push to heroku:
+然后push到heroku:
 
 .. code-block:: sh
 
    git push heroku master
 
-If all goes well, you will see your page under your app url on the /hi path
+如果一切顺利，你将在/hi路径中的应用url下看到你的页面
 
-Remember to run ``heroku logs`` to check if all is ok.
+记得运行 ``heroku logs`` 来检查看看是否一切正常。
 
-fork() for dummies
+fork()小白指南
 ******************
 
-uWSGI allows you to choose how to abuse the fork() syscall in your app.
+uWSGI允许你选择在应用中如何使用fork() syscall。
 
-By default the approach is loading the application in the master process and then fork() to the workers
-that will inherit a copy of the master process.
+默认情况下，办法是在master进程中加载进程，然后fork()到worker，这样，worker将会继承master进程的一个拷贝。
 
-This approach speedup startup and can potentially consume less memory. The truth is that often (for the way ruby garbage collection works)
-you will get few memory gain. The real advantage in in performance as the vast majority of time during application startup is spent
-in (slowly) searching for files. With the fork() early approach you can avoid repeating that slow procedure one time for worker.
+这个方法加速了启动，并且可能会消耗更少的内存。真相是你常常(对于ruby垃圾回收工作的方式)会获得更少的内存增益。真正的优势是在性能上，因为应用启动花费的大部分时间是花在了（缓慢地）文件搜索上。使用fork() 早期方法，你可以为worker避免重复一次那个缓慢的过程。
 
-Obviously the uWSGI mantra is "do whatever you need, if you can't, it is a uWSGI bug" so if your app is not fork()-friendly
-you can add the ``lazy-apps = true`` option that will load your app one time per-worker.
+显然，uWSGI的准则是“做任何你需要做的事，如果不能，那这它就是一个uWSGI错误”，因此，如果你的应用不是fork()友好的，那你可以添加 ``lazy-apps = true`` 选项，这将会在每个worker中加载你的应用一次。
 
-The ruby GC
+ruby GC
 ***********
 
-By default uWSGI, calls the ruby Garbage collector after each request. This ensure an optimal use of memory (remember on Heroku, your memory is limited) you should not touch
-the default approach, but if you experience a drop in performance you may want to tune it using the ``ruby-gc-freq = n`` option
-where n is the number of requests after the GC is called.
+默认情况下，uWSGI在每次请求你后，调用ruby的垃圾收集器。这确保了内存的优化使用 (记住，在Heroku上，你的内存受限) 。你不应该动默认的方式，但如果性能下降，那么你或许想要使用 ``ruby-gc-freq = n`` 选项进行调试，这里，n是调用GC后的请求数。
 
-Concurrency
+并发性
 ***********
 
-Albeit uWSGI supports lot of different paradigms for concurrency, the multiprocess one is suggested for the vast majority of ruby/rack apps.
+尽管uWSGI支持并发性的大量不同的范例，但是对于大部分的ruby/rack应用来说，建议使用多进程。
 
-Basically all popular ruby-frameworks rely on that. Remember that your app is limited so spawn a number of processes
-that can fit in your Heroku dyno.
+基本上，所有流行的ruby框架的依赖于多进程。记住，你的应用受限，因此，生成许多进程会适合你的Heroku dyno。
 
-Starting from uWSGI 1.9.14, native ruby 1.9/2.x threads support has been added. Rails4 (only in production mode !!!) supports them:
+自uWSGI 1.9.14起，添加了原生ruby 1.9/2.x线程支持。Rails4 (只在生产模式！！) 支持它们：
 
 .. code-block:: ini
 
@@ -187,53 +180,52 @@ Starting from uWSGI 1.9.14, native ruby 1.9/2.x threads support has been added. 
 Harakiri
 ********
 
-If you plan to put production-apps on heroku, be sure to understand how dynos and their proxy works. Based on that, try to always set the harakiri parameters to a good value for your app. (do not ask for a default value, IT IS APP-DEPENDENT)
+如果你计划将生产应用放在heroku上，那么确保了解dynos和它们的代理是如何工作的。基于此，试着总是为你的应用将harakiri参数设置成一个不错的值。 (不要要求默认值，它取决于应用)
 
-Harakiri, is the maximum time a single request can run, before being destroyed by the master
+Harakiri，是一个单一的请求在被master摧毁之前可以运行的最长时间
 
-Static files
+静态文件
 ************
 
-Generally, serving static files on Heroku is not a good idea (mainly from a design point of view). You could obviously have that need. In such a case remember to use uWSGI facilities for that, in particular offloading is the best way to leave your workers free while you serve big files (in addition to this remember that your static files must be tracked with git)
+一般来讲，在Heroku上提供静态文件并不是一个好主意 (主要从设计的角度来看)。你当然可以有此需求。在这种情况下，记得使用uWSGI功能，特别是卸载（offloading）是在提供大文件时留出worker的最好方法 (另外，记得必须使用git来跟踪你的静态文件)
 
-Try to avoid serving static files from your ruby/rack code. It will be extremely slow (compared to the uWSGI facilities) and can hold your worker busy
-for the whole transfer of the file
+避免在ruby/rack代码中提供静态文件。这将会非常慢（与使用uWSGI功能相比），并且还会让你的worker忙于传输文件
 
-Adaptive process spawning
+自适应进程生成
 *************************
 
-None of the supported algorithms are good for the Heroku approach and, very probably, it makes little sense to use a dynamic process number on such a platform.
+对于Heroku方法，没有好的支持的算法，并且很可能，在这样一个平台上使用一个动态进程数并没有什么意义。
 
-Logging
+日志记录
 *******
 
-If you plan to use heroku on production, remember to send your logs (via udp for example) on an external server (with persistent storage).
+如果你计划在生产环境上使用heroku，那么记住在一个外部服务器上（有持续存储）发送你的日志(例如，通过udp)。
 
-Check the uWSGI available loggers. Surely one will fit your need. (pay attention to security, as logs will fly in clear).
+检查uWSGI可用的记录器。当然，会有一个满足你的需要的。(重视安全性，因为日志会记录明文)。
 
-UPDATE: a udp logger with crypto features is on work.
+更新：一个具有crypto特性的udp记录器正在开发中。
 
-Alarms
+告警
 ******
 
-All of the alarms plugin should work without problems
+所有的告警插件应该工作正常
 
-The Spooler
+Spooler
 ***********
 
-As your app runs on a non-persistent filesystem, using the Spooler is a bad idea (you will easily lose tasks).
+由于你的应用运行在一个非持久化的文件系统上，因此使用Spooler是个糟糕的主意 (你会很容易丢失任务)。
 
-Mules
+Mule
 *****
 
-They can be used without problems
+它们可以正常使用
 
-Signals (timers, filemonitors, crons...)
+信号 (定时器、文件监控器、cron……)
 ****************************************
 
-They all works, but do not rely on cron facilities, as heroku can kill/destroy/restarts your instances in every moment.
+它们都能用，但不要依赖于cron功能，因为heroku每时每刻都能杀掉/摧毁/重启你的实例。
 
-External daemons
+外部守护进程
 ****************
 
-The --attach-daemon option and its --smart variants work without problems. Just remember you are on a volatile filesystem and you are not free to bind on port/addresses as you may wish
+ --attach-daemon 选项及其 --smart 变量可以正常使用。只是记住，你处于一个不稳定的文件系统中，并且你无法任意如你所愿的绑定端口/地址

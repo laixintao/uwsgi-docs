@@ -1,4 +1,4 @@
-Adding applications dynamically
+动态添加应用
 ===============================
 
 NOTE: this is not the best approach for hosting multiple applications. You'd better to run a uWSGI instance for each app.

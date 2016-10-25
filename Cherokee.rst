@@ -1,4 +1,4 @@
-Cherokee support
+Cherokee支持
 ================
 
 .. note::

@@ -1,210 +1,209 @@
-The uWSGI api
+uWSGI API
 =============
 
-Language plugins should expose the following api. Each language has its conventions, limits and strength's point.
+语言插件应该公开以下API。每个语言都有自己的惯例，局限和优点。
 
-When porting the api to a specific language try to be friendly to the language style.
+当移植API到特定的语言时，请尽量保持该语言的风格。
 
-This is the "official" list of functions exposed by the uWSGI api, functions not appearing here are not standardized
-so they could change their semanthics in future uWSGI relases.
+这是uWSGI API公开的函数的“官方”列表，未在此处出现的函数时不规范的，因此在未来的uWSGI版本中，也许会更改它们的语义。
 
 
-The syntax proposed here is a pseudo-python, each language will expose each function with its specific style
+这里提出的语法是python的，每个语言要以它们自己特定的风格公开每个函数。
 
-When not_defined is used, it means the language-specific NULL representation (like None in python or undef in perl)
+当使用not_defined的时候，意味着语言特定的NULL表示 (例如python中的None，或者perl中的undef)
 
 uwsgi.signal(signum)
 ********************
 
-raise the specified uwsgi signal
+引发指定的uwsgi信号
 
 uwsgi.register_rpc(name, func, argc=0)
 **************************************
 
-register the function "func" as an RPC one with the specified "name"
+将具有指定"name"的函数"func"作为RPC进行注册
 
-argc will force the accepted number of arguments
+argc将会强制接收参数数量
 
 uwsgi.rpc(node, name, *args)
 ****************************
 
-call the uWSGI RPC function "name" on server "node" with the supplied args (if any)
+带提供的args（如果有的话），在服务器"node"上调用uWSGI RPC函数
 
-if node is not_defined a "local" RPC will be made
+如果接电视not_defined，那会调用一个“本地的”RPC
 
 uwsgi.call(name, *args)
 ***********************
 
-call the uWSGI RPC function "name" locally with the supplied args (if any)
+带提供的args（如果有的话）本地调用uWSGI RPC函数"name"
 
 uwsgi.cache_get(key[, cache])
 *****************************
 
-get "key" from the specified "cache". If "cache" is not_defined, the default local cache will be used.
+从指定的"cache"中获取"key"。如果"cache"是not_defined，那么会默认使用本地缓存。
 
-To get an item from a remote cache use the cachename@addr:port syntax for the "cache" value
+要从远程缓冲区获取一个项，那么"cache"值的语法为cachename@addr:port
 
-returns not_defined if the item is not found or an error has occurred
+如果未发现此项，或者发生了错误，那么返回not_defined
 
 uwsgi.add_timer(signum, secs)
 *****************************
 
-register a timer raising "signum" every "secs"
+注册一个每"secs"引发"signum"的定时器
 
 uwsgi.add_rb_timer(signum, secs[, iterations])
 **********************************************
 
-register a redblack timer raising "signum" every "secs"
+注册一个每"secs"引发"signum"的红黑定时器
 
 uwsgi.lock(num=0)
 *****************
 
-acquire the specified user lock
+请求指定用户锁
 
 uwsgi.unlock(num=0)
 *******************
 
-release the specified user lock
+释放指定用户锁
 
 uwsgi.masterpid()
 *****************
 
-return the current pid of the master process
+返回master进程的当前pid
 
 uwsgi.alarm(alarm, msg)
 ***********************
 
-raise the specified "alarm" with the message "msg"
+引发特定的"alarm"，该告警带有告警信息"msg"
 
 uwsgi.suspend()
 ***************
 
-suspend the current async core and give cpu to the next core in the schedule chain
+挂起当前的异步核心，然后把CPU交给调度链中的下一个核心
 
 uwsgi.async_sleep(secs)
 ***********************
 
-suspend the current async core for the specified number of seconds
+将当前的异步核心挂起指定的时间(时间单位为秒)
 
-(requires uwsgi.suspend() or form of "yield" to be committed)
+(需要uwsgi.suspend()或者提交"yield"形式)
 
 uwsgi.connection_fd()
 *********************
 
-returns the file descriptor of the connection opened with the client
+返回用客户端打开的连接的文件描述符
 
 uwsgi.async_connect(addr)
 *************************
 
-returns the file descriptor of a non-blocking connection to the specified "addr"
+返回到指定“addr”的非堵塞连接的文件描述符
 
-will raise an exception on error
+发生错误时会引发一个异常
 
 uwsgi.wait_fd_read(fd[, timeout])
 *********************************
 
-(requires uwsgi.suspend() or form of "yield" to be committed)
+(需要uwsgi.suspend()或者提交"yield"形式)
 
-will raise an exception on error
+发生错误时会引发一个异常
 
 uwsgi.wait_fd_write(fd[, timeout])
 **********************************
 
-(requires uwsgi.suspend() or form of "yield" to be committed)
+(需要uwsgi.suspend()或者提交"yield"形式)
 
-will raise an exception on error
+发生错误时会引发一个异常
 
 uwsgi.ready_fd()
 ****************
 
-after resume from suspend() returns the currently available file descriptor or -1 if a timeout was the cause of resume
+after resume from 从suspend()恢复过来后，返回当前可用的文件描述符，或者对于超时导致的恢复，返回-1
 
 uwsgi.send([fd,] data)
 **********************
 
-send the specified "data" to the file descriptor "fd".
+发送指定的"data"给文件描述符"fd"。
 
-If "fd" is not specified the output of uwsgi.connection_fd() will be used
+如果未指定"fd"，那么将会使用uwsgi.connection_fd()的输出
 
-The position of arguments is a bit strange, but allows easier integration with POSIX write()
+参数的位置有点奇怪，但这会使得与POSIX write()的集成更容易。
 
 uwsgi.recv([fd,] len)
 *********************
 
-receive at most "len" bytes from the specified "fd"
+从指定的"fd"接收最多"len"字节
 
-If "fd" is not specified the output of uwsgi.connection_fd() will be used
+如果未指定"fd"，那么将会使用uwsgi.connection_fd()的输出
 
-The position of arguments is a bit strange, but allows easier integration with POSIX read()
+参数的位置有点奇怪，但这会使得与POSIX read()的集成更容易。
 
 uwsgi.close(fd)
 ***************
 
-close the specified file descriptor
+关闭指定的文件描述符
 
 uwsgi.setprocname(name)
 ***********************
 
-set the name of the calling process
+设置调用进程的名字
 
 uwsgi.add_cron(signum, minute, hour, day, month, week)
 ******************************************************
 
-register a cron raising the uwsgi signal "signum"
+注册一个引发uwsgi信号"signum"的cron
 
 
 uwsgi.disconnect()
 ******************
 
-disconnect the client without stopping the request handler
+与客户端断连，而无需停止请求处理器
 
 
 uwsgi.worker_id()
 *****************
 
-returns the current worker id (as integer).
+返回当前的worder in（整数）
 
-0 means the calling process is not a worker
+0表示调用进程不是一个worker
 
 uwsgi.mule_id()
 *****************
 
-returns the current mule id (as integer).
+返回当前的mule id（整数）
 
-0 means the calling process is not a mule
+0表示调用进程不是一个mule
 
 uwsgi.signal_registered(signum)
 *******************************
 
-check if "signum" is registered
+检查是否注册了"signum"
 
-returns boolean
+返回布尔值
 
 uwsgi.opt
 *********
 
-This is a hash/dictionary of all the specified options for the instance (both registered and virtuals)
+这是实例的所有指定选项的哈希/字典 (包括已注册的和虚拟的)
 
 uwsgi.version
 *************
 
-the uWSGI version string
+uWSGI版本字符串
 
 uwsgi.hostname
 **************
 
-the server hostname
+服务器主机名
 
 uwsgi.register_signal(signum, kind, handler)
 ********************************************
 
-register the uwsgi signal "signum" of the specified "kind" mapped to "handler"
+注册映射到"handler"的指定的"kind"的uwsgi信号"signum"
 
-raise an Exception on error
+错误时引发一个Exception
 
 uwsgi.set_user_harakiri(sec)
 ****************************
 
-set the user harakiri (for workers, mules and spoolers).
+(为worker，mule和spooler)设置用户harakiri
 
-A value of 0, reset the timer
+值为0，则重置定时器

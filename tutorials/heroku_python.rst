@@ -1,14 +1,14 @@
-Running python webapps on Heroku with uWSGI
+使用uWSGI在Heroku上运行python web应用
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Prerequisites: a Heroku account (on the cedar platform), git (on the local system) and the heroku toolbelt.
+前提条件：一个Heroku账户 (在cedar平台上)，git (本地系统跟上) 以及heroku toolbelt。
 
-Note: you need a uWSGI version >= 1.4.6 to correctly run python apps. Older versions may work, but are not supported.
+注意：需要uWSGI version >= 1.4.6来确保正确运行python应用。较老的版本可能可用，但并不支持。
 
-Preparing the environment
+准备环境
 *************************
 
-On your local system prepare a directory for your project:
+在你的本地系统上，为项目准备一个目录：
 
 .. code-block:: sh
 
@@ -17,29 +17,29 @@ On your local system prepare a directory for your project:
    git init .
    heroku create
 
-the last command will create a new heroku application (you can check it on the web dashboard).
+最后一个命令将会创建一个新的heroku应用 (你可以在网页界面上检查它)。
 
-For our example we will run the Werkzeug WSGI testapp, so we need to install the werkzeug package in addition to uWSGI.
+在我们的例子中，我们会运行Werkzeug WSGI testapp，因此，除了uWSGI之外，我们还需要安装werkzeug包。
 
-First step is creating a requirements.txt file and tracking it with git.
+第一步是创建一个requirements.txt文件，然后用git来跟踪它。
 
-The content of the file will be simply
+该文件的内容很简单
 
 .. code-block:: sh
 
    uwsgi
    werkzeug
 
-Let's track it with git
+现在，用git来跟踪
 
 .. code-block:: sh
 
    git add requirements.txt
 
-Creating the uWSGI config file
+创建uWSGI配置文件
 ******************************
 
-Now we can create our uWSGI configuration file. Basically all of the features can be used on heroku
+现在，可以创建我们的uWSGI配置文件了。基本上，在heroku上可以使用所有特性
 
 .. code-block:: ini
 
@@ -51,155 +51,146 @@ Now we can create our uWSGI configuration file. Basically all of the features ca
    module = werkzeug.testapp:test_app
    memory-report = true
 
-as you can see this is a pretty standard configuration. The only heroku-required options are --http-socket and --die-on-term.
+正如你所看到的，这是一个非常标准的配置。heroku必备的选项只用 --http-socket 和 --die-on-term。
 
-The first is required to bind the uWSGI socket to the port requested by the Heroku system (exported via the environment variable PORT we can access with $(PORT))
+需要第一个来将uWSGI socket绑定到由Heroku系统请求的端口 (通过环境变量PORT导出，我们可以通过$(PORT)访问)
 
-The second one (--die-on-term) is required to change the default behaviour of uWSGI when it receive a SIGTERM (brutal reload, while Heroku expect a shutdown)
+需要第二个(--die-on-term)来修改uWSGI接收到一个SIGTERM时的默认行为 (粗暴的重载，而Heroku期望是关机)
 
-The memory-report option (as we are in a memory constrained environment) is a good thing.
+memory-report选项 (因为我们处于内存受限的环境中)是个不错的东东。
 
-Remember to track the file
+记得跟踪这个文件
 
 .. code-block:: sh
 
    git add uwsgi.ini
 
-Preparing for the first commit/push
+准备第一次commit/push
 ***********************************
 
-We now need the last step: creating the Procfile.
+现在，需要最后一步：创建Procfile。
 
-The Procfile is a file describing which commands to start. Generally (with other deployment systems) you will use it for every
-additional process required by your app (like memcached, redis, celery...), but under uWSGI you can continue using its advanced facilities to manage them.
+Procfile是一个描述启动哪个命令的文件。一般来说(对于其他部署系统)，对于每个由你的应用请求的额外进程，你都将使用它 (例如memcached, redis, celery...)，但在uWSGI之下，你可以继续使用它的高级功能来管理它们。
 
-So, the Procfile, only need to start your uWSGI instance:
+因此，Procfile是需要启动你的uWSGI实例：
 
 .. code-block:: sh
 
    web: uwsgi uwsgi.ini
 
-Track it
+跟踪它：
 
 .. code-block:: sh
 
    git add Procfile
 
-And finally let's commit all:
+最后，提交所有东西：
 
 .. code-block:: sh
 
    git commit -a -m "first commit"
 
-and push it (read: deploy) to Heroku:
+以及，push它 (即：部署)到Heroku:
 
 .. code-block:: sh
 
     git push heroku master
 
-The first time it will requires a couple of minutes as it need to prepare your virtualenv and compile uWSGI.
+第一次的适合，将需要一点时间，因为需要准备你的virtualenv以及编译uWSGI。
 
-Following push will be much faster.
+之后的push将会快得多。
 
-Checking your app
+检查你的应用
 *****************
 
-Running ``heroku logs`` you will be able to access uWSGI logs. You should get all of your familiar information, and eventually
-some hint in case of problems.
+运行 ``heroku logs`` ，你将能够访问uWSGI日志。你应该获取所有你熟悉的信息，以及发生问题的情况下的一些最终提示。
 
-Using another version of python
+使用python的另一个版本
 *******************************
 
-Heroku supports different python versions. By default (currently, february 2013), Python 2.7.3 is enabled.
+Heroku支持不同的python版本。默认情况下 (目前是2013年二月份)，允许Python 2.7.3。
 
-If you need another version just create a runtime.txt in your repository with a string like that:
+如果你需要另一个版本，那么在你的仓库中创建一个runtime.txt，然后在里面写上如下字符串：
 
 .. code-block:: sh
 
    python-2.7.2
 
-to use python 2.7.2
+来使用python 2.7.2
 
-Remember to add/commit that in the repository.
+记得在仓库中add/commit它。
 
-Every time you change the python version, a new uWSGI binary is built.
+每当你的修改python版本，就会构建一个新的uWSGI二进制。
 
-Multiprocess or Multithread ?
+多进程还是多线程？
 *****************************
 
-It obviosuly depend on your app. But as we are on a memory-limited environment you can expect better memory usage with threads.
+这显然取决于你的应用。但由于我们在一个内存受限的环境中，因此使用线程可以期望获得更好的内存使用。
 
-In addition to this, if you plan to put production-apps on Heroku be sure to understand how Dynos and their proxy works
-(it is very important. really)
+除此之外，如果你计划将生产应用放在Heroku上，那么确保了解Dynos和它们的代理是如何工作的(这很重要。真的)
 
-Async/Greethreads/Coroutine ?
+异步/绿色线程/协程？
 *****************************
 
-As always, do not trust people suggesting you to ALWAYS use some kind of async mode (like gevent). If your app
-is async-friendly you can obviously use gevent (it is built by default in recent uWSGI releases), but if you do not know that, remain
-with multiprocess (or multithread).
+像往常一样，不要相信那些让你总是使用某种类型的异步模式(例如gevent)的人。如果你的应用是异步友好型的，那么显然，你可以使用gevent (在近期的uWSGI发布版本中，会默认构建它)，但如果你不知道，那么保持使用多进程（或多线程）。
 
 Harakiri
 ********
 
-As said previously, if you plan to put production-apps on heroku, be sure to understand how dynos and their proxy works. Based on that,
-try to always set the harakiri parameters to a good value for your app. (do not ask for a default value, IT IS APP-DEPENDENT)
+如之前所述，如果你计划将生产应用放在heroku上，那么确保了解dynos和它们的代理是如何工作的。基于此，试着总是为你的应用将harakiri参数设置成一个不错的值。 (不要要求默认值，它取决于应用)
 
-Static files
+静态文件
 ************
 
-Generally, serving static files on Heroku is not a good idea (mainly from a design point of view). You could obviously have that need.
-In such a case remember to use uWSGI facilities for that, in particular offloading is the best way to leave your workers free while you serve big files (in addition to this remember that your static files must be tracked with git)
+一般来讲，在Heroku上提供静态文件并不是一个好主意 (主要从设计的角度来看)。你当然可以有此需求。在这种情况下，记得使用uWSGI功能，特别是卸载（offloading）是在提供大文件时留出worker的最好方法 (另外，记得必须使用git来跟踪你的静态文件)
 
-Adaptive process spawning
+自适应进程生成
 *************************
 
-None of the supported algorithm are good for the Heroku approach and, very probably, it makes little sense to use a dynamic process
-number on such a platform.
+对于Heroku方法，没有好的支持的算法，并且很可能，在这样一个平台上使用一个动态进程数并没有什么意义。
 
-Logging
+日志记录
 *******
 
-If you plan to use heroku on production, remember to send your logs (via udp for example) on an external server (with persistent storage).
+如果你计划在生产环境上使用heroku，那么记住在一个外部服务器上（有持续存储）发送你的日志(例如，通过udp)。
 
-Check the uWSGI available loggers. Surely one will fit your need. (pay attention to security, as logs will fly in clear).
+检查uWSGI可用的记录器。当然，会有一个满足你的需要的。(重视安全性，因为日志会记录明文)。
 
-UPDATE: a udp logger with crypto features is on work.
+更新：一个具有crypto特性的udp记录器正在开发中。
 
-Alarms
+告警
 ******
 
-All of the alarms plugin should work without problems
+所有的告警插件应该工作正常
 
-The Spooler
+Spooler
 ***********
 
-As your app runs on a non-persistent filesystem, using the Spooler is a bad idea (you will easily lose tasks).
+由于你的应用运行在一个非持久化的文件系统上，因此使用Spooler是个糟糕的主意 (你会很容易丢失任务)。
 
-Mules
+Mule
 *****
 
-They can be used without problems
+它们可以正常使用
 
-Signals (timers, filemonitors, crons...)
+信号 (定时器、文件监控器、cron……)
 ****************************************
 
-They all works, but do not rely on cron facilities, as heroku can kill/destroy/restarts your instances in every moment.
+它们都能用，但不要依赖于cron功能，因为heroku每时每刻都能杀掉/摧毁/重启你的实例。
 
-External daemons
+外部守护进程
 ****************
 
-The --attach-daemon option and its --smart variants work without problems. Just remember you are on a volatile filesystem and you are not
-free to bind on port/addresses as you may wish
+ --attach-daemon 选项及其 --smart 变量可以正常使用。只是记住，你处于一个不稳定的文件系统中，并且你无法任意如你所愿的绑定端口/地址
 
-Monitoring your app (advanced/hacky)
+监控你的应用（高级/hack）
 *************************************
 
-Albeit Heroku works really well with newrelic services, you always need to monitor the internals of your uWSGI instance.
+尽管Heroku和newrelic服务工作良好，但是你总是需要监控你的uWSGI实例内部。
 
-Generally you enable the stats subsystem with a tool like uwsgitop as the client.
+一般来说，作为客户端，你使用诸如uwsgitop这样的工具启动stats子系统。
 
-You can simply add uwsgitop to you requirements.txt
+你可以简单的添加uwsgitop到你的requirements.txt中
 
 .. code-block:: sh
 
@@ -207,7 +198,7 @@ You can simply add uwsgitop to you requirements.txt
    uwsgitop
    werkzeug
 
-and enable the stats server on a TCP port (unix sockets will not work as the instance running uwsgitop is not on the same server !!!):
+并在一个TCP端口上启动stats服务器 (unix socket将不能用，因为运行uwsgitop的实例并不在同一个服务器上！！！):
 
 .. code-block:: ini
 
@@ -220,10 +211,9 @@ and enable the stats server on a TCP port (unix sockets will not work as the ins
    memory-report = true
    stats = :22222
 
-Now we have a problem: how to reach our instance ?
+现在，我们有个问题：如果访问我们的实例？
 
-We need to know the LAN address of the machine where our instance is phisically running. To accomplish that, a raw trick is running
-ifconfig on uWSGI startup:
+我们需要知道物理运行我们的实例的机器的LAN地址。要完成它，一个原始的技巧是在uWSGI启动的适合运行ifconfig：
 
 .. code-block:: ini
 
@@ -237,13 +227,12 @@ ifconfig on uWSGI startup:
    stats = :22222
    exec-pre-app = /sbin/ifconfig eth0
 
-Now thanks to the ``heroku logs`` command you can know where your stats server is
+现在，有了 ``heroku logs`` 命令，你就可以知道你的stats服务器在哪里了
 
 .. code-block:: sh
 
    heroku run uwsgitop 10.x.x.x:22222
 
-change x.x.x with the discovered address and remember that you could not be able to bind on port 22222, so change it accordingly.
+将x.x.x修改成发现的地址，然后记住，你不能绑定到端口22222上，因此，相应修改它。
 
-Is it worthy to make such a mess to get monitoring ? If you are testing your app before going to production, it could be a good idea,
-but if you plan to buy more dynos, all became so complex that you'd better to use some heroku-blessed technique (if any)
+为了监控，值得搞得一团糟吗？如果你在上线之前测试你的应用，那么这是一个好主意，但如果你计划购买更多的dynos，那么一切都变得太复杂，此时最好使用一些heroku相关技术 (如果有的话)

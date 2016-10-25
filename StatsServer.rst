@@ -1,9 +1,9 @@
-The uWSGI Stats Server
+uWSGI Stats服务器
 ======================
 
-In addition to :doc:`SNMP<SNMP>`, uWSGI also supports a Stats Server mechanism which exports the uWSGI state as a JSON object to a socket.
+除了 :doc:`SNMP<SNMP>` ，uWSGI还支持一个Stats服务器机制，它将uWSGI状态作为一个JSON对象导出到一个socket。
 
-Simply use the ``stats`` option followed by a valid socket address. If you want the stats served over HTTP you will need to also add the ``stats-http`` option.
+只需使用 ``stats`` 选项，后面跟着一个有效的socket地址。如果你想通过HTTP提供stats，那么还需要添加 ``stats-http`` 选项。
 
 .. code-block:: sh
 
@@ -14,13 +14,13 @@ Simply use the ``stats`` option followed by a valid socket address. If you want 
     # Any of the above socket types can also return stats using HTTP
     --stats 127.0.0.1:1717 --stats-http
 
-If a client connects to the specified socket it will get a JSON object containing uWSGI internal statistics before the connection ends.
+如果客户端连接到一个指定的socket，那么在连接结束之前，它将获得一个包含uWSGI内部统计数据的JSON对象。
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --stats :1717 --module welcome --master --processes 8
 
-then
+然后
 
 .. code-block:: sh
 
@@ -28,7 +28,7 @@ then
     # or for convenience...
     uwsgi --connect-and-read 127.0.0.1:1717
 
-will return something like this:
+将返回像这样的东东：
 
 .. code-block:: js
 
@@ -208,7 +208,7 @@ will return something like this:
 uwsgitop
 --------
 
-``uwsgitop`` is a top-like command that uses the stats server. It is available on PyPI, so use ``easy_install`` or ``pip`` to install it (package name ``uwsgitop``, naturally).
+``uwsgitop`` 是一个类似于top的命令，它使用stats服务器。可以在PyPI找到，因此使用 ``easy_install`` 或者 ``pip`` 来安装它 (自然而然地，包名是 ``uwsgitop``)。
 
-The sources are available on Github. https://github.com/unbit/uwsgitop
+可以在Github找到其源码。https://github.com/unbit/uwsgitop
 

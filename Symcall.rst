@@ -1,4 +1,4 @@
-The Symcall plugin
+Symcall插件
 ==================
 
 The symcall plugin (modifier 18) is a convenience plugin allowing you to write native uWSGI request handlers without the need of developing a full uWSGI plugin.
@@ -9,7 +9,7 @@ You tell it which symbol to load on startup and then it will run it at every req
 
    The "symcall" plugin is built-in by default in standard build profiles.
 
-Step 1: preparing the environment
+第一步：准备环境
 *********************************
 
 The uWSGI binary by itself allows you to develop plugins and libraries without the need of external development packages or headers.
@@ -22,7 +22,7 @@ The first step is getting the ``uwsgi.h`` C/C++ header:
    
 Now, in the current directory, we have a fresh uwsgi.h ready to be included.
 
-Step 2: our first request handler:
+第二步：第一个请求处理器：
 **********************************
 
 Our C handler will print the REMOTE_ADDR value with a couple of HTTP headers.
@@ -57,7 +57,7 @@ Our C handler will print the REMOTE_ADDR value with a couple of HTTP headers.
         return UWSGI_OK;
    }
 
-Step 3: building our code as a shared library
+第三步：将我们的代码作为共享库进行构建
 *********************************************
 
 The uwsgi.h file is an ifdef hell (so it's probably better not to look at it too closely).
@@ -72,7 +72,7 @@ We can build our library in one shot:
 
 you now have the mysym.so library ready to be loaded in uWSGI
 
-Final step: map the symcall plugin to the ``mysym_function`` symbol
+最后一步：映射symcall插件到 ``mysym_function`` 符号
 *******************************************************************
 
 .. code-block:: sh

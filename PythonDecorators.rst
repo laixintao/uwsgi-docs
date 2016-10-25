@@ -1,20 +1,19 @@
-uWSGI API - Python decorators
+uWSGI API - Python装饰器
 =============================
 
-:doc:`The uWSGI API<PythonModule>` is very low-level, as it must be language-independent.
+ :doc:`The uWSGI API<PythonModule>` 非常底层，因为它必须是语言无关的。
 
-That said, being too low-level is not a Good Thing for many languages, such as Python.
+也就是说，对于许多语言，例如Python，太底层并不是一件好事。
 
-Decorators are, in our humble opinion, one of the more kick-ass features of Python, so in the uWSGI source tree you will find a module exporting a bunch of decorators that cover a good part of the uWSGI API.
-
-
+以吾之愚见，装饰器是Python较为牛逼的特性之一，因此，在uWSG源代码树中，你会发现有个模块导出了一堆的装饰器，它们涵盖了很大一部分uWSGI API。
 
 
-Notes
+
+
+小抄
 -----
 
-Signal-based decorators execute the signal handler in the first available worker.
-If you have enabled the spooler you can execute the signal handlers in it, leaving workers free to manage normal requests. Simply pass ``target='spooler'`` to the decorator.
+基于信号量的装饰器在第一个可用worker中执行信号处理器。如果你已经启动了spooler，那么你可以在其中执行信号处理器，让worker不用管它，只要管理正常的请求即可。简单传递 ``target='spooler'`` 给装饰器。
 
 .. code-block:: py
 
@@ -23,10 +22,10 @@ If you have enabled the spooler you can execute the signal handlers in it, leavi
         print("hello")
 
 
-Example: a Django session cleaner and video encoder
+例子：一个Django会话清理器和视频解码器
 ---------------------------------------------------
 
-Let's define a :file:`task.py` module and put it in the Django project directory.
+让我们定义一个 :file:`task.py` 模块，然后将其放进Django项目目录中。
 
 .. code-block:: py
 
@@ -43,7 +42,7 @@ Let's define a :file:`task.py` module and put it in the Django project directory
     def encode_video(arguments):
         os.system("ffmpeg -i \"%s\" image%%d.jpg" % arguments['filename'])
 
-The session cleaner will be executed every day at 2:40, to enqueue a video encoding we simply need to spool it from somewhere else.
+这个会话清理器在每天的2:40会执行一次，要排队一个视频编码器，我们只需简单地在某个地方spool一下。
 
 .. code-block:: py
 
@@ -54,7 +53,7 @@ The session cleaner will be executed every day at 2:40, to enqueue a video encod
         encode_video.spool(filename=request.POST['video_filename'])
         return render_to_response('enqueued.html')
 
-Now run uWSGI with the spooler enabled:
+现在，启用spooler，运行uWSGI：
 
 .. code-block:: ini
 
@@ -79,13 +78,12 @@ Now run uWSGI with the spooler enabled:
     ; bind on a tcp socket
     socket = 127.0.0.1:3031
 
-The only especially relevant option is the ``import`` one. It works in the same way as ``module`` but skips the WSGI callable search.
-You can use it to preload modules before the loading of WSGI apps. You can specify an unlimited number of '''import''' directives.
+唯一一个特别重要的选项是 ``import`` 这个。它的工作方式与 ``module`` 相同，但跳过了WSGI的可调用搜索。你可以用它在加载WSGI应用之前预加载模块。你可以指定无限数目的 '''import''' 指令。
 
-Example: web2py + spooler + timer
+例子：web2py + spooler + timer
 ---------------------------------
 
-First of all define your spooler and timer functions (we will call it :file:``mytasks.py``)
+首先，定义你的spooler和timer函数 (我们将称其为:file:``mytasks.py``)
 
 .. code-block:: py
     
@@ -107,17 +105,17 @@ First of all define your spooler and timer functions (we will call it :file:``my
     def ten_seconds_in_the_spooler(signum):
         print("10 seconds elapsed in the spooler")
 
-Now run web2py.
+现在，运行web2py。
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --spooler myspool --master --processes 4 --import mytasks --module web2py.wsgihandler
 
-As soon as the application is loaded, you will see the 2 timers running in your logs.
+一旦加载了应用，你就会在日志中看到两个运行着的timer。
 
-Now we want to enqueue tasks from our web2py controllers.
+现在，我们想要从我们的web2py控制器排队任务。
 
-Edit one of them and add
+编辑它们其中一个，然后添加
 
 .. code-block:: py
 
@@ -128,7 +126,7 @@ Edit one of them and add
         return "Task enqueued"
 
 
-uwsgidecorators API reference
+uwsgidecorators API参考
 -----------------------------
 
 .. default-domain:: py
@@ -137,8 +135,7 @@ uwsgidecorators API reference
 
 .. function:: postfork(func)
 
-   uWSGI is a preforking (or "fork-abusing") server, so you might need to execute a fixup task after each ``fork()``. The ``postfork`` decorator is just the ticket.
-   You can declare multiple ``postfork`` tasks. Each decorated function will be executed in sequence after each ``fork()``.
+   uWSGI是一个预启动 (或者说是"滥用fork")的服务器，因此，你可能需要在每次 ``fork()`` 之后执行一个修正任务。这就是 ``postfork`` 装饰器的用武之处。你可以声明多个 ``postfork`` 任务。每个被装饰器装饰的函数将在每个 ``fork()`` 之后依次执行。
 
    .. code-block:: py
 
@@ -152,7 +149,7 @@ uwsgidecorators API reference
 
 .. function:: spool(func)
 
-   The uWSGI :doc:`spooler<Spooler>` can be very useful. Compared to Celery or other queues it is very "raw". The ``spool`` decorator will help!
+   uWSGI的 :doc:`spooler<Spooler>` 是非常有用的。与Celery或其他队列相比，它非常“原始”。 ``spool`` 装饰器会帮到你！
 
    .. code-block:: py
 
@@ -172,14 +169,13 @@ uwsgidecorators API reference
       a_long_long_task.spool(foo='bar',hello='world')
       a_longer_task.spool({'pippo':'pluto'})
 
-   The functions will automatically return ``uwsgi.SPOOL_OK`` so they will be executed one time independently by their return status.
+   上面的函数将会自动返回 ``uwsgi.SPOOL_OK`` ，因此，根据其返回状态，它们将独立执行一次。
 
 .. XXX: What does the above mean?
 
 .. function:: spoolforever(func)
 
-   Use ``spoolforever`` when you want to continuously execute a spool task.
-   A ``@spoolforever`` task will always return ``uwsgi.SPOOL_RETRY``.
+   当你想要持续的执行一个spool任务时，使用 ``spoolforever`` 。一个 ``@spoolforever`` 任务将总是返回 ``uwsgi.SPOOL_RETRY`` 。
 
    .. code-block:: py
 
@@ -196,7 +192,7 @@ uwsgidecorators API reference
 
 .. function:: spoolraw(func)
 
-  Advanced users may want to control the return value of a task.
+  高级用户也许想要控制一个任务的返回值。
 
 
    .. code-block:: py
@@ -211,7 +207,7 @@ uwsgidecorators API reference
 
 .. function:: rpc("name", func)
 
-   uWSGI :doc:`RPC` is the fastest way to remotely call functions in applications hosted in uWSGI instances. You can easily define exported functions with the @rpc decorator.
+   uWSGI的 :doc:`RPC` 是远程调用uWSGI实例中托管的应用中的函数最快的方式。使用@rpc装饰器，你可以容易地定义导出函数。
 
    .. code-block:: py
       
@@ -221,7 +217,7 @@ uwsgidecorators API reference
 
 .. function:: signal(num)(func)
 
-   You can register signals for the :doc:`signal framework<Signals>` in one shot.
+   你可以轻松地为 :doc:`信号框架<Signals>` 注册信号。
 
    .. code-block:: py
       
@@ -231,7 +227,7 @@ uwsgidecorators API reference
 
 .. function:: timer(interval, func)
 
-   Execute a function at regular intervals.
+   定期执行一个函数。
 
    .. code-block:: py
       
@@ -241,14 +237,14 @@ uwsgidecorators API reference
 
 .. function:: rbtimer(interval, func)
 
-   Works like @timer but using red black timers.
+   像@timer，但是使用红黑定时器。
 
-.. XXX: What the hell does _that_ mean?
+.. XXX: What the hell does _that_ mean? 我也想知道这是神马？
 
 .. function:: cron(min, hour, day, mon, wday, func)
 
       
-   Easily register functions for the :doc:`CronInterface`.
+   为 :doc:`CronInterface` 轻松注册函数。
 
    .. code-block:: py
 
@@ -256,7 +252,7 @@ uwsgidecorators API reference
       def execute_me_at_three_and_fiftynine(num):
           print("it's 3:59 in the morning")
 
-   Since 1.2, a new syntax is supported to simulate ``crontab``-like intervals (every Nth minute, etc.). ``*/5 * * * *`` can be specified in uWSGI like thus:
+   从1.2起，支持一种新的语法来模拟类 ``crontab`` 间隔 (每个第N分钟，等等。)。在uWSGI中，可以像这样指定 ``*/5 * * * *`` ：
 
    .. code-block:: py
 
@@ -266,7 +262,7 @@ uwsgidecorators API reference
 
 .. function:: filemon(path, func)
 
-   Execute a function every time a file/directory is modified.
+   每次一个文件/目录被修改的适合，执行一个函数。
 
    .. code-block:: py
 
@@ -276,7 +272,7 @@ uwsgidecorators API reference
 
 .. function:: erlang(process_name, func)
 
-   Map a function as an :doc:`Erlang<Erlang>` process.
+   将一个函数映射为一个 :doc:`Erlang<Erlang>` 进程。
 
    .. code-block:: py
 
@@ -287,9 +283,9 @@ uwsgidecorators API reference
 
 .. function:: thread(func)
 
-    Mark function to be executed in a separate thread.
+    标记函数在一个单独的线程中执行。
 
-    .. important:: Threading must be enabled in uWSGI with the ``enable-threads`` or ``threads <n>`` option.
+    .. 重要:: 必须在uWSGI中使用 ``enable-threads`` 或者 ``threads <n>`` 选项来启用线程。
 
     .. code-block:: py
 
@@ -308,7 +304,7 @@ uwsgidecorators API reference
         a_running_thread()
         a_running_thread_with_args("uWSGI")
 
-    You may also combine ``@thread`` with ``@postfork`` to spawn the postfork handler in a new thread in the freshly spawned worker.
+    你也可以将 ``@thread`` 和 ``@postfork`` 结合在一起，从而在一个新生成的worker中的一个新线程里生成postfork处理器。
 
     .. code-block:: py
 
@@ -321,8 +317,7 @@ uwsgidecorators API reference
 
 .. function:: lock(func)
 
-    This decorator will execute a function in fully locked environment, making it impossible for other workers or threads (or the master, if you're foolish or brave enough) to run it simultaneously.
-    Obviously this may be combined with @postfork.
+    这个装饰器将会在一个完全锁定的环境中执行一个函数，从而阻止其他worker或者线程(或者是master，如果你够蠢或者够勇敢的话)同时运行它。显然，这也可以跟@postfork组合在一起。
 
     .. code-block:: py
 
@@ -333,7 +328,7 @@ uwsgidecorators API reference
 
 .. function:: mulefunc([mulespec], func)
 
-    Offload the execution of the function to a :doc:`mule<Mules>`. When the offloaded function is called, it will return immediately and execution is delegated to a mule.
+    卸载函数的执行到 :doc:`mule<Mules>` .当卸载函数被调用，它将会立即返回，而执行将会被委托给一个mule。
 
     .. code-block:: py
 
@@ -341,7 +336,7 @@ uwsgidecorators API reference
         def i_am_an_offloaded_function(argument1, argument2):
             print argument1,argument2
 
-    You may also specify a mule ID or mule farm to run the function on. Please remember to register your function with a uwsgi import configuration option.
+    你也可以指定一个mule ID或者mule farm来运行该函数。请务必记住用一个uwsgi import配置选项来注册你的函数。
 
     .. code-block:: py
     
@@ -355,7 +350,7 @@ uwsgidecorators API reference
 
 .. function:: harakiri(time, func)
 
-    Starting from uWSGI 1.3-dev, a customizable secondary :term:`harakiri` subsystem has been added. You can use this decorator to kill a worker if the given call is taking too long.
+    从uWSGI 1.3-dev开始，添加了一个可定制的二次 :term:`harakiri` 子系统。如果一个给定的调用执行时间太长，那么你可以使用这个装饰器去灭掉一个worker。
 
     .. code-block:: py
 

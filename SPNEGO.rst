@@ -1,2 +1,2 @@
-SPNEGO authentication
+SPNEGO认证
 =====================

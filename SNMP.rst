@@ -1,4 +1,4 @@
-The embedded SNMP server
+内嵌SNMP服务器
 ========================
 
 The uWSGI server embeds a tiny SNMP server that you can use to integrate your web apps with your monitoring infrastructure.

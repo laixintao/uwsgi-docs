@@ -1,42 +1,41 @@
-Management Flags
+管理标志
 ================
 
-.. warning:: This feature may be currently broken or deprecated.
+.. warning:: 这个特性当前可能已暂停或弃用。
 
-You can modify the behavior of some aspects of the uWSGI stack remotely, without taking the server offline using the Management Flag system.
+使用管理标志（Management Flag）系统，你可以远程修改uWSGI栈的某些方面的行为，而无需下线服务器。
 
-.. note:: A more comprehensive re-setup system may be in the works.
+.. note:: 一个更综合的重设置系统可能正在开发中。
 
-All the flags take an unsigned 32-bit value (so the block size is always 4) that contains the value to set for the flag.
-If you do not specify this value, only sending the uWSGI header, the server will count it as a read request.
+所有的标志都是用一个无符号的32位值（因此块大小总是4），它包含为这个标志设置的值。如果你不指定该值，那么仅发送uWSGI头，服务型将会把它当成一种读请求。
 
 
 ====    =============== ===========
-Flag    Action          Description
+标志    动作            描述
 ====    =============== ===========
-0       logging         enable/disable logging  
-1       max_requests    set maximum number of requests per worker       
-2       socket_timeout  modify the internal socket timeout      
-3       memory_debug    enable/disable memory debug/report      
-4       master_interval set the master process check interval   
-5       harakiri        set/unset the harakiri timeout  
-6       cgi_mode        enable/disable cgi mode 
-7       threads         enable/disable threads (currently unimplemented)        
-8       reaper          enable/disable process reaper   
-9       log-zero        enable/disable logging of request with zero response size       
-10      log-slow        set/unset logging of slow requests      
-11      log-4xx         enable/disable logging of request with 4xx response status      
-12      log-5xx         enable/disable logging of request with 5xx response status      
-13      log-big         set/unset logging of request with big response size     
-14      log-sendfile    set/unset logging of sendfile requests  
-15      backlog-status  report the current size of the backlog queue (linux on tcp only)        
-16      backlog-errors  report the number of errors in the backlog queue (linux on tcp only)    
+0       logging         启用/禁用日志记录
+1       max_requests    设置每个worker的最大请求数
+2       socket_timeout  修改内部socket超时
+3       memory_debug    启用/禁用内存调试/报告
+4       master_interval 设置master进程检查间隔
+5       harakiri        设置/取消设置harakiri超时
+6       cgi_mode        启用/禁用cgi模式
+7       threads         启用/禁用线程（当前未实现）
+8       reaper          启用/禁用进程reaper   
+9       log-zero        启用/禁用记录响应大小为零的请求
+10      log-slow        设置/取消设置记录缓慢请求
+11      log-4xx         启用/禁用记录4xx响应状态的请求
+12      log-5xx         启用/禁用记录5xx响应状态的请求
+13      log-big         设置/取消设置记录具有大的响应大小的请求
+14      log-sendfile    设置/取消设置记录sendfile请求
+15      backlog-status  报告backlog队列的当前大小（Linux仅限tcp）    
+16      backlog-errors  报告backlog队列中的错误数（Linux仅限tcp）   
 ====    =============== ===========
 
-myadmin tool
+myadmin工具
 ------------
 
-A simple (and ugly) script, ``myadmin``, is included to remotely change management flags:
+包含一个简单（丑陋）的脚本， ``myadmin`` ，用来远程更改管理标志：
 
 .. code-block:: sh
 

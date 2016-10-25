@@ -1,17 +1,14 @@
-The uWSGI cheaper subsystem -- adaptive process spawning
+uWSGI cheaper子系统 ——  适应性进程生成
 ========================================================
 
-uWSGI provides the ability to dynamically scale the number of running workers
-via pluggable algorithms.  Use ``uwsgi --cheaper-algos-list`` to get the list
-of available algorithms. 
+uWSGI通过可插拔算法，提供了动态扩展运行的worker数量的能力。使用 ``uwsgi --cheaper-algos-list`` 来获取可用算法的列表。
 
-Usage
+用法
 -----
 
-To enable cheaper mode add the ``cheaper = N`` option to the uWSGI
-configuration file, where N is the minimum number of workers uWSGI can run. The
-``cheaper`` value must be lower than the maximum number of configured workers
-(``workers`` or ``processes`` option).
+要启用cheaper模式，则添加 ``cheaper = N`` 选项到uWSGI配置文件中，其中，N是uWSGI可以运行的worker的最小数目。
+``cheaper`` 必须小于配置的worker最大数目
+(``workers`` 或者 ``processes`` 选项)。
 
 .. code-block:: ini
 
@@ -41,7 +38,7 @@ workers it will spawn ``cheaper-step`` of them. This is useful if you have a
 high maximum number of workers -- in the event of a sudden load spike it would
 otherwise take a lot of time to spawn enough workers one by one.
 
-Setting memory limits
+设置内存限制
 ---------------------
 
 Starting with 1.9.16 rss memory limits can be set to stop cheaper spawning
@@ -70,7 +67,7 @@ Notes:
   for app memory usage cgroups are recommended.
 
 
-``spare`` cheaper algorithm
+``spare`` cheaper算法
 ---------------------------
 
 This is the default algorithm.  If all workers are busy for
@@ -78,7 +75,7 @@ This is the default algorithm.  If all workers are busy for
 is gone it will begin stopping processes one at a time.
 
 
-``spare2`` cheaper algorithm
+``spare2`` cheaper算法
 ----------------------------
 
 This algorithm is similar to spare, but suitable for large scale by increase workers faster and
@@ -105,7 +102,7 @@ Sample configuration:
    cheaper-idle = 60     # cheap one worker per minute while idle
 
 
-``backlog`` cheaper algorithm
+``backlog`` cheaper算法
 -----------------------------
 
 .. note:: ``backlog`` is only available on Linux and only on TCP sockets (not UNIX domain sockets).
@@ -114,7 +111,7 @@ If the socket's listen queue has more than ``cheaper_overload`` requests
 waiting to be processed, uWSGI will spawn new workers.  If the backlog is lower
 it will begin killing processes one at a time.
 
-``busyness`` cheaper algorithm
+``busyness`` cheaper算法
 ------------------------------
 
 .. note:: This algorithm is optional, it is only available if the ``cheaper_busyness`` plugin is compiled and loaded.

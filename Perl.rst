@@ -1,4 +1,4 @@
-uWSGI Perl support (PSGI)
+uWSGI Perl支持 (PSGI)
 =========================
 
 :term:`PSGI` is the equivalent of :term:`WSGI` in the Perl world.

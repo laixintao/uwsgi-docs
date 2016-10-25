@@ -15,7 +15,7 @@ And now....
 
 Changelog [20131211]
 
-Bugfixes
+错误修复
 ********
 
 - croak if the psgi streamer fails
@@ -45,8 +45,8 @@ Before this patch every single websocket packet required to allocate a memory ch
 
 This patch forces the reuse of a single dynamic buffer. For games this should result in a pretty good improvement in responsiveness.
 
-New features
-************
+新特性
+********
 
 removed zeromq api
 ^^^^^^^^^^^^^^^^^^
@@ -181,9 +181,11 @@ TODO for 2.0
 - complete sharedarea api for CPython, Perl, Ruby and PyPy
 - implement read2 and wait_milliseconds hook in all of the available loop engines
 
-Availability
+可用性
 ************
 
-uWSGI 1.9.21 has been released on December 11th 2013 and can be downloaded at:
+uWSGI 1.9.21于2013年12月11日发布
+
+你可以从下面地址下载它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.21.tar.gz

@@ -3,7 +3,7 @@ uWSGI 1.9.5
 
 Changelog 20130404
 
-Bugfixes
+错误修复
 ********
 
 * fixed a memory leak with cachestore routing instruction (Riccardo Magliocchetti)
@@ -15,8 +15,8 @@ Bugfixes
 * fixed kvlist escaping
 
 
-New features
-************
+新特性
+********
 
 The GridFS plugin
 ^^^^^^^^^^^^^^^^^
@@ -47,7 +47,7 @@ You can now call CGI script directly from the :doc:`InternalRouting`
    route = ^/cgi-bin/(.+) cgi:/usr/lib/cgi-bin/$1
 
 
-Availability
+可用性
 ************
 
 uWSGI 1.9.5 will be available since 20130404 at this url

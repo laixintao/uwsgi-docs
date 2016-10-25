@@ -1,7 +1,7 @@
-Frequently Asked Questions (FAQ)
+常见问题 (FAQ)
 ================================
 
-Why should I choose uWSGI?
+我应该选择uWSGI吗？
 --------------------------
 
 Because you can! :) uWSGI wants to be a complete web application deployment
@@ -25,7 +25,7 @@ most likely find yourself needing uWSGI.
 
 The best definition for uWSGI is "Swiss Army Knife for your network applications".
 
-What about the protocol?
+协议是什么？
 ------------------------
 
 The uwsgi (all lowercase) protocol is derived from SCGI but with binary string
@@ -38,7 +38,7 @@ you will understand why a new protocol was needed.  Obviously, you are free to
 use the other supported protocols. Remember, if you cannot use uWSGI in some
 scenario, it is a uWSGI bug.
 
-Can I use it in cluster environments?
+我可以将它用于集群环境中吗？
 -------------------------------------
 
 Yes, this is one of the main features of the uWSGI stack.  You can have
@@ -53,7 +53,7 @@ So, why all those timeout configuration flags?
 Choosing sane timeouts is the key to high availability.  Do not trust network
 applications that do not permit you to choose a timeout.
 
-I need help! What do I do?
+我需要帮助！我该怎么做？
 --------------------------
 
 Post a message on the uWSGI mailing list including your
@@ -75,7 +75,7 @@ and ask for help. If you are frustrated, do not waste time blaming and ranting
 - instead simply join the list and ask for help. This is open source, if you
 only rant you are doing nothing useful.
 
-I am not a sysadmin, nor a UNIX guru. Can I use uWSGI?
+我不是系统管理员，也不是UNIX专家。我可以用uWSGI吗？
 ------------------------------------------------------
 
 That's a good question :) But sadly there is no simple answer.  uWSGI has not
@@ -83,7 +83,7 @@ been developed with simplicity in mind, but with versatility.  You can try it
 by starting with one of the quickstarts and if you have problems, simply ask
 for help in the list or on the IRC channel.
 
-How can I buy commercial support for my company?
+我可以如何为我的公司购买商业支持？
 ------------------------------------------------
 
 Send an email to info at unbit.it with the word "uWSGI" in the subject. The
@@ -95,7 +95,7 @@ Will this allow me to run my awesome apps on my ancient close-minded ISP?
 
 Probably not. The uWSGI server requires a modern platform/environment. 
 
-Where are the benchmarks?
+基准在何处？
 -------------------------
 
 Sorry, we only do "official" benchmarks for regression testing. If benchmarks
@@ -129,7 +129,7 @@ you may conversely love. The approach taken will work better for certain cases
 than others, and each application should be analyzed on it's own merits using
 appropriate and accruate real-world benchmarks.
 
-What is 'Harakiri mode'?
+'Harakiri模式'是什么？
 ------------------------
 
 At Unbit we host hundreds of unreliable web apps on our servers. All of them
@@ -152,7 +152,7 @@ will be killed in its dedicated area. This timestamp is zeroed after every
 successful request. If the master process finds a worker with a timestamp in
 the past it will mercilessly kill it.
 
-Will my app run faster with uWSGI?
+用uWSGI会让我的应用运行得更快吗？
 ----------------------------------
 
 It's unlikely. The biggest bottleneck in web app deployment is the application
@@ -160,7 +160,7 @@ itself. If you want a faster environment, optimize your code or use techniques
 such as clustering or caching. We say that uWSGI is fast because it introduces
 a very little overhead in the deployment structure.
 
-What are the most important options for performance and robustness in the uWSGI environment?
+uWSGI环境中，对于性能和健壮性，什么是最重要的选项？
 --------------------------------------------------------------------------------------------
 
 By default, uWSGI is configured with sane "almost-good-for-all" values. But if
@@ -174,7 +174,7 @@ and when things start going wild, tuning is a must.
   for the `workers` option based on the nature of your app (IO bound, CPU bound,
   IO waiting...)
 
-Why not simply use HTTP as the protocol?
+为什么不简单地使用HTTP作为协议？
 ----------------------------------------
 
 A good question with a simple answer: HTTP parsing is slow, really slow.  Why
@@ -193,7 +193,7 @@ sysadmins as many choices as possible for integration with whatever
 infrastructure is already available.  Having multiple methods of configuration is
 just one way we achieve this.
 
-What is the best webserver handler?
+最好的webserver处理器是什么？
 -----------------------------------
 
 See :doc:`WebServers`.

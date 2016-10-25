@@ -1,21 +1,19 @@
-Formatting uWSGI requests logs 
+格式化uWSGI请求日志
 ==============================
 
-uWSGI has a ``--logformat`` option for building custom request loglines. The
-syntax is simple:
+uWSGI有一个 ``--logformat`` 选项，用来构建自定义的请求日志行。语法很简单：
 
 .. code-block:: ini
 
    [uwsgi]
    logformat = i am a logline reporting "%(method) %(uri) %(proto)" returning with status %(status)
 
-All of the variables marked with ``%()`` are substituted using specific rules.
-Three kinds of logvars are defined ("offsetof", functions, and user-defined).
+所有用 ``%()`` 标记的变量都可以使用特定的规则来替代。定义了三种日志变量 ("offsetof", 函数和用户定义)。
 
 offsetof
 ********
 
-These are taken blindly from the internal ``wsgi_request`` structure of the current request.
+这些是一味从当前请求内部的 ``wsgi_request`` 结构获取的。
 
 * ``%(uri)`` -> REQUEST_URI
 * ``%(method)`` -> REQUEST_METHOD
@@ -23,51 +21,50 @@ These are taken blindly from the internal ``wsgi_request`` structure of the curr
 * ``%(addr)`` -> REMOTE_ADDR
 * ``%(host)`` -> HTTP_HOST
 * ``%(proto)`` -> SERVER_PROTOCOL
-* ``%(uagent)`` -> HTTP_USER_AGENT (starting from 1.4.5)
-* ``%(referer)`` -> HTTP_REFERER (starting from 1.4.5)
+* ``%(uagent)`` -> HTTP_USER_AGENT (自1.4.5起)
+* ``%(referer)`` -> HTTP_REFERER (自1.4.5起)
 
-functions
+函数
 *********
 
-These are simple functions called for generating the logvar value:
+这些是简单的函数，调用来生成日志变量值：
 
-* ``%(status)`` -> HTTP response status code
-* ``%(micros)`` -> response time in microseconds
-* ``%(msecs)`` -> response time in milliseconds
-* ``%(time)`` -> timestamp of the start of the request
-* ``%(ctime)`` -> ctime of the start of the request
-* ``%(epoch)`` -> the current time in Unix format
-* ``%(size)`` -> response body size + response headers size (since 1.4.5)
-* ``%(ltime) -> human-formatted (Apache style)`` request time (since 1.4.5)
-* ``%(hsize)`` -> response headers size (since 1.4.5)
-* ``%(rsize)`` -> response body size (since 1.4.5)
-* ``%(cl)`` -> request content body size (since 1.4.5)
-* ``%(pid)`` -> pid of the worker handling the request (since 1.4.6)
-* ``%(wid)`` -> id of the worker handling the request (since 1.4.6)
-* ``%(switches)`` -> number of async switches (since 1.4.6)
-* ``%(vars)`` -> number of CGI vars in the request (since 1.4.6)
-* ``%(headers)`` -> number of generated response headers (since 1.4.6)
-* ``%(core)`` -> the core running the request (since 1.4.6)
-* ``%(vsz)`` -> address space/virtual memory usage (in bytes) (since 1.4.6)
-* ``%(rss)`` -> RSS memory usage (in bytes) (since 1.4.6)
-* ``%(vszM)`` -> address space/virtual memory usage (in megabytes) (since 1.4.6)
-* ``%(rssM)`` -> RSS memory usage (in megabytes) (since 1.4.6)
-* ``%(pktsize)`` -> size of the internal request uwsgi packet (since 1.4.6)
-* ``%(modifier1)`` -> modifier1 of the request (since 1.4.6)
-* ``%(modifier2)`` -> modifier2 of the request (since 1.4.6)
-* ``%(metric.XXX)`` -> access the XXX metric value (see :doc:`Metrics`)
-* ``%(rerr)`` -> number of read errors for the request (since 1.9.21)
-* ``%(werr)`` -> number of write errors for the request (since 1.9.21)
-* ``%(ioerr)`` -> number of write and read errors for the request (since 1.9.21)
-* ``%(tmsecs)`` -> timestamp of the start of the request in milliseconds since the epoch (since 1.9.21)
-* ``%(tmicros)`` -> timestamp of the start of the request in microseconds since the epoch (since 1.9.21)
-* ``%(var.XXX)`` -> the content of request variable XXX (like var.PATH_INFO, available from 1.9.21)
+* ``%(status)`` -> HTTP响应状态码
+* ``%(micros)`` -> 响应时间，以微秒为单位
+* ``%(msecs)`` -> 响应时间，以毫秒为单位
+* ``%(time)`` -> 请求开始的时间戳
+* ``%(ctime)`` -> 请求开始的ctime
+* ``%(epoch)`` -> Unix格式的当前时间
+* ``%(size)`` -> 响应体大小 + 响应头大小 (自1.4.5起)
+* ``%(ltime)`` -> 人类可读(Apache风格)的请求时间 (自1.4.5起)
+* ``%(hsize)`` -> 响应头大小 (自1.4.5起)
+* ``%(rsize)`` -> 响应体大小 (自1.4.5起)
+* ``%(cl)`` -> 请求内容体大小 (自1.4.5起)
+* ``%(pid)`` -> 处理请求的worker的pid (自1.4.6起)
+* ``%(wid)`` -> 处理请求的worker的id (自1.4.6起)
+* ``%(switches)`` -> 异步切换数 (自1.4.6起)
+* ``%(vars)`` -> 请求中的CGI变量数 (自1.4.6起)
+* ``%(headers)`` -> 已生成的响应头数 (自1.4.6起)
+* ``%(core)`` -> 运行请求的核心 (自1.4.6起)
+* ``%(vsz)`` -> 地址空间/虚拟内存使用 (单位为字节) (自1.4.6起)
+* ``%(rss)`` -> RSS内存使用 (单位为字节)  (自1.4.6起)
+* ``%(vszM)`` -> 地址空间/虚拟内存使用 (单位为MB) (自1.4.6起)
+* ``%(rssM)`` -> RSS内存使用 (单位为MB) (自1.4.6起)
+* ``%(pktsize)`` -> 内部的请求uwsgi包大小 (自1.4.6起)
+* ``%(modifier1)`` -> 请求的modifier1 (自1.4.6起)
+* ``%(modifier2)`` -> 请求的modifier2 (自1.4.6起)
+* ``%(metric.XXX)`` -> 访问XXX度量值 (见 :doc:`Metrics`)
+* ``%(rerr)`` -> 请求的读错误数 (自1.9.21起)
+* ``%(werr)`` -> 请求的写错误数 (自1.9.21起)
+* ``%(ioerr)`` -> 请求的读写错误数 (自1.9.21起)
+* ``%(tmsecs)`` -> 请求开始时间戳，自纪元起，单位为毫秒 (自1.9.21起)
+* ``%(tmicros)`` -> 请求开始时间戳，自纪元起，单位为微秒 (自1.9.21起)
+* ``%(var.XXX)`` -> 请求变量XXX的内容 (例如var.PATH_INFO，自1.9.21起可用)
 
-User-defined logvars
+用户定义的日志变量
 ********************
 
-You can define logvars within your request handler. These variables live only
-per-request.
+你可以在你的请求处理函数中定义日志变量。这些变量只存活在每个请求中。
 
 .. code-block:: python
 
@@ -79,16 +76,16 @@ per-request.
        uwsgi.set_logvar('worker_id', str(uwsgi.worker_id()))
        ...
 
-With the following log format you will be able to access code-defined logvars:
+使用以下日志格式，你将能够访问代码定义的日志变量：
 
 .. code-block:: sh
 
    uwsgi --logformat 'worker id = %(worker_id) for request "%(method) %(uri) %(proto)" test = %(foo)'
 
-Apache-style combined request logging
+Apache风格相结合的请求日志记录
 *************************************
 
-To generate Apache-compatible logs:
+要生成兼容Apache的日志：
 
 .. code-block:: ini
 
@@ -97,20 +94,20 @@ To generate Apache-compatible logs:
    log-format = %(addr) - %(user) [%(ltime)] "%(method) %(uri) %(proto)" %(status) %(size) "%(referer)" "%(uagent)"
    ...
 
-Hacking logformat
+hack日志格式
 *****************
 
-(Updated to 1.9.21)
+(更新至1.9.21)
 
-You can register new "logchunk" (the function to call for each logformat symbol) with
+你可以这样注册新的"logchunk" (为每个日志格式符号调用的函数)
 
 .. code-block:: c
 
    struct uwsgi_logchunk *uwsgi_register_logchunk(char *name, ssize_t (*func)(struct wsgi_request *, char **), int need_free);
 
-* ``name`` -- the name of the symbol
-* ``need_free`` -- if 1, means the pointer set by ``func`` must be free()d
-* ``func`` -- the function to call in the log handler
+* ``name`` -- 符号名
+* ``need_free`` -- 如果是1，表示由 ``func`` 设置的指针必须释放（free()）
+* ``func`` -- 日志处理函数中调用的函数
 
 .. code-block:: c
 
@@ -128,4 +125,4 @@ You can register new "logchunk" (the function to call for each logformat symbol)
            .on_load = register_logchunks,
    };
    
-Now if you load the foobar plugin, you will be able to use the %(foobar) request logging variable (that would report the request status).
+现在，如果你加载foobar插件，那么，你将能够使用 %(foobar) 请求日志变量 (它会报告请求状态)。

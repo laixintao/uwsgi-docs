@@ -258,7 +258,7 @@ something like this.
 
 (Obviously change ``/tmp/bin/helloworld`` to wherever your app lives...)
 
-Notes
+小抄
 *****
 
 * A series of interesting go examples can be found in the ``t/go`` directory of

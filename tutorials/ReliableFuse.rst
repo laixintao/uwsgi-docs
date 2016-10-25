@@ -3,8 +3,8 @@ Reliably use FUSE filesystems for uWSGI vassals (with Linux)
 
 Requirements: uWSGI 1.9.18, Linux kernel with FUSE and namespaces support.
 
-FUSE is a technology allowing the implementation of filesystems in user space (hence the name: **F**\ ilesystem in **Use**\ rspace).
-There are hundreds of high-quality FUSE filesystems, so having your application relying on them is a common situation.
+FUSE是一门允许在用户空间实现文件系统的技术 (因此，名字是：**F**\ ilesystem in **Use**\ rspace，即用户空间中的文件系统)。
+有很多高质量的FUSE文件系统，因此，让你的应用依赖于它们是一种普遍形势。
 
 FUSE filesystems are normal system processes, so as any process in the system, they can crash (or you may involuntarily kill them).
 In addition to this, if you host multiple applications, each one requiring a FUSE mount point, you may want to avoid polluting the main mount points namespace and, more important,
@@ -12,14 +12,14 @@ avoid having unused mount points in your system (i.e. an instance is completely 
 
 The purpose of this tutorial is to configure an Emperor and a series of vassals, each one mounting a FUSE filesystem.
 
-A Zip filesystem
+Zip文件系统
 ^^^^^^^^^^^^^^^^
 
 `fuse-zip <https://code.google.com/p/fuse-zip/>`_ is a FUSE process exposing a zip file as a filesystem.
 
 Our objective is to store whole app in a zip archive and instruct uWSGI to mount it as a filesystem (via FUSE) under ``/app``.
 
-The Emperor 
+Emperor 
 ***********
 
 .. code-block:: ini
@@ -53,7 +53,7 @@ A Vassal
    
 Here we use the ``-r`` option of the ``fuse-zip`` command for a read-only mount.
 
-Monitoring mount points
+监控挂载点
 ***********************
 
 The problem with the current setup is that if the ``fuse-zip`` process dies, the instance will no more be able to access ``/app`` until it is respawned.
@@ -88,7 +88,7 @@ Enabling CoWs means you will have an immutable/read-only mount point base and al
 
 Our objective is to have a read-only rootfs shared by all of our customers, and a writable mount point (configured as CoW) for each customer, in which every modification will be stored.
 
-The Emperor
+Emperor
 ***********
 
 Previous Emperor configuration can be used, but we need to prepare our
@@ -183,7 +183,7 @@ In our example we will run FUSE processes at the "pre-jail" phase, and deal with
 If your app will try to write to its filesystem, you will see that all
 of the created/updated files are available in its ``/cow`` directory.
 
-Notes
+注释
 ^^^^^
 
 Some FUSE filesystems do not commit writes until they are unmounted.

@@ -1,74 +1,74 @@
-Setting up Graphite on Ubuntu using the Metrics subsystem
+使用Metrics子系统，在Ubuntu上构建Graphite
 =========================================================
 
-This tutorial will guide you in installing a multi-app server, with each application sending metrics to a central graphite/carbon server.
+本教程将指导你安装一个多应用服务器，其中，每个应用发送度量到一个中央graphite/carbon服务器。
 
-Graphite is available here: http://graphite.wikidot.com/
+Graphite可以在这里找到： http://graphite.wikidot.com/
 
-The uWSGI Metrics subsystem is documented here :doc:`../Metrics`
+uWSGI Metrics子系统的相关文档在这里 :doc:`../Metrics`
 
-The tutorial assumes an Ubuntu Saucy (13.10) release on amd64
+本教程假设是在amd64的Ubuntu Saucy (13.10)版本
 
-While for Graphite we will use Ubuntu official packages, uWSGI core and plugins will be downloaded and installed from official sources
+而对于Graphite，我们将使用Ubuntu官方包，并且将从官方渠道下载和安装uWSGI内核和插件
 
-Installing Graphite and the others needed packages
+安装Graphite及其他需要的包
 **************************************************
 
 .. code-block:: sh
 
    sudo apt-get install python-dev ruby-dev bundler build-essential libpcre3-dev graphite-carbon graphite-web
    
-python-dev and ruby-dev are required as we want to support both WSGI and Rack apps.
+python-dev和ruby-dev是必须的，因为我们想要同时支持WSGI和Rack应用。
 
-pcre development headers allow you to build uWSGI with internal routing support (something you always want)
+pcre开发头文件运行你构建带内部路由支持（你总是想要的东东）的uWSGI
 
-Initializing Graphite
+初始化Graphite
 *********************
 
-The first step will be enabling th Carbon server.
+第一步僵尸启用Carbon服务器。
 
-The Graphite project is composed by three subsystems: whisper, carbon and the web frontend
+Graphite项目由三个子系统组成：whisper, carbon和前端
 
-Whisper is a data storage format (similar to rrdtool)
+Whisper是一种数据存储格式(类似于rrdtool)
 
-Carbon is the server gathering metrics and storing them in whisper files (well it does more, but this is its main purpose)
+Carbon是一个服务器，用来收集度量并将其存储在whisper文件中 (好吧，它做的东西会更多些，但这是它的主要用途)
 
-The web frontend visualize the charts/graphs built from the data gathered by the carbon server.
+而web前端用来可视化根据carbon服务器收集到的数据构建的图表。
 
-To enable the carbon server edit ``/etc/default/graphite-carbon`` and set CARBON_CACHE_ENABLED to true
+要启用carbon服务器，编辑 ``/etc/default/graphite-carbon`` 并且设置CARBON_CACHE_ENABLED为true
 
-Before starting the carbon server we need to build its search index.
+在启动carbon服务器之前，我们需要建立其搜索索引
 
-Just run:
+仅需运行：
 
 .. code-block:: sh
 
    sudo /usr/bin/graphite-build-search-index
 
-Then start the carbon server (at the next reboot it will be automatically started)
+然后启动carbon服务器 (在下一次重启的时候，将会自动启动它)
 
 .. code-block:: sh
 
    sudo /etc/init.d/carbon-cache start
 
-Building and Installing uWSGI
+构建和安装uWSGI
 *****************************
 
-Download latest stable uWSGI tarball
+下载最新的稳定的uWSGI安装包
 
 .. code-block:: sh
 
    wget http://projects.unbit.it/downloads/uwsgi-latest.tar.gz
    
-explode it, and from the created directory run:
+解压缩并在创建的目录下运行：
 
 .. code-block:: sh
 
    python uwsgiconfig.py --build core
    
-this will build the uWSGI "core" binary.
+这将会构建uWSGI "core"二进制文件。
 
-We now want to build the python, rack and carbon plugins:
+现在，我们想要构建python, rack和carbon插件：
 
 .. code-block:: sh
 
@@ -77,9 +77,9 @@ We now want to build the python, rack and carbon plugins:
    python uwsgiconfig.py --plugin plugins/carbon core
    
    
-now we have ``uwsgi``, ``python_plugin.so``, ``rack_plugin.so`` and ``carbon_plugin.so``
+现在，我们有了 ``uwsgi``, ``python_plugin.so``, ``rack_plugin.so`` 和 ``carbon_plugin.so``
 
-let's copy it to system directories:
+将它们拷贝到系统目录下：
 
 .. code-block:: sh
 
@@ -90,10 +90,10 @@ let's copy it to system directories:
    sudo cp rack_plugin.so /usr/lib/uwsgi
    sudo cp carbon_plugin.so /usr/lib/uwsgi
 
-Setting up the uWSGI Emperor
+设置uWSGI Emperor
 ****************************
 
-Create an upstart config file for starting :doc:`../Emperor`
+创建一个upstart配置文件，用以启动 :doc:`../Emperor`
 
 .. code-block:: sh
 
@@ -105,29 +105,29 @@ Create an upstart config file for starting :doc:`../Emperor`
 
    exec /usr/bin/uwsgi --emperor /etc/uwsgi
    
-save it as ``/etc/init/emperor.conf`` and start the Emperor:
+将其保存为 ``/etc/init/emperor.conf`` ，然后启动Emperor:
 
 .. code-block:: sh
 
    start emperor
    
    
-From now on, to start uWSGI instances just drop their config files into /etc/uwsgi
+从现在起，要启动uWSGI实例，仅需把它们的配置文件放到/etc/uwsgi中
 
-Spawning the Graphite web interface
+生成Graphite web界面
 ***********************************
 
-Before starting the graphite web interface (that is a Django app) we need to initialize its database.
+在启动graphite web界面 (它是一个Django应用)前，我们需要初始化它的数据库。
 
-Just run:
+运行：
 
 .. code-block:: sh
 
    sudo graphite-manage syncdb
    
-this is the standard django syncdb command for manage.py. Just answer the questions to create an admin user.
+这是manage.py的一个标准的django syncdb命令。仅需回答问题来创建一个admin用户即可。
 
-Now we are ready to create a uWSGI vassal:
+现在，我们准备好创建一个uWSGI vassal了：
 
 .. code-block:: ini
 
@@ -139,20 +139,19 @@ Now we are ready to create a uWSGI vassal:
    wsgi-file = /usr/share/graphite-web/graphite.wsgi
    http-socket = :8080
    
-Save it as ``/etc/uwsgi/graphite.ini``
+将其保存为 ``/etc/uwsgi/graphite.ini``
    
-the _graphite user (and group) is created by the graphite ubuntu package. Our uWSGI vassal will run under this privileges.
+ _graphite 用户 (和组)由graphite ubuntu包创建。我们的uWSGI vassal将会运行在此权限下运行。
 
-The web interface will be available on the port 8080 of your server natively speaking HTTP. If you prefer to proxy it,
-just change ``http-socket`` to ``http`` or place it behind a full webserver like nginx (this step is not covered in this tutorial)
+web界面将会监听服务器的8080端口，使用HTTP。如果你更喜欢代理，那么仅需修改 ``http-socket`` 为 ``http`` ，或者将其放在一个诸如nginx这样的完整的web服务器之后 (本教程中并不涵盖此步骤)
 
 
-Spawning vassals sending metrics to Graphite
+生成vassals，用以发送度量给Graphite
 ********************************************
 
-We are now ready to send applications metrics to the carbon/graphite server.
+现在，已经准备好发送应用的度量给carbon/graphite服务器了。
 
-For every vassal file in /etc/uwsgi just be sure to add the following options:
+对于/etc/uwsgi中的每一个vassal文件，仅需确保添加以下选项：
 
 .. code-block:: ini
 
@@ -165,49 +164,48 @@ For every vassal file in /etc/uwsgi just be sure to add the following options:
    carbon = 127.0.0.1:2003
    ...
 
-The ``carbon-id`` set a meaningful prefix to each metric (%n automatically translates to the name without extension of the vassal file).
+ ``carbon-id`` 给每个度量设置了一个有意义的前缀 (%n自动转换成不带扩展名的vassal文件名)。
 
-The ``carbon`` option set the address of the carbon server to send metrics to (by default the carbon server binds on port 2003, but you can change it editing
-``/etc/carbon/carbon.conf`` and restarting the carbon server)
+ ``carbon`` 选项设置carbon服务器的地址以接收度量值 (默认情况下，carbon服务器绑定在2003端口，但是你可以通过编辑 ``/etc/carbon/carbon.conf`` 然后重启carbon服务器来修改它)
 
-Using Graphiti (Ruby/Sinatra based) as alternative frontend
+将Graphiti (基于Ruby/Sinatra) 作为替代前端
 ***********************************************************
 
-Graphiti is an alternative dashboard/frontend from Graphite writte in Sinatra (a Ruby/Rack framework).
+Graphiti是来自Graphite的一个替代web面板/前端，用Sinatra (一个Ruby/Rack框架)编写。
 
-Graphiti requires redis, so be sure a redis server is running in your system.
+Graphiti需要redis，因此，确保你的系统中运行着一个redis服务器。
 
-Running:
+运行：
 
 .. code-block:: sh
 
    sudo apt-get install redis-server
    
-will be enough
+就够了
 
-First step is cloning the graphiti app (place it where you want/need):
+第一步是clone这个graphiti应用 (将其放在任何你想要/需要的地方)：
 
 .. code-block:: sh
 
    git clone https://github.com/paperlesspost/graphiti.git
    
-then run the bundler tool (if you are not confident with the ruby world it is a tool for managing dependencies)
+然后运行bundler工具 (如果你对ruby世界没信心，那么（我告诉你），它是一个用来管理依赖的工具)
 
 .. code-block:: sh
 
    bundle install
 
-.. note:: if the eventmachine gem installation fails, add "gem 'eventmachine'" in the Gemfile as the first gem and run bundle update. This will ensure latest eventmachine version will be installed
+.. note:: 如果eventmachine gem安装失败，那么在Gemfile中添加"gem 'eventmachine'"以作为第一个gem，然后运行bundle update。这会确保安装最新的eventmachine版本
 
-After bundle has installed all of the gems, you have to copy the graphiti example configuration:
+在bundle安装了所有的gem之后，你必须拷贝graphiti样例配置：
 
 .. code-block:: sh
 
    cp config/settings.yml.example config/settings.yml
    
-edit it and set graphite_base_url to the url where the graphite web interface (the django one) is running.
+编辑它，设置graphite_base_url为graphite web界面(django那个)运行的url。
 
-Now we can deploy it on uWSGI
+现在，我们可以在uWSGI上部署它了
 
 .. code-block:: ini
 
@@ -221,19 +219,19 @@ Now we can deploy it on uWSGI
    uid = _graphite
    gid = _graphite
    
-save it as ``/etc/uwsgi/graphiti.ini`` to let the Emperor deploy it
+将其保存为 ``/etc/uwsgi/graphiti.ini`` ，让Emperor部署它
 
-You can now connect to port 9191 to manage your gathered metrics.
+现在，你可以连接到9191端口来管理你收集的度量了。
 
-As always you are free to place the instance under a proxy.
+与往常一样，你可以随意将实例放在代理之后。
 
-Notes
+小抄
 *****
 
-By default the carbon server listens on a public address. Unless you know what you are doing you should point it to a local one (like 127.0.0.1)
+默认情况下，carbon服务器监听公有地址。除非你清楚你正在做什么，否则你应该将其指向一个本地地址 (例如127.0.0.1)
 
-uWSGI exports a gazillion of metrics (and more are planned), do not be afraid to use them
+uWSGI导出大量的度量 (更多是有计划的)，不要害怕使用它们
 
-There is no security between apps and the carbon server, any apps can write metrics to it. If you are hosting untrusted apps you'd better to use other approcahes (like giving a graphite instance to every user in the system)
+应用和carbon服务器之间不具备安全性，任何应用都能写入度量值。如果你托管不信任的应用，那么最好使用其他方法 (例如，给系统中的每个用户一个graphite实例)
 
-The same is true for redis, if you run untrusted apps a shared redis instance is absolutely not a good choice from a secuity point of view
+对于redis同样适用，如果你允许不受信任的应用，那么从安全的角度来看，一个共享的redis实例绝对不是一个好的选择。

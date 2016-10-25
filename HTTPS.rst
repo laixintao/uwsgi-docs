@@ -1,4 +1,4 @@
-HTTPS support (from 1.3)
+HTTPS支持 (自1.3起)
 ============================
 
 Use the ``https <socket>,<certificate>,<key>`` option. This option may be

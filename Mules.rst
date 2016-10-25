@@ -1,18 +1,18 @@
-uWSGI Mules
+uWSGI Mule
 ===========
 
-Mules are worker processes living in the uWSGI stack but not reachable via socket connections, that can be used as a generic subsystem to offload tasks. You can see them as a more primitive :doc:`spooler<Spooler>`.
+Mule是活在uWSGI栈中的worker进程，但通过socket连接是不能访问的，它可以作为一种通用子系统使用，以卸载任务。你可以将它们看成一个比较原始的 :doc:`spooler<Spooler>`。
 
-They can access the entire uWSGI API and can manage signals and be communicated with through a simple string-based message system.
+它们可以访问整个 uWSGI API，可以管理信号，并且可以通过一个简单的基于字符串的消息系统来进行通信。
 
-To start a mule (you can start an unlimited number of them), use the ``mule`` option as many times as you need.
+要启动一个mule (你可以启动无限个它们)，需要多少次，就使用多少次 ``mule`` 选项。
 
-Mules have two modes,
+Mule有两种模式，
 
-* Signal only mode (the default). In this mode the mules load your application as normal workers would. They can only respond to :doc:`uWSGI signals<Signals>`.
-* Programmed mode. In this mode mules load a program separate from your application. See ProgrammedMules_.
+* 纯信号模式（默认模式）。在这种模式下，mule像正常的worker那样加载你的应用。它们只能响应 :doc:`uWSGI signals<Signals>`。
+* 编程模式。在这种模式下，mule与你的应用分开加载一个程序。见 ProgrammedMules_.
 
-By default each mule starts in signal-only mode. 
+默认情况下，每个mule以纯信号模式启动。
 
 .. code-block:: sh
 
@@ -28,7 +28,7 @@ By default each mule starts in signal-only mode.
         <mule/>
     </uwsgi>
 
-Basic usage
+基本使用
 -----------
 
 .. code-block:: py
@@ -54,17 +54,16 @@ Basic usage
 
 .. _ProgrammedMules:
 
-Giving a brain to mules
+赋予mule智慧
 -----------------------
 
-As mentioned before, mules can be programmed. To give custom logic to a mule, give the ``mule`` option a path to
-a script (it must end in ".py") or a "package.module:callable" value.
+如前所述，可以对mule进行编程。要赋予一个mule自定义逻辑，则将脚本名传递给 ``mule`` 选项。
 
 .. code-block:: sh
 
-    uwsgi --socket :3031 --mule=somaro.py --mule=mypkg.myapp:run_mule --mule --mule
+    uwsgi --socket :3031 --mule=somaro.py --mule --mule --mule
 
-This will run 4 mules, 2 in signal-only mode, one running :file:`somaro.py` and one running `mypkg.myapp:run_mule`.
+这将会运行4个mule，3个处于纯信号模式，一个运行 :file:`somaro.py`。
 
 .. code-block:: py
 
@@ -91,11 +90,11 @@ This will run 4 mules, 2 in signal-only mode, one running :file:`somaro.py` and 
     if __name__ == '__main__':
         loop1()
 
-So as you can see from the example, you can use :py:meth:`mule_get_msg` to receive messages in a programmed mule. Multiple threads in the same programmed mule can wait for messages.
+因此，正如你可以从这个例子看到的那样，你可以在一个编程mule中使用 :py:meth:`mule_get_msg` 来接收消息。相同编程mule中的多个线程会等待消息。
 
-If you want to block a mule to wait on an uWSGI signal instead of a message you can use :py:meth:`uwsgi.signal_wait`.
+如果你想阻塞一个mule，以等待一个uWSGI信号，而不是消息，那么你可以使用 :py:meth:`uwsgi.signal_wait`。
 
-Use :py:meth:`uwsgi.mule_msg` to send a message to a programmed mule. Mule messages can be sent from anywhere in the uWSGI stack, including but not limited to workers, the spoolers, another mule.
+使用 :py:meth:`uwsgi.mule_msg` 来发送一个消息给编程mule。可以从uWSGI栈中的任何一个地方发送mule消息，包括但不限制于worker, spooler, 另一个mule。
 
 .. code-block:: py
 
@@ -103,4 +102,4 @@ Use :py:meth:`uwsgi.mule_msg` to send a message to a programmed mule. Mule messa
     # If you do not specify a mule ID, the message will be processed by the first available programmed mule.
     uwsgi.mule_msg("ciuchino", 1)
 
-As you can spawn an unlimited number of mules, you may need some form of synchronization -- for example if you are developing a task management subsystem and do not want two mules to be able to start the same task simultaneously. You're in luck -- see :doc:`Locks`.
+由于你可以生成无限个mule，因此你或许需要某些形式的同步 —— 例如，如果你正在开发一个任务管理子系统，并且不希望两个mule能够同时启动相同的任务。你很幸运 —— 见 :doc:`Locks`。

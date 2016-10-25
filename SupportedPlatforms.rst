@@ -1,11 +1,11 @@
-Supported Platforms/Systems
+支持的平台/系统
 ===========================
 
-This is the list of officially supported operating systems and platforms.
+下面是官方支持的操作系统和平台列表。
 
 
 * Linux 2.6/3.x
-* FreeBSD
+* FreeBSD >= 7
 * NetBSD
 * OpenBSD
 * DragonFlyBSD
