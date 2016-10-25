@@ -1,4 +1,4 @@
-Ruby API支持
+Ruby API support
 ================
 
 Status

@@ -1,25 +1,26 @@
-使用Linux名字空间监禁(jailing)你的应用
+Jailing your apps using Linux Namespaces
 ========================================
 
-如果你有最新的Linux内核 (>2.6.26)，并且不是使用Itanium架构，那么你可以使用名字空间支持。
+If you have a recent Linux kernel (>2.6.26) and you are not on the Itanium architecture you can use the namespaces support.
 
-名字空间是什么？
+What are namespaces?
 --------------------
 
-它们是一种从内核特定层“分离”你的进程，并且将它们分配给新的内核层的优雅的（比大多数你可能会在其他操作系统发现的jail系统更优雅）方式。
+They are an elegant (more elegant than most of the jailing systems you might find in other operating systems) way to "detach" your processes from a specific layer of the kernel and assign them to a new one.
 
-Posix系统中可用的'chroot'系统是名字空间的原始形式：一个进程看到的是一个全新的文件系统root，并且无法访问原始的。
+The 'chroot' system available on UNIX/Posix systems is a primal form of namespaces: a process sees a completely new file system root and has no access to the original one.
 
-Linux将这个概念扩展到了其他OS层 (PID, user, IPC, 网络等等。)，因此，特定的进程可以存活在一个“虚拟操作系统”中，它均有一组新的pid，一组新的用户，一个完全不共享的IPC系统 (信号量，贡献内存等等。)，专用网络接口及其自身的主机名。
+Linux extends this concept to the other OS layers (PIDs, users, IPC, networking etc.), so a specific process can live in a "virtual OS" with a new group of pids, a new set of users, a completely unshared IPC system (semaphores, shared memory etc.), a dedicated network interface and its own hostname.
 
-uWSGI在1.9/2.0开发周期中得到了完全的名字空间支持。
+uWSGI got full namespaces support in 1.9/2.0 development cycle.
 
 clone() vs unshare()
 --------------------
 
-要把当前进程放到一个新的名字空间中，你有两个系统调用：古老的 ``clone()`` ，它将在特定的名字空间中创建一个新的进程，以及块中的新方式， ``unshare()`` ，这为当前运行的进程改变名字空间。
+To place the current process in a new namespace you have two syscalls: the venerable ``clone()``, that will create a new process in the specified namespace
+and the new kid on the block, ``unshare()``, that changes namespaces for the current running process.
 
-``clone()`` 可以被Emperor用来在新的名字空间中生成附庸（vassal）：
+``clone()`` can be used by the Emperor to directly spawn vassals in new namespaces:
 
 .. code-block:: ini
 
@@ -27,7 +28,7 @@ clone() vs unshare()
    emperor = /etc/uwsgi/vassals
    emperor-use-clone = fs,net,ipc,uts,pid
    
-运行的每个附庸中将会有自己专用的文件系统、网络、SysV IPC和UTS视图。
+will run each vassal with a dedicated filesystem, networking, SysV IPC and UTS view.
 
 .. code-block:: ini
 
@@ -35,28 +36,30 @@ clone() vs unshare()
    unshare = ipc,uts
    ...
    
-会在特定的名字空间中运行当前的实例。
+will run the current instance in the specified namespaces.
 
-一些名字空间子系统出于理智的使用，需要额外的步骤（见下文）。
+Some namespace subsystems require additional steps for sane usage (see below).
 
-支持的名字空间
+Supported namespaces
 --------------------
 
-* ``fs`` -> CLONE_NEWNS，文件系统
+* ``fs`` -> CLONE_NEWNS, filesystems
 * ``ipc`` -> CLONE_NEWIPC, sysv ipc
-* ``pid`` -> CLONE_NEWPID，当与unshare()一起使用的时候，需要额外的 ``fork()`` 。使用--refork-*中任意一个选项。
-* ``uts`` -> CLONE_NEWUTS，主机名
-* ``net`` -> CLONE_NEWNET，来自不同名字空间的新的网络，UNIX socket仍然可用，它们是名字空间之间通信的好方式
-* ``user`` -> CLONE_NEWUSER，仍然管理复杂 (并在不同的内核版本之间表现不同)，慎用
+* ``pid`` -> CLONE_NEWPID, when used with unshare() requires an additional ``fork()``. Use one of the --refork-* options.
+* ``uts`` -> CLONE_NEWUTS, hostname
+* ``net`` -> CLONE_NEWNET, new networking, UNIX sockets from different namespaces are still usable, they are a good way for inter-namespaces communications
+* ``user`` -> CLONE_NEWUSER, still complex to manage (and has differences in behaviours between kernel versions) use with caution
 
 setns()
 -------
 
-除了为新的进程创建新的名字空间，你还可以使用 ``setns()`` 调用附加到已经运行的（名字空间）。
+In addition to creating new namespaces for a process you can attach to already running ones using the ``setns()`` call.
 
-每个进程通过 ``/proc/self/ns`` 目录公开它的名字空间。setns()系统调用使用从那个目录中的文件获得的文件描述符来附加到名字空间上。
+Each process exposes its namespaces via the ``/proc/self/ns`` directory. The setns() syscall uses the file descriptors obtained from the files in that directory
+to attach to namespaces.
 
-正如我们已经看到的那样，UNIX socket是名字空间之间进行通信的一种好方式，uWSGI的 ``setns()`` 特性的工作方式是创建一个UNIX socket，用来接收那些想要加入它的名字空间的进程的请求。由于UNIX socket允许传递文件描述符，因此“客户端”只需要在它们之上调用setns()。
+As we have already seen, UNIX sockets are a good way to communicate between namespaces, the uWSGI ``setns()`` feature works by creating an UNIX socket that receives requests
+from processes wanting to join its namespace. As UNIX sockets allow file descriptors passing, the "client" only need to call setns() on them.
 
 * ``setns-socket <addr>`` exposes /proc/self/ns on the specified unix socket address
 * ``setns <addr>`` connect to the specified unix socket address, get the filedescriptors and use setns() on them
@@ -106,7 +109,7 @@ When you have created the new file system layout you can umount /.old_root recur
    hook-as-root = umount:/.old_root rec,detach
 
 
-为什么不使用lxc？
+Why not lxc?
 ------------
 
 LXC (LinuX Containers) is a project allowing you to build full subsystems using Linux namespaces. You may ask why "reinvent the wheel" while LXC implements
@@ -119,7 +122,7 @@ Not all the scenario requires a full system-like view (and in lot of case is sub
 see namespaces as a way to increase security and isolation, when you need/can isolate a component do it with clone/unshare. When you want
 to give users a full system-like access go with LXC.
 
-老方法：--namespace选项
+The old way: the --namespace option
 ===================================
 
 Before 1.9/2.0 a full featured system-like namespace support was added. It works as a chroot() on steroids.
@@ -174,7 +177,7 @@ you can easily do it.
 
    .. seealso:: :doc:`Cgroups`
 
-重载uWSGI
+Reloading uWSGI
 ---------------
 
 When running in a jail, uWSGI uses another system for reloading: it'll simply tell workers to bugger off and then exit. The parent process living outside the namespace will see this and respawn the stack in a new jail.
@@ -184,7 +187,7 @@ How secure is this sort of jailing?
 
 Hard to say! All software tends to be secure until a hole is found.
 
-其他文件系统
+Additional filesystems
 ----------------------
 
 When app is jailed to namespace it only has access to its virtual jail root filesystem. If there is any other filesystem mounted inside the jail directory, it won't be accessible, unless you use ``namespace-keep-mount``.

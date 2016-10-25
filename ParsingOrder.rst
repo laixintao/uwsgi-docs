@@ -1,4 +1,4 @@
-uWSGI是如何解析配置文件的
+How uWSGI parses config files
 =============================
 
 Until uWSGI 1.1 the parsing order has not been 'stable' or 'reliable'.

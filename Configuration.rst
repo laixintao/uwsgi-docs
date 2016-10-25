@@ -1,4 +1,4 @@
-配置uWSGI
+Configuring uWSGI
 =================
 
 uWSGI can be configured using several different methods. All configuration methods may be mixed and matched in the same invocation of uWSGI.
@@ -15,7 +15,7 @@ Example:
 
    uwsgi --http-socket :9090 --psgi myapp.pl
    
-可以写成
+can be written as
 
 .. code-block:: ini
 
@@ -26,7 +26,7 @@ Example:
 
 .. _LoadingConfig:
 
-加载配置文件
+Loading configuration files
 ---------------------------
 
 uWSGI supports loading configuration files over several methods other than simple disk files::
@@ -249,16 +249,16 @@ the truth is that '@' can read from all of the supported uwsgi schemes
    characters = @(call://uwsgi_func)
 
 
-命令行参数
+Command line arguments
 ----------------------
 
-例子::
+Example::
 
   uwsgi --socket /tmp/uwsgi.sock --socket 127.0.0.1:8000 --master --workers 3
 
 .. _ConfigEnv:
 
-环境变量
+Environment variables
 ---------------------
 
 When passed as environment variables, options are capitalized and prefixed with
@@ -269,11 +269,11 @@ When passed as environment variables, options are capitalized and prefixed with
    Several values for the same configuration variable are not supported with
    this method.
 
-例子::
+Example::
 
    UWSGI_SOCKET=127.0.0.1 UWSGI_MASTER=1 UWSGI_WORKERS=3 uwsgi
 
-INI文件
+INI files
 ---------
 
 .INI files are a standard de-facto configuration format used by many
@@ -321,7 +321,7 @@ instead of the current one, so be careful when including other files.
 * Boolean values may be set without the value part. Simply ``master`` is thus equivalent to ``master=true``. This may not be compatible with other INI parsers such as ``paste.deploy``.
 * For convenience, uWSGI recognizes bare ``.ini`` arguments specially, so the invocation ``uwsgi myconf.ini``  is equal to ``uwsgi --ini myconf.ini``.
 
-XML文件
+XML files
 ---------
 
 The root node should be ``<uwsgi>`` and option values text nodes.
@@ -354,7 +354,7 @@ allow you to embed ``uwsgi`` configuration nodes in other XML files.
 * Boolean values may be set without a text value.
 * For convenience, uWSGI recognizes bare ``.xml`` arguments specially, so the invocation ``uwsgi myconf.xml``  is equal to ``uwsgi --xml myconf.xml``.
 
-JSON 文件
+JSON files
 ----------
 
 The JSON file should represent an object with one key-value pair, the key being
@@ -396,7 +396,7 @@ And then load this using::
 
 .. _Jansson: http://www.digip.org/jansson/
 
-YAML 文件
+YAML files
 ----------
 
 The root element should be `uwsgi`. Boolean options may be set as `true` or `1`.
@@ -425,14 +425,14 @@ And then load this using::
   uwsgi --yaml myconf.yaml:app2
 
 
-SQLite配置
+SQLite configuration
 --------------------
 
 .. note::
 
   Under construction.
 
-LDAP 配置
+LDAP configuration
 ------------------
 
 LDAP is a flexible way to centralize configuration of large clusters of uWSGI

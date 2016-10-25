@@ -3,7 +3,7 @@ uWSGI 2.0.10
 
 [20150317]
 
-错误修复
+Bugfixes
 --------
 
 * Don't lower security standards with gcc 4.9 (Riccardo Magliocchetti)
@@ -15,8 +15,8 @@ uWSGI 2.0.10
 * fixed http Range header management
 
 
-新特性
-********
+New Features
+------------
 
 safeexec hook
 **************
@@ -42,7 +42,7 @@ forcecl transformation
 this transformation works like 'fixcl' but generates the Content-Length header even if Content-Length has been listed for removal.
 
 
-可用性
+Availability
 ------------
 
 You can download uWSGI 2.0.10 from

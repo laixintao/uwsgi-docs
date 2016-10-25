@@ -29,8 +29,8 @@ Bugfixes and improvements
 - fixed tuntap netmask
 - fixed busyness plugin without metrics subsystem
 
-新特性
-********
+New features
+************
 
 uWSGI 2.0 is a LTS branch, so do not expect too much new features. 2.0.1 is the first maintainance release, so you still get a bunch of them
 (mainly features not complete in 2.0)
@@ -225,7 +225,7 @@ Two new options for PyPy plugin have been added for paste support:
 
 they both maps 1:1 to the CPython variants, but contrary to it they automatically fix logging
 
-可用性
+Availability
 ************
 
 You can download uWSGI 2.0.1 from: http://projects.unbit.it/downloads/uwsgi-2.0.1.tar.gz

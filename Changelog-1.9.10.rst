@@ -3,14 +3,14 @@ uWSGI 1.9.10
 
 Changelog [20130511]
 
-错误修复
+Bugfixes
 ********
 
 * fixed alarm threads during reloads
 * fixed uninitialized memory in --touch-* options
 * fixed a regression in --attach-daemon
 
-新特性
+New Features
 ************
 
 Welcome to gccgo
@@ -34,11 +34,9 @@ Check this request limiter based on HTTP response status (a value you can get on
 
 https://github.com/unbit/uwsgi/blob/master/t/routing/errorlimiter.ini
 
-可用性
+Availability
 ************
 
-uWSGI 1.9.10于20130511发布
-
-你可以从下面地址下载它：
+uWSGI 1.9.10 will be available since 20130511 at the following url:
 
 http://projects.unbit.it/downloads/uwsgi-1.9.10.tar.gz

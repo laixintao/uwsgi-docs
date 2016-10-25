@@ -8,7 +8,7 @@ The tutorial assumes a shared hosting account, but it works on the VPS offer too
 better techniques to accomplish the result)
 
 
-准备环境
+Preparing the environment
 *************************
 
 Log in via ssh to your account and move to the home (well, you should be already there after login).
@@ -54,7 +54,7 @@ Now in your home create a YYY.ini (remember to change YYY with your domain name)
 
 change the first three lines accordingly.
 
-准备python virtualenv
+Preparing the python virtualenv
 *******************************
 
 As we want to run the werkzeug test app, we need to install its package in a virtualenv.

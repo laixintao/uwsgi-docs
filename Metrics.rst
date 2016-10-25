@@ -1,7 +1,7 @@
-度量（Metrics）子系统
+The Metrics subsystem
 =====================
 
-自1.9.19起可用。
+Available from 1.9.19.
 
 The uWSGI metrics subsystem allows you to manage "numbers" from your app.
 
@@ -18,12 +18,12 @@ The metrics subsystem is completely thread-safe.
 
 By default uWSGI creates a lot of metrics (and more are planned), so before adding your own be sure uWSGI does not already expose the one(s) you need.
 
-度量名和oid
+Metric names and oids
 *********************
 
 Each metric must have a name (containing only numbers, letters, underscores, dashes and dots) and an optional ``oid`` (required for mapping a metric to :doc:`SNMP`).
 
-度量类型
+Metric types
 ************
 
 Before dealing with metrics you need to understand the various types represented by each metric:
@@ -49,7 +49,7 @@ ALIAS (type 3)
 
 This is a virtual metric pointing to another one . You can use it to give different names to already existing metrics.
 
-度量收集器
+Metric collectors
 *****************
 
 Once you define a metric type, you need to tell uWSGI how to 'collect' the specific metric.
@@ -72,7 +72,7 @@ There are various collectors available (and more can be added via plugins).
 * ``func`` - the value is computed calling a specific function every time
 * ``manual`` - the NULL collector. The value must be updated manually from applications using the metrics API.
 
-自定义度量
+Custom metrics
 **************
 
 You can define additional metrics to manage from your app.
@@ -160,7 +160,7 @@ this will call the C function my_collector every 10 seconds and will set the val
 
 The function must returns an ``int64_t`` value. The argument it takes is a ``uwsgi_metric`` pointer. You generally do not need to parse the metric, so just casting to void will avoid headaches.
 
-度量目录
+The metrics directory
 *********************
 
 UNIX sysadmins love text files. They are generally the things they have to work on most of the time. If you want to make a UNIX sysadmin happy, just give him or her some text file to play with. (Or some coffee, or whiskey maybe, depending on their tastes. But generally, text files should do just fine.)
@@ -177,7 +177,7 @@ This will create a text file for each metric in the 'mymetrics' directory. The c
 
 Each file is mapped into the process address space, so do not worry if your virtual memory increases slightly.
 
-恢复度量（持久化度量）
+Restoring metrics (persistent metrics)
 **************************************
 
 When you restart a uWSGI instance, all of its metrics are reset.
@@ -222,10 +222,10 @@ Currently available stats pushers:
 rrdtool
 ^^^^^^^
 
-* 类型: raw
-* 插件: rrdtool (builtin by default)
+* Type: raw
+* Plugin: rrdtool (builtin by default)
 * Requires (during runtime): librrd.so
-* 语法: ``--stats-push rrdtool:my_rrds ...``
+* Syntax: ``--stats-push rrdtool:my_rrds ...``
 
 This will store an rrd file for each metric in the specified directory. Each rrd file has a single data source named 'metric'.
 
@@ -244,9 +244,9 @@ The librrd.so library is detected at runtime. If you need you can specify its ab
 statsd
 ^^^^^^
 
-* 类型: raw
-* 插件: stats_pusher_statsd
-* 语法: ``--stats-push statsd:address[,prefix]``
+* Type: raw
+* Plugin: stats_pusher_statsd
+* Syntax: ``--stats-push statsd:address[,prefix]``
 
 Push metrics to a statsd server.
 
@@ -259,16 +259,16 @@ Usage:
 carbon
 ^^^^^^
 
-* 类型: raw
-* 插件: carbon (built-in by default)
+* Type: raw
+* Plugin: carbon (built-in by default)
 * See: :doc:`Carbon`
 
 zabbix
 ^^^^^^
 
-* 类型: raw
-* 插件: zabbix
-* 语法: ``--stats-push zabbix:address[,prefix]``
+* Type: raw
+* Plugin: zabbix
+* Syntax: ``--stats-push zabbix:address[,prefix]``
 
 Push metrics to a zabbix server.
 
@@ -285,8 +285,8 @@ Usage:
 mongodb
 ^^^^^^^
 
-* 类型: json
-* 插件: stats_pusher_mongodb
+* Type: json
+* Plugin: stats_pusher_mongodb
 * Required (build time): libmongoclient.so
 * Syntax (keyval): ``--stats-push mongodb:addr=<addr>,collection=<db>,freq=<freq>``
 
@@ -295,17 +295,17 @@ Push statistics (as JSON) the the specified MongoDB database.
 file
 ^^^^
 
-* 类型: json
-* 插件: stats_pusher_file
+* Type: json
+* Plugin: stats_pusher_file
 
 Example plugin storing stats JSON in a file.
 
 socket
 ^^^^^^
 
-* 类型: raw
-* 插件: stats_pusher_socket (builtin by default)
-* 语法: ``--stats-push socket:address[,prefix]``
+* Type: raw
+* Plugin: stats_pusher_socket (builtin by default)
+* Syntax: ``--stats-push socket:address[,prefix]``
 
 Push metrics to a UDP server with the following format: ``<metric> <type> <value>`` (<type> is in the numeric form previously reported).
 
@@ -315,7 +315,7 @@ Example:
 
    uwsgi --stats-push socket:127.0.0.1:8125,myinstance ...
 
-告警/阈值
+Alarms/Thresholds
 *****************
 
 You can configure one or more "thresholds" for each metric.
@@ -338,7 +338,7 @@ Specifying an alarm is not required. Using the threshold value to automatically 
    
 Note: ``--metric-threshold`` and ``--metric-alarm`` are aliases for the same option.
 
-SNMP集成
+SNMP integration
 ****************
 
 The :doc:`SNMP` server exposes metrics starting from the 1.3.6.1.4.1.35156.17.3 OID.
@@ -351,7 +351,7 @@ For example to get the value of ``worker.0.requests``:
    
 Remember: only metrics with an associated OID can be used via SNMP.
 
-内部路由集成
+Internal Routing integration
 ****************************
 
 The ''router_metrics'' plugin (builtin by default) adds a series of actions to the internal routing subsystem.
@@ -374,7 +374,7 @@ Example:
    route-run = log:the value of the metric 'mymetric' is ${metric[mymetric]}
    log-format = %(time) - %(metric.mymetric)
 
-请求日志记录
+Request logging
 ***************
 
 You can access metrics values from your request logging format using the %(metric.xxx) placeholder:
@@ -384,7 +384,7 @@ You can access metrics values from your request logging format using the %(metri
    [uwsgi]
    log-format = [hello] %(time) %(metric.worker.0.requests)
 
-官方已注册度量
+Officially Registered Metrics
 *****************************
 
 This is a work in progress.
@@ -400,7 +400,7 @@ The best way to know which default metrics are exposed is enabling the stats ser
 * spooler/9 (namespace for spoolers, example spooler.1.signals)
 * system/10 (namespace for system metrics, like loadavg or free memory)
  
-为插件分配OID
+OID assigment for plugins
 *************************
 
 If you want to write a plugin that will expose metrics, please add the OID namespace that you are going to use to the list below and make a pull request first.
@@ -411,7 +411,7 @@ Prefix all plugin metric names with plugin name to ensure no conflicts if same k
 
  * (3|4).100.1 - cheaper_busyness
 
-外部工具
+External tools
 **************
 
 Check: https://github.com/unbit/unbit-bars

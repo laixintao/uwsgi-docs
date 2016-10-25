@@ -1,7 +1,7 @@
-uWSGI内部路由
+uWSGI internal routing
 ======================
 
-``更新至1.9``
+``Updated to 1.9``
 
 As of uWSGI 1.9, a programmable internal routing subsystem is available (older
 releases after 1.1 have a less featureful version).  You can use the internal
@@ -13,7 +13,7 @@ Please, before blasting it for being messy, not-elegant nor Turing-complete,
 remember that it must be FAST and only FAST.  If you need elegance and more
 complexity, do that in your code.
 
-路由链
+The routing chains
 ******************
 
 During the request cycle, various "chains" are traversed. Each chain contains a routing table (see below).
@@ -40,7 +40,7 @@ while
 
 ``response-route-uri`` -> happens in the response chain
 
-内部路由表
+The internal routing table
 **************************
 
 The internal routing table is a sequence of ''rules'' executed one after
@@ -93,7 +93,7 @@ from the subject with a semicolon:
 Actions are the functions to run if a rule matches. These actions are exported
 by plugins and have a return value.
 
-动作返回值
+Action return values
 ********************
 
 Each action has a return value which tells the routing engine what to do next.
@@ -106,7 +106,7 @@ The following return codes are supported:
 
 When a rule does not match, ``NEXT`` is assumed.
 
-第一个例子
+The first example
 *****************
 
 .. code-block:: ini
@@ -162,7 +162,7 @@ You can access a cookie value using the ${cookie[name]} syntax:
 
 This will log the content of the 'foobar' cookie of the current request
 
-访问查询字符串
+Accessing query string items
 ****************************
 
 You can access the value of the HTTP query string using the ${qs[name]} syntax:
@@ -174,7 +174,7 @@ You can access the value of the HTTP query string using the ${qs[name]} syntax:
 
 This will log the content of the 'foobar' item of the current request's query string
 
-可插拔路由变量
+Pluggable routing variables
 ***************************
 
 Both the cookie and qs vars, are so-called "routing vars". They are pluggable,
@@ -289,7 +289,7 @@ For example you may want to gzip all of the text/html responses:
    ; gzip only if the client support it
    response-route-if = contains:${HTTP_ACCEPT_ENCODING};gzip gzip:
    
-可用动作
+The available actions
 *********************
 
 ``continue``/``last``

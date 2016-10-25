@@ -3,7 +3,7 @@ uWSGI 2.0.11.2
 
 [20151007]
 
-错误修复
+Bugfixes
 ********
 
 * OSX 10.11 supports TCP_FASTOPEN
@@ -12,7 +12,7 @@ uWSGI 2.0.11.2
 * fixed fastrouter subscriptions modifiers
 * fixed alarm backlog
 
-可用性
+Availability
 ************
 
 You can download uWSGI 2.0.11.2 from

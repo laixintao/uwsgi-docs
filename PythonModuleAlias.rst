@@ -1,21 +1,21 @@
 Aliasing Python modules
 =======================
 
-拥有一个Python包/模块/文件的多个版本是非常常见的。
+Having multiple version of a Python package/module/file is very common.
 
-操作PYTHONPATH，或者使用virtualenv是在无需修改代码的情况下使用不同版本的一种方式。
+Manipulating PYTHONPATH or using virtualenvs are a way to use various versions without changing your code.
 
-但是亲爱的，为什么不使用一个别名系统，以让你随心所欲的将模块名映射到文件呢？这就是为嘛我们有 ``pymodule-alias`` 选项的原因了！
+But hey, why not have an aliasing system that lets you arbitrarily map module names to files? That's why we have the ``pymodule-alias`` option!
 
 
-案例1 - 映射一个简单的文件到一个虚拟模块
+Case 1 - Mapping a simple file to a virtual module
 --------------------------------------------------
 
-假设 ``swissknife.py`` 包含了许多有用的类和函数。
+Let's say we have ``swissknife.py`` that contains lots of useful classes and functions.
 
 It's imported in gazillions of places in your app. Now, we'll want to modify it, but keep the original file intact for whichever reason, and call it ``swissknife_mk2``.
 
-你的选择是：
+Your options would be
 
 1) to modify all of your code to import and use swissknife_mk2 instead of swissknife. Yeah, no, not's going to happen.
 2) modify the first line of all your files to read ``import swissknife_mk2 as swissknife``. A lot better but you make software for money... and time is money, so why the fuck not use something more powerful?
@@ -42,7 +42,7 @@ You can specify multiple ``pymodule-alias`` directives.
       pymodule-alias: uglymodule=/opt/foo/experimentaluglymodule.py
 
 
-案例2 - 映射一个包到目录
+Case 2 - mapping a packages to directories
 ------------------------------------------
 
 You have this shiny, beautiful Django project and something occurs to you: Would it work with Django trunk? On to set up a new virtualenv... nah. Let's just use ``pymodule-alias``!
@@ -52,10 +52,10 @@ You have this shiny, beautiful Django project and something occurs to you: Would
   ./uwsgi -s :3031 -w django_uwsgi --pymodule-alias django=django-trunk/django
 
 
-案例3 - 覆盖特定的子模块
+Case 3 - override specific submodules
 -------------------------------------
 
-你有一个Werkzeug项目，你想要覆盖它 - 出于随意什么理由 - ``werkzeug.test_app`` with one of your own devising. Easy, of course!
+You have a Werkzeug project where you want to override - for whichever reason - ``werkzeug.test_app`` with one of your own devising. Easy, of course!
 
 .. code-block:: python
 

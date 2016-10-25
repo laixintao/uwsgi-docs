@@ -262,7 +262,7 @@ Currently there are 2 JVM request handlers available:
 As already said, the idea of developing a servlet request handler is there, but
 it will require a sponsorship (aka. money) as it'll be a really big effort.
 
-小抄
+Notes
 *****
 
 * You do not need special jar files to use UNIX sockets -- the JVM plugin has

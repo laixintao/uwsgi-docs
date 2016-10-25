@@ -3,7 +3,7 @@ uWSGI 2.0.9
 
 [20141230]
 
-错误修复
+Bugfixes
 --------
 
 * fixed mod_proxy_uwsgi for non-blocking mode (many thanks to Joe cuchac)
@@ -25,8 +25,8 @@ uWSGI 2.0.9
 * fixed unmasked websockets
 * perl fixed latent refcounting bug (Mattia Barbon)
 
-新特性
-********
+New Features
+------------
 
 Improved PyPy support for Linux
 *******************************
@@ -62,7 +62,7 @@ httpdumb routing action
 
 The http internal router exposes a new mode called 'httpdumb' that does not change  headers before forwarding the request
 
-可用性
+Availability
 ------------
 
 uWSGI 2.0.9 has been released on 20141230.

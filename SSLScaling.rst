@@ -225,7 +225,7 @@ and the second node...
    ; add stats
    stats = :5002
 
-小抄
+Notes
 *****
 
 If you do not want to manually configure the cache UDP nodes and your network configuration supports it, you can use UDP multicast.

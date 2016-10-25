@@ -217,8 +217,6 @@ the router_hash plugin is compiled-in by default
 Availability
 ^^^^^^^^^^^^
 
-uWSGI 1.9.12于20130605发布
-
-你可以从下面地址下载它：
+uWSGI 1.9.12 will be available starting from 20130605 at the following url
 
 http://projects.unbit.it/downloads/uwsgi-1.9.12.tar.gz

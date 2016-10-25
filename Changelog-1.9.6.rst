@@ -3,14 +3,14 @@ uWSGI 1.9.6
 
 Changelog 20130409
 
-错误修复
+Bugfixes
 ********
 
 * workaround for building the python plugin with gcc 4.8
 
 Sorry, this is not a real bugfix, but making a release without bugfixes seems wrong...
 
-新特性
+New Features
 ************
 
 Sqlite and LDAP pluginization
@@ -294,7 +294,7 @@ and we are working for TeaJS (old v8cgi) integration: http://code.google.com/p/t
 more to come soon...
 
 
-可用性
+Availability
 ************
 
 uWSGI 1.9.6 will be available since 20130409 at this url:

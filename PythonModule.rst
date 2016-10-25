@@ -1,13 +1,13 @@
-uwsgi Python模块
+The uwsgi Python module
 =======================
 
-uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
+The uWSGI server automagically adds a ``uwsgi`` module into your Python apps.
 
-这对于配置uWSGI服务器是有用的，使用它的内部函数，并获取分析数据（以及检测你是否真的在uWSGI下运行）。
+This is useful for configuring the uWSGI server, use its internal functions and get statistics (as well as detecting whether you're actually running under uWSGI).
 
-.. note:: 许多这些函数当前不幸未公开。
+.. note:: Many of these functions are currently woefully undocumented.
 
-模块级别的全局
+Module-level globals
 --------------------
 
 .. default-domain:: py
@@ -16,66 +16,66 @@ uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
 
 .. data:: numproc
 
-   当前运行的进程/worker数。
+   The number of processes/workers currently running.
 
 .. data:: buffer_size
 
-   当前配置的缓冲区大小，以字节为单位。
+   The current configured buffer size in bytes.
 
 .. data:: started_on (int)
 
-   uWSGI启动的Unix时间戳。
+   The Unix timestamp of uWSGI's startup.
 
 .. data:: fastfuncs
 
-   这是一个用来定义 :doc:`FastFuncs` 的字典。
+   This is the dictionary used to define :doc:`FastFuncs`.
 
 .. data:: applist
 
-   这是当前配置的应用列表。
+   This is the list of applications currently configured.
 
 .. TODO: Practical use cases for applist?
 
 .. data:: applications
 
-   这是动态应用字典。
+   This is the dynamic applications dictionary.
 
    .. seealso:: :ref:`PythonAppDict`
 
 .. data:: message_manager_marshal
 
-   当uWSGI服务器接收到一个已编组消息( marshalled message)时运行的回调。
+   The callable to run when the uWSGI server receives a marshalled message.
 
 .. TODO: What _is_ this?
 
 .. data:: magic_table
 
-   配置占位符的魔术表。
+   The magic table of configuration placeholders.
 
 .. data:: opt
 
-   当前配置选项，包括任何自定义占位符。
+   The current configuration options, including any custom placeholders.
 
-缓存函数
+Cache functions
 ---------------
 
 
 .. function:: cache_get(key[, cache_name])
 
-   从缓存中获取一个值。
+   Get a value from the cache.
 
-   :param key: 要读取的缓存键。
-   :param cache_name: 多缓存模式中的缓存名字 (可以是name@address这样的格式)。可选。
+   :param key: The cache key to read.
+   :param cache_name: The name of the cache in multiple cache mode (can be in the form name@address). Optional.
 
 
 .. function:: cache_set(key, value[, expire, cache_name])
 
-   设置缓存中的一个值。
+   Set a value in the cache.
 
-   :param key: 要写的缓存键。
-   :param value: 要写的缓存值。
-   :param expire: 值的失效时间，以秒为单位。
-   :param cache_name: 多缓存模式中的缓存名字 (可以是name@address这样的格式)。可选。
+   :param key: The cache key to write.
+   :param value: The cache value to write.
+   :param expire: Expiry time of the value, in seconds.
+   :param cache_name: The name of the cache in multiple cache mode (can be in the form name@address). Optional.
 
 
 .. function:: cache_update(key, value[, expire, cache_server])
@@ -83,21 +83,21 @@ uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
 
 .. function:: cache_del(key[, cache_name])
 
-   从缓存中删除给定的缓存值。
+   Delete the given cached value from the cache.
 
-   :param key: 要删除的缓存键
-   :param cache_name: 多缓存模式中的缓存名字 (可以是name@address这样的格式)。可选。
+   :param key: The cache key to delete.
+   :param cache_name: The name of the cache in multiple cache mode (can be in the form name@address). Optional.
 
 .. function:: cache_exists(key[, cache_name])
 
-   快速检查缓存中是否有与给定键关联的值。
+   Quickly check whether there is a value in the cache associated with the given key.
 
-   :param key: 要坚持的缓存键
-   :param cache_name: 多缓存模式中的缓存名字 (可以是name@address这样的格式)。可选。
+   :param key: The cache key to check.
+   :param cache_name: The name of the cache in multiple cache mode (can be in the form name@address). Optional.
 
 .. function:: cache_clear()
 
-队列函数
+Queue functions
 ---------------
 
 .. function:: queue_get()
@@ -124,14 +124,14 @@ uWSGI服务器自动添加一个 ``uwsgi`` 模块到你的Python应用中。
 .. function:: queue_pull_slot()
 
 
-SNMP函数
+SNMP functions
 --------------
 
 .. function:: snmp_set_community(str)
 
-   :param str: 包含新的community值的字符串。
+   :param str: The string containing the new community value.
 
-   设置SNMP community字符串。
+   Sets the SNMP community string.
 
 .. function:: snmp_set_counter32(oidnum, value)
 .. function:: snmp_set_counter64(oidnum, value)
@@ -156,7 +156,7 @@ SNMP函数
 
    .. note:: uWSGI OID tree starts at 1.3.6.1.4.1.35156.17
 
-spooler函数
+Spooler functions
 -----------------
 
 .. function:: send_to_spooler(message_dict=None, spooler=None, priority=None, at=None, body=None, **kwargs)
@@ -186,7 +186,7 @@ spooler函数
    :param path: The relative or absolute path to the task to read
 
 
-高级方法
+Advanced methods
 ----------------
 
 .. function:: send_message()
@@ -305,22 +305,22 @@ spooler函数
 
 .. function:: register_signal(num, who, function)
 
-   :param num:配置的信号数
-   :param who: 一个魔法字符串，会设置哪个/些进程接收该信号。
+   :param num: the signal number to configure
+   :param who: a magic string that will set which process/processes receive the signal.
 
-      * ``worker``/``worker0`` 将发送信号给第一个可用worker。如果你指定过一个空字符串，那么这是默认值。
-      * ``workers`` 会发送信号给每个worker。
-      * ``workerN`` (N > 0) 会发送信号给worker N。
-      * ``mule``/``mule0`` 会发送信号给第一个可用mule。 (见 :doc:`Mules`)
-      * ``mules`` 会发送信号给所有mule。
-      * ``muleN`` (N > 0) 会发送信号给mule N。
-      * ``cluster`` 会发送信号给集群中的所有节点。警告：未实现。
-      * ``subscribed`` 会发送信号给所有订阅节点。警告：未实现。
-      * ``spooler`` 会发送信号给spooler。
+      * ``worker``/``worker0`` will send the signal to the first available worker. This is the default if you specify an empty string.
+      * ``workers`` will send the signal to every worker.
+      * ``workerN`` (N > 0) will send the signal to worker N.
+      * ``mule``/``mule0`` will send the signal to the first available mule. (See :doc:`Mules`)
+      * ``mules`` will send the signal to all mules
+      * ``muleN`` (N > 0) will send the signal to mule N.
+      * ``cluster`` will send the signal to all the nodes in the cluster. Warning: not implemented.
+      * ``subscribed`` will send the signal to all subscribed nodes. Warning: not implemented.
+      * ``spooler`` will send the signal to the spooler.
 
-      ``cluster`` 和 ``subscribed`` 特殊，因为它们会将信号发送给所有集群/订购节点的master。其他节点将不得不定义一个本地处理器，以避免可怕的信号风暴循环。
+      ``cluster`` and ``subscribed`` are special, as they will send the signal to the master of all cluster/subscribed nodes. The other nodes will have to define a local handler though, to avoid a terrible signal storm loop.
 
-   :param function: 一个回调，接收一个数字参数。
+   :param function: A callable that takes a single numeric argument.
 
 .. function:: signal(num)
 
@@ -491,7 +491,7 @@ spooler函数
 .. function:: set_user_harakiri()
 
 
-异步函数
+Async functions
 ---------------
 
 
@@ -535,7 +535,7 @@ spooler函数
 
 .. _SharedAreaAPI:
 
-SharedArea函数
+SharedArea functions
 --------------------
 
 .. seealso:: :doc:`SharedArea`
@@ -596,7 +596,7 @@ SharedArea函数
    :type val: long
    :return: The new value at the given position, or ``None`` if the shared area is not enabled or the read request is invalid.
 
-Erlang函数
+Erlang functions
 ----------------
 
 .. function:: erlang_send_message(node, process_name, message)

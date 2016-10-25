@@ -83,7 +83,7 @@ Options
 * ``--chunked-input-limit``: the limit (in bytes) of a chunk message (default 1MB)
 * ``--chunked-input-timeout``: the default timeout (in seconds) for blocking chunked_read (default to the same --socket-timeout value, 4 seconds)
 
-小抄
+Notes
 *****
 
 * Calling chunked API functions after having consumed even a single byte of the request body is wrong (this includes ``--post-buffering``).

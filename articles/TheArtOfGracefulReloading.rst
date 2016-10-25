@@ -1,7 +1,7 @@
-优雅重载的艺术
+The Art of Graceful Reloading
 =============================
 
-作者：Roberto De Ioris
+Author: Roberto De Ioris
 
 The following article is language-agnostic, and albeit uWSGI-specific, some of
 its initial considerations apply to other application servers and platforms
@@ -10,7 +10,7 @@ too.
 All of the described techniques assume a modern (>= 1.4) uWSGI release with
 the master process enabled.
 
-什么是“优雅重载”？
+What is a "graceful reload"?
 ****************************
 
 During the life-cycle of your webapp you will reload it hundreds of times.
@@ -51,7 +51,7 @@ modern servers/application servers do it (more or less).
 But, as always, the world is an ugly place and lot of problems arise, and the
 "inherited sockets" approach is often not enough.
 
-出问题了
+Things go wrong
 ***************
 
 We have seen that holding the uWSGI sockets alive allows the proxy webserver
@@ -75,7 +75,7 @@ so uWSGI will not start, or will start sending wrong things or errors...
 
 Reloads (brutal or graceful) can easily fail.
 
-监听队列
+The listen queue
 ****************
 
 Let's start with the dream of every webapp developer: *success*.
@@ -111,7 +111,7 @@ To raise kernel limits, you should check your OS docs. Some examples:
    This is only one of the reasons to tune the listen queue, but do not blindly
    set it to huge values as a way to increase availability.
 
-代理超时
+Proxy timeouts
 **************
 
 This is another thing you need to check if your reloads take a lot of time.

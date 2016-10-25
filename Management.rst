@@ -1,4 +1,4 @@
-管理uWSGI服务器
+Managing the uWSGI server
 =========================
 
 .. seealso::

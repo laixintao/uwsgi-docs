@@ -1,92 +1,111 @@
-uWSGI异步/非堵塞模式 (已更新至uWSGI 1.9)
+uWSGI asynchronous/non-blocking modes (updated to uWSGI 1.9)
 ============================================================
 
 .. warning::
 
-  注意！异步模式并不会加速你的应用，它们旨在提高并发性。不要指望启用某些模式会完美运行，异步/事件/非阻塞系统需要应用的配合，因此，如果你的应用是在没有考虑特有的异步引擎的规则下开发的，那么你就错了。不要相信那些建议你盲目使用异步/事件/非阻塞系统的人！
+  Beware! Async modes will not speed up your app, they are aimed at improving concurrency.
+  Do not expect that enabling some of the modes will work flawlessly, asynchronous/evented/non-blocking
+  systems require app cooperation, so if your app is developed without taking specific async engine rules
+  into consideration, you are doing it wrong. Do not trust people suggesting you to blindly use
+  async/evented/non-blocking systems!
  
-词汇表
+Glossary
 --------
 
-uWSGI，遵循其模块化方法，将异步引擎分成两类。
+uWSGI, following its modular approach, splits async engines into two families.
 
-挂起/恢复引擎
+Suspend/Resume engines
 **********************
 
-它们简单实现了协程(coroutine)/绿色线程(green thread)技术。它们并无事件引擎，因此，你必须使用由uWSGI提供的。一个事件引擎通常是一个为平台无关的非阻塞I/O（libevent, libev, libuv等等）导出基元的库。使用 ``--async <n>`` 选项启用uWSGI事件引擎。
+They simply implement coroutine/green threads techniques. They have no event engine, so you have to use
+the one supplied by uWSGI. An Event engine is generally a library exporting primitives for platform-independent
+non-blocking I/O (libevent, libev, libuv, etc.). The uWSGI event engine is enabled using the ``--async <n>`` option.
 
-目前，uWSGI发布版本包含了以下挂起/恢复引擎：
+Currently the uWSGI distribution includes the following suspend/resume engines:
 
-* ``uGreen`` - Unbit的绿色线程实现 (基于 ``swapcontext()``)
-* ``Greenlet`` - Python greenlet模块
+* ``uGreen`` - Unbit's green thread implementation (based on ``swapcontext()``)
+* ``Greenlet`` - Python greenlet module
 * ``Stackless`` - Stackless Python
 * ``Fiber`` - Ruby 1.9 fibers
 
-在没有合适的挂起/恢复引擎的情况下运行uWSGI异步模式将会引发告警，因此，对于一个最小的无阻塞应用，你将需要这样的东东：
+Running the uWSGI async mode without a proper suspend/resume engine will raise a warning, so for a minimal non-blocking app
+you will need something like that:
 
 .. code-block:: sh
 
   uwsgi --async 100 --ugreen --socket :3031
 
-挂起/恢复引擎的一个重要的方面是，如果没有意识到它们的存在的话，它们可以轻而易举的摧毁你的进程。一些语言插件（最明显的是Python）有与协程/绿色线程完美合作的钩子。其他语言可能惨遭失败。务必经常检查uWSGI邮件列表或者IRC频道，以获取更新信息。
+An important aspect of suspend/resume engines is that they can easily destroy your process if it is not aware of them.
+Some of the language plugins (most notably Python) have hooks to cooperate flawlessly with coroutines/green threads. Other languages
+may fail miserably. Always check the uWSGI mailing list or IRC channel for updated information.
 
-较老的uWSGI版本支持而外的系：回调。回调是诸如node.js这样的流行系统使用的方法。该方法要求 **大量** 应用的协作，而对于像uWSGI这样的复杂项目，处理这个是非常复杂的。出于这个原因， **并不支持** 回调方法 (即使技术上是可行的)
-基于回调的软件 (像 :doc:`Tornado`) 可以用来将它们与某种形式的挂起引擎结合在一起。
+Older uWSGI releases supported an additional system: callbacks.
+Callbacks is the approach used by popular systems like node.js. This approach requires **heavy** app cooperation, and for complex projects
+like uWSGI dealing with this is extremely complex. For that reason, callback approach **is not supported** (even if technically
+possible)
+Software based on callbacks (like :doc:`Tornado`) can be used to combine them with some form of suspend engine.
 
-I/O引擎（或事件系统）
+I/O engines (or event systems)
 ******************************
 
-uWSGI有一个高度优化的事件触发技术，但也可以使用其他方法。
+uWSGI includes an highly optimized evented technology, but can use alternative approaches too.
 
-I/O引擎都需要一些挂起/恢复引擎，否则会发生糟糕透的事情 (整个uWSGI代码库都是协程友好的，因此，你可以非常容易地玩转栈)。
+I/O engines always require some suspend/resume engine, otherwise ugly things happen (the whole uWSGI codebase is coroutine-friendly, so you can
+play with stacks pretty easily).
 
-目前支持的I/O引擎是：
+Currently supported I/O engines are:
 
 * :doc:`Tornado`
-* :doc:`libuv` (工作正在进行中)
-* :doc:`libev` (工作正在进行中)
+* :doc:`libuv` (work in progress)
+* :doc:`libev` (work in progress)
 
-循环引擎
+Loop engines
 ************
 
-循环引擎是既导出挂起/恢复技术，又导出事件系统的包/库。加载后，它们uWSGI管理连接和信号处理器 (uWSGI信号， *不是* POSIX信号)的方式。
+Loop engines are packages/libraries exporting both suspend/resume techniques and an event system. When loaded, they override
+the way uWSGI manages connections and signal handlers (uWSGI signals, *not* POSIX signals).
 
-目前，uWSGI支持以下循环引擎：
+Currently uWSGI supports the following loop engines:
 
 * ``Gevent`` (Python, libev, greenlet)
 * ``Coro::AnyEvent`` (Perl, coro, anyevent)
 
-虽然它们通常由特定的语言使用，但是纯C的uWSGI插件 (像CGI) 可以用它们正常地提高并发性。
+Although they are generally used by a specific language, pure-C uWSGI plugins (like the CGI one) can use them
+to increase concurrency without problems.
 
-异步开关
+Async switches
 --------------
 
-要启用异步模式，你得使用 ``--async`` 选项 (或者它的一些快捷方式，由循环引擎插件导出)。
+To enable async mode, you use the ``--async`` option (or some shortcut for it, exported by loop engine plugins).
 
- ``--async`` 选项的参数是要初始化的“核心”数。每个核可以管理一个单一的请求，因此，生成越多的核，就能管理越多的请求 (*并且会使用越多的内存*)。挂起/恢复引擎的工作的是停止当前的请求管理，移到另一个核，最后回到旧的核（等等）。
+The argument of the ``--async`` option is the number of "cores" to initialize. Each core can manage a single request, so the more core you
+spawn, more requests you will be able to manage (*and more memory you will use*). The job of the suspend/resume engines
+is to stop the current request management, move to another core, and eventually come back to the old one (and so on).
 
-从技术上讲，核只是保存请求数据的内存结构，但为了给用户多线程系统的错觉，我们使用了这个术语。
+Technically, cores are simple memory structures holding request's data, but to give the user the illusion of a multithreaded system
+we use that term.
 
-核之间的切换需要应用的协作。有多种方式来完成，通常，如果你正使用一个循环引擎，那么全都是自动的 (或者只需很少的努力)。
+The switch between cores needs app cooperation. There are various ways to accomplish that, and generally, if you are using
+a loop engine, all is automagic (or requires very little effort).
 
 .. warning:: 
 
-  如果你怀疑，那么 **不要使用异步模式** 。
+  If you are in doubt, **do not use async mode**.
 
-异步模式下运行uWSGI
+Running uWSGI in Async mode
 ---------------------------
 
-要以异步模式启动，需要传递 ``--async`` 选项以及你想要的“异步核”数。
+To start uWSGI in async mode, pass the ``--async`` option with the number of "async cores" you want.
 
 .. code-block:: sh
 
   ./uwsgi --socket :3031 -w tests.cpubound_async --async 10
 
-这将会启动uWSGI，其中，uWSGI使用10个异步核。每个异步核可以管理一个请求，因此，有了这一步，只需1个进程就可以接受10个并发请求。你还可以启动更多请求 (使用 ``--processes`` 选项)，每个将会有它们自己的异步核池。
+This will start uWSGI with 10 async cores. Each async core can manage a request, so with this setup you can accept 10 concurrent requests with only one process. You can also start more processes (with the ``--processes`` option), each will have its own pool of async cores.
 
-当使用 :term:`harakiri` 模式的时候，每当一个异步核接受一个请求的时，就会重置harakiri定时器。因此，即使请求阻塞了异步系统，harakiri也会救你一命。
+When using :term:`harakiri` mode, every time an async core accepts a request, the harakiri timer is reset. So even if a request blocks the async system, harakiri will save you.
 
-源代码发布版本中包含了 ``tests.cpubound_async`` 应用。它非常简单：
+The ``tests.cpubound_async`` app is included in the source distribution. It's very simple:
 
 .. code-block:: python
 
@@ -95,21 +114,21 @@ I/O引擎都需要一些挂起/恢复引擎，否则会发生糟糕透的事情 
       for i in range(1, 10000):
           yield "<h1>%s</h1>" % i
 
-每当应用在响应函数中执行了 ``yield`` ，就会停止应用的执行，而另一个异步核上的一个新的请求或者前一个挂起的请求将会接管。这意味着异步核的数目就是可以排队的请求数。
+Every time the application does ``yield`` from the response function, the execution of the app is stopped, and a new request or a previously suspended request on another async core will take over. This means the number of async cores is the number of requests that can be queued.
 
-如果在一个非异步服务器上运行 ``tests.cpubound_async`` 应用，那么它将阻塞所有的进程：不会接收其他请求，直到10000个 ``<h1>`` 组成的循环完成。
+If you run the ``tests.cpubound_async`` app on a non-async server, it will block all processing: will not accept other requests until the heavy cycle of 10000 ``<h1>``\ s is done.
 
-等待I/O
+Waiting for I/O
 ---------------
 
-如果你不处于循环引擎之下，那么可以使用uWSGI API来等待I/O事件。
+If you are not under a loop engine, you can use the uWSGI API to wait for I/O events.
 
-当前，只导出了2个函数：
+Currently only 2 functions are exported:
 
 * :py:func:`uwsgi.wait_fd_read`
 * :py:func:`uwsgi.wait_fd_write`
 
-可以连续调用这些函数，以等待多个文件描述符：
+These functions may be called in succession to wait for multiple file descriptors:
 
 .. code-block:: python
 
@@ -118,30 +137,30 @@ I/O引擎都需要一些挂起/恢复引擎，否则会发生糟糕透的事情 
   uwsgi.wait_fd_read(fd2)
   yield ""  # yield the app, let uWSGI do its magic
 
-休眠
+Sleeping
 --------
 
-有时，你可能想要在你的应用中休眠，例如要限制带宽。
+On occasion you might want to sleep in your app, for example to throttle bandwidth.
 
-使用 ``uwsgi.async_sleep(N)`` 取代堵塞的 ``time.sleep(N)`` 函数来生成N秒的控制。
+Instead of using the blocking ``time.sleep(N)`` function, use ``uwsgi.async_sleep(N)`` to yield control for N seconds.
 
-.. seealso:: 参见样例 :file:`tests/sleeping_async.py` 。
+.. seealso:: See :file:`tests/sleeping_async.py` for an example.
 
-挂起/恢复
+Suspend/Resume
 --------------
 
-从主应用生成并不非常实用，因为大部分时间，你的应用比一个简单的可回调更高级，并且由大量的函数和不同层次的调用深度构成。
+Yielding from the main application routine is not very practical, as most of the time your app is more advanced than a simple callable and is formed of tons of functions and various levels of call depth.
 
-别担心！你可以通过简单调用 ``uwsgi.suspend()`` 来强制挂起（使用协程/绿色线程）：
+Worry not! You can force a suspend (using coroutine/green thread) by simply calling ``uwsgi.suspend()``:
 
 .. code-block:: python
 
   uwsgi.wait_fd_read(fd0)
   uwsgi.suspend()
 
-``uwsgi.suspend()`` 会自动调用已选的挂起引擎 (uGreen, greenlet, 等等。)。
+``uwsgi.suspend()`` will automatically call the chosen suspend engine (uGreen, greenlet, etc.).
 
-静态文件
+Static files
 ------------
 
-:doc:`静态文件服务器<StaticFiles>` 会自动使用已加载的异步引擎。
+:doc:`Static file server<StaticFiles>` will automatically use the loaded async engine.

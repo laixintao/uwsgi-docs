@@ -261,7 +261,7 @@ Just remember to have /dev (well, /dev/ptmx) mounted in your jail to allow the f
 Learn how to deal with devfs_ruleset to increase security of your devfs
 
 
-小抄
+Notes
 *****
 
 A jail is destroyed when the last process running in it dies

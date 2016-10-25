@@ -1,11 +1,11 @@
-XSLT插件
+The XSLT plugin
 ===============
 
-自uWSGI 1.9.1起，有了一个新的名为"xslt"的插件，implementing XML Stylesheet Transformation both as request handler and routing instruction.
+Since uWSGI 1.9.1 a new plugin named "xslt" is available, implementing XML Stylesheet Transformation both as request handler and routing instruction.
 
 To successfully apply a transformation you need a 'doc' (an XML document) and a stylesheet (the XSLT file).
 
-此外，你可以应用全局参数，并设置一个指定的内容类型 (默认情况下，生成的输出被设置为text/html)。
+Additionally you can apply global params and set a specific content type (by default the generated output is set as text/html).
 
 The request handler
 *******************

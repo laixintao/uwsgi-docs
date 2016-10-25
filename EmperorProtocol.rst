@@ -1,4 +1,4 @@
-Emperor协议
+The Emperor protocol
 ====================
 
 As of 1.3 you can spawn custom applications via the :doc:`Emperor<Emperor>`.

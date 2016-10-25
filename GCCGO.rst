@@ -137,7 +137,7 @@ Currently exposed API functions:
 * ``uwsgi.CacheGet(key string, cache string) string``
 * ``uwsgi.RegisterSignal(signum uint8, receiver string, handler func(uint8)) bool``
 
-小抄
+Notes
 *****
 
 * Please, please do not enable multithreading, it will not work and probably will never work.

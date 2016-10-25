@@ -4,7 +4,7 @@ uWSGI 1.9.14
 Changelog [20130721]
 
 
-错误修复
+Bugfixes
 ********
 
 - fixed python modifier1 management (was hardcoded to 0)
@@ -24,8 +24,8 @@ Changelog [20130721]
 - fixed php status line reported in request logs
 
 
-新特性
-********
+New features
+************
 
 Ruby 1.9.x/2.x native threads support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,9 +180,9 @@ Breaking News !!!
 Servlet 2.5 support development has just started. The plugin is present in the tree but it is unusable (it is a hardcoded
 jsp engine). We expect a beta version after the summer. Obviously we shameless consider :doc:`JWSGI` a better approach than servlet for non-Enterprise people ;)
 
-可用性
+Availability
 ************
 
-从下面地址下载uWSGI 1.9.14
+Download uWSGI 1.9.14 from
 
 http://projects.unbit.it/downloads/uwsgi-1.9.14.tar.gz

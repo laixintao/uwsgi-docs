@@ -1,7 +1,7 @@
 Fork Server with CPython
 ========================
 
-我们的"base"应用 (/var/www中的myforkbase.py):
+Our "base" app (myforkbase.py in /var/www):
 
 .. code-block:: py
 
@@ -55,7 +55,7 @@ and now two vassals inheriting from the base
    wsgi = myappfork
    
    
-最后，运行Emperor
+And finally run the Emperor
 
 .. code-block:: sh
 
@@ -64,7 +64,7 @@ and now two vassals inheriting from the base
 the `--emperor-collect-attr` option tells the Emperor to search for a 'myfork-base' attribute in the [emperor] section, while `--emperor-fork-server-attr`
 instruct it to use the parameter as the fork-server to connect to.
 
-待办事项
+TODO
 ====
 
 The --emperor-collect-attr could be implicited by emperor-fork-server-attr

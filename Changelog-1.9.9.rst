@@ -12,7 +12,7 @@ The "basicauth-next" action, uses the old behaviour (returning "next")
 
 This new approach should reduce security problems caused by wrong configurations
 
-错误修复
+Bugfixes
 ********
 
 * do not increment "tx" statistics counter for "unaccountable" plugins
@@ -25,7 +25,7 @@ This new approach should reduce security problems caused by wrong configurations
 * fixed error reporting in corerouter when retry is in place
 * correctly report harakiri condition for gateways
 
-新特性
+New Features
 ************
 
 The WebDav plugin
@@ -263,7 +263,7 @@ the example shows hot to limit the request of a single ip to 10 every 30 seconds
 
 The long-term objective of this new feature is being the base for the upcoming metric subsystem
 
-可用性
+Availability
 ************
 
 uWSGI 1.9.9 will be availabel since 20130508 at the following url

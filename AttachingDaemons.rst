@@ -1,4 +1,4 @@
-管理外部守护进程/服务
+Managing external daemons/services
 ==================================
 
 uWSGI can easily monitor external processes, allowing you to increase

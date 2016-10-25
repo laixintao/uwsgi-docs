@@ -1,4 +1,4 @@
-uWSGI缓存框架
+The uWSGI caching framework
 ===========================
 
 .. note::

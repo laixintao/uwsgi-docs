@@ -1,7 +1,7 @@
-使用一个C++插件来配置FastRouter
+Configuring FastRouter using a C++ plugin
 =========================================
 
-介绍
+Intro
 -----
 
 This tutorial assumes that you are familiar with the usage and purpose of the uwsgi fastrouter and you are facing an edge-case (like "Darth Vader wearing a t-shirt with your face") so you have to use some kind of code-driven "configuration". The fastrouter documentation page recommends `the --fastrouter-use-code-string commandline argument of uwsgi`_ to solve such terribly complicated routing problems by executing your own code/logic for each request to decide which gateway to send it to. The official documentation (at the previous link) shows an example where a python script provides the routing logic and the doc states that you can use any uwsgi-supported language to configure the fastrouter (although my uwsgi-2.0.3 seems to have the code_string feature only in its python and ruby plugins if I'm right...). This tutorial shows you how to write and compile a C++ plugin that contains the routing logic for the fastrouter. This document can also serve a partial/basic C++ plugin tutorial.

@@ -1,13 +1,13 @@
-玩转Perl, Eyetoy和RaspberryPi
+Fun with Perl, Eyetoy and RaspberryPi
 =====================================
 
-作者: Roberto De Ioris
+Author: Roberto De Ioris
 
-时间: 2013-12-07
+Date: 2013-12-07
 
 .. image:: https://raw.github.com/unbit/uwsgi-capture/master/rpi-examples/rpi_eyetoy.jpg
 
-简介
+Intro
 *****
 
 This article is the result of various experiments aimed at improving uWSGI performance and usability in various areas before the 2.0 release.
@@ -20,7 +20,7 @@ To follow the article you need:
 * a bit of Perl knowledge (really only a bit, there's less than 10 lines of Perl ;)
 * Patience (building uWSGI + PSGI + coroae on the RPI requires 13 minutes)
 
-uWSGI子系统和插件
+uWSGI subsystems and plugins
 ****************************
 
 The project makes use of the following uWSGI subsystems and plugins:
@@ -39,7 +39,7 @@ We want our RPI to gather frames from the Eyetoy and stream them to various conn
 
 The whole system must use as little memory as possible, as few CPU cycles as possible, and it should support a large number of clients (... though well, even 10 clients will be a success for the Raspberry Pi hardware ;)
 
-技术背景
+Technical background
 ********************
 
 The Eyetoy captures frames in YUYV format (known as YUV 4:2:2). This means we need 4 bytes for 2 pixels.
@@ -55,7 +55,7 @@ The uWSGI stack is composed by a mule gathering frames from the Eyetoy and writi
 
 Workers constantly read from that SharedArea and send frames as binary websocket messages.
 
-让我们开始吧：uwsgi-capture插件
+Let's start: the uwsgi-capture plugin
 *************************************
 
 uWSGI 1.9.21 introduced a simplified (and safe) procedure to build uWSGI plugins. (Expect more third party plugins soon!)
@@ -120,7 +120,7 @@ exposed by the symcall plugin that takes control of every mule argument ending w
 
 If all goes well you should see your uWSGI server spawning a master, a mule and a worker.
 
-第二步：PSGI应用
+Step 2: the PSGI app
 ********************
 
 Time to write our websocket server sending Eyetoy frames (you can find sources for the example here: https://github.com/unbit/uwsgi-capture/tree/master/rpi-examples).
@@ -167,7 +167,7 @@ This function suspends the current request until the specified shared area (the 
 This is a special utility function sending a websocket binary message directly from the sharedarea (yep, zero-copy). The first argument is the sharedarea id (the 'zero' one) and the second is the position
 in the sharedarea to start reading from (zero again, as we want a full frame).
 
-第三步：HTML5
+Step 3: HTML5
 *************
 
 The HTML part (well it would be better to say Javascript part) is very easy, aside from the YUYV to RGB(A) transform voodoo.
@@ -243,7 +243,7 @@ The HTML part (well it would be better to say Javascript part) is very easy, asi
 Nothing special here. The vast majority of the code is related to YUYV->RGBA conversion. Pay attention to set the websocket communication in 'binary' mode (binaryType = 'arraybuffer' is enough) and be sure to use
 an Uint8ClampedArray (otherwise performance will be terribly bad)
 
-准备观看
+Ready to watch
 **************
 
 .. code-block:: sh
@@ -252,7 +252,7 @@ an Uint8ClampedArray (otherwise performance will be terribly bad)
 
 Connect with your browser to TCP port 9090 of your Raspberry Pi and start watching.
 
-并发性
+Concurrency
 ***********
 
 While you watch your websocket stream, you may want to start another browser window to see a second copy of your video. Unfortunately
@@ -295,7 +295,7 @@ We would need to allocate the memory for $chunk at every iteration, copying the 
 
 With the sharedarea you remove the need to allocate (and free) memory constantly and to copy it from sharedarea to the Perl VM.
 
-其他方法
+Alternative approaches
 **********************
 
 There are obviously other approaches you can follow. 
@@ -317,7 +317,7 @@ JPEG encoding is relatively fast, you can try encoding frames in the RPI and sen
        $writer->write("\r\n--uwsgi_mjpeg_frame\r\n");
    }
 
-其他语言
+Other languages
 ***************
 
 At the time of writing, the uWSGI PSGI plugin is the only one exposing the additional API for websockets+sharedarea. The other language plugins will be updated soon.

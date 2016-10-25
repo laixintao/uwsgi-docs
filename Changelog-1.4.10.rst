@@ -2,20 +2,20 @@ uWSGI 1.4.10 (LTS)
 ==================
 
 
-错误更正
+Bugfixes
 ^^^^^^^^
 
-* 修复python3静态文件处理 (通过wsgi.file_wrapper)
-* 从1.9向后移植python3 latin1修复
-* 修复--backtrace-depth
-* 修复python3 pyargv
-* 修复mule_msg pipe处理
+* fixed python3 static files handling (via wsgi.file_wrapper)
+* backported python3 latin1 fix from 1.9
+* fixed --backtrace-depth
+* fixed python3 pyargv
+* fixed mule_msg pipe handling
 
-可用性
+Availability
 ^^^^^^^^^^^^
 
-uWSGI 1.4.10于20130823发布
+uWSGI 1.4.10 has been released 20130823
 
-你可以从下面地址下载它：
+You can download it from:
 
 http://projects.unbit.it/downloads/uwsgi-1.4.10.tar.gz

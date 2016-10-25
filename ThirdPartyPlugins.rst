@@ -1,4 +1,4 @@
-uWSGI第三方插件
+uWSGI third party plugins
 =========================
 
 The following plugins (unless otherwise specified) are not commercially supported.

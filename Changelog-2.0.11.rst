@@ -3,7 +3,7 @@ uWSGI 2.0.11
 
 [20150701]
 
-错误修复
+Bugfixes
 ********
 
 - [pypy] fixed misuse of ffi.string
@@ -22,7 +22,7 @@ uWSGI 2.0.11
 - fixed TMPFILE permissions
 
 
-新特性
+New Features
 ************
 
 The mem_collector thread
@@ -78,7 +78,7 @@ All of the wait-for-* functions can now be used as a hook:
    ; wait for postgres soon after privileges drop
    hook-as-user = wait_for_socket:127.0.0.1:5432
 
-可用性
+Availability
 ************
 
 You can download uWSGI 2.0.11 from

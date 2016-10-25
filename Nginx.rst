@@ -1,4 +1,4 @@
-Nginx支持
+Nginx support
 =============
 
 Nginx natively includes support for upstream servers speaking the :doc:`uwsgi protocol<Protocol>` since version 0.8.40.

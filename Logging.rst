@@ -1,9 +1,9 @@
-日志记录
+Logging
 =======
 
 .. seealso:: :doc:`LogFormat`
 
-基本的日志记录
+Basic logging
 -------------
 
 The most basic form of logging in uWSGI is writing requests, errors, and

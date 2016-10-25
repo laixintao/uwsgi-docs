@@ -4,7 +4,7 @@ uWSGI 1.9.3
 Changelog 20130328
 
 
-错误修复
+Bugfixes
 ********
 
 fixed imports in the JVM build system when virtualenvs are used (Ryan Kaskel)
@@ -14,8 +14,8 @@ fixed mod_proxy_uwsgi with apache 2.4
 fixed php headers generation when Status is created from the php app itself
 
 
-新特性
-********
+New features
+************
 
 Pluggable configuration system (with Lua support)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -144,7 +144,7 @@ Obviously rpc functions for rpcret can be written in any language/platform suppo
 a JIT compiler is the best approach.
 
 
-可用性
+Availability
 ************
 
 uWSGI 1.9.3 has been released on 20130328 and can be downloaded from:

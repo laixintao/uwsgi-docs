@@ -1,11 +1,11 @@
-日志编码器
+Log encoders
 ============
 
-uWSGI 1.9.16开始就有了“日志编码”功能。
+uWSGI 1.9.16 got the "log encoding" feature.
 
-一个编码器接收一个日志行，然后返回它的一个“转换”。
+An encoder receives a logline and give back a "transformation" of it.
 
-可以通过插件添加编码器，并可以链式（一个编码器的输出将是随后的编码器的输入，依次递推）启动编码器。
+Encoders can be added by plugins, and can be enabled in chain (the output of an encoder will be the input of the following one and so on).
 
 .. code-block:: ini
 
@@ -21,7 +21,7 @@ uWSGI 1.9.16开始就有了“日志编码”功能。
 
    
    
-使用这个配置，日志服务器将会接收 "i am gzip encoded" string followed by the tru log message encoded in gzip
+with this configuration the log server will receive the "i am gzip encoded" string followed by the tru log message encoded in gzip
 
 The log encoder syntax is the following:
 
@@ -47,7 +47,7 @@ If you want to encode request logs to use --log-req-encoder:
    log-req-encoder = prefix i am gzip encoded
    ...
    
-路由编码器
+Routing encoders
 ****************
 
 Log routing allows sending each logline to a different log engine based on regexps. You can use the same system with encoders too:
@@ -66,7 +66,7 @@ Log routing allows sending each logline to a different log engine based on regex
    ...
 
    
-``Core`` 编码器
+``Core`` encoders
 *****************
 
 The following encoders are available in the uwsgi 'core':
@@ -122,7 +122,7 @@ The following variables (for format and json) are available:
    ...
 
   
- ``msgpack`` 编码器
+The ``msgpack`` encoder
 ***********************
 
 This is the first log-encoder plugin officially added to uWSGI sources. It allows encoding of loglines in msgpack (http://msgpack.org/) format.
@@ -228,7 +228,7 @@ this will generate the following structure:
    
 that will be stored in elasticsearch
 
-小抄
+Notes
 *****
 
 Encoders automatically enable --log-master

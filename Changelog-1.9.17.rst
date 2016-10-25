@@ -4,7 +4,7 @@ uWSGI 1.9.17
 Changelog [20130917]
 
 
-错误修复
+Bugfixes
 ********
 
 - the 'pty' client is now blocking (safer approach)
@@ -14,8 +14,8 @@ Changelog [20130917]
 
 
 
-新特性
-********
+New features
+************
 
 The Master FIFO
 ^^^^^^^^^^^^^^^
@@ -123,11 +123,11 @@ you can directly send logs to a file descriptors:
    req-logger = fd:17
 
 
-可用性
+Availability
 ************
 
-uWSGI 1.9.17于2013年09月22日发布
+uWSGI 1.9.17 has been released on Semptember 22th 2013
 
-你可以从下面地址下载它：
+You can download it from:
 
 http://projects.unbit.it/downloads/uwsgi-1.9.17.tar.gz

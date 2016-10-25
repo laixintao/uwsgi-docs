@@ -3,7 +3,7 @@ uWSGI 1.9.11
 
 Changelog [20130526]
 
-错误修复
+Bugfixes
 ********
 
 * Fixed Python 3 stdout/stderr buffering
@@ -13,8 +13,8 @@ Changelog [20130526]
 * Fixed cache item maximum size with custom block size
 * Fixed cache path handling
 
-新特性
-********
+New features
+************
 
 The new high-performance PyPy plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -189,10 +189,9 @@ You can combine multiple wrappers using routing.
    import = myrpcfuncs.py
 
 
-可用性
+Availability
 ************
-uWSGI 1.9.11于20130526发布
 
-你可以从下面地址下载它：
+uWSGI 1.9.11 will be available since 20130526 at:
 
 http://projects.unbit.it/downloads/uwsgi-1.9.11.tar.gz

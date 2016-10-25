@@ -3,7 +3,7 @@ uWSGI 2.0.5
 
 Changelog [20140601]
 
-错误修复
+Bugfixes
 --------
 
 - fixed support for repeated headers in the Lua plugin (Credits: tizoc)
@@ -128,7 +128,7 @@ a placeholder to the DNS resolution result of a string:
    ; %(myserver) would now be 93.184.216.119
    subscribe2 = server=%(myserver),key=foobar
 
-可用性
+Availability
 -------------
 
 uWSGI 2.0.5 has been released on [20140601] and can be downloaded from:

@@ -152,8 +152,6 @@ If you want to generate a core file, you may want to trigger a SIGABRT soon afte
 Availability
 ^^^^^^^^^^^^
 
-uWSGI 1.9.13于2013年06月22日发布
-
-你可以从下面地址下载它：
+uWSGI 1.9.13 will be available 22th June 2013 at this url:
 
 http://projects.unbit.it/downloads/uwsgi-1.9.13.tar.gz

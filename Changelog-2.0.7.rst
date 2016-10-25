@@ -3,7 +3,7 @@ uWSGI 2.0.7
 
 Changelog [20140905]
 
-错误修复
+Bugfixes
 ********
 
 - fixed counters in Statsd plugin (Joshua C. Forest)
@@ -69,7 +69,7 @@ The Broodlord subsystem has been improved with a new option: `--vassal-sos` that
 
 In addition to this a sysadmin can now manually ask for reinforcement sending the 'B' command to the master FIFO of an instance.
 
-可用性
+Availability
 ************
 
 uWSGI 2.0.7 has been released on 20140905, and you can download it from

@@ -18,7 +18,7 @@ The ZeroMQ API (a single function indeed) will be removed. Each plugin using Zer
 
 Mongrel2 protocol support will be moved to a "mongrel2" plugin instead of being embedded in the core.
 
-错误修复
+Bugfixes
 ********
 
 * Fixed master hang when gracefully reloading in lazy mode.
@@ -26,8 +26,8 @@ Mongrel2 protocol support will be moved to a "mongrel2" plugin instead of being 
 * Another round of coverity fixes by Riccardo Magliocchetti.
 * Fixed ``EAGAIN`` management when reading the body.
 
-新特性
-********
+New features
+************
 
 64bit return values for the RPC subsystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -121,11 +121,8 @@ New metrics collectors
 
 Check :doc:`Metrics`.
 
-可用性
+Availability
 ************
 
-uWSGI 1.9.20于2013年11月17日发布
-
-你可以从下面地址下载它：
-
+uWSGI 1.9.20 has been released on 20131117 and can be downloaded from
 http://projects.unbit.it/downloads/uwsgi-1.9.20.tar.gz.

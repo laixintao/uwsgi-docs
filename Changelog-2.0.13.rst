@@ -22,7 +22,7 @@ Changes
 - Added --cgi-close-stdin-on-eof (Roberto De Ioris)
 
 
-可用性
+Availability
 ------------
 
 You can download uWSGI 2.0.13 from http://projects.unbit.it/downloads/uwsgi-2.0.13.tar.gz

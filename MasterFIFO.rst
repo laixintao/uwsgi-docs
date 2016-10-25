@@ -1,55 +1,56 @@
-Master FIFO
+The Master FIFO
 ===============
 
-自uWSGI 1.9.17起可用。
+Available from uWSGI 1.9.17.
 
-一般来说，使用UNIX信号来管理maser，但是我们正在用尽信号数，并且（更重要的是）不需要跟PID混在一起回极大地简化外部管理脚本的实现。
+Generally you use UNIX signals to manage the master, but we are running out of signal numbers and (more importantly) not needing to mess with PIDs
+greatly simplifies the implementation of external management scripts.
 
-因此，取代信号，你可以告诉master创建一个UNIX命名管道 (FIFO)，这样，你刻意用它来发布命令给master。
+So, instead of signals, you can tell the master to create a UNIX named pipe (FIFO) that you may use to issue commands to the master.
 
-要创建一个FIFO，仅需添加 ``--master-fifo <filename>`` ，然后开始发布命令给它。
+To create a FIFO just add ``--master-fifo <filename>`` then start issuing commands to it.
 
 .. code-block:: sh
 
    echo r > /tmp/yourfifo
    
-你可以一次性发送多个命令。
+You can send multiple commands in one shot.
 
 .. code-block:: sh
 
    # add 3 workers and print stats
    echo +++s > /tmp/yourfifo
 
-可用命令
+Available commands
 ******************
 
-* '0' to '9' - 设置fifo slot (见下文)
-* '+' - 在cheaper模式的时候增加worker数 (添加 ``--cheaper-algo manual`` 以获得完全控制)
-* '-' - 在cheaper模式的时候减少worker数 (添加 ``--cheaper-algo manual`` 以获得完全控制)
-* 'B' - 让Emperor进行加固 (broodlord模式，要求uWSGI >= 2.0.7)
-* 'C' - 设置cheap模式
-* 'c' - 出发链重载
-* 'E' - 触发一次Emperor重新扫描
-* 'f' - 重新fork master (危险，但很强大)
-* 'l' - 重新打开日志文件 (需要 --log-master 和 --logto/--logto2)
-* 'L' - 触发日志循环 (需要 --log-master 和 --logto/--logto2)
-* 'p' - 暂定/恢复实例
-* 'P' - 更新pidfile (在master重新fork之后会非常有用)
-* 'Q' - 粗鲁地关闭实例
-* 'q' - 优雅地关闭实例
-* 'R' - 发送粗鲁重载
-* 'r' - 发送优雅重载
-* 'S' - 阻塞/消除阻塞订阅
-* 's' - 在日志中打印统计信息
-* 'W' - 粗鲁地重载worker
-* 'w' - 优雅地重载worker
+* '0' to '9' - set the fifo slot (see below)
+* '+' - increase the number of workers when in cheaper mode (add ``--cheaper-algo manual`` for full control)
+* '-' - decrease the number of workers when in cheaper mode (add ``--cheaper-algo manual`` for full control)
+* 'B' - ask Emperor for reinforcement (broodlord mode, requires uWSGI >= 2.0.7)
+* 'C' - set cheap mode
+* 'c' - trigger chain reload
+* 'E' - trigger an Emperor rescan
+* 'f' - re-fork the master (dangerous, but very powerful)
+* 'l' - reopen log file (need --log-master and --logto/--logto2)
+* 'L' - trigger log rotation (need --log-master and --logto/--logto2)
+* 'p' - pause/resume the instance
+* 'P' - update pidfiles (can be useful after master re-fork)
+* 'Q' - brutally shutdown the instance
+* 'q' - gracefully shutdown the instance
+* 'R' - send brutal reload
+* 'r' - send graceful reload
+* 'S' - block/unblock subscriptions
+* 's' - print stats in the logs
+* 'W' - brutally reload workers
+* 'w' - gracefully reload workers
 
-FIFO slot
+FIFO slots
 **********
 
-uWSGI支持多至10个不同的FIFO文件。默认情况下，绑定第一个指定的（映射为'0'）。
+uWSGI supports up to 10 different FIFO files. By default the first specified is bound (mapped as '0').
 
-在实例的生命周期中，你可以通过简单发送要使用的FIFO slot的数字来从一个FIFO改成另一个。
+During the instance's lifetime you can change from one FIFO to another by simply sending the number of the FIFO slot to use.
 
 .. code-block:: ini
 
@@ -60,31 +61,31 @@ uWSGI支持多至10个不同的FIFO文件。默认情况下，绑定第一个指
    processes = 2
    ...
 
-默认情况下，会分配 ``/tmp/fifo0`` ，但在发送以下命令之后：
+By default ``/tmp/fifo0`` will be allocated, but after sending:
 
 .. code-block:: sh
 
    echo 1 > /tmp/fifo0
    
-将会绑定 ``/tmp/fifo1`` 文件。
+the ``/tmp/fifo1`` file will be bound.
 
-当你（滥）用“fork master”命令（'f'）时，映射FIFO文件到特定的实例是非常有用的。
+This is very useful to map FIFO files to specific instance when you (ab)use the 'fork the master' command (the 'f' one).
 
 .. code-block:: sh
 
    echo 1fp > /tmp/fifo0
    
-在发送这个命令后，一个新的uWSGI实例(继承所有的绑定socket)将会生成，而老的将会被置为"暂停"模式('p'命令)。
+After sending this command, a new uWSGI instance (inheriting all of the bound sockets) will be spawned, the old one will be put in "paused" mode (the 'p' command).
 
-如果我们在'f'和'p'之前已经发送了'1'命令，那么老的实例现在将会接收在/tmp/fifo1 (slot 1)的命令，而新的将会使用默认的('0')。
+As we have sent the '1' command before 'f' and 'p' the old instance will now accept commands on /tmp/fifo1 (the slot 1), and the new one will use the default one ('0').
 
-你可以做到很多技巧，也有很多方法滥用master的fork。
+There are lot of tricks you can accomplish, and lots of ways to abuse the forking of the master.
 
-只需考虑到，极端情况可能会发生在任何地方，特别是如果你使用uWSGI最复杂的功能。
+Just take into account that corner-case problems can occur all over the place, especially if you use the most complex features of uWSGI.
 
-小抄
+Notes
 *****
 
-* FIFO是创建于非阻塞模式，并且在每次客户端断连的时候由master重新创建。
-* 你可以通过插件或者C钩子，使用全局数组 ``uwsgi_fifo_table`` 来覆盖（或添加）命令。
-* 只有运行master的uid才有fifo的写权限。
+* The FIFO is created in non-blocking modes and recreated by the master every time a client disconnects.
+* You can override (or add) commands using the global array ``uwsgi_fifo_table`` via plugins or C hooks.
+* Only the uid running the master has write access to the fifo.

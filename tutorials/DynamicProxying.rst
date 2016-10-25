@@ -1,12 +1,12 @@
-使用RPC和内部路由构建一个动态代理
+Build a dynamic proxy using RPC and internal routing
 ====================================================
 
-正在进行中 (要求uWSGI 1.9.14，我们使用PyPy作为引擎)
+Work in progress (requires uWSGI 1.9.14, we use PyPy as the engine)
 
-第一步：构建你的映射函数
+step 1: build your mapping function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-使用hostname作为映射 (你可以使用任何你需要的)
+we use the hostname as the mapping (you can use whatever you need)
 
 .. code-block:: py
 
@@ -17,10 +17,10 @@
         
     uwsgi.register_rpc('the_mapper', my_mapper)
     
-将其保持为myfuncs.py
+save it as myfuncs.py
     
 
-第二步：构建一个路由表
+step 2: building a routing table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ini

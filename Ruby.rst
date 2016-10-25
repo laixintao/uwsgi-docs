@@ -1,4 +1,4 @@
-Ruby支持
+Ruby support
 ============
 
 .. toctree::

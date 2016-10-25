@@ -1,10 +1,10 @@
-uWSGI V8支持
+uWSGI V8 support
 ================
 
 Building
 ********
 
-需要 ``libv8`` 头文件来构建该插件。官方用于V8的modifier1值为 '24'.
+You will need the ``libv8`` headers to build the plugin. The official modifier1 value for V8 is '24'.
 
 RPC
 ***
@@ -35,7 +35,7 @@ RPC
    uwsgi.register_rpc('hello', ciao);
 
 
-信号处理函数
+Signal handlers
 ***************
 
 .. code-block:: js
@@ -46,14 +46,14 @@ RPC
 
    uwsgi.register_signal(17, '', tempo);
 
-多线程和多进程
+Multitheading and multiprocess
 ******************************
 
-Mule
+Mules
 *****
 
 
-uWSGI API
+The uWSGI API
 *************
 
 JSGI 3.0
@@ -81,7 +81,7 @@ CommonJS
 
 * Require: OK
 * Binary/B: NO
-* System/1.0: 进行中
+* System/1.0: in progress
 * IO/A: NO
 * Filesystem/A: NO
 

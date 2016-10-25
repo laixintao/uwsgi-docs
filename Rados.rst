@@ -1,4 +1,4 @@
-RADOS插件
+The RADOS plugin
 ====================
 
 Available from uWSGI 1.9.16, stable from uWSGI 2.0.6

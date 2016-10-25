@@ -1,4 +1,4 @@
-在uWSGI中嵌入一个应用
+Embedding an application in uWSGI
 =================================
 
 Starting from uWSGI 0.9.8.2, you can embed files in the server binary. These

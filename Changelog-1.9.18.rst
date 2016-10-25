@@ -12,7 +12,7 @@ This new license should avoid any problems when using uWSGI as a shared library 
 
 Remember: if you need to make closed-source modifications to uWSGI you can buy a commercial license.
 
-错误修复
+Bugfixes
 ********
 
 - fixed uwsgi native protocol support on big endian machines
@@ -32,7 +32,7 @@ Remember: if you need to make closed-source modifications to uWSGI you can buy a
 - avoid crashing on non-conformant PSGI response headers
 - run the python autoreloader even in non-apps mode when non-lazy
 
-新特性
+New Features
 ************
 
 Minimal build profiles
@@ -252,11 +252,9 @@ You can even use FreeBSD jails too !!!
 
 :doc:`FreeBSDJails`
 
-可用性
+Availability
 ************
 
-uWSGI 1.9.18于2013年10月11日发布
-
-你可以从下面地址下载它：
+uWSGI 1.9.18 has been released on October 11th 2013 and can be downloaded from:
 
 http://projects.unbit.it/downloads/uwsgi-1.9.18.tar.gz

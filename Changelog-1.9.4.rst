@@ -3,7 +3,7 @@ uWSGI 1.9.4
 
 Changelog 20130330
 
-错误修复
+Bugfixes
 ********
 
 fixed cache statistics exported by the stats subsystem (Łukasz Mierzwa)
@@ -20,8 +20,8 @@ ported the cplusplus skeletal plugin to the new api
 
 fixed uWSGI reloading when build as a shared library
 
-新特性
-********
+New features
+************
 
 SmartOS official support
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -109,7 +109,7 @@ The code in 1.9.4 has been refactored a bit by Łukasz Mierzwa to allow easier i
 
 A new "join" hook has been added, it is called as soon as a node becomes active part of a legion (read, it is part of a quorum).
 
-可用性
+Availability
 ************
 
 uWSGI 1.9.4 will be available since 20130330 at this url

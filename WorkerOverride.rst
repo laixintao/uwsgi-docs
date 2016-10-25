@@ -1,9 +1,9 @@
-覆盖worker
+Overriding Workers
 ==================
 
-多亏了暴露给插件的"worker"钩子，你可以覆盖每个uWSGI worker运行的代码。
+You can override the code run by each uWSGI worker thanks to the "worker" hook exposed to plugins.
 
-目前，python插件是唯一一个暴露它的插件：
+Currently the python plugin is the only one exposing it:
 
 .. code-block:: ini
 
@@ -19,9 +19,9 @@
    python-worker-override = aioserver.py
 
 
-该python脚本可以访问uwsgi模块，因此它可以控制/改变内部逻辑。
+The python script has access to the uwsgi module so it can control/change its internals.
 
-下面的例子展示了aiohttp的使用 (需要python 3.5)
+The following examples shows the use of aiohttp (requires python 3.5)
 
 .. code-block:: python
 
@@ -81,8 +81,8 @@
    loop.run_forever()
 
 
-在这个例子中 (来自官方的aiohttp文档)，我们看到uwsgi.sockets列表 (保存uWSGI socket文件描述符列表)，以及对SIGINT和SIGHUP的覆盖，以支持重新加载 (SIGHUP应该调整以支持等待所有的入队请求)
+In the example (taken from the official aiohttp docs) we see the uwsgi.sockets list (holding the list of uWSGI sockets file descriptors), and the override of SIGINT and SIGHUP to support reloading (SIGHUP should be adapted to support waiting for all the queued requests)
 
-调用 :py:func:`uwsgi.accepting()` 以通知master，worker正在接收请求，这对于touch-chain-reload正常工作是必须的。
+:py:func:`uwsgi.accepting()` is called to notify the master that the worker is accepting requests, this is required for touch-chain-reload to work.
 
-应该扩展该脚本，在每个请求后调用uwsgi.log(...)，以及（最后）更新一些度量
+The script should be extended to call uwsgi.log(...) after every request and to (eventually) update some metrics

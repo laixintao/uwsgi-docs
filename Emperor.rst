@@ -1,7 +1,9 @@
-uWSGI Emperor —— 多应用部署
+The uWSGI Emperor -- multi-app deployment
 =========================================
 
-如果你需要在单个服务器，或者一组服务器上部署大量的应用，那么Emperor模式就是你的最佳选择。它是一个特殊的uWSGI实例，会监控特定的事件，并且will spawn/stop/reload instances (known
+If you need to deploy a big number of apps on a single server, or a group of
+servers, the Emperor mode is just the ticket.  It is a special uWSGI instance
+that will monitor specific events and will spawn/stop/reload instances (known
 as :term:`vassals<vassal>`, when managed by an Emperor) on demand.
 
 By default the Emperor will scan specific directories for supported (.ini,

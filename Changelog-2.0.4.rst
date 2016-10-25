@@ -3,7 +3,7 @@ uWSGI 2.0.4
 
 Changelog [20140422]
 
-错误修复
+Bugfixes
 --------
 
 - fixed "mime" routing var (Steve Stagg)
@@ -81,7 +81,7 @@ These two new routing options allow you to dynamically set request modifiers.
 
 keyval based static routing actions can now avoid rewriting response headers (useful for X-Sendfile), just add no_headers=1 to your keyval options.
 
-可用性
+Availability
 ------------
 
 uWSGI 2.0.4 has been released on 20140422, you can download it from:

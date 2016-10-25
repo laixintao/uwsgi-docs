@@ -1,4 +1,4 @@
-使用Nagios监控uWSGI
+Monitoring uWSGI with Nagios
 ============================
 
 The official uWSGI distribution includes a plugin adding Nagios_\ -friendly output.
