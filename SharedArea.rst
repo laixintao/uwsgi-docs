@@ -3,39 +3,36 @@ SharedArea ——  uWSGI组件间共享内存页
 
 .. warning::
 
-  SharedArea is a very low-level mechanism.
-  For an easier-to-use alternative, see the :doc:`Caching<Caching>` and :doc:`Queue<Queue>` frameworks.
+  SharedArea是一种非常底层的机制。想要一个更易于使用的替代品，可以看看 :doc:`Caching<Caching>` 和 :doc:`Queue<Queue>` 框架。
   
 .. warning::
 
-  This page refers to "new generation" sharedarea introduced in uWSGI 1.9.21, the older API is no longer supported.
+  本页面适用于uWSGI 1.9.21中引进的“新一代”sharedarea，不再支持较老的API。
 
-The sharedarea subsystem allows you to share pages of memory between your uWSGI components (workers, spoolers, mules, etc.)
-in a very fast (and safe) way.
+sharedarea子系统允许你以一种非常快速（安全）的方式，在你的uWSGI组件（worker, spooler, mule等等）之间共享内存页。
 
-Contrary to the higher-level :doc:`caching framework<Caching>`, sharedarea operations are way faster (a single copy instead of the double, as required by caching) and offers
-various optimizations for specific needs.
+与较高层次的 :doc:`caching framework<Caching>` 相比，sharedarea操作是一种更快的方式 (单一的拷贝，而不是如缓存所需的那样要进行双重拷贝)，并且它为特定的需求提供不同的优化。
 
-Each sharedarea (yes, you can have multiple areas) has a size (generally specified in the number of pages), so if you need an 8 KiB shared area on a system with 4 KiB pages, you would use ``sharedarea=2``.
+每一个sharedarea (是哒，你可以拥有多个区域) 都有一个大小 (一般根据页面数指定)，因此，如果你在拥有4 KiB页面的系统上需要一个8 KiB的共享区域，那么你会使用 ``sharedarea=2`` 。
 
-The sharedarea subsystem is fully thread-safe.
+sharedarea子系统是完全线程安全的。
 
-Simple option VS keyval
+简单的选项 VS 键值
 ***********************
 
-The sharedarea subsystem exposes (for now) a single option: ``--sharedarea``.
+sharedarea子系统公开了 (目前) 一个单一的选项： ``--sharedarea``.
 
-It takes two kinds of arguments: the number of pages (simple approach) or a keyval arg (for advanced tuning).
+它接收两种参数：页面数 (简单的方法) 或者一个键值参数 (用于高级调试)。
 
 The following keyval keys are available:
 
-* ``pages`` -- set the number of pages
+* ``pages`` -- 设置页面数
 * ``file`` -- create the sharedarea from a file that will be ``mmap``\ ed
 * ``fd`` -- create the sharedarea from a file descriptor that will be ``mmap``\ ed
 * ``size`` -- mainly useful with the ``fd`` and ``ptr`` keys to specify the size of the map (can be used as a shortcut to avoid calculation of the ``pages`` value too)
-* ``ptr`` -- directly map the area to the specified memory pointer.
+* ``ptr`` -- 直接映射该区域到指定的内存指针。
 
-The API
+API
 *******
 
 The API is pretty big, the sharedarea will be the de-facto toy for writing highly optimized web apps (especially for embedded systems).
@@ -43,7 +40,7 @@ The API is pretty big, the sharedarea will be the de-facto toy for writing highl
 Most of the documented uses make sense on systems with slow CPUs or very small amounts of memory.
 
 ``sharedarea_read(id, pos[, len])``
-    Read ``len`` bytes from the specified sharedarea starting at offset ``pos``. If ``len`` is not specified, the memory will be read til the end (starting from ``pos``).
+    Read ``len`` bytes from the specified sharedarea starting at offset ``pos``. 如果未指定 ``len`` ，那么将会the memory will be read til the end (从 ``pos`` 开始)。
 ``sharedarea_write(id, pos, string)``
     Write the specified ``string`` (it is language-dependent, obviously) to the specified sharedarea at offset ``pos``.
 ``sharedarea_read8|16|32|64(id, pos)``
@@ -63,7 +60,7 @@ Most of the documented uses make sense on systems with slow CPUs or very small a
 ``sharedarea_unlock(id)``
     unlock a shared area (use only if you know what you are doing, generally the sharedarea api functions implement locking by themselves)
 
-Waiting for updates
+等待更新
 *******************
 
 One of the most powerful features of sharedareas (compared to caching) is "waiting for updates". Your worker/thread/async_core can be suspended
@@ -71,7 +68,7 @@ until a sharedarea is modified.
 
 Technically, a millisecond-resolution timer is triggered, constantly checking for updates (the operation is very fast, as the sharedarea object has an update counter, so we only need to check that value for changes).
 
-Optional API
+可选API
 ************
 
 The following functions require specific features from the language, so not all of the language plugins are able to support them.
@@ -97,7 +94,7 @@ This is currently supported only in the psgi/perl plugin:
 ``websocket_send_binary_from_sharedarea(id, pos)``
     send a websocket binary message directly from the specified sharedarea
 
-Advanced usage (from C)
+高级使用 (from C)
 ***********************
 
 

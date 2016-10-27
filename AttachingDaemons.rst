@@ -1,15 +1,12 @@
 管理外部守护进程/服务
 ==================================
 
-uWSGI can easily monitor external processes, allowing you to increase
-reliability and usability of your multi-tier apps.  For example you can manage
-services like Memcached, Redis, Celery, Ruby delayed_job or even dedicated
-PostgreSQL instances.
+uWSGI可以轻松地监控外部进程，允许你提高你的多层应用的可靠性和可用性。例如，你可以管理诸如Memcached, Redis, Celery, Ruby delayed_job, 甚至是专门的PostgreSQL实例。
 
-Kinds of services
+各种各样的服务
 *****************
 
-Currently uWSGI supports 3 categories of processes:
+目前，uWSGI支持三种类型的进程：
 
 * ``--attach-daemon`` -- directly attached non daemonized processes
 * ``--smart-attach-daemon`` -- pidfile governed (both foreground and daemonized)
@@ -31,7 +28,7 @@ be useful for tiny prototype applications or simply poorly designed ones.
 
 Since uWSGI 2.0 a fourth option, ``--attach-daemon2`` has been added for advanced configurations (see below).
 
-Examples
+例子
 ********
 
 Managing a **memcached** instance in 'dumb' mode. Whenever uWSGI is stopped or reloaded, memcached is destroyed.
@@ -111,11 +108,10 @@ access to the system inside the specified namespace.  This requires the
 workers will be running as have access to the */etc/dropbear* directory inside
 the namespace.
 
-Legion support
+Legion支持
 **************
 
-Starting with uWSGI 1.9.9 it's possible to use the :doc:`Legion` subsystem for
-daemon management.  Legion daemons will be executed only on the legion
+自uWSGI 1.9.9起，使用 :doc:`Legion` 子系统来进行守护进程管理成为了可能。Legion daemons will be executed only on the legion
 lord node, so there will always be a single daemon instance running in each
 legion. Once the lord dies a daemon will be spawned on another node.  To add a
 legion daemon use --legion-attach-daemon, --legion-smart-attach-daemon and

@@ -1,7 +1,7 @@
-uWSGI Go support (1.4 only)
+uWSGI Go支持 (只有1.4)
 ===========================
 
-.. warning:: Starting from 1.9.20, the Go plugin has been superseded by the :doc:`GCCGO` plugin.
+.. warning:: 自1.9.20起，Go插件已经被 :doc:`GCCGO` 插件取代了。
 
 Starting from uWSGI 1.4-dev you can host Go web applications in your uWSGI
 stack.  You can download Go from http://golang.org/ .  Currently Linux
@@ -10,7 +10,7 @@ need Go 1.0.3+ or you will need to apply the patch available at
 http://code.google.com/p/go/source/detail?r=62b7ebe62958 Goroutines are
 currently supported only on Linux i386/x86_64.
 
-Building uWSGI with Go support
+构建带Go支持的uWSGI
 ******************************
 
 Go support can be built as an embedded component or plugin.  The main
@@ -50,7 +50,7 @@ arch/os) in plugins/go/pkg.
    If you already know how the Go import system works, feel free to copy
    uwsgi.a in your system-wide GOPATH.
 
-Writing the first Go application
+编写第一个Go应用
 ********************************
 
 By default the uWSGI Go plugin supports the ``http.DefaultServeMux`` handler,
@@ -100,7 +100,7 @@ personal request handler instead of ``http.DefaultServeMux``, use
            uwsgi.Run()
    }
 
-Building your first app
+构建你的第一个应用
 ***********************
 
 Assuming you saved your app as helloworld.go, just run the following.
@@ -126,7 +126,7 @@ start adding processes and a master:
 
 Note: modifier1 11 is officially assigned to Go.
 
-Going in production
+上生产
 *******************
 
 In a production environment you will probably put a webserver/proxy in front of

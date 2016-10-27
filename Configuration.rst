@@ -1,15 +1,15 @@
 配置uWSGI
 =================
 
-uWSGI can be configured using several different methods. All configuration methods may be mixed and matched in the same invocation of uWSGI.
+可以使用一些不同的方法对uWSGI进行配置。在相同的uWSGI调用中，所有的配置方法或许是混合搭配的。
 
-.. note:: Some of the configuration methods may require a specific plugin (ie. sqlite and ldap).
+.. note:: 一些配置方法或许需要特定的插件 (例如，sqlite和ldap)。
 
 .. seealso:: :doc:`ConfigLogic`
 
-The configuration system is unified, so each command line option maps 1:1 with entries in the config files.
+配置系统是统一的，因此，每一个命令行选项与配置文件中的项1:1对应。
 
-Example:
+例子：
 
 .. code-block:: sh
 
@@ -29,7 +29,7 @@ Example:
 加载配置文件
 ---------------------------
 
-uWSGI supports loading configuration files over several methods other than simple disk files::
+除了简单的磁盘文件，uWSGI支持通过多种方式加载配置文件::
 
   uwsgi --ini http://uwsgi.it/configs/myapp.ini # HTTP
   uwsgi --xml - # standard input
@@ -38,74 +38,64 @@ uWSGI supports loading configuration files over several methods other than simpl
 
 .. note::
 
-  More esoteric file sources, such as the :doc:`Emperor<Emperor>`, embedded
-  configuration (in two flavors), dynamic library symbols and ELF sections
-  could also be used.
+  还能使用更多晦涩的文件源，例如 :doc:`Emperor<Emperor>`, 嵌入式结构 (两种), 动态库符号和ELF部分。
 
 .. _MagicVars:
 
-Magic variables
+魔术变量
 ---------------
 
-uWSGI configuration files can include "magic" variables, prefixed with a
-percent sign.  Currently the following magic variables (you can access them in
-Python via :py:data:`uwsgi.magic_table`) are defined.
+uWSGI配置文件可以包含“魔术”变量，以百分号%作为前缀。目前，定义了如下魔术变量 (你可以通过 :py:data:`uwsgi.magic_table` 在Python中访问它们)。
 
 ======== ==
-%v       the vassals directory (pwd)
-%V       the uWSGI version
-%h       the hostname
-%o       the original config filename, as specified on the command line
-%O       same as %o but refer to the first non-template config file
-         (version 1.9.18)
-%p       the absolute path of the configuration file
-%P       same as %p but refer to the first non-template config file
-         (version 1.9.18)
-%s       the filename of the configuration file
-%S       same as %s but refer to the first non-template config file
-         (version 1.9.18)
-%d       the absolute path of the directory containing the configuration file
-%D       same as %d but refer to the first non-template config file
-         (version 1.9.18)
-%e       the extension of the configuration file
-%E       same as %e but refer to the first non-template config file
-         (version 1.9.18)
-%n       the filename without extension
-%N       same as %n but refer to the first non-template config file
-         (version 1.9.18)
-%c       the name of the directory containing the config file (version 1.3+)
-%C       same as %c but refer to the first non-template config file
-         (version 1.9.18)
-%t       unix time (in seconds, gathered at instance startup) (version 1.9.20-dev+)
-%T       unix time (in microseconds, gathered at instance startup) (version 1.9.20-dev+)
-%x       the current section identifier, eg. `config.ini:section` (version 1.9-dev+)
-%X       same as %x but refer to the first non-template config file
-         (version 1.9.18)
-%i       inode number of the file (version 2.0.1)
-%I       same as %i but refer to the first non-template config file
-%0..%9   a specific component of the full path of the directory containing the config file (version 1.3+)
-%[       ANSI escape "\\033" (useful for printing colors)
-%k       detected cpu cores (version 1.9.20-dev+)
-%u       uid of the user running the process (version 2.0)
-%U       username (if available, otherwise fallback to uid) of the user running the process (version 2.0)
-%g       gid of the user running the process (version 2.0)
-%G       group name (if available, otherwise fallback to gid) of the user running the process (version 2.0)
-%j       HEX representation of the djb33x hash of the full config path
-%J       same as %j but refer to the first non-template config file
+%v       vassals目录 (pwd)
+%V       uWSGI版本
+%h       主机名
+%o       原始配置文件名，在命令行指定
+%O       与%o相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%p       配置文件的绝对路径
+%P       与%p相同，但指的是第一个非模板配置文件 ，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%s       配置文件名
+%S       与%s相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%d       包含配置文件的目录的绝对路径
+%D       与%d相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%e       配置文件的扩展名
+%E       与%e相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%n       不带扩展名的文件名
+%N       与%n相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%c       包含配置文件的目录名 (1.3+版本)
+%C       与%c相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%t       unix时间 (以秒为单位，在实例启动时收集) (1.9.20-dev+版本)
+%T       unix时间 (以微秒为单位，在实例启动时收集) (version 1.9.20-dev+)
+%x       当前段的标识符，例如， `config.ini:section` (1.9-dev+版本)
+%X       与%x相同，但指的是第一个非模板配置文件
+         (1.9.18版本)
+%i       文件的inode数字 (2.0.1版本)
+%I       与%i相同，但指的是第一个非模板配置文件
+%0..%9   包含配置文件的目录的全路径的一个特定的组件 (1.3+版本)
+%[       ANSI转义"\\033" (对于打印颜色有用)
+%k       检测到的cpu核数 (1.9.20-dev+版本)
+%u       运行进程的用户的uid (2.0版本)
+%U       运行进程的用户的用户名 (如果可用，否则回退到uid) (2.0版本)
+%g       运行进程的用户的gid (2.0版本)
+%G       运行进程的用户所在组名 (如果可用，否则回退到gid)  (2.0版本)
+%j       完整配置路径的djb33x哈希的HEX表示
+%J       与%j相同，但指的是第一个非模板配置文件
 
 ======== ==
 
-Note that most of these refer to the file they appear in, even if that
-file is included from another file.
+注意，它们大多数指的是它们所在的文件，即使那个文件被包含在其他文件中。
 
-An exception are most of the uppercase versions, which refer to the
-first non-template config file loaded. This means the first config file
-not loaded through ``--include`` or ``--inherit``, but through for
-example ``--ini``, ``--yaml`` or ``--config``. These are intended to use
-with the emperor, to refer to the actual vassal config file instead of
-templates included with ``--vassals-include`` or ``--vassals-inherit``.
+一个例外是大部分的大写版本，指的是加载的第一个非模板配置文件。这意味着，第一个配置文件并不是通过 ``--include`` 或者 ``--inherit`` 加载的，而是通过例如 ``--ini``, ``--yaml`` 或者 ``--config`` 加载的。这些是为了使用emperor，来指向用 ``--vassals-include`` 或者 ``--vassals-inherit`` 包含的实际的vassal配置文件，而不是模板。
 
-For example, here's :file:`funnyapp.ini`.
+例如，这里是 :file:`funnyapp.ini` 。
 
 .. code-block:: ini
 
@@ -115,7 +105,7 @@ For example, here's :file:`funnyapp.ini`.
   processes = 4
   master = 1
 
-``%n`` will be replaced with the name of the config file, sans extension, so the result in this case will be
+``%n`` 将会使用配置文件的名字来替代，不加扩展名，因此，这个情况下的结果将会是
 
 .. code-block:: ini
 
@@ -127,11 +117,10 @@ For example, here's :file:`funnyapp.ini`.
 
 .. _Placeholders:
 
-Placeholders
+占位符
 ------------
 
-Placeholders are custom magic variables defined during configuration time by
-setting a new configuration variable of your own devising.
+占位符是通过设置你自己发明的一个新的配置变量，在配置时间定义的自定义的魔术变量。
 
 .. code-block:: ini
 
@@ -145,34 +134,30 @@ setting a new configuration variable of your own devising.
   chdir = %(customers_base_dir)/%(my_funny_domain)
   limit-as = %(max_customer_address_space)
 
-Placeholders can be assigned directly, or using the ``set-placeholder``
-/ ``set-ph`` option. These latter options can be useful to:
+可以直接指定占位符，或者使用 ``set-placeholder``
+/ ``set-ph`` 选项。后者在以下情况下有用：
 
-* Make it more explicit that you're setting placeholders instead of
-  regular options.
-* Set options on the commandline, since unknown options like
-  ``--foo=bar`` are rejected but ``--set-placeholder foo=bar`` is ok.
-* Set placeholders when strict mode is enabled.
+* 更明显的表示出你在设置的是占位符，而不是常规选项。
+* 在命令行设置选项，因为诸如
+  ``--foo=bar`` 这样的未知选项会被拒绝，但是 ``--set-placeholder foo=bar`` 是可以的。
+* 当启用strict模式的时候，设置占位符。
 
-Placeholders are accessible, like any uWSGI option, in your application code
-via :py:data:`uwsgi.opt`.
+占位符是可访问的，像任何uWSGI选项一样，在你的应用代码中，通过 :py:data:`uwsgi.opt` 进行访问。
 
 .. code-block:: python
 
   import uwsgi
   print uwsgi.opt['customers_base_dir']
 
-This feature can be (ab)used to reduce the number of configuration files
-required by your application.
+这个特性可以被（滥）用来减少你的应用所需的配置文件的数目。
 
-Similarly, contents of evironment variables and external text files can
-be included using the `$(ENV_VAR)` and `@(file_name)` syntax. See also
+类似地，可以使用 `$(ENV_VAR)` 和 `@(file_name)` 语法来包含环境变量和外部文本文件的内容。又见
 :doc:`ParsingOrder`.
 
-Placeholders math (from uWSGI 1.9.20-dev)
+占位符数学 (自uWSGI 1.9.20-dev起)
 -----------------------------------------
 
-You can apply math formulas to placeholders using this special syntax:
+你可以使用这种特殊的语法，应用数学公式到占位符上：
 
 .. code-block:: ini
 
@@ -182,9 +167,9 @@ You can apply math formulas to placeholders using this special syntax:
    ; total will be 50
    total = %(foo + bar + 3)
    
-Remember to not miss spaces between operations.
+运算符之间不要忘了空格。
 
-Operations are executed in a pipeline (not in common math style):
+在管道中（而不是一般的数学格式）执行运算：
 
 .. code-block:: ini
 
@@ -193,11 +178,11 @@ Operations are executed in a pipeline (not in common math style):
    bar = 30
    total = %(foo + bar + 3 * 2)
    
-'total' will be evaluated as 100:
+'total' 将会被计算为100:
 
  (((foo + bar) + 3) * 2)
  
-Incremental and decremental shortcuts are available
+可以用递增和递减快捷方式
 
 .. code-block:: ini
 
@@ -206,9 +191,9 @@ Incremental and decremental shortcuts are available
    ; remember the space !!!
    bar = %(foo ++)
 
-bar will be 30
+bar将会是30
 
-If you do not specify an operation between two items, 'string concatenation' is assumed:
+如果在两个项之间你不指定一个运算符，那么会假设使用“字符串连接”：
 
 .. code-block:: ini
 
@@ -218,19 +203,19 @@ If you do not specify an operation between two items, 'string concatenation' is 
    ; remember the space !!!
    bar = %(foo bar ++)
    
-the first two items will be evaluated as '29' (not 11 as no math operation has been specified)
+头两个项将会被计算为'29' (不是11，因为未指定任何数学运算)
 
-The '@' magic
+'@'魔法
 -------------
 
-We have already seen we can use the form @(filename) to include the contents of a file
+我们已经看到了可以使用@(filename)形式来包含一个文件的内容
 
 .. code-block:: ini
 
    [uwsgi]
    foo = @(/tmp/foobar)
    
-the truth is that '@' can read from all of the supported uwsgi schemes
+真相是，'@'可以读取来自所有支持的uwsgi方案的内容
 
 .. code-block:: ini
 
@@ -261,13 +246,12 @@ the truth is that '@' can read from all of the supported uwsgi schemes
 环境变量
 ---------------------
 
-When passed as environment variables, options are capitalized and prefixed with
-`UWSGI_`, and dashes are substituted with underscores.
+当作为环境变量传递时，会把选项首字母大写，并加上
+`UWSGI_` 前缀，而破折号会被下划线替代。
 
 .. note::
 
-   Several values for the same configuration variable are not supported with
-   this method.
+   该方法并不支持相同配置变量的一些值。
 
 例子::
 
@@ -276,10 +260,9 @@ When passed as environment variables, options are capitalized and prefixed with
 INI文件
 ---------
 
-.INI files are a standard de-facto configuration format used by many
-applications. It consists of ``[section]``\ s and ``key=value`` pairs.
+.INI文件实际上是一种标准的配置格式，用在许多应用中。它由 ``[section]`` 和 ``key=value`` 对组成。
 
-An example uWSGI INI configuration:
+一个样例uWSGI INI配置：
 
 .. code-block:: ini
 
@@ -289,16 +272,11 @@ An example uWSGI INI configuration:
   workers = 3
   master = true
 
-By default, uWSGI uses the ``[uwsgi]`` section, but you can specify another
-section name while loading the INI file with the syntax ``filename:section``,
-that is::
+默认情况下，uWSGI使用 ``[uwsgi]`` 段，但是你可以在使用 ``filename:section`` 语法加载INI文件的时候指定另一个段名，也就是::
 
   uwsgi --ini myconf.ini:app1
 
-Alternatively, you can load another section from the same file by
-omitting the filename and specifying just the section name. Note that
-technically, this loads the named section from the last .ini file loaded
-instead of the current one, so be careful when including other files.
+作为选择，你可以通过省略文件名并只指定段名来从相同的文件中加载另一个段。注意，技术上来讲，这会从上个加载的.ini文件中加载命名段，而不是从当前的文件中加载，因此，当包含其他文件的时候，小心为上。
 
 .. code-block:: ini
 
@@ -316,18 +294,18 @@ instead of the current one, so be careful when including other files.
   [app2]
   plugin = php
 
-* Whitespace is insignificant within lines.
-* Lines starting with a semicolon (``;``) or a hash/octothorpe (``#``) are ignored as comments.
-* Boolean values may be set without the value part. Simply ``master`` is thus equivalent to ``master=true``. This may not be compatible with other INI parsers such as ``paste.deploy``.
-* For convenience, uWSGI recognizes bare ``.ini`` arguments specially, so the invocation ``uwsgi myconf.ini``  is equal to ``uwsgi --ini myconf.ini``.
+* 行内空格是不重要的。
+* 以分号 (``;``) 或者一个哈希/井号 (``#``) 开头的行会被当成注释忽略。
+* 可以在没有值那个部分的情况下设置布尔型的值。因此，简单的 ``master`` 等价于 ``master=true`` 。这或许与其他INI解析器，例如 ``paste.deploy`` ，并不兼容。
+* 为了方便，uWSGI特殊识别裸 ``.ini`` 参数，因此，调用 ``uwsgi myconf.ini``  等价于 ``uwsgi --ini myconf.ini`` 。
 
 XML文件
 ---------
 
-The root node should be ``<uwsgi>`` and option values text nodes.
+根节点应该是 ``<uwsgi>`` ，而选项值是节点文本。
 
 
-An example:
+一个例子：
 
 .. code-block:: xml
 
@@ -338,11 +316,7 @@ An example:
     <workers>3</workers>
   </uwsgi>
 
-You can also have multiple ``<uwsgi>`` stanzas in your file, marked with
-different ``id`` attributes. To choose the stanza to use, specify its id after
-the filename in the ``xml`` option, using a colon as a separator.  When using
-this `id` mode, the root node of the file may be anything you like. This will
-allow you to embed ``uwsgi`` configuration nodes in other XML files.
+文件中还可以有多个 ``<uwsgi>`` 节，由不同的 ``id`` 属性标记。要选择使用的节，则在 ``xml`` 选项中的文件名之后指定其id，使用冒号作为分隔符。当使用这种 `id` 模式时，文件的根节点可以是任何你喜欢的。这会允许你将 ``uwsgi`` 配置节点嵌入到其他XML文件中。
 
 .. code-block:: xml
 
@@ -351,17 +325,16 @@ allow you to embed ``uwsgi`` configuration nodes in other XML files.
     <uwsgi id="django"><socket>/tmp/django.sock</socket></uwsgi>
   </i-love-xml>
 
-* Boolean values may be set without a text value.
-* For convenience, uWSGI recognizes bare ``.xml`` arguments specially, so the invocation ``uwsgi myconf.xml``  is equal to ``uwsgi --xml myconf.xml``.
+* 可在没有文本值的情况下设置布尔类型的值。
+* 为了方便起见，uWSGI特殊识别裸 ``.ini`` 参数，因此，调用 ``uwsgi myconf.xml``  等价于 ``uwsgi --xml myconf.xml`` 。
 
 JSON 文件
 ----------
 
-The JSON file should represent an object with one key-value pair, the key being
-`"uwsgi"` and the value an object of configuration variables. Native JSON
-lists, booleans and numbers are supported.
+JSON应该使用一个键值对来表示一个对象，键是
+`"uwsgi"` ，而值是配置变量的一个对象。支持原生JSON列表、布尔型和数字。
 
-An example:
+一个例子：
 
 .. code-block:: json
 
@@ -371,7 +344,7 @@ An example:
     "workers": 3
   }}
 
-Again, a named section can be loaded using a colon after the filename.
+再次，可以使用文件名后冒号来加载一个命名段。
 
 .. code-block:: json
 
@@ -381,7 +354,7 @@ Again, a named section can be loaded using a colon after the filename.
     "plugin": "php"
   }}
 
-And then load this using::
+然后这样加载::
 
   uwsgi --json myconf.json:app2
 
@@ -399,9 +372,9 @@ And then load this using::
 YAML 文件
 ----------
 
-The root element should be `uwsgi`. Boolean options may be set as `true` or `1`.
+根元素应该是 `uwsgi` 。布尔型选项要设置成 `true` 或 `1` 。
 
-An example:
+一个例子：
 
 .. code-block:: yaml
 
@@ -411,7 +384,7 @@ An example:
     master: 1
     workers: 3
 
-Again, a named section can be loaded using a colon after the filename.
+另外，一个命名段可以使用文件名后的冒号进行加载。
 
 .. code-block:: yaml
 
@@ -420,7 +393,7 @@ Again, a named section can be loaded using a colon after the filename.
   app2:
     plugin: php
 
-And then load this using::
+然后这样加载它::
 
   uwsgi --yaml myconf.yaml:app2
 
@@ -430,11 +403,9 @@ SQLite配置
 
 .. note::
 
-  Under construction.
+  构建中……
 
 LDAP 配置
 ------------------
 
-LDAP is a flexible way to centralize configuration of large clusters of uWSGI
-servers. Configuring it is a complex topic. See :doc:`LDAP` for more
-information.
+LDAP是集中uWSGI服务器大型集群配置的一种灵活的方式。配置它是一个负责的主题。见 :doc:`LDAP` 以获得更多信息。

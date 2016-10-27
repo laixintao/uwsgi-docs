@@ -1,19 +1,16 @@
-The GeoIP plugin
+GeoIP插件
 ================
 
-The ``geoip`` plugin adds new routing vars to your internal routing subsystem.
-GeoIP's vars are prefixed with the "geoip" tag.  To build the geoip plugin you
-need the official GeoIP C library and its headers.  The supported databases are
-the country and city one, and they are completely loaded on memory at startup.
+``geoip`` 插件添加新的路由变量到你的内部路由子系统中。
+GeoIP变量前缀为"geoip"标签。要构建geoip插件，你需要官方的GeoIP C库和它的头文件。支持的数据库是country和city，它们会在启动的时候完全加载到内存中。
 
-The country database give access to the following variables:
+可以访问country数据库的以下变量：
 
 * ``${geoip[country_code]}``
 * ``${geoip[country_code3]}``
 * ``${geoip[country_name]}``
 
-while the city one offers a lot more at the cost of increased memory usage for
-storing the database
+而以为存储数据而增长的内存使用为代价，city数据库提供更多变量
 
 * ``${geoip[continent]}``
 * ``${geoip[country_code]}``
@@ -28,18 +25,17 @@ storing the database
 * ``${geoip[dma]}``
 * ``${geoip[area]}``
 
-Enabling geoip lookup
+启用geoip查询
 *********************
 
-To enable the GeoIP lookup system you need to load at least one database. After
-having loaded the geoip plugin you will get 2 new options:
+要启用GeoIP查询系统，你需要加载至少一个数据库。在加载完geoip插件后，你会获得2个新的选项：
 
-* ``--geoip-country`` specifies a country database
-* ``--geoip-city`` specifies a city database
+* ``--geoip-country`` 指定一个country数据库
+* ``--geoip-city`` 指定一个city数据库
 
-If you do not specify at least one of them, the system will always return empty strings.
+如果你没有至少指定一个数据库，那么，该系统将会总是返回空字符串。
 
-An example
+一个例子
 **********
 
 .. code-block:: ini
@@ -64,11 +60,9 @@ An example
    ; try to serve a specific page translation
    route = ^/foo/bar/test.html static:/var/www/${geoip[country_code]}/test.html
 
-Memory usage
+内存使用
 ************
 
-The country database is tiny so you will generally have no problem in using it.
-Instead, the city database can be huge (from 20MB to more than 40MB).  If you
-have lot of instances using the GeoIP city database and you are on a recent
-Linux system, consider using :doc:`KSM` to reduce memory usage. All of the
-memory used by the GeoIP database can be shared by all instances with it.
+country数据库很小，因此你在使用它的时候一般没有问题。反而，city数据库能很大 (从20MB到大于40MB)。如果你有大量使用GeoIP的city数据库的实例，并且是使用最近的
+Linux系统，那么考虑使用 :doc:`KSM` 来减少内存使用。
+GeoIP数据库使用的所有内存可以由所有实例共享。

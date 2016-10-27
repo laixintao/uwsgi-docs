@@ -3,24 +3,24 @@
 
 .. seealso::
 
-  If you are managing multiple apps or a high volume site, take a look at
+  如果你正在管理多个应用，或者一个高容量站点，那么看一看
 
   * :doc:`Emperor`
   * :doc:`Zerg`
   * :doc:`SubscriptionServer`
 
 
-Starting the server
+启动服务器
 -------------------
 
-Starting an uWSGI server is the role of the system administrator, like starting the Web server. It should not be the role of the Web server to start the uWSGI server -- though you can also do that if it fits your architecture.
+启动一个uWSGI服务器是系统管理员的角色，例如启动Web服务器。不应该由Web服务器来启动uWSGI服务器 —— 虽然如果这适合你的架构，你也能那样做。
 
-How to best start uWSGI services at boot depends on the operating system you use.
+如何在引导的时候最好的启动uWSGI服务取决于你使用的操作系统。
 
-On modern systems the following should hold true. On "classic" operating systems you can use ``init.d``/``rc.d`` scripts, or tools such as Supervisor, Daemontools or :doc:`inetd/xinetd <Inetd>`.
+在现代系统中，下述应该行得通。在“传统的”操作系统上，你可以使用 ``init.d``/``rc.d`` 脚本，或者诸如Supervisor, Daemontools 或 :doc:`inetd/xinetd <Inetd>` 这样的工具。
 
 ============== =========
-System         Method
+系统           方法
 ============== =========
 Ubuntu         :doc:`Upstart` (the official ``uwsgi`` package, available since Ubuntu 12.04 provides an init.d based solution. Read the README.)
 Debian         :doc:`Systemd`
@@ -31,51 +31,51 @@ Solaris        SMF
 ============== =========
 
 
-Signals for controlling uWSGI
+用来控制uWSGI的信号哦
 -----------------------------
 
-You can instruct uWSGI to write the master process PID to a file with the ``safe-pidfile`` option.
+你可以使用 ``safe-pidfile`` 选项，指示uWSGI将master进程的PID写入到一个文件中。
 
-The uWSGI server responds to the following signals.
+uWSGI对以下信号进行响应。
 
 ==========  ========================================================================  ===================
-Signal      Description                                                               Convenience command
+信号        描述                                                                      便捷命令
 ==========  ========================================================================  ===================
-`SIGHUP`    gracefully reload all the workers and the master process                  ``--reload``
-`SIGTERM`   brutally reload all the workers and the master process                    (use ``--die-on-term`` to respect the convention of shutting down the instance)
-`SIGINT`    immediately kill the entire uWSGI stack                                   ``--stop``
-`SIGQUIT`   immediately kill the entire uWSGI stack
-`SIGUSR1`   print statistics
-`SIGUSR2`   print worker status or wakeup the spooler
-`SIGURG`    restore a snapshot
-`SIGTSTP`   pause/suspend/resume an instance
-`SIGWINCH`  wakeup a worker blocked in a syscall (internal use)
-`SIGFPE`    generate C traceback
-`SIGSEGV`   generate C traceback
+`SIGHUP`    优雅地重载所有的worker和master进程                                        ``--reload``
+`SIGTERM`   粗鲁地重载所有的worker和master进程                                        (使用 ``--die-on-term`` 以尊重关闭实例的传统)
+`SIGINT`    立即杀死整个uWSGI栈                                                       ``--stop``
+`SIGQUIT`   立即杀死整个uWSGI栈 
+`SIGUSR1`   打印统计数据
+`SIGUSR2`   打印worker状态或唤醒spooler
+`SIGURG`    恢复一个快照
+`SIGTSTP`   暂停/挂起/恢复一个实例
+`SIGWINCH`  唤醒一个在系统调用中阻塞的worker (内部使用)
+`SIGFPE`    生成C回溯
+`SIGSEGV`   生成C回溯
 ==========  ========================================================================  ===================
 
-Note: there are better ways to manage your instances than signals, as an example the master-fifo is way more robust.
+注意：比起使用信号，有更好的管理你的实例的方式，例如，master-fifo就是一个更健壮的方式。
 
-Reloading the server
+重载服务器
 --------------------
 
-When running with the ``master`` process mode, the uWSGI server can be gracefully restarted without closing the main sockets.
+当运行在 ``master`` 进程模式下时，uWSGI服务器可以在无需关闭主socket的情况下优雅地重启。
 
-This functionality allows you patch/upgrade the uWSGI server without closing the connection with the web server and losing a single request.
+这个功能允许你在无需关闭与web服务器的连接以及丢失请求的情况下修补/更新uWSGI服务器。
 
-When you send the `SIGHUP` to the master process it will try to gracefully stop all the workers, waiting for the completion of any currently running requests.
+当你发送 `SIGHUP` 给主进程时，它会试着优雅地停止所有的worker，等待任何当前运行中的请求完成。
 
-Then it closes all the eventually opened file descriptors not related to uWSGI.
+然后，它关闭所有与uWSGI无关的最终打开的文件描述符。
 
-Lastly, it binary patches (using ``execve()``) the uWSGI process image with a new one, inheriting all of the previous file descriptors.
+最后，它使用一个新的来二进制修补 (使用 ``execve()``) uWSGI进程镜像，继承所有之前的文件描述符。
 
-The server will know that it is a reloaded instance and will skip all the sockets initialization, reusing the previous ones.
+服务器将会知道它是一个已重载的实例，并且会跳过所有的socket初始化，重用之前的。
 
 .. note::
 
-   Sending the `SIGTERM` signal will obtain the same result reload-wise but will not wait for the completion of running requests.
+   发送 `SIGTERM` 信号将会获得与优雅地重载相同的结果，但将不会等待运行中的请求的完成。
 
-There are several ways to make uWSGI gracefully restart.
+有多种方式来让uWSGI优雅地重启。
 
 .. code-block:: sh
 
@@ -86,24 +86,24 @@ There are several ways to make uWSGI gracefully restart.
     # or if uwsgi was started with touch-reload=/tmp/somefile
     touch /tmp/somefile
 
-Or from your application, in Python:
+或在你的应用中，使用Python:
 
 .. code-block:: python
 
     uwsgi.reload()
 
-Or in Ruby,
+或者使用Ruby,
 
 .. code-block:: ruby
 
     UWSGI.reload
 
-Stopping the server
+停止服务器
 -------------------
 
-If you have the uWSGI process running in the foreground for some reason, you can just hit CTRL+C to kill it off.
+如果出于某些原因，你让uWSGI进程在前台运行，那么使用CTRL+C就可以杀死它了。
 
-When dealing with background processes, you'll need to use the master pidfile again. The SIGINT signal will kill uWSGI.
+在处理后台进程时，你将需要再次使用master pidfile。SIGINT信号将会杀死uWSGI.
 
 .. code-block:: sh
 
@@ -111,7 +111,7 @@ When dealing with background processes, you'll need to use the master pidfile ag
     # or for convenience...
     uwsgi --stop /tmp/project-master.pid
 
-The Master FIFO
+Master FIFO
 ---------------
 
-Starting from uWSGI 1.9.17, a new management system has been added using unix named pipes (fifo): :doc:`MasterFIFO`
+自uWSGI 1.9.17起，添加了一个新的管理系统，它使用unix命名管道 (fifo): :doc:`MasterFIFO`

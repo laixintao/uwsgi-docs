@@ -1,14 +1,14 @@
 uWSGI构建系统
 ======================
 
-- This is updated to 1.9.13
+- 更新至1.9.13
 
-This page describes how the uWSGI build system works and how it can be customized
+本页面描述了uWSGI构建系统是如何工作的，以及如何对其进行定制。
 
 uwsgiconfig.py
 **************
 
-This is the python script aimed at calling the various compile/link stage.
+这是一个旨在调用不同编译/链接阶段的python脚本。
 
 During 2009, when uWSGI guidelines (and mantra) started to be defined, people agreed that autotools, cmake and friends
 was not loved by a lot of sysadmins. Albeit they are pretty standardized, the amount of packages needed and the incompatibility
@@ -22,13 +22,13 @@ because when uWSGI started it was a python-only application. (Obviously if you w
 The uwsgiconfig.py basically detects the available features in the system and builds a uwsgi binary (and eventually its plugins) using the
 so called 'build profile'
 
-build profiles
+构建配置文件
 **************
 
-First example
+第一个例子
 *************
 
-CC and CPP
+CC和CPP
 **********
 
 These 2 environment variables tell uwsgiconfig.py to use an alternative C compiler and C preprocessor.
@@ -61,7 +61,7 @@ You can override this system using the CPUCOUNT environment variable, forcing th
 UWSGI_FORCE_REBUILD
 *******************
 
-Plugins and uwsgiplugin.py
+插件和uwsgiplugin.py
 **************************
 
 
@@ -135,7 +135,7 @@ uwsgibuild.log
 uwsgibuild.lastcflags
 *********************
 
-cflags and uwsgi.h magic
+cflags和uwsgi.h magic
 ************************
 
 embedding files
