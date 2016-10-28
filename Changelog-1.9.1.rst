@@ -1,107 +1,96 @@
 uWSGI 1.9.1
 ===========
 
-First minor release for the 1.9 tree.
+1.9版本树的第一个小版本。
 
 错误修复
 ********
 
-Fixed --req-logger after a graceful reload
+修复优雅重载后的--req-logger
 
-Fixed a crash with the carbon plugin
+修复carbon插件的一种崩溃
 
-Fixed signal handling when multiple workers + copy on write is in place
+修复多worker以及适当的写时复制时的信号处理
 
-Fixed exception handling in the Rack plugin
+修复Rack插件中的异常处理
 
-The XSLT plugin
+XSLT插件
 ***************
 
-The :doc:`XSLT<XSLT>` plugin has been added. It allows to apply XML transformation via request plugin or :doc:`InternalRouting`
+添加了 :doc:`XSLT<XSLT>` 插件。它让我们通过请求插件或者 :doc:`InternalRouting` 应用XML转换。
 
 Legion scrolls api
 ******************
 
-Scrolls are text blob attached to each member of a :doc:`Legion<Legion>` cluster. We are slowly defining an api allowing developers to directly
-use the legion subsystem in their apps and configurations. The addition in 1.9.1 is the uwsgi.scrolls(legion) function returning a list/array
-of the current scrolls defined by the whole cluster. This is still not something fully usable (and useful) more to come soon...
+scrolls是附加到 :doc:`Legion<Legion>` 集群中的每个成员上的文本。我们正在慢慢地定义一个API，以允许开发者直接在他们的应用和配置中使用legion子系统。1.9.1中添加的是uwsgi.scrolls(legion)函数，它返回由整个集群定义的当前scrolls的一个列表/数组。这还不是完全可用（有用）的，后续还会有更多的函数……
 
 按需vassals
 *****************
 
-Another step in better resource usage for massive hosting. You can now tell the :doc:`Emperor<Emperor>` to start vassals only after the first request
-to a specific socket. Combined with --idle/--die-on-idle options, you can have truly on-demand applications.
+对于大规模托管的更好的资源使用的另一步。你现在可以告诉 :doc:`Emperor<Emperor>` 只在对指定的socket进行的第一个请求之后才启动vassal。与 --idle/--die-on-idle 选项相结合，就可以拥有完全按需的应用了。
 
-To define the socket to wait for for each vassal you have 3 options:
+要为每个vassal定义等待的socket，你有3个选项：
 
 --emperor-on-demand-extension <ext>
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-this will instruct the Emperor to check for a file named <vassal>+<ext>, if the file is available it will be read and its content used as the socket to wait for:
+这将会指示Emperor去检查一个名为<vassal>+<ext>的文件，如果该文件可用，那么将会读取，并把其内容作为socket等待的内容：
 
 .. code-block:: sh
 
    uwsgi --emperor /etc/uwsgi/vassals --emperor-on-demand-extension .socket
 
-supposing a myapp.ini file in /etc/uwsgi/vassals, a /etc/uwsgi/vassals/myapp.ini.socket will be searched for (and its content used as the socket name)
+假设有一个在/etc/uwsgi/vassals中的myapp.ini文件，那么将会搜索/etc/uwsgi/vassals/myapp.ini.socket (而它的内容会用作这个socket的名字)
 
-At the first connection, the vassal is spawned and the socket passed as the file descriptor 0. File descriptor 0 is always checked by uWSGI
-so you do not need to specify a --socket option in the vassal file. This works automagically for uwsgi sockets, if you use
-other protocols (like http or fastcgi) you have to specify it with the --protocol option
+在第一次连接的时候，会生成vassal，并且会将socket作为文件描述符0进行传递。文件描述符0总是会被uWSGI检查，因此你并不需要在vassal文件中指定一个--socket选项。这自动对uwsgi socket有效，如果你使用其他协议 (例如http或者fastcgi)，那么你必须使用--protocol选项来指定它
 
 --emperor-on-demand-directory <dir>
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is a less-versatile approach supporting only UNIX sockets. Basically the name (without extension and path) of the vassal is appended
-to the specified directory + the .socket extension and used as the on-demand socket:
+这是较不通用的方法，只支持UNIX socket。基本上，vassal的名字 (不带扩展名和路径)会被附加到指定的目录，并带上.socket扩展名，然后作为按需 socket使用：
 
 .. code-block:: sh
 
    uwsgi --emperor /etc/uwsgi/vassals --emperor-on-demand-directory /var/tmp
 
-using the previous example, the socket /var/tmp/myapp.socket will be automatically bound
+使用前一个例子，socket /var/tmp/myapp.socket将会被自动绑定
 
 --emperor-on-demand-exec <cmd>
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is what (very probably) you will use in very big deployments. Every time a new vassal is added the supplied command is run passing the vassal name
-as the first argument. The STDOUT of the command is used as the socket name.
+只是你（非常有可能）用在很大的部署中。每次添加了一个新的vassal，就会运行提供的命令，并把vassal名当做第一个参数传递。命令的STDOUT作为socket名使用。
 
 --exec-post-app钩子
 ************************
 
-In addition to the other --exec-* options (used to run commands at the various server stages), a new one has been added
-allowing you to run commands after the load of an application.
+除了其他--exec-*选项 (用来在不同的服务器阶段运行命令)，添加了一个新的选项，以允许你在加载一个应用之后运行命令。
 
-The pyring build profile
+pyring构建配置文件
 ************************
 
-This is a very specific build profile allowing you to automatically build a uWSGI stack with monolithic python support and modular jvm + ring honouring virtualenvs.
+这是一个非常特别的构建配置文件，允许你自动构建一个带完整python支持和模块化jvm + ring执行的虚拟环境（注：原文是jvm + ring honouring virtualenvs）的uWSGI栈。
 
-The cache router plugin
+缓存路由器插件
 ***********************
 
-This has been improved, and in next releases we should be able to directly store response in the uWSGI cache only using the internal routing subsystem
+这已经被改善了，在下一个发布版本中，我们应该能够只使用内部路由子系统就可以直接将响应存储在uWSGI缓存中
 
-Docs will be available soon
+稍后将会放出文档
 
-The crypto logger
+crypto记录器
 *****************
 
-If you host your applications on cloud services without persistent storage you may want to send your logs to external
-systems. Sadly logs often contain sensible informations you should not transfer in clear. The new crypto logger try to solve
-this issue allowing you to encrypt each log packet and send it over udp to a server able to decrypt it.
+如果你在云服务上托管你的应用，并且没有永久存储，那么你可能想要发送日志到外部系统。忧伤的是，日志常常包含敏感信息，你不应该明文传输它们。新的crypto记录器试着解决这个问题，它允许你加密每个日志包，然后通过udp将它发送给能够解密它的服务器。
 
-The following example
+在下面的例子中
 
 .. code-block:: sh
 
    uwsgi --plugin logcrypto --logger crypto:addr=192.168.173.22:1717,algo=bf-cbc,secret=ciaociao -M -p 4 -s :3031
 
-will send each log packet to the udp server available at 192.168.173.22:1717 encrypting the text with 'ciaociao' secret key using
-the blowfish cbc algorithm.
+将会发送每个日志包给192.168.173.22:1717指定的udp服务器，根据'ciaociao'密钥，使用blowfish cbc算法来加密文本。
 
-An example server is available here:
+这里是一个可用的样例服务器：
 
 https://github.com/unbit/uwsgi/blob/master/contrib/cryptologger.rb
 
@@ -109,10 +98,9 @@ https://github.com/unbit/uwsgi/blob/master/contrib/cryptologger.rb
 rpc内部路由指令
 ************************************
 
-The "rpc" routing instruction has been added, allowing you to call rpc functions directly from the routing subsystem
-and forward they output to the client.
+添加了"rpc"路由指令，允许你直接从路由子系统调用rpc函数，并将它们的输出转发到客户端。
 
-Check the following examples:
+看看下面的例子：
 
 .. code-block:: ini
 
@@ -124,24 +112,24 @@ Check the following examples:
    route = ^/pippo/(.+)$ rpc:test@127.0.0.1:4141 $1 ${REMOTE_ADDR} uWSGI %V
    import = funcs.py
 
-Preliminary support for name resolving in the carbon plugin
+carbon插件对名字解析的初步支持
 ***********************************************************
 
-You can specify carbon servers using hostnames. The current code is pretty simple. Future updates will support round robin queries.
+你可以使用主机名来指定carbon服务器。当前的代码是非常简单的。以后的更新将会支持轮询。
 
 新的路由条件
 **********************
 
-New routing conditions have been added (equal,startswith,endswith,regexp) check the updated docs:
+添加了新的路由条件 (equal,startswith,endswith,regexp)，看看更新的文档：
 
 https://uwsgi-docs.readthedocs.io/en/latest/InternalRouting.html#the-internal-routing-table
 
-The 'V' magic var
+'V'魔术变量
 *****************
 
-You can reference the uWSGI version string using the %V magic var in your configurations
+你可以在配置中使用%V魔术变量来引用uWSGI版本字符串
 
-The 'mongodb' generic plugin
+'mongodb'一般插件
 ****************************
 
 This is a commodity plugin for packagers not able to access a shared libmongoclient. This basically link it in a new shared object
@@ -150,7 +138,7 @@ that can be used by the others mongodb plugin
 通过网络构建profile
 ***************************
 
-You can now reference build profiles using urls (http, https and ftp are supported):
+现在，你可以使用url（支持http, https和ftp）来引用构建配置文件了：
 
 .. code-block:: sh
 
