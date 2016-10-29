@@ -8,9 +8,9 @@ Feel free to add your plugin to the list by sending a pull request to the ``uwsg
 uwsgi-capture
 *************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-capture
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-capture
 
 Allows gathering video4linux frames in a sharedarea.
 
@@ -18,179 +18,179 @@ Allows gathering video4linux frames in a sharedarea.
 uwsgi-wstcp
 ***********
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-wstcp
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-wstcp
 
 Maps websockets to TCP connections (useful for proxying via javascript).
 
 uwsgi-pgnotify
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-pgnotify
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-pgnotify
 
 Integrates the PostgreSQL notification system with the uWSGI signal framework.
 
 uwsgi-quota
 ***********
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-quota
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-quota
 
 Allows to set and monitor filesystem quotas.
 
 uwsgi-eventfd
 *************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-eventfd
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-eventfd
 
 Allows to monitor eventfd() objects (like events sent by the cgroup system).
 
 uwsgi-console-broadcast
 ***********************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-console-broadcast
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-console-broadcast
 
 Exposes hooks for sending broadcast messages to user terminals.
 
 uwsgi-strophe
 *************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-strophe
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-strophe
 
-Integration with the libstrophe library (xmpp).
+与libstrophe库 (xmpp)集成。
 
 uwsgi-alarm-chain
 *****************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-alarm-chain
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-alarm-chain
 
-Virtual alarm handler combining multiple alarms into a single one.
+虚拟告警处理器，将多个告警组合成一个。
 
 uwsgi-netlink
 *************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-netlink
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-netlink
 
-Integration with the Linux netlink subsystem.
+与Linux netlink子系统集成。
 
 uwsgi-pushover
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-pushover
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-pushover
 
-Integration with Pushover.net services.
+与Pushover.net服务集成。
 
 uwsgi-consul
 ************
 
-* License: MIT
-* Author: unbit, ultrabug
-* Website: https://github.com/unbit/uwsgi-consul
+* 许可： MIT
+* 作者： unbit, ultrabug
+* 网站： https://github.com/unbit/uwsgi-consul
 
-Integration with consul agents (consul.io)
+与consul代理集成 (consul.io)
 
 uwsgi-influxdb
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-influxdb
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-influxdb
 
-Allows sending metrics to the InfluxDB time series database.
+允许发送度量给InfluxDB时间序列数据库。
 
 uwsgi-opentsdb
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-opentsdb
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-opentsdb
 
-Allows sending metrics to the OpenTSDB monitoring system.
+允许发送度量给OpenTSDB监控系统。
 
 uwsgi-cares
 ***********
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-cares
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-cares
 
-Exposes non-blocking DNS querying via the c-ares asynchronous name resolution library.
+通过c-ares异步DNS解析库公开非阻塞DNS查询。
 
 uwsgi-ganglia
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-ganglia
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-ganglia
 
-Allows sending metrics to Ganglia.
+允许发送度量给Ganglia。
 
 uwsgi-bonjour
 *************
 
-* License: MIT
-* Author: unbit, 20tab
-* Website: https://github.com/unbit/uwsgi-bonjour
+* 许可： MIT
+* 作者： unbit, 20tab
+* 网站： https://github.com/unbit/uwsgi-bonjour
 
-Automatically register domain names in OSX's Bonjour subsystem.
+自动在OSX的Bonjour子系统中注册域名。
 
 uwsgi-avahi
 ***********
 
-* License: MIT
-* Author: 20tab
-* Website: https://github.com/20tab/uwsgi-avahi
+* 许可： MIT
+* 作者： 20tab
+* 网站： https://github.com/20tab/uwsgi-avahi
 
-Automatically register domain names in the Avahi subsystem.
+自动在Avahi子系统中注册域名。
 
 uwsgi-datadog
 *************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-datadog
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-datadog
 
-Automatically send metrics to Datadog (https://www.datadoghq.com/).
+自动发送度量给Datadog (https://www.datadoghq.com/)。
 
 uwsgi-apparmor
 **************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-apparmor
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-apparmor
 
-Allows setting Apparmor profiles for instances.
+允许为实例设置Apparmor配置文件。
 
 uwsgi-docker
 ************
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-docker
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-docker
 
-Allows running dockerized (https://docker.io) vassals.
+允许docker化的 (https://docker.io) vassals。
 
 uwsgi-gif
 *********
 
-* License: MIT
-* Author: unbit
-* Website: https://github.com/unbit/uwsgi-gif
+* 许可： MIT
+* 作者： unbit
+* 网站： https://github.com/unbit/uwsgi-gif
 
-dynamic generation of gif images
+gif图像的动态生成

@@ -1,39 +1,34 @@
-The Gevent loop engine
+Gevent循环引擎
 ======================
 
-`Gevent`_ is an amazing non-blocking Python network library built on top of
-``libev`` and ``greenlet``.  Even though uWSGI supports Greenlet as
-suspend-resume/greenthread/coroutine library, it requires a lot of effort and
-code modifications to work with gevent.  The gevent plugin requires gevent
-1.0.0 and :doc:`Async` mode.
+`Gevent`_ 是一个令人惊奇的非阻塞Python网络库，构建在
+``libev`` 和 ``greenlet`` 之上。虽然uWSGI支持Greenlet作为挂起-恢复/绿色线程/协程库，但是还需要大量的努力和代码修改才能对gevent起作用。gevent插件要求gevent
+1.0.0 和 :doc:`Async` 模式。
 
 .. _Gevent: http://www.gevent.org
 
-Notes
+注意
 -----
 
-* The :doc:`SignalFramework` is fully working with Gevent mode. Each handler
-  will be executed in a dedicated greenlet. Look at :file:`tests/ugevent.py` for
-  an example.
-* uWSGI multithread mode (``threads`` option) will not work with Gevent.
-  Running Python threads in your apps is supported.
-* Mixing uWSGI's Async API with gevent's is **EXPLICITLY FORBIDDEN**.
+*  :doc:`SignalFramework` 完全对Gevent模式有效。每个处理函数将会在一个专用的greenlet中执行。看看 :file:`tests/ugevent.py` 这个例子。
+* uWSGI多线程模式 (``threads`` 选项) 对Gevent无效。支持在你的应用中运行Python多线程。
+* 把uWSGI的异步API和gevent混在一起是**明确禁止的**。
 
-Building the plugin (uWSGI >= 1.4)
+构建插件 (uWSGI >= 1.4)
 ----------------------------------
 
-The gevent plugin is compiled in by default when the default profile is used.
-Doing the following will install the python plugin as well as the gevent one:
+当使用默认配置文件的时候，会默认编译gevent插件。
+执行以下命令将会安装python插件，以及gevent：
 
 .. code-block:: sh
 
    pip install uwsgi
 
 
-Building the plugin (uWSGI < 1.4)
+构建插件 (uWSGI < 1.4)
 ---------------------------------
 
-A 'gevent' build profile can be found in the :file:`buildconf` directory.
+可以在 :file:`buildconf` 目录中找到一个"gevent"构建配置文件。
 
 .. code-block:: sh
 
@@ -45,28 +40,26 @@ A 'gevent' build profile can be found in the :file:`buildconf` directory.
   # or...
   python uwsgiconfig --plugin plugins/gevent # external plugin
 
-Running uWSGI in gevent mode
+以gevent模式运行uWSGI
 ----------------------------
 
 .. code-block:: sh
 
    uwsgi --gevent 100 --socket :3031 --module myapp
 
-or for a modular build:
+或者对于模块化构建：
 
 .. code-block:: sh
 
    uwsgi --plugins python,gevent --gevent 100 --socket :3031 --module myapp
 
-the argument of --gevent is the number of async cores to spawn
+--gevent的参数是要生成的异步核数
 
 
-A crazy example
+一个疯狂的例子
 ---------------
 
-The following example shows how to sleep in a request, how to make asynchronous
-network requests and how to continue doing logic after a request has been
-closed.
+以下例子显示如何在请求中休眠，如何发起异步网络请求，以及如何在一个请求已经被关闭之后继续进行一些逻辑处理。
 
 .. code-block:: python
 
@@ -100,25 +93,18 @@ closed.
   
       gevent.spawn(bg_task) # this task will go on after request end
 
-Monkey patching
+猴子补丁
 ---------------
 
-uWSGI uses native gevent api, so it does not need monkey patching. That said,
-your code may need it, so remember to call ``gevent.monkey.patch_all()`` at the
-start of your app. As of uWSGI 1.9, the convenience option
-``--gevent-monkey-patch`` will do that for you.
-Please note that uWSGI does monkey patching before your application **starts**,
-not before your application **loads**. So if you are loading other modules
-while loading your application you may still need to call
-``gevent.monkey.patch_all()`` yourself.
+uWSGI使用原生gevent api，因此，并不需要猴子补丁。即便如此，你的代码也可能需要它，因此，记得在你的应用的开头调用 ``gevent.monkey.patch_all()`` 。自uWSGI 1.9起，便利的
+``--gevent-monkey-patch`` 选项将会为你完成这个工作。
+请注意，uWSGI是在你的应用 **启动** 的时候进行猴子补丁的，而不是在你的应用 **加载** 之前。因此，如果你在加载应用的时候加载其他模块，那么你或许仍然需要自己调用
+``gevent.monkey.patch_all()`` 。
 
-A common example is using ``psycopg2_gevent`` with django. Django will make a
-connection to postgres for each thread (storing it in thread locals).
+一个常见的例子是将 ``psycopg2_gevent`` 用于django。Django会为每个线程对postgres发起连接 (将其存储在线程变量中)。
 
-As the uWSGI gevent plugin runs on a single thread this approach will lead to a
-deadlock in psycopg. Enabling monkey patch will allow you to map thread locals
-to greenlets (though you could avoid full monkey patching and only call
-``gevent.monkey.patch_thread()``) and solves the issue:
+随着uWSGI gevent插件运行在一个单一的线程中，这个方法将会导致psycopg中的死锁。启用猴子补丁将会让你映射线程局部变量到greenlet (虽然你可以避免完全猴子补丁，并只调用
+``gevent.monkey.patch_thread()``) ，然后解决这个问题：
 
 .. code-block:: python 
 
@@ -127,7 +113,7 @@ to greenlets (though you could avoid full monkey patching and only call
    import gevent_psycopg2
    gevent_psycopg2.monkey_patch()
 
-or (to monkey patch everything)
+或者 (为所有东西打上猴子补丁)
 
 .. code-block:: python 
 
@@ -136,15 +122,11 @@ or (to monkey patch everything)
    import gevent_psycopg2
    gevent_psycopg2.monkey_patch()
 
-Notes on clients and frontends
+客户端和前端的一些注意事项
 ------------------------------
 
-* If you're testing a WSGI application that generates a stream of data, you
-  should know that ``curl`` by default buffers data until a newline. So make sure
-  you either disable curl's buffering with the ``-N`` flag or have regular
-  newlines in your output.
-* If you are using Nginx in front of uWSGI and wish to stream data from your
-  app, you'll probably want to disable Nginx's buffering.
+* 如果你正在测试一个生成一连串数据的WSGI应用，那么你应该知道，默认情况下 ``curl`` 缓存数据知道一个新行出现。因此，你要么确保使用 ``-N`` 标记来禁用curl的缓存，要么在你的输出中确保有常规的新行。
+* 如果你在uWSGI之前使用Nginx，并且希望从你的应用流数据，那么你可能会想要禁用Nginx的缓存。
   
 .. code-block:: nginx
   

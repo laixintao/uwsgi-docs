@@ -56,7 +56,7 @@ will do the trick
 小抄
 *****
 
-You can configure all of the stats pusher you need, just specify multiple stats-push options
+你可以配置所有你需要的统计数据推送器，只需指定多个stats-push选项
 
 .. code-block:: ini
 

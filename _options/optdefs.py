@@ -300,7 +300,7 @@ def core_options():
         s.o("enable-threads", True, "enable threads", short_name="T", help="""
         Enable threads in the embedded languages. This will allow to spawn threads in your app.
 
-        .. 警告::
+        .. warning::
 
            Threads will simply *not work* if this option is not enabled. There will likely be no error, just no execution of your thread code.
 
@@ -453,7 +453,7 @@ def core_options():
         s.o("manage-script-name", True, "automatically rewrite SCRIPT_NAME and PATH_INFO", help="If for some reason your webserver cannot manage ``SCRIPT_NAME`` on its own you can force uWSGI to rebuild the ``PATH_INFO`` variable automatically from it.")
         s.o("ignore-script-name", True, "ignore SCRIPT_NAME")
         s.o("catch-exceptions", True, "report exception as HTTP output", help="""
-        .. 警告::
+        .. warning::
 
            This option is heavily discouraged as it is a definite security risk.
 

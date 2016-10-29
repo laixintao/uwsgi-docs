@@ -3,15 +3,14 @@ uWSGI缓存框架
 
 .. note::
 
-  This page is about "new-generation" cache introduced in uWSGI 1.9.
-  For old-style cache (now simply named "web caching") check :doc:`WebCaching`
+  本页面是关于“新一代”的缓存，它由uWSGI 1.9引入。
+  对于旧式缓存 (现在简单称其为“web缓存”)，可以看看 :doc:`WebCaching`
 
-uWSGI includes a very fast, all-in-memory, zero-IPC, SMP-safe,
-constantly-optimizing, highly-tunable, key-value store simply called "the
+uWSGI包含了一个非常快速、全内存访问、零IPC、SMP安全、不断优化、高度可调、key-value store simply called "the
 caching framework".  A single uWSGI instance can create an unlimited number of
 "caches" each one with different setup and purpose.
 
-Creating a "cache"
+创建一个“缓存”
 ******************
 
 To create a cache you use the ``--cache2`` option. It takes a dictionary of
@@ -25,7 +24,7 @@ to specify its name and the maximum number of items it can contains.
 this will create a cache named "mycache" with a maximum of 100 items. Each item can be at most 64k.
 
 
-A sad/weird/strange/bad note about "the maximum number of items"
+关于“项的最大数”的一个忧伤/奇怪/灵异/糟糕的注意
 ****************************************************************
 
 If you start with a 100 item cache you will suddenly note that the true maximum number of items you can use is indeed 99.
@@ -35,7 +34,7 @@ This is because the first item of the cache is always internally used as "NULL/N
 Remember this when you start planning your cache configuration.
 
 
-Configuring the cache (how it works)
+配置缓存（它是如何工作的）
 ************************************
 
 The uWSGI cache works like a file system. You have an area for storing keys
@@ -46,7 +45,7 @@ table. Each hash points to a key in the metadata area.  Keys can be linked to
 manage hash collisions. Each key has a reference to the block containing its
 value.
 
-Single block (faster) vs. bitmaps (slower)
+简单的阻塞（更快）VS. bitmaps (更慢)
 ******************************************
 
 .. warning:: Bitmap mode is considered production ready only from uWSGI 2.0.2! (That is, it was buggy before that.)
@@ -65,7 +64,7 @@ scanned for contiguous free blocks.  Blocks must be contiguous, this could lead
 to a bit of fragmentation but it is not as big a problem as with disk storage,
 and you can always tune the block size to reduce fragmentation.
 
-Persistent storage
+永久存储
 ******************
 
 You can store cache data in a backing store file to implement persistence.  As
@@ -73,7 +72,7 @@ this is managed by ``mmap()`` it is almost transparent to the user.  You should
 not rely on this for data safety (disk syncing is managed asynchronously); use
 it only for performance purposes.
 
-Network access
+网络访问
 **************
 
 All of your caches can be accessed over the network. A request plugin named
@@ -82,7 +81,7 @@ monolithic build of uWSGI the cache plugin is always enabled.  The cache plugin
 works in a fully non-blocking way, and it is greenthreads/coroutine friendly so
 you can use technologies like gevent or Coro::AnyEvent with it safely.
 
-UDP sync
+UDP同步
 ********
 
 This technique has been inspired by the STUD project, which uses something like
@@ -92,7 +91,7 @@ item from the cache, the operation is propagated to remote nodes via simple UDP
 packets.  There are no built-in guarantees with UDP syncing so use it only for
 very specific purposes, like :doc:`SSLScaling`.
 
---cache2 options
+--cache2选项
 ****************
 
 This is the list of all of the options (and their aliases) of ``--cache2``.
@@ -200,7 +199,7 @@ argument described below will be ignored. An item is considered used when
 it's accessed, added and updated by cache_get(), cache_set() and
 cache_update(); whereas the existence check by cache_exists() is not.
 
-Accessing the cache from your applications using the cache api
+使用缓存API，在应用中访问缓存
 **************************************************************
 
 You can access the various cache in your instance or on remote instances by
@@ -237,7 +236,7 @@ initialized. The default value is empty.
 All of the network operations are transparent, fully non-blocking, and
 threads/greenthreads friendly.
 
-The Cache sweeper thread
+缓存清道夫线程
 ************************
 
 When at least one cache is configured without ``purge_lru`` and the master
@@ -246,7 +245,7 @@ is deleting expired keys from the cache. So, if you want auto-expiring you
 need to enable the master.
 
 
-Web caching
+Web缓存
 ***********
 
 In its first incarnation the uWSGI caching framework was meant only for caching
@@ -254,7 +253,7 @@ of web pages. The old system has been rebuilt. It is now named
 :doc:`WebCaching`. Enabling the old-style ``--cache`` option will create a
 cache named "default".
 
-Monitoring caches
+监控缓存
 *****************
 
 The stats server exposes cache information. An ncurses based tool (https://pypi.python.org/pypi/uwsgicachetop) exists that uses that information for real-time monitoring.

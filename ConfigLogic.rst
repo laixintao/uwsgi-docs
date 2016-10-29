@@ -1,9 +1,9 @@
 配置逻辑
 ===================
 
-Starting from 1.1 certain logic constructs are available.
+自1.1起，可以使用某些逻辑构建。
 
-The following statements are currently supported:
+目前支持以下语句：
 
 * ``for`` .. ``endfor``
 * ``if-dir`` / ``if-not-dir``
@@ -11,18 +11,16 @@ The following statements are currently supported:
 * ``if-exists`` / ``if-not-exists``
 * ``if-file`` / ``if-not-file``
 * ``if-opt`` / ``if-not-opt``
-* ``if-reload`` / ``if-not-reload`` -- undocumented
+* ``if-reload`` / ``if-not-reload`` —— 未公开
 
-Each of these statements exports a context value you can access with the
-special placeholder ``%(_)``. For example, the "for" statement sets ``%(_)`` to
-the current iterated value.
+以上每个语句都导出了一个上下文值，你可以通过特殊的占位符 ``%(_)`` 来访问它们。例如，"for"语句设置 ``%(_)`` 为当前的迭代值。
 
-.. warning:: Recursive logic is not supported and will cause uWSGI to promptly exit.
+.. warning:: 不支持递归逻辑，它会导致uWSGI即刻退出。
 
 for
 ---
 
-For iterates over space-separated strings. The following three code blocks are equivalent.
+for迭代由空格隔开的字符串。以下三个代码块是等价的。
 
 .. code-block:: ini
 
@@ -50,8 +48,7 @@ For iterates over space-separated strings. The following three code blocks are e
 
   uwsgi --for="3031 3032 3033 3034 3035" --socket="127.0.0.1:%(_)" --endfor --module helloworld
 
-Note that the for-loop is applied to each line inside the block
-separately, not to the block as a whole. For example, this:
+注意，for循环是分别被应用到块中的每一行的，而不是应用到块整体上。例如，这个：
 
 .. code-block:: ini
 
@@ -61,7 +58,7 @@ separately, not to the block as a whole. For example, this:
   http-socket = /var/run/%(_)-http.socket
   endfor =
 
-is expanded to:
+展开为：
 
 .. code-block:: ini
 
@@ -76,8 +73,7 @@ is expanded to:
 if-env
 ------
 
-Check if an environment variable is defined, putting its value in the context
-placeholder.
+检查是否定义了一个环境变量，将其值放在上下文占位符中。
 
 .. code-block:: ini
 
@@ -91,8 +87,7 @@ placeholder.
 if-exists
 ---------
 
-Check for the existence of a file or directory. The context placeholder is set
-to the filename found.
+检查一个文件或目录是否存在。设置上下文占位符为找到的文件名。
 
 .. code-block:: ini
 
@@ -103,13 +98,12 @@ to the filename found.
   route = .* redirect:/offline
   endif =
 
-.. note:: The above example uses :doc:`InternalRouting`.
+.. note:: 上述例子使用 :doc:`InternalRouting`.
 
 if-file
 -------
 
-Check if the given path exists and is a regular file. The context placeholder
-is set to the filename found.
+检查给定的路径是否存在，是否为一个常规的文件。设置上下文占位符为找到的文件名。
 
 .. code-block:: xml
 
@@ -124,8 +118,7 @@ is set to the filename found.
 if-dir
 ------
 
-Check if the given path exists and is a directory. The context placeholder is
-set to the filename found.
+检查给定的路径是否存在，是否为一个目录。设置上下文占位符为找到的文件名。
 
 .. code-block:: yaml
 
@@ -138,10 +131,9 @@ set to the filename found.
 
 if-opt
 ------
-Check if the given option is set, or has a given value. The context
-placeholder is set to the value of the option reference.
+检查是否设置了给定选项，或者给定选项是否具有一个给定的值。设置上下文占位符为选项引用的值。
 
-To check if an option was set, pass just the option name to ``if-opt``.
+检查是否设置了一个选项，仅需将选项名传递给 ``if-opt`` 。
 
 .. code-block:: yaml
 
@@ -151,8 +143,8 @@ To check if an option was set, pass just the option name to ``if-opt``.
     print: Running in cheaper mode, with initially %(_) processes
     endif:
 
-To check if an option was set to a specific value, pass
-``option-name=value`` to ``if-opt``.
+要检查给定选项是否具有一个给定的值，则将
+``option-name=value`` 传递给 ``if-opt`` 。
 
 .. code-block:: yaml
 
@@ -163,22 +155,13 @@ To check if an option was set to a specific value, pass
     cheaper-busyness-min: 10
     endif:
 
-Due to the way uWSGI parses its configs, you can only refer to options
-that uWSGI has previously seen. In particular, this means:
+由于uWSGI解析其配置文件的方式，你只能使用uWSGI之前解析到的选项。特别是，这意味着：
 
-* Only options that are set above the ``if-opt`` option are taken into
-  account. This includes any options set by previous ``include`` (or
-  type specific includes like ``ini``) options, but does not include
-  options set by previous ``inherit`` options).
-* ``if-opt`` is processed after expanding magic variables, but before
-  expanding placeholders and other variables. So if you use ``if-opt``
-  to compare the value of an option, check against the value as stated
-  in the config file, with only the magic variables filled in.
+* 只考虑在 ``if-opt`` 选项之上设置的选项。这包含了任何由前面 ``include`` (或者特定类型的包含，例如 ``ini``) 选项设置的任何选项，但不要包含由前面 ``inherit`` 选项设置的选项)。
+* ``if-opt`` 是在展开魔术变量之后，展开占位符和其他变量之前进行处理的。因此，如果你使用 ``if-opt`` 来比较一个选项的值，那么只使用魔术变量来核对该值和配置文件中一致。 
 
-  If you use the context placeholder ``%(_)`` inside the ``if-opt``
-  block, you should be ok: any placeholders will later be expanded.
-* If an option is specified multiple times, only the value of the first
-  one will be seen by ``if-opt``.
-* Only explicitly set values will be seen, not implicit defaults.
+  如果你在 ``if-opt`` 块内使用上下文占位符 ``%(_)`` ，那么应该没问题：任何占位符稍后将会被展开。
+* 如果多次指定一个选项，那么 ``if-opt`` 只能看到第一个的值。
+* 只会看到显式设置的值，而不会看到隐式默认值。
 
 .. seealso:: :doc:`ParsingOrder`

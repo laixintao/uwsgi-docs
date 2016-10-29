@@ -8,7 +8,7 @@ it can be used to implement auto-scaling for your apps.
 
 WARNING: If you are looking for a way to dynamically adapt the number of workers of an instance, check the :doc:`Cheaper` mode, Broodlord mode is for spawning totally new instances.
 
-A 'simple' example
+一个“简单的”例子
 ------------------
 
 We'll start apps with a single worker, adding resources on demand.  Broodlord
@@ -62,7 +62,7 @@ This will allow you to run up to 40 additional zerg workers for your apps.
 
 The option takes an integer value, the number of seconds to wait between asking for a new reinforcements.
 
-Manually asking for reinforcement
+手动请求加固
 ---------------------------------
 
 You can use the master FIFO's "B" command to force an instance to ask for reinforcements from the Emperor.

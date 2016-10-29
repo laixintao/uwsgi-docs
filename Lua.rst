@@ -3,7 +3,7 @@ Using Lua/WSAPI with uWSGI
 
 Updated for uWSGI 2.0
 
-Building the plugin
+构建插件
 -------------------
 
 The lua plugin is part of the official uWSGI distribution (official modifier 6) and it is availale in the plugins/lua directory.
@@ -66,10 +66,10 @@ If you do not want to rely on the pkg-config tool you can manually specify the i
    UWSGICONFIG_LUALIBPATH=<directory>
    UWSGICONFIG_LUALIB=<name>
    
-Why Lua ?
+为什么是Lua ?
 ---------
 
-If you came from other object oriented languages, you may find lua for web development a strange choice.
+如果你是从其他面向对象的语言来的，那么你可能会发现对于web开发来说，lua是一个奇怪的选择。
 
 Well, you have to consider one thing when exploring Lua: it is fast, really fast and consume very few resources.
 
@@ -79,7 +79,7 @@ extend the uWSGI server (and your application) using the signals framework, the 
 If you have slow-area in your code (independently by the language used) consider rewriting them in Lua (before dealing with C)
 and use uWSGI to safely call them.
 
-Your first WSAPI application
+你的第一个WSAPI应用
 ----------------------------
 
 We will use the official WSAPI example, let's call it :file:`pippo.lua`:
@@ -119,7 +119,7 @@ Obviously you can directly attach uWSGI to your frontline webserver (like nginx)
 
 (remember to set modifier1 to 6 in your webserver of choice)
 
-Concurrency
+并发
 -----------
 
 Basically Lua is available in all of the supported uWSGI concurrency models
@@ -205,7 +205,7 @@ Thanks to uGreen you can use the uWSGI async API in your Lua apps and gain a ver
    uwsgi.close
    uwsgi.ready_fd
 
-Threading example
+线程例子
 -----------------
 
 The Lua plugin is "thread-safe" as uWSGI maps a lua_State to each internal
@@ -255,14 +255,14 @@ is the number of requests after the GC will be called:
    ; run the gc every 10 requests
    lua-gc-freq = 10
    
-RPC and signals
+RPC和信号
 ---------------
 
-The Lua shell
+Lua shell
 -------------
 
-Using Lua as 'configurator'
+把Lua当成一个“配置器”使用
 ---------------------------
 
-uWSGI api status
+uWSGI api状态
 ----------------

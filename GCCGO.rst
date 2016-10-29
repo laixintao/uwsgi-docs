@@ -1,20 +1,20 @@
-The GCCGO plugin
+GCCGO插件
 ================
 
-uWSGI 1.9.20 officially substituted the old :doc:`Go` plugin with a new one based on GCCGO.
+uWSGI 1.9.20官方使用一个基于GCCGO的新插件替换了老的 :doc:`Go` 插件。
 
 The usage of GCCGO allows more features and better integration with the uWSGI deployment styles.
 
-GCC suite >= 4.8 is expected (and strongly suggested).
+GCC 套件 >= 4.8 is expected (强烈建议)。
 
-How it works
+它是如何工作的
 ************
 
 When the plugin is enabled, a new go runtime is initialized after each ``fork()``.
 
 If a ``main`` Go function is available in the process address space it will be executed in the Go runtime, otherwise the control goes back to the uWSGI loop engine.
 
-Why not use plain Go?
+为什么不使用纯Go？
 *********************
 
 Unfortunately the standard Go runtime is currently not embeddable and does not support compiling code as shared libraries.
@@ -23,7 +23,7 @@ Both are requisite for meaningful uWSGI integration.
 
 Starting from GCC 4.8.2, its ``libgo`` has been improved a lot and building shared libraries as well as initializing the Go runtime works like a charm (even if it required a bit of... not very elegant hacks).
 
-Building the plugin
+构建插件
 *******************
 
 A build profile is available allowing you to build a uWSGI+gccgo binary ready to load Go shared libraries:
@@ -32,7 +32,7 @@ A build profile is available allowing you to build a uWSGI+gccgo binary ready to
 
    make gccgo
 
-The first app
+第一个应用
 *************
 
 You do not need to change the way you write webapps in Go. The ``net/http`` package can be used flawlessly:
@@ -87,7 +87,7 @@ go apps using the uWSGI API, to resolve symbols.
 Remember that if you add the directory containing the uwsgi binary (as seen before) to
 the includes (``-I path``) path of gcc, the binary itself will be used for resolving symbols.
 
-Shared libraries VS monolithic binaries
+共享库 VS 单片二进制文件
 ***************************************
 
 One of the main selling points for Go for many developers is the "static-all-in-one" binary approach.
@@ -103,7 +103,7 @@ If this is not acceptable, you can build a single binary with both uWSGI and the
    CFLAGS=-DUWSGI_GCCGO_MONOLITHIC UWSGI_ADDITIONAL_SOURCES=myapp.go UWSGI_PROFILE=gccgo make
 
 
-Goroutines
+协程
 **********
 
 Thanks to the new GCC split stack feature, goroutines are sanely (i.e. they do not require a full pthread) implemented in gccgo.
@@ -116,7 +116,7 @@ Like :doc:`Gevent`, uWSGI signal handlers are executed in a dedicated goroutine.
 
 In addition to this, all blocking calls make use of the ``netpoll`` Go api. This means you can run internal routing actions, rpc included, in a goroutine.
 
-Options
+选项
 *******
 
 * ``--go-load <path>`` load the specified go shared library in the process address space

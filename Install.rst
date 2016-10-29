@@ -1,51 +1,47 @@
 安装uWSGI
 ================
 
-Installing from a distribution package
+从发布包安装
 --------------------------------------
 
-uWSGI is available as a package in several OS/distributions.
+在一些操作系统/发布版本中，uWSGI已作为软件包提供。
 
-Installing from source
+通过源码包安装
 ----------------------
 
-To build uWSGI you need Python and a C compiler (``gcc`` and ``clang`` are
-supported).  Depending on the languages you wish to support you will need their
-development headers.  On a Debian/Ubuntu system you can install them (and the
-rest of the infrastructure required to build software) with:
+要构建uWSGI，你需要Python和一个C编译器 (支持 ``gcc`` 和 ``clang`` )。取决于你想要支持的语言，你将需要它们的开发头文件。在Debian/Ubuntu系统上，你可以这样安装它们（以及构建软件所需的其余的基础设施）：
 
 .. code-block:: sh
 
    apt-get install build-essential python
 
-And if you want to build a binary with python/wsgi support (as an example)
+而如果你想要构建一个带有Python/wsgi支持的二进制文件的话 (举个例子)
 
 .. code-block:: sh
 
    apt-get install python-dev
 
-On a Fedora/Redhat system you can install them with:
+在Fedora/Redhat系统上，你可以这样安装它们：
 
 .. code-block:: sh
 
    yum groupinstall "Development Tools"
    yum install python
 
-For python/wsgi support:
+而对于python/wsgi支持：
 
 .. code-block:: sh
 
    yum install python-devel
 
 
-If you have a variant of `make` available in your system you can simply run
-`make`.  If you do not have `make` (or want to have more control) simply run:
+如果你的系统中有了可用的 `make` 变体，那么你可以简单运行 `make` 。如果没有 `make` (或者想有更多的控制权)，那么运行：
 
 .. code-block:: sh
 
    python uwsgiconfig.py --build
 
-You can also use pip to install uWSGI (it will build a binary with python support). 
+你还可以使用pip来安装uWSGI (它将会构建一个带python支持的二进制文件)。
 
 .. code-block:: sh
 
@@ -54,7 +50,7 @@ You can also use pip to install uWSGI (it will build a binary with python suppor
    # ... or if you want to install the latest LTS (long term support) release,
    pip install http://projects.unbit.it/downloads/uwsgi-lts.tar.gz
 
-Or you can use ruby gems (it will build a binary with ruby/rack support).
+或者你可以使用ruby gems (它将会构建一个带ruby/rack支持的二进制文件)。
 
 .. code-block:: sh
 
@@ -62,24 +58,18 @@ Or you can use ruby gems (it will build a binary with ruby/rack support).
    gem install uwsgi
 
 
-At the end of the build, you will get a report of the enabled features. If
-something you require is missing, just add the development headers and rerun
-the build.  For example to build uWSGI with ssl and perl regexp support you
-need libssl-dev and pcre headers.
+在构建的最后，你将会获得启用特性的报告。如果缺少了任何你需要的，那么仅需添加开发头文件，然后重新运行构建。例如，要构建带ssl和perl正则表达式支持的uWSGI，你需要libssl-dev和pcre头文件。
 
-Alternative build profiles
+可替换构建配置文件
 --------------------------
 
-For historical reasons when you run 'make', uWSGI is built with Python as the
-only supported language.  You can build customized uWSGI servers using build
-profiles, located in the `buildconf/` directory.  You can use a specific
-profile with:
+出于历史原因，当你运行'make'的时候，会构建把Python作为唯一支持的语言的uWSGI。你可以使用构建配置文件来自定义uWSGI服务器，配置文件位于 `buildconf/` 目录中。你可以这样使用一个特定的配置文件：
 
 .. code-block:: sh
 
    python uwsgiconfig.py --build <profile>
 
-Or you can pass it via an environment variable:
+或者你可以通过一个环境变量传递它：
 
 .. code-block:: sh
 
@@ -88,24 +78,16 @@ Or you can pass it via an environment variable:
    UWSGI_PROFILE=gevent pip install uwsgi
 
 
-Modular builds
+模块化构建
 --------------
 
-This is the approach your distribution should follow, and this is the approach
-you MUST follow if you want to build a commercial service over uWSGI (see
-below).  The vast majority of uWSGI features are available as plugins. Plugins
-can be loaded using the --plugin option. If you want to give users the maximum
-amount of flexibility allowing them to use only the minimal amount of
-resources, just create a modular build.  A build profile named "core" is
-available.
+这是你的发行版应该遵循的方法，也是在你想要在uWSGI之上构建一个商用服务必须遵循的方法（见下）。大部分的uWSGI特性是作为插件提供的。可以使用--plugin选项来加载插件。如果你想提供给用户最大量的灵活性，让他们只使用最少的资源，那么仅需创建一个模块化构建。一个名为"core"的构建配置文件是可用的。
 
 .. code-block:: sh
 
    python uwsgiconfig.py --build core
 
-This will build a uWSGi binary without plugins. This is called the "server
-core".  Now you can start building all of the plugins you need. Check the
-plugins/ directory in the source distribution for a full list.
+这将会狗偶家一个不带插件的uWSGi二进制文件。这被称为"服务器核心"。现在，你可以开始构建所需的所有的插件。检查源代码发布中的plugins/ 目录，以获取完整列表。
 
 .. code-block:: sh
 
@@ -117,6 +99,5 @@ plugins/ directory in the source distribution for a full list.
    python uwsgiconfig.py --plugin plugins/http core
    ...
 
-Remember to always pass the build profile ('core' in this case) as the third
-argument.
+记得要传递构建配置文件 (这里是'core') 作为第三个参数。
    
