@@ -132,8 +132,7 @@ https://uwsgi-docs.readthedocs.io/en/latest/InternalRouting.html#the-internal-ro
 'mongodb'一般插件
 ****************************
 
-This is a commodity plugin for packagers not able to access a shared libmongoclient. This basically link it in a new shared object
-that can be used by the others mongodb plugin
+这是一个用于不能访问共享libmongoclient的packager的商品插件。这基本上在一个可以被其他mongodb插件使用的新的共享对象中链接它。
 
 通过网络构建profile
 ***************************

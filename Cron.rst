@@ -1,24 +1,21 @@
 uWSGI类cron接口
 =============================
 
-uWSGI's :term:`master` has an internal cron-like facility that can generate
-events at predefined times.  You can use it
+uWSGI的 :term:`master` 拥有一个内部类cron的工具，它可以在预设的时间生成事件。你可以这样用它
 
-* via the uWSGI API, in which case cron events will generate uWSGI signals
-* directly via options, in which case events will run shell commands
+* 通过uWSGI API，在这种情况下，cron事件将会生成uWSGI信号
+* 直接通过选项，在这种情况下，事件将会运行shell命令
 
-uWSGI signal based
+基于uWSGI信号
 ------------------
 
-The :meth:`uwsgi.add_cron` function is the interface to the uWSGI signal cron
-facility.  The syntax is 
+ :meth:`uwsgi.add_cron` 函数是uWSGI信号cron工具的接口。语法如下
 
 .. code-block:: py
 
     uwsgi.add_cron(signal, minute, hour, day, month, weekday)
 
-The last 5 arguments work similarly to a standard crontab, but instead of "*",
-use -1, and instead of "*/2", "*/3", etc. use -2 and -3, etc.
+后面5个参数与标准的crontab工作原理相似，但是用-1代替"*"，用-2，-3等代替"*/2", "*/3"等。
 
 .. code-block:: py
 
@@ -31,34 +28,30 @@ use -1, and instead of "*/2", "*/3", etc. use -2 and -3, etc.
     uwsgi.add_cron(99, 0, 5, 1, -1, -1)
 
 
-Timers vs. cron
+定时器 VS. cron
 ---------------
 
-Recurring events not related to specific dates should use timers/rb_timers.
-When you are interested in a specific date/hour use cron.
+没有设置到指定日期的周期性事件应该使用定时器/红黑定时器。但你对指定日期/小时感兴趣的时候，使用cron。
 
-For example:
+例如：
 
 .. code-block:: py
 
     uwsgi.add_cron(99, -1, -1, -1, -1, -1) # ugly, bad and inefficient way to run signal 99 every minute :(
     uwsgi.add_timer(99, 60) # much better.
 
-Notes
+注意
 -----
 
-* ``day`` and ``weekday`` are ORed as the original crontab specifications.
-* By default, you can define up to 64 signal-based cron jobs per master. This
-value may be increased in :file:`uwsgi.h`.
+* ``day`` 和 ``weekday`` 像原始crontab那样进行或运算。
+* 默认情况下，你可以为每个master最多定义64个基于信号的cron任务。可以在 :file:`uwsgi.h` 中增加这个值。
 
-Option-based cron
+基于选项的cron
 -----------------
 
-You can define cron tasks directly in configuration with the ``cron`` option.
-You can specify an unlimited number of option-based cron records. The syntax is
-the same of the signal-based ones.
+你可以使用 ``cron`` 选项，在配置中直接定义cron任务。可以指定无数个基于选项的cron记录。语法与基于信号的cron相同。
 
-For example:
+例如：
 
 .. code-block:: ini
 
@@ -79,11 +72,10 @@ For example:
    ; every two hours
    cron = -1 -2 -1 -1 -1 /usr/bin/backup_my_home --recursive
 
-Legion crons
+Legion cron
 ************
 
-When your instance is part of a :doc:`Legion`, you can configure it to run
-crons only if it is the Lord of the specified Legion:
+当你的实例是 :doc:`Legion` 的一部分时，你可以配置它只在它是指定Legion的Lord时才运行cron。
 
 .. code-block:: ini
 
@@ -96,29 +88,28 @@ crons only if it is the Lord of the specified Legion:
 Unique crons
 ************
 
-.. note:: This feature is available since 1.9.11.
+.. note:: 这个特性自1.9.11起可用。
 
 
-Some commands can take a long time to finish or just hang doing their thing. Sometimes this is okay, but there are also cases when running multiple instances of the same command can be dangerous.
+一些命令可能需要较长的时间来完成，或者只是挂在那里执行它们的任务。有时，这没问题，但还是有一些情况，运行相同命令的多个实例可能是危险的。
 
-For such cases the ``unique-cron`` and ``unique-legion-cron`` options were added. The syntax is the same as with ``cron`` and ``legion-cron``, but the difference is that uWSGI will keep track of execution state and not execute the cronjob again until it is complete.
+对于这种情况，增加了 ``unique-cron`` 和 ``unique-legion-cron`` 选项。语法与 ``cron`` 和 ``legion-cron`` 相同，但是不同在于，uWSGI将会跟踪执行状态，并且在它完成之前，并不会再次执行cronjob。
 
-Example:
+例子：
 
 .. code-block:: ini
 
    [uwsgi]
    cron = -1 -1 -1 -1 -1 sleep 70
 
-This would execute ``sleep 70`` every minute, but sleep command will be running longer than our execution interval, we will end up with a growing number of sleep processes.
-To fix this we can simply replace ``cron`` with ``unique-cron`` and uWSGI will make sure that only single sleep process is running. A new process will be started right after the previous one finishes.
+这会在每分钟执行 ``sleep 70`` ，但是sleep命令将会比我们的执行时间间隔还要长，最后，将会得到一个数目增长的sleep进程。要修复这个问题，我们可以简单的用 ``unique-cron`` 替换 ``cron`` ，uWSGI会确保只有一个sleep进程在运行。一个新的进程会在前一个结束的时候立即启动。
 
 Harakiri
 ********
 
-.. note:: Available since 1.9.11.
+.. note:: 自1.9.11起可用。
 
-``--cron-harakiri`` will enforce a time limit on executed commands. If any command is taking longer it will be killed.
+``--cron-harakiri`` 将会强制命令执行的时间。如果有命令花费更长的时间，那么将会杀死这个命令。
 
 .. code-block:: ini
 
@@ -127,21 +118,21 @@ Harakiri
    cron = sleep 30
    cron-harakiri = 10
 
-This will kill the cron command after 10 seconds. Note that ``cron-harakiri`` is a global limit, it affects all cron commands. To set a per-command time limit, use the ``cron2`` option (see below).
+这会在10秒后杀死cron命令。注意， ``cron-harakiri`` 是全局限制，它影响的是所有的cron命令。要设置一个用单一命令上的限制，使用 ``cron2`` 选项 (见下)。
 
-New syntax for cron options
+cron选项的新语法
 ***************************
 
-.. note:: Available since 1.9.11
+.. note:: 自1.9.11起可用
 
-To allow better control over crons, a new option was added to uWSGI:
+为了对cron更好的控制，一个新的选项被添加到uWSGI：
 
 .. code-block:: ini
 
    [uwsgi]
    cron2 = option1=value,option2=value command to execute
 
-Example:
+例子：
 
 .. code-block:: ini
 
@@ -149,21 +140,21 @@ Example:
 
    cron2 = minute=-2,unique=1 sleep 130
 
-Will spawn an unique cron command ``sleep 130`` every 2 minutes.
+将会每2分钟生成一个唯一的cron命令 ``sleep 130`` 。
 
-Option list is optional, available options for every cron:
+选项列表是可选的，每个cron可用的选项如下：
 
-* ``minute`` - minute part of crontab entry, default is -1 (interpreted as *)
-* ``hour`` - hour part of crontab entry, default is -1 (interpreted as *)
-* ``day`` - day part of crontab entry, default is -1 (interpreted as *)
-* ``month`` - month part of crontab entry, default is -1 (interpreted as *)
-* ``week`` - week part of crontab entry, default is -1 (interpreted as *)
-* ``unique`` - marks cron command as unique (see above), default is 0 (not unique)
-* ``harakiri`` - set harakiri timeout (in seconds) for this cron command, default is 0 (no harakiri)
-* ``legion`` - set legion name for use with this cron command, cron legions are only executed on the legion lord node.
+* ``minute`` - crontab的分钟部分，默认是-1 (解析为*)
+* ``hour`` - crontab的小时部分，默认是-1 (解析为*)
+* ``day`` - crontab的天部分，默认是-1 (解析为*)
+* ``month`` - crontab的月部分，默认是-1 (解析为*)
+* ``week`` - crontab的周部分，默认是-1 (解析为*)
+* ``unique`` - 将cron命令标记为唯一 (见上)，默认是0 (不唯一)
+* ``harakiri`` - 为该cron命令设置harakiri超时时间 (以秒为单位)，默认是0 (不使用harakiri)
+* ``legion`` - 为这个cron命令设置使用的legion名，cron legion只有在legion lord节点上才会执行。
 
-Note that you cannot use spaces in options list. (``minute=1, hour=2`` will not work, but ``minute=1,hour=2`` will work just fine.)
-If any option is missing, a default value is used.
+注意，你不能在选项列表中使用空格。(``minute=1, hour=2`` 将不会工作，但是 ``minute=1,hour=2`` 则是可以的。)
+如果缺失了任何选项，那么就会使用默认值。
 
 .. code-block:: ini
 
@@ -181,7 +172,7 @@ If any option is missing, a default value is used.
    legion-node = mycluster 225.1.1.1:1717
    cron2 = minute=-10,legion=mycluster my command
 
-This will disable harakiri for ``my command``, but other cron commands will still be killed after 10 seconds: 
+这会对 ``my command`` 禁用harakiri，但是其他的cron命令仍然会在10秒后被杀死：
 
 .. code-block:: ini
 

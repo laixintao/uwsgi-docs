@@ -1,24 +1,24 @@
 uWSGI 1.9.2
 ===========
 
-Changelog 20130326
+更新日志 20130326
 
 错误修复
 ********
 
-Fixed python3 response headers managament (wrong refcnt)
+修复python3响应头管理问题 (错误的refcnt)
 
-Fixed readline() on request body when postbuffering is in place
+修复当postbuffering在合适的位置的时候，请求体上的readline()
 
-Fixed ruby fiber plugin
+修复ruby fiber插件
 
 新特性
 ********
 
-route-run and the cachestore routing action
+route-run以及cachestore路由操作
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now store responses automatically in the uWSGI cache:
+现在，你可以在uWSGI缓存中自动存储响应：
 
 .. code-block:: ini
 
@@ -31,30 +31,29 @@ You can now store responses automatically in the uWSGI cache:
    route-run = cache:key=${REQUEST_URI},name=pippo2
    route-run = cachestore:key=${REQUEST_URI},expires=30,name=pippo2
 
-this example check every request for its availability in the cache 'pippo2'. If not available the request plugin (werkzeug test app)
-will run normally and its output will be stored in the cache (only if it returns a HTTP 200 status)
+这个例子检查每一个请求在缓存'pippo2'中是否可用。如果不可用，那么请求插件 (werkzeug test app)将会正常运行，然后其输出将会存储在缓存中 (只有在它返回HTTP 200状态的时候才会存储)
 
-``--route-run`` is a new option allowing you to directly call routing action without checking for a specific condition (yes, it is an optimization)
+``--route-run`` 是一个新的选项，允许你直接调用路由动作，而无需检查特定的条件 (是哒，这是一个优化)
 
-routing access to cookie and query string
+路由访问至cookie和查询字符串
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Check updated docs :doc:`InternalRouting`
+查看更新文档 :doc:`InternalRouting`
 
-empty internal routing condition
+空内部路由条件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Check updated docs :doc:`InternalRouting`
+查看更新文档 :doc:`InternalRouting`
 
-The Geoip plugin
+Geoip插件
 ^^^^^^^^^^^^^^^^
 
-Check official docs :doc:`GeoIP`
+查看官方文档 docs :doc:`GeoIP`
 
-The SSI plugin (beta)
+SSI插件 (测试版)
 ^^^^^^^^^^^^^^^^^^^^^
 
-Check official docs :doc:`SSI`
+查看官方文档 docs :doc:`SSI`
 
 可用性
 ************

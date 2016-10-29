@@ -4,63 +4,59 @@
 .. list-table:: 
     :header-rows: 1
     
-    * - Technology
-      - Available since
-      - Notes
-      - Status
+    * - 技术
+      - 初始可用版本
+      - 注意事项
+      - 状态
     * - Python
       - 0.9.1
-      - The first available plugin, supports WSGI (:pep:`333`, :pep:`3333`),
-        Web3 (from version 0.9.7-dev) and Pump (from 0.9.8.4). Works with
-        :doc:`Virtualenv`, multiple Python interpreters, :doc:`Python3` and
-        has unique features like :doc:`PythonModuleAlias`,
-        :doc:`DynamicVirtualenv` and :doc:`uGreen`. A module exporting handy
-        :doc:`decorators<PythonDecorators>` for the uWSGI API is available in
-        the source distribution. PyPy :doc:`is supported<PyPy>` since 1.3. The
-        :doc:`Tracebacker` was added in 1.3.
-      - Stable, 100% uWSGI API support
+      - 第一个可用插件，支持WSGI (:pep:`333`, :pep:`3333`),
+        Web3 (from version 0.9.7-dev) 和Pump (自0.9.8.4起)。 与
+        :doc:`Virtualenv` ，多个Python解析器 :doc:`Python3` 配合良好，并且具有独特的特性，例如 :doc:`PythonModuleAlias`,
+        :doc:`DynamicVirtualenv` 和 :doc:`uGreen` 。源代码发布版本中有一个可用的uWSGI API模块导出
+        :doc:`decorators<PythonDecorators>` 。自1.3，支持PyPy :doc:`is supported<PyPy>` 1.3添加了
+        :doc:`Tracebacker` 。
+      - 稳定, 100%的uWSGI API支持
     * - Lua
       - 0.9.5
-      - Supports :doc:`LuaWSAPI`, coroutines and threads
-      - Stable, 60% uWSGI API support
+      - 支持 :doc:`LuaWSAPI` ，协程和线程
+      - 稳定, 60%的uWSGI API支持
     * - Perl
       - 0.9.5
-      - :doc:`Perl` (PSGI) support. Multiple interpreters, threading and async
-        modes supported
-      - Stable, 60% uWSGI API support
+      - :doc:`Perl` (PSGI)支持。支持多种解析器，线程和异步模式
+      - 稳定, 60%的uWSGI API支持
     * - Ruby
       - 0.9.7-dev
-      - :doc:`Ruby` support. A loop engine for :doc:`Ruby 1.9
-        fibers<FiberLoop>` is available as well as a handy :doc:`DSL <RubyDSL>`
-        module.
-      - Stable, 80% uWSGI API support
+      - :doc:`Ruby` 支持。有一个用于 :doc:`Ruby 1.9
+        fibers<FiberLoop>` 的循环引擎，以及一个便捷的 :doc:`DSL <RubyDSL>` 模块可用。
+      - 稳定, 80%的uWSGI API支持
     * - :doc:`Erlang`
       - 0.9.5
-      - Allows message exchanging between uWSGI and Erlang nodes.
-      - Stable, no uWSGI API support
+      - 允许uWSGI和Erlang节点之间的消息交换。
+      - 稳定，没有uWSGI API支持
     * - :doc:`CGI`
       - 1.0-dev
       - Run CGI scripts
-      - Stable, no uWSGI API support
+      - 稳定，没有uWSGI API支持
     * - :doc:`PHP`
       - 1.0-dev
-      - Run PHP scripts
-      - Stable from 1.1, 5% uWSGI API support   
+      - 运行PHP脚本
+      - 自1.1起稳定，5%的uWSGI API支持
     * - :doc:`Go`
       - 1.4-dev
-      - Allows integration with the Go language
-      - 15% uWSGI API support
+      - 允许与Go语言的集成
+      - 15%的uWSGI API支持
     * - :doc:`JVM`
       - 1.9-dev
-      - Allows integration between uWSGI and the Java Virtual Machine
-        :doc:`JWSGI<JWSGI>` and :doc:`Clojure/Ring<Ring>` handlers are available.
-      - Stable
+      - uWSGI和Java虚拟机
+        :doc:`JWSGI<JWSGI>` 之间的集成，以及
+         :doc:`Clojure/Ring<Ring>` 处理程序是可用的。
+      - 稳定
     * - :doc:`Mono`
       - 0.9.7-dev
-      - Allows integration between uWSGI and Mono, and execution of ASP.NET
-        applications.
-      - Stable
+      - 允许uWSGI和Mono之间的集成，以及ASP.NET应用的执行。
+      - 稳定
     * - :doc:`V8`
       - 1.9.4
-      - Allows integration between uWSGI and the V8 JavaScript engine.
-      - Early stage of development
+      - 运行uWSGI和V8 JavaScript引擎之间的集成
+      - 开发初期

@@ -1,7 +1,7 @@
 uWSGI 1.9.3
 ===========
 
-Changelog 20130328
+更新日志 20130328
 
 
 错误修复
@@ -17,15 +17,14 @@ fixed php headers generation when Status is created from the php app itself
 新特性
 ********
 
-Pluggable configuration system (with Lua support)
+可插拔配置系统 (带Lua支持)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-From this version you will be able to implement configurators (like the already available xml, ini, yaml, json, ldap, sqlite...)
-as plugins.
+从此版本起，你将能够将配置器 (例如已经可用的xml, ini, yaml, json, ldap, sqlite...) 作为插件实现。
 
-The first available configurator is the Lua one (offered by the lua plugin).
+第一个可用的配置器是Lua (由lua插件提供)。
 
-This is an example configuration written in lua:
+这是一个用Lua写的样例配置：
 
 .. code-block:: lua
 
@@ -39,16 +38,15 @@ This is an example configuration written in lua:
 
    return config
 
-you can load it with:
+你可以这样加载它：
 
 .. code-block:: sh
 
    uwsgi --plugin lua --config config.lua
 
-The --config option is the way to load pluggable configurators. You can even override the already available embedded configurators
-with your own version.
+--config选项是加载可插拔配置器的方式。你甚至可以使用自己的版本来覆盖已经可用的内嵌的配置器。
 
-The Emperor has already been extended to support pluggable configurators:
+Emperor已被扩展来支持可插拔配置器：
 
 .. code-block:: ini
 
@@ -57,9 +55,9 @@ The Emperor has already been extended to support pluggable configurators:
    emperor-extra-extension = .lua
    emperor-extra-extension = .foo
 
-adding emperor-extra-extension will allows the emperor to search for the specified extension passing the config file to the vassal with the --config option.
+增加emperor-extra-extension将会允许emperor搜索指定的扩展名，使用--config选项传递配置文件给vassal。
 
-Immediate setuid and setgid
+即用setuid和setgid
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In a recent uWSGI maling-list thread, the need to not rely on file system permissions for the tyrant mode emerged.
