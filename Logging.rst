@@ -6,8 +6,7 @@
 基本的日志记录
 -------------
 
-The most basic form of logging in uWSGI is writing requests, errors, and
-informational messages to stdout/stderr. This happens in the default
+uWSGI中最基本的日志记录的形式是将请求、错误和信息消息写到stdout/stderr。This happens in the default
 configuration.  The most basic form of log redirection is the ``--logto`` /
 ``--logto2`` / ``--daemonize`` options which allow you to redirect logs to
 files.
@@ -57,7 +56,7 @@ it will allow you to recognize one server from another. Naturally you can
 write your own apps to manage/filter/save the logs received via udp.
 
 
-Pluggable loggers
+可插拔记录器
 -----------------
 
 uWSGI also supports pluggable loggers, which allow you more flexibility on
@@ -85,7 +84,7 @@ files follows.
     req-logger = file:/tmp/reqlog
     logger = file:/tmp/errlog
 
-Log routing
+日志路由
 -----------
 
 By default all log lines are sent to all declared loggers. If this is not what
@@ -112,7 +111,7 @@ will end up in /tmp/foobar.  This is somewhat similar to the
 :doc:`AlarmSubsystem`, though alarms are usually heavier and should only be
 used for critical situations.
 
-Logging to files
+写日志到文件中
 ----------------
 
 ``logfile`` plugin -- embedded by default.
@@ -121,7 +120,7 @@ Logging to files
 
     uwsgi --socket :3031 --logger file:/tmp/uwsgi.log
 
-Logging to sockets
+写日志到socket
 ------------------
 
 ``logsocket`` plugin -- embedded by default.
@@ -147,7 +146,7 @@ address:
 
     uwsgi --socket :3031 --logger socket:225.1.1.1:1717
 
-Logging to syslog
+写日志到syslog
 -----------------
 
 ``logsyslog`` plugin -- embedded by default
@@ -168,7 +167,7 @@ or
 to send to the local6 facility
 
 
-Logging to remote syslog
+写日志到远程syslog
 ------------------------
 
 ``logrsyslog`` plugin -- embedded by default
@@ -183,7 +182,7 @@ entry.
 
     uwsgi --socket :3031 --logger rsyslog:12.34.56.78:12345,uwsgi1234
 
-Redis logger
+Redis记录器
 ------------
 
 ``redislog`` plugin -- embedded by default.
@@ -209,7 +208,7 @@ As error situations could cause the master to block while writing a log line to
 a remote server, it's a good idea to use ``--threaded-logger`` to offload log
 writes to a secondary thread.
 
-MongoDB logger
+MongoDB记录器
 --------------
 
 ``mongodblog`` plugin -- embedded by default.
@@ -248,7 +247,7 @@ log writes to a dedicated thread is a good choice.
     # logger = mongodblog:192.168.173.22:27017,uwsgi.logs_of_foobar
     socket = :3031
 
-ZeroMQ logging
+ZeroMQ日志记录
 --------------
 
 As with UDP logging you can centralize/distribute logging via ZeroMQ. Build
@@ -276,7 +275,7 @@ Now run your uWSGI server:
 (``--log-zeromq`` is an alias for this logger.)
 
 
-Crypto logger (plugin)
+Crypto记录器 (插件)
 ----------------------
 
 If you host your applications on cloud services without persistent storage you
@@ -296,7 +295,7 @@ Blowfish in CBC mode.
 An example server is available at
 https://github.com/unbit/uwsgi/blob/master/contrib/cryptologger.rb
 
-Graylog2 logger (plugin)
+Graylog2记录器 (插件)
 ------------------------
 
 ``graylog2`` plugin -- not compiled by default.
@@ -307,7 +306,7 @@ This plugin will send logs to a Graylog2 server in Graylog2's native GELF format
 
     uwsgi --plugin graylog2 --logger graylog2:127.0.0.1:1234,dsfargeg
 
-Systemd logger (plugin)
+Systemd记录器 (插件)
 -----------------------
 
 ``systemd_logger`` plugin -- not compiled by default.
@@ -319,10 +318,10 @@ This plugin will write log entries into the Systemd journal.
     uwsgi --plugin systemd_logger --logger systemd
 
 
-Writing your own logger plugins
+编写你自己的日志记录插件
 -------------------------------
 
-This plugin, ``foolog.c`` will write your messages in the file specified with
+这个插件， ``foolog.c`` will write your messages in the file specified with
 --logto/--daemonize with a simple prefix using vector IO.
 
 .. code-block:: c
