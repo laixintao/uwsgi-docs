@@ -1,15 +1,15 @@
 uWSGI是如何解析配置文件的
 =============================
 
-Until uWSGI 1.1 the parsing order has not been 'stable' or 'reliable'.
+直到uWSGI 1.1，解析顺序都是不“稳定”或者“可靠的”。
 
-Starting from uWSGI 1.1 (thanks to its new options subsystem) we have a general rule: top-bottom and expand asap.
+从uWSGI 1.1开始 (多亏了它新的选项子系统)，我们有了一个一般的规则：从上到下，尽快扩展。
 
-Top-bottom means options are internally ordered as they are parsed, while "expand asap" means to inject the options of a requested config file, interrupting the currently parsed one:
+从上到下意味着选项根据它们解析的顺序内部派系，而“尽快扩展”表示注入一个请求的配置文件的选项，中断当前解析的配置文件：
 
-Note that the ``inherit`` option behaves differently from the other include options: It is expanded *after* variable expansion, so any environment variables, external files and placeholders are *not* expanded. Magic variables (*e.g.* ``%n``) are expanded normally.
+注意， ``inherit`` 选项与其他包含选项不同：它是在变量扩展 *之后* 进行扩展的，因此，任何环境变量，外部文件和占位符并 *未* 被扩展。魔术变量 (*例如* ``%n``) 会被正常进行扩展。
 
-file1.ini (the one requested from the command line)
+file1.ini (从命令行请求的那个文件)
 
 
 .. code-block:: ini
@@ -29,7 +29,7 @@ file2.ini
    memory-report = true
    processes = 4
    
-internally will be assembled in:
+内部将会被组装成：
 
 
 .. code-block:: ini
@@ -43,9 +43,9 @@ internally will be assembled in:
    socket = :3032
    chdir = /var/www
    
-A more complex example:
+一个更复杂的例子：
 
-file1.ini (the one requested from the command line)
+file1.ini (从命令行请求的那个文件)
 
 .. code-block:: ini
 
@@ -74,7 +74,7 @@ file3.xml
      <route>^/foo uwsgi:127.0.0.1:4040,0,0</route>
    </uwsgi>
    
-will result in:
+结果将会是：
 
 .. code-block:: ini
 
@@ -91,30 +91,30 @@ will result in:
    chdir = /var/www
    
 
-Expanding variables/placeholders
+扩展变量/占位符
 ********************************
 
-After the internal config tree is assembled, variables and placeholder substitution will be applied.
+在组装了内部配置树之后，将会应用变量和占位符替换。
 
-The first step is substituting all of the $(VALUE) occurrences with the value of the environment variable VALUE.
+第一步是用环境变量的值VALUE来替换所有出现的 $(VALUE) 。
 
 .. code-block:: ini
 
    [uwsgi]
    foobar = $(PATH)
    
-foobar value will be the content of shell's PATH variable
+foobar值将会是shell的PATH变量的内容
 
-The second step will expand text files embraced in @(FILENAME)
+第二步将会扩展在 @(FILENAME) 中括起来的文本文件。
 
 .. code-block:: ini
 
    [uwsgi]
    nodename = @(/etc/hostname)
    
-nodename value will be the content of /etc/hostname
+nodename值将会是/etc/hostname的内容
 
-The last step is placeholder substitution. A placeholder is a reference to another option:
+最后一步是占位符替换。一个占位符是另一个选项的引用：
 
 .. code-block:: ini
 
@@ -123,12 +123,12 @@ The last step is placeholder substitution. A placeholder is a reference to anoth
    foobar = %(socket)
    
 
-the content of foobar will be mapped to the content of socket.
+foobar的内容将会被映射为socket的内容。
 
-A note on magic variables
+魔术变量说明
 *************************
 
-Config files, support another form of variables, called 'magic' variables. As they refer to the config file itself, they will be parsed asap:
+配置文件，支持另一种形式的变量，被称为“魔术”变量。当它们指向配置文件本身的时候，它们将会被尽快解析：
 
 
 .. code-block:: ini
@@ -137,4 +137,4 @@ Config files, support another form of variables, called 'magic' variables. As th
    my_config_file = %p
    
 
-The content of my_config_file will be set to %p value (the current file's absolute path) as soon as it is parsed. That means %p (or whatever magic vars you need) will be always be consistent in the currently parsing config file.
+my_config_file的内容一旦被解析，它将会被设置为%p的值 (当前文件的绝对路径)。这意味着%p (或者任何你需要的魔术变量)在当前解析的配置文件中将永远是一致的。
