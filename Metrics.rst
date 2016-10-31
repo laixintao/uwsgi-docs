@@ -3,140 +3,136 @@
 
 自1.9.19起可用。
 
-The uWSGI metrics subsystem allows you to manage "numbers" from your app.
+uWSGI度量子系统让你可以管理来自应用的“数字”。
 
-While the caching subsystem got some math capabilities during the 1.9 development cycle, the metrics subsystem
-is optimized by design for storing numbers and applying functions over them. So, compared to the caching subsystem it's way faster
-and requires a fraction of the memory.
+虽然在1.9开发周期内，缓存子系统获得了一些计算能力，但是度量子系统在设计上进行了优化，以存储数字并在其上应用函数。因此，与缓存子系统相比，它是一种更快的方式，并且需要消耗一小部分内存。
 
-When enabled, the metric subsystem configures a vast amount of metrics (like requests per-core, memory usage, etc) but, in addition to this, you can configure your own metrics,
-such as the number of active users or, say, hits of a particular URL, as well as the memory consumption of your app or the whole server.
+在启用后，度量子系统配置了大量的度量 (例如每核请求，内存使用，等等) ，但是，除此之外，你可以配置自己的度量，例如活跃用户数，或者，比方说，特定URL的访问数，以及应用或整个服务器的内存消耗。
 
-To enable the metrics subsystem just add ``--enable-metrics`` to your options, or configure a stats pusher (see below).
+要启用度量子系统，只需添加 ``--enable-metrics`` 到选项中，或者配置一个统计数据推送器 (见下)。
 
-The metrics subsystem is completely thread-safe.
+度量子系统是完全线程安全的。
 
-By default uWSGI creates a lot of metrics (and more are planned), so before adding your own be sure uWSGI does not already expose the one(s) you need.
+默认情况下，uWSGI会创建许多度量 (大部分是已经已计划的)，因此，在添加你自己的度量之前，确保uWSGI并没有公开你所需要的度量。
 
 度量名和oid
 *********************
 
-Each metric must have a name (containing only numbers, letters, underscores, dashes and dots) and an optional ``oid`` (required for mapping a metric to :doc:`SNMP`).
+每个度量都必须要有一个名字 (只包含数字、字母、下划线、破折号和点) 和一个可选的 ``oid`` (用于映射一个度量到 :doc:`SNMP`)。
 
 度量类型
 ************
 
-Before dealing with metrics you need to understand the various types represented by each metric:
+在处理度量之前，你需要了解每个度量表示的各种类型:
 
 
 COUNTER (type 0)
 ^^^^^^^^^^^^^^^^
 
-This is a generally-growing up number (like the number of requests).
+这是一个一般增长的数字 (如请求数)。
 
 GAUGE (type 1)
 ^^^^^^^^^^^^^^
 
-This is a number that can increase or decrease dynamically (like the memory used by a worker, or CPU load).
+这是一个可以动态增长或减少的数字 (如worker的使用内存，或者CPU负载)。
 
 ABSOLUTE (type 2)
 ^^^^^^^^^^^^^^^^^
 
-This is an absolute number, like the memory of the whole server, or the size of the hard disk.
+这是一个绝对数字，如整个服务器的内存，或者磁盘的大小。
 
 ALIAS (type 3)
 ^^^^^^^^^^^^^^
 
-This is a virtual metric pointing to another one . You can use it to give different names to already existing metrics.
+这是一个指向另一个度量的虚拟度量。你可以用它来为已存在的度量赋予不同的名字。
 
 度量收集器
 *****************
 
-Once you define a metric type, you need to tell uWSGI how to 'collect' the specific metric.
+一旦你定义了一个度量类型，那么你需要告诉uWSGI如何“收集”特定的度量。
 
-There are various collectors available (and more can be added via plugins).
+有各种可用的收集器 (可以通过插件添加更多收集器)。
 
-* ``ptr`` -- The value is collected from a memory pointer
-* ``file`` -- the value is collected from a file
-* ``sum`` -- the value is the sum of other metrics
-* ``avg`` -- compute the algebraic average of the children (added in 1.9.20)
-* ``accumulator`` -- always add the sum of children to the final value. See below for an example.
+* ``ptr`` -- 该值是从内存指针收集来的
+* ``file`` -- 该值是从文件收集来的
+* ``sum`` -- 该值是其他度量的总和
+* ``avg`` -- 计算孩子的算术平均值 (在1.9.20中添加)
+* ``accumulator`` -- 总是增加孩子的值的总和到最后的值。看看下面这个例子。
 
    Round 1: child1 = 22, child2 = 17 -> metric_value = 39
    Round 2: child1 = 26, child2 = 30 -> metric_value += 56
 
-* ``multiplier`` - Multiply the sum of children by the specified argument (arg1n).
+* ``multiplier`` - 用指定的参数 (arg1n) 乘以孩子的值的总和。
 
    child1 = 22, child2 = 17, arg1n = 3 -> metric_value = (22+17)*3
 
-* ``func`` - the value is computed calling a specific function every time
-* ``manual`` - the NULL collector. The value must be updated manually from applications using the metrics API.
+* ``func`` - 每次调用指定的函数计算该值。
+* ``manual`` - NULL收集器。必须使用度量API，从应用手动更新该值。
 
 自定义度量
 **************
 
-You can define additional metrics to manage from your app.
+你可以在你的应用中定义额外的度量。
 
-The ``--metric`` option allows you to add more metrics.
+``--metric`` 选项允许你添加更多度量。
 
-It has two syntaxes: "simplified" and "keyval".
+它有两种语法：“简化的”和“键值”。
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --metric foobar
    
-will create a metric 'foobar' with type 'counter', manual collector and no oid.
+将会创建一个度量'foobar'，它的类型是“counter”，手工收集，并且无oid。
 
-For creating advanced metrics you need the keyval way:
+要创建高级度量，那么你需要键值方式:
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --metric name=foobar,type=gauge,oid=100.100.100
    
-The following keys are available:
+可以使用以下的键：
 
-* ``name`` -- set the metric name
-* ``oid`` -- set the metric oid
-* ``type`` -- set the metric type, can be ``counter``, ``gauge``, ``absolute``, ``alias``
-* ``initial_value`` -- set the metric to a specific value on startup
-* ``freq`` -- set the collection frequency in seconds (default to 1)
-* ``reset_after_push`` -- reset the metric to zero (or the configured ``initial_value``) after it's been pushed to the backend (so every ``freq`` seconds)
-* ``children`` -- maps children to the metric (see below)
-* ``alias`` -- the metric will be a simple alias for the specified one (--metric name=foobar,alias=worker.0.requests,type=alias)
-* ``arg1`` to ``arg3`` -- string based arguments (see below)
-* ``arg1n`` to ``arg3n`` -- number based arguments (see below)
-* ``collector`` set the collector, can be ``ptr``, ``file``, ``sum``, ``func`` or anything exposed by plugins. Not specifying a collector means the metric is manual (your app needs to update it).
+* ``name`` -- 设置度量名
+* ``oid`` -- 设置度量oid
+* ``type`` -- 设置度量类型，可以是 ``counter``, ``gauge``, ``absolute``, ``alias``
+* ``initial_value`` -- 启动时设置度量为一个指定的值。
+* ``freq`` -- 设置收集频率，以秒为单位 (默认为1)
+* ``reset_after_push`` -- 在度量被推到后端后，重置度量为0 (或者配置的 ``initial_value``) (因此是每 ``freq`` 秒)
+* ``children`` -- 映射孩子到该度量 (见下)
+* ``alias`` -- 该度量将会是指定的度量的一个简单别名 (--metric name=foobar,alias=worker.0.requests,type=alias)
+* ``arg1`` 到 ``arg3`` -- 基于字符串的参数 (见下)
+* ``arg1n`` 到 ``arg3n`` -- 基于数字的参数 (见下)
+* ``collector`` 设置收集器，可以是 ``ptr``, ``file``, ``sum``, ``func`` 或者任何插件公开的收集器。如果没有指定收集器，那么说明该度量是手工收集的 (你的应用需要更新它)。
 
-The ptr is currently unimplemented, while the other collector requires a bit of additional configuration:
+当前未实现ptr，而其他收集器则需要一点额外的配置：
 
-``collector=file`` requires ``arg1`` for the filename and an optional ``arg1n`` for the so-called split value.
+``collector=file`` 需要 ``arg1`` 作为文件名，以及一个可选的 ``arg1n`` 作为所谓的分割值。
 
 .. code-block:: sh
 
    uwsgi --metric name=loadavg,type=gauge,collector=file,arg1=/proc/loadavg,arg1n=1,freq=3
    
-This will add a 'loadavg` metric, of type gauge, updated every 3 seconds with the content of ``/proc/loadavg``. The content is split (using \\n, \\t, spaces, \\r and zero as separator) and the item 1 (the returned array is zero-based) used as the return value.
+这将会添加一个 `loadavg` 度量，类型为gauge，使用 ``/proc/loadavg`` 的内容每3秒更新一次。内容会被分割 (使用\\n, \\t, spaces, \\r和0作为分隔符)，并且第一项 (返回数组是基于0的) 会被当成返回值使用。
 
-The splitter is very powerful, making it possible to gather information from more complex files, such as ``/proc/meminfo``.
+分割符是非常强大的，它使得从更复杂的文件（例如 ``/proc/meminfo`` ）中收集信息成为可能。
 
 .. code-block:: sh
 
    uwsgi --metric name=memory,type=gauge,collector=file,arg1=/proc/meminfo,arg1n=4,freq=3
    
-Once split, ``/proc/meminfo`` has the MemFree value in the 4th slot.
+一旦分割， ``/proc/meminfo`` 在第4个位置上保存的是MemFree值。
 
-``collector=sum`` requires the list of metrics that must be summed up. Each metric has the concept of 'children'. The sum collector
-will sum the values of all of its children:
+``collector=sum`` 要求度量列表必须加起来。每个度量都有“孩子”的概念。总和收集器将会对它所有的孩子的值进行求和：
 
 .. code-block:: sh
 
    uwsgi --metric name=reqs,collector=sum,children=worker.1.requests;worker.2.requests
    
-This will sum the value of worker.1.requests and worker.2.requests every second.
+这将会每秒计算worker.1.requests和worker.2.requests值的总和。
 
-``collector=func`` is a convenience collector avoiding you to write a whole plugin for adding a new collector.
+``collector=func`` 是一个方便的收集器，避免你为了添加一个新的收集器而去编写整个插件。
 
-Let's define a C function (call the file mycollector.c or whatever you want):
+让我们定义一个C函数 (称这个文件为mycollector.c或者任何你想要的名字):
 
 .. code-block:: c
 
@@ -144,92 +140,90 @@ Let's define a C function (call the file mycollector.c or whatever you want):
            return 173;
    }
    
-and build it as a shared library...
+然后把它作为一个共享库进行构建……
 
 .. code-block:: sh
 
    gcc -shared -o mycollector.so mycollector.c
    
-now run uWSGI loading the library...
+现在，运行uWSGI来加载库……
 
 .. code-block:: sh
 
    uwsgi --dlopen ./mycollector.so --metric name=mine,collector=func,arg1=my_collector,freq=10
    
-this will call the C function my_collector every 10 seconds and will set the value of the metric 'mine' to its return value.
+这将会每10秒调用C函数my_collector，并且将会设置度量'mine'的值为该函数的返回值。
 
-The function must returns an ``int64_t`` value. The argument it takes is a ``uwsgi_metric`` pointer. You generally do not need to parse the metric, so just casting to void will avoid headaches.
+这个函数必须返回一个 ``int64_t`` 值。它接收的参数是一个 ``uwsgi_metric`` 指针。一般来说，你不需要解析这个度量，因此，只要把它转换成void，就能避免很多糟心的事。
 
 度量目录
 *********************
 
-UNIX sysadmins love text files. They are generally the things they have to work on most of the time. If you want to make a UNIX sysadmin happy, just give him or her some text file to play with. (Or some coffee, or whiskey maybe, depending on their tastes. But generally, text files should do just fine.)
+UNIX系统管理员超爱文本文件。它们一般就是系统管理员们大部分时间必须处理的东东。如果你想取悦一个UNIX系统管理员，那么只需给他/她一些文本文件。 (或者一些咖啡，又或者也许是些威士忌，这取决于他们的口味。但一般来说，文本文件应该就可以了。)
 
-The metrics subsystem can expose all of its metrics in the form of text files in a directory:
+度量子系统可以将它所有的度量，以文本文件的形式公开到一个目录中:
 
 .. code-block:: uwsgi
 
    uwsgi --metrics-dir mymetrics ...
    
-The directory must exist in advance.
+这个目录必须预先存在。
 
-This will create a text file for each metric in the 'mymetrics' directory. The content of each file is the value of the metric (updated in real time).
+这将在'mymetrics'目录中，为每个度量创建一个文本文件。每个文件的内容是度量的值 (实时更新)。
 
-Each file is mapped into the process address space, so do not worry if your virtual memory increases slightly.
+每个文件被映射到进程的地址空间，因此，如果你的虚拟内存稍有增加，也不用担心。
 
 恢复度量（持久化度量）
 **************************************
 
-When you restart a uWSGI instance, all of its metrics are reset.
+当你重启一个uWSGI实例的时候，会重置它所有的度量。
 
-This is generally the best thing to do, but if you want, you can restore the previous situation using the values stored in the metrics
-directory defined before.
+这一般是最好的，但如果你想要，你可以使用之前存储在定义的度量目录中的值来恢复先前的状态。
 
-Just add the ``--metrics-dir-restore`` option to force the metric subsystem to read-back the values from the metric directory before
-starting to collect values.
+只需增加 ``--metrics-dir-restore`` 选项，来强制度量子系统在开始收集值之前，从度量目录读回度量值。
 
 API
 ***
 
-Your language plugins should expose at least the following api functions. Currently they are implemented in Perl, CPython, PyPy and Ruby
+你的语言插件应该至少公开以下API函数。目前，它们已经在Perl, CPython, PyPy和Ruby中实现了。
 
 * ``metric_get(name)``
 * ``metric_set(name, value)``
-* ``metric_set_max(name, value)`` -- only set the metric *name* if the give *value* is greater than the one currently stored
-* ``metric_set_min(name, value)`` -- only set the metric *name* if the give *value* is lower than the one currently stored
+* ``metric_set_max(name, value)`` -- 只有当给定的 *value* 比当前存储的值大的时候，才设置度量 *name* 
+* ``metric_set_min(name, value)`` -- 只有当给定的 *value* 比当前存储的值小的时候，才设置度量 *name* 
 
-    ``metric_set_max`` and ``metric_set_min`` can be used to avoid having to call ``metric_get`` when you need a metric to be set at a maximal or minimal value. Another simple use case is to use the ``avg`` collector to calculate an average between some *max* and *min* set metrics.
+    当你需要将一个度量设置为最大值或最小值的时候，``metric_set_max`` 和 ``metric_set_min`` 可以被用来避免必须调用 ``metric_get`` 。另一个简单的用例时使用 ``avg`` 收集器来收集一些被设置成 *max* 和 *min* 的度量之间的平均值。
 
 * ``metric_inc(name[, delta])``
 * ``metric_dec(name[, delta])``
 * ``metric_mul(name[, delta])``
 * ``metric_div(name[, delta])``
-* metrics (tuple/array of metric keys, should be immutable and not-callable, currently unimplemented)
+* metrics (度量键的元组/数组，应该是不可变并且不可调用的，当前未实现)
 
-Stats pushers
-*************
+统计信息推送器
+***************
 
-Collected metrics can be sent to external systems for analysis or chart generation.
+可以将已收集的度量发送到外部系统，用于分析或者图表生成。
 
-Stats pushers are plugins aimed at sending metrics to those systems.
+统计信息推送器是旨在发送度量给那些系统的插件。
 
-There are two kinds of stats pushers at the moment: JSON and raw.
+目前，有两种类型的统计信息推送器：JSON和raw
 
-The JSON stats pusher send the whole JSON stats blob (the same you get from the stats server), while 'raw' ones send the metrics list.
+JSON统计信息推送器发送整个JSON统计信息块 (与你从统计信息服务器获取的相同)，而'raw'则户发送度量列表。
 
-Currently available stats pushers:
+目前可用的统计信息推送器：
 
 rrdtool
 ^^^^^^^
 
 * 类型: raw
-* 插件: rrdtool (builtin by default)
-* Requires (during runtime): librrd.so
+* 插件: rrdtool (默认内置)
+* 需要（运行时）: librrd.so
 * 语法: ``--stats-push rrdtool:my_rrds ...``
 
-This will store an rrd file for each metric in the specified directory. Each rrd file has a single data source named 'metric'.
+这将会为每个度量存储一个rrd文件到指定的目录中。每个rrd文件都有一个单一的数据来源，名为'metric'。
 
-Usage:
+用法：
 
 .. code-block:: sh
 
@@ -237,9 +231,9 @@ Usage:
    # or
    uwsgi --stats-push rrdtool:my_rrds ...
    
-By default the RRD files are updated every 300 seconds. You can tune this value with ``--rrdtool-freq``
+默认情况下，每300秒更新RRD文件。你可以使用 ``--rrdtool-freq`` 来调整这个值
 
-The librrd.so library is detected at runtime. If you need you can specify its absolute path with ``--rrdtool-lib``.
+在运行时检测librrd.so库。如果你需要，那么你可以使用 ``--rrdtool-lib`` 来指定它的绝对路径。
 
 statsd
 ^^^^^^
@@ -248,9 +242,9 @@ statsd
 * 插件: stats_pusher_statsd
 * 语法: ``--stats-push statsd:address[,prefix]``
 
-Push metrics to a statsd server.
+推送度量给一个statsd服务器。
 
-Usage:
+用法：
 
 .. code-block:: sh
 
@@ -261,7 +255,7 @@ carbon
 
 * 类型: raw
 * 插件: carbon (built-in by default)
-* See: :doc:`Carbon`
+* 见： :doc:`Carbon`
 
 zabbix
 ^^^^^^
@@ -270,13 +264,13 @@ zabbix
 * 插件: zabbix
 * 语法: ``--stats-push zabbix:address[,prefix]``
 
-Push metrics to a zabbix server.
+推送度量给一个zabbix服务器。
 
-The plugin exposes a ``--zabbix-template`` option that will generate a zabbix template (on stdout or in the specified file) containing all of the exposed metrics as trapper items.
+该插件公开了一个 ``--zabbix-template`` 选项，它将会生成一个zabbix模板 (在标准输出或者在指定的文件中)，该模板包含所有公开的度量作为捕获项。
 
-.. note:: On some Zabbix versions you will need to authorize the IP addresses allowed to push items.
+.. note:: 在一些Zabbix版本，你将需要授权获准推送的IP地址。
 
-Usage: 
+用法： 
 
 .. code-block:: sh
 
@@ -287,10 +281,10 @@ mongodb
 
 * 类型: json
 * 插件: stats_pusher_mongodb
-* Required (build time): libmongoclient.so
-* Syntax (keyval): ``--stats-push mongodb:addr=<addr>,collection=<db>,freq=<freq>``
+* 需要（运行时）: libmongoclient.so
+* 语法（键值）: ``--stats-push mongodb:addr=<addr>,collection=<db>,freq=<freq>``
 
-Push statistics (as JSON) the the specified MongoDB database.
+推送统计信息 (JSON格式) 到指定的MongoDB数据库。
 
 file
 ^^^^
@@ -298,7 +292,7 @@ file
 * 类型: json
 * 插件: stats_pusher_file
 
-Example plugin storing stats JSON in a file.
+例子插件，将统计信息JSON存储到一个文件中。
 
 socket
 ^^^^^^
@@ -307,9 +301,9 @@ socket
 * 插件: stats_pusher_socket (builtin by default)
 * 语法: ``--stats-push socket:address[,prefix]``
 
-Push metrics to a UDP server with the following format: ``<metric> <type> <value>`` (<type> is in the numeric form previously reported).
+使用以下格式将度量推送到一个UDP服务器： ``<metric> <type> <value>`` (<type> 是前面报告的数字形式)。
 
-Example:
+例子：
 
 .. code-block:: sh
 
@@ -318,12 +312,11 @@ Example:
 告警/阈值
 *****************
 
-You can configure one or more "thresholds" for each metric.
+你可以为每个度量配置一个或多个“阈值”。
 
-Once this limit is reached the specified alarm (see :doc:`AlarmSubsystem`) is triggered.
+一旦到达了这个限制，那么就会触发指定的告警 (见 :doc:`AlarmSubsystem`)。
 
-Once the alarm is delivered you may choose to reset the counter to a specific value (generally 0), or continue triggering alarms
-with a specified rate.
+一旦传递了该告警，你可以选择重置计数器为一个指定的值 (一般是0)，或者继续以特定的比率触发告警。
 
 .. code-block:: ini
 
@@ -334,27 +327,27 @@ with a specified rate.
    metric-threshold = key=mycounter,value=1000,reset=0
    ...
    
-Specifying an alarm is not required. Using the threshold value to automatically reset a metric is perfectly valid.
+不需要指定告警。使用阈值来自动重置一个度量是非常有效的。
    
-Note: ``--metric-threshold`` and ``--metric-alarm`` are aliases for the same option.
+注意： ``--metric-threshold`` 和 ``--metric-alarm`` 是同个选项的别名。
 
 SNMP集成
 ****************
 
-The :doc:`SNMP` server exposes metrics starting from the 1.3.6.1.4.1.35156.17.3 OID.
+ :doc:`SNMP` 服务器从1.3.6.1.4.1.35156.17.3 OID开始，公开了度量。
 
-For example to get the value of ``worker.0.requests``:
+例如，要获得 ``worker.0.requests`` 的值：
 
 .. code-block:: sh
 
    snmpget -v2c -c <snmp_community> <snmp_addr>:<snmp_port> 1.3.6.1.4.1.35156.17.3.0.1
    
-Remember: only metrics with an associated OID can be used via SNMP.
+记住：只有具有相关的OID的度量可以通过SNMP使用。
 
 内部路由集成
 ****************************
 
-The ''router_metrics'' plugin (builtin by default) adds a series of actions to the internal routing subsystem.
+ ''router_metrics'' 插件 (默认内置) 添加了一系列的动作到内部路由子系统。
 
 * ``metricinc:<metric>[,value]`` increase the <metric>
 * ``metricdec:<metric>[,value]`` decrease the <metric>
@@ -362,9 +355,9 @@ The ''router_metrics'' plugin (builtin by default) adds a series of actions to t
 * ``metricdiv:<metric>[,value]`` divide the <metric>
 * ``metricset:<metric>,<value>`` set <metric> to <value>
 
-In addition to action, a route var named "metric" is added.
+除了动作之外，还添加了一个名为"metric"的路由变量。
 
-Example:
+例子：
 
 .. code-block:: ini
 
@@ -377,7 +370,7 @@ Example:
 请求日志记录
 ***************
 
-You can access metrics values from your request logging format using the %(metric.xxx) placeholder:
+你可以使用 %(metric.xxx) 占位符，在你的请求日志格式中访问度量值：
 
 .. code-block:: ini
 
@@ -387,31 +380,31 @@ You can access metrics values from your request logging format using the %(metri
 官方已注册度量
 *****************************
 
-This is a work in progress.
+这是一项正在进行的工作。
 
-The best way to know which default metrics are exposed is enabling the stats server and querying it (or adding the ``--metrics-dir`` option).
+要知道公开了哪个默认度量的最好的方式是启用统计信息服务器，然后查询它 (或者添加 ``--metrics-dir`` 选项)。
 
-* worker/3 (exports information about workers, example worker.1.requests [or 3.1.1] reports the number of requests served by worker 1)
-* plugin/4 (namespace for metrics automatically added by plugins, example plugins.foo.bar)
-* core/5 (namespace for general instance informations)
-* router/6 (namespace for corerouters, example router.http.active_sessions)
-* socket/7 (namespace for sockets, example socket.0.listen_queue)
-* mule/8 (namespace for mules, example mule.1.signals)
-* spooler/9 (namespace for spoolers, example spooler.1.signals)
-* system/10 (namespace for system metrics, like loadavg or free memory)
+* worker/3 (公开关于worker的信息，例如 worker.1.requests [或者3.1.1] 报告了由worker 1提供服务的请求数)
+* plugin/4 (用于由插件自动添加的度量的命名空间，例如plugins.foo.bar)
+* core/5 (用于一般实例信息的命名空间)
+* router/6 (用于核心路由器的命名空间，例如router.http.active_sessions)
+* socket/7 (用于socket的命名空间，例如socket.0.listen_queue)
+* mule/8 (用于mule的命名空间，例如mule.1.signals)
+* spooler/9 (用于spooler的命名空间，例如spooler.1.signals)
+* system/10 (用于系统度量的命名空间，例如loadavg或者空闲内存)
  
 为插件分配OID
 *************************
 
-If you want to write a plugin that will expose metrics, please add the OID namespace that you are going to use to the list below and make a pull request first.
+如果你想要编写一个会公开度量的插件，那么请添加OID命名空间，你将会用到下面的列表的OID命名空间，并且先进行pull请求。
 
-This will ensure that all plugins are using unique OID namespaces.
+这将确保所有的插件都使用唯一的OID命名空间。
 
-Prefix all plugin metric names with plugin name to ensure no conflicts if same keys are used in multiple plugins (example plugin.myplugin.foo.bar, worker.1.plugin.myplugin.foo.bar)
+给所有的插件度量名加上插件名前缀，来确保当相同的键用在多个插件中的时候没有冲突 (example plugin.myplugin.foo.bar, worker.1.plugin.myplugin.foo.bar)
 
  * (3|4).100.1 - cheaper_busyness
 
 外部工具
 **************
 
-Check: https://github.com/unbit/unbit-bars
+看看： https://github.com/unbit/unbit-bars
