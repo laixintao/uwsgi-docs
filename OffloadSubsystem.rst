@@ -1,9 +1,9 @@
-The uWSGI offloading subsystem
+uWSGI offloading子系统
 ==============================
 
 Offloading is a way to optimize tiny tasks, delegating them to one or more threads.
 
-These threads run such tasks in a non-blocking/evented way allowing for a huge amount of concurrency.
+这些线程在非阻塞/事件触发的方式中运行这样的任务，允许大量的并发。
 
 Various components of the uWSGI stack are offload-friendly, and the long-term target is to allow
 application code to abuse them.

@@ -1,20 +1,19 @@
 uWSGI选项
 ^^^^^^^^^^^^^
 
-This is an automatically generated reference list of the uWSGI options.
+这是一份自动生成的uWSGI选项参考列表。
 
-It is the same output you can get via the ``--help`` option.
+它与你可以通过 ``--help`` 选项获得的输出相同。
 
-This page is probably the worst way to understand uWSGI for newbies. If you are still learning how the project
-works, you should read the various quickstarts and tutorials.
+对于新手而言，本页可能是了解uWSGI最糟糕的方法。如果你还在学习该项目的工作方式，那么你应该阅读各种快速入门和教程。
 
-Each option has the following attributes:
+每一个选项都有以下属性:
 
-* argument: it is the struct option (used by getopt()/getopt_long()) has_arg element. Can be 'required', 'no_argument' or 'optional_argument'
-* shortcut: some option can be specified with the short form (a dash followed by a single letter)
-* parser: this is how uWSGI parses the parameter. There are dozens of way, the most common are 'uwsgi_opt_set_str' when it takes a simple string, 'uwsgi_opt_set_int' when it takes a 32bit number, 'uwsgi_opt_add_string_list' when the parameter can be specified multiple times to build a list.
-* help: the help message, the same you get from ``uwsgi --help``
-* reference: a link to a documentation page that gives better understanding and context of an option
+* 参数: it is the struct option (used by getopt()/getopt_long()) has_arg element. Can be 'required', 'no_argument' or 'optional_argument'
+* 快捷方式: some option can be specified with the short form (a dash followed by a single letter)
+* 解析器: this is how uWSGI parses the parameter. There are dozens of way, the most common are 'uwsgi_opt_set_str' when it takes a simple string, 'uwsgi_opt_set_int' when it takes a 32bit number, 'uwsgi_opt_add_string_list' when the parameter can be specified multiple times to build a list.
+* 帮助: the help message, the same you get from ``uwsgi --help``
+* 参考: a link to a documentation page that gives better understanding and context of an option
 
 You can add more detailed infos to this page, editing https://github.com/unbit/uwsgi-docs/blob/master/optdefs.pl (please, double check it before sending a pull request)
 

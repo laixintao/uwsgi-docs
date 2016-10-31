@@ -23,45 +23,30 @@ nginx_ (发音为 *engine-x*) 是一个免费开源并且高性能的HTTP服务�
 
 对于Django部署而言，nginx和uWSGI是不错的选择，但它们并非唯一的选择，也不是“官方”选择。对于它们两个，都有不错的替代品，因此鼓励你去详细研究一下。
 
-The way we deploy Django here is a good way, but it is **not** the *only* way;
-for some purposes it is probably not even the best way.
+我们这里部署Django的方式是种不错的方式，但它 **不是** *唯一* 的方式；
+对于某些目的，它甚至也许不是最好的方式。
 
-It is however a reliable and easy way, and the material covered here will
-introduce you to concepts and procedures you will need to be familiar with
-whatever software you use for deploying Django. By providing you with a working
-setup, and rehearsing the steps you must take to get there, it will offer you a
-basis for exploring other ways to achieve this.
+然而，它是一种可靠而简单的方式，而这里所涉及的材料将会向你介绍无论你用什么软件来部署Django都会熟悉的概念和过程。通过为你提供一个可用的步骤，以及向你预演完成此目标的必须步骤，它将会为你提供探索其他做到这点的方法的基础。
 
 .. admonition:: 注意
 
-	This tutorial makes some assumptions about the system you are using.
+	本教程对你所使用的系统做了一些假设。
 
-It is assumed that you are using a Unix-like system, and that it features
-an aptitude-like package manager. However if you need to ask questions like
-"What's the equivalent of aptitude on Mac OS X?", you'll be able to find that
-kind of help fairly easily.
+假设你正使用类Unix系统，并且它有一个类似于包管理器的功能。然而，如果你需要问类似于“那么在Mac OS X上的等价物是啥呢”这样的问题，那么你将能够非常简单地找到帮助。
 
-While this tutorial assumes Django 1.4 or later, which will automatically create
-a wsgi module in your new project, the instructions will work with earlier
-versions. You will though need to obtain that Django wsgi module yourself, and
-you may find that the Django project directory structure is slightly different.
+虽然这个教程假设你使用Django 1.4或更高的版本，这将会自动在你的新工程里创建一个wsgi模块，但是，这些指示对低于Django 1.4的版本同样适用。虽然，你需要自己获得Django wsgi模块，并且你可能会发现Django工厂目录结构有点不一样。
 
 
 概念
 -------
 
-A web server faces the outside world. It can serve files (HTML, images, CSS,
-etc) directly from the file system. However, it can't talk *directly* to Django
-applications; it needs something that will run the application, feed it requests
-from web clients (such as browsers) and return responses.
+一个web服务器面对的是外部世界。它能直接从文件系统提供文件 (HTML, 图像， CSS等等)。然而，它无法 *直接*与Django应用通信；它需要借助一些工具的帮助，这些东西会运行运用，接收来自web客户端（例如浏览器）的请求，然后返回响应。
 
-A Web Server Gateway Interface - WSGI - does this job. WSGI_ is a Python standard.
+一个Web服务器网关接口（Web Server Gateway Interface） - WSGI - 就是干这活的。 WSGI_ 是一种Python标准。
 
 .. _WSGI: http://wsgi.org/
 
-uWSGI is a WSGI implementation. In this tutorial we will set up uWSGI so that it
-creates a Unix socket, and serves responses to the web server via the WSGI
-protocol. At the end, our complete stack of components will look like this::
+uWSGI是一种WSGI实现。在这个教程中，我们将设置uWSGI，让它创建一个Unix socket，并且通过WSGI协议提供响应到web服务器。最后，我们完整的组件栈看起来将是这样的::
 
     the web client <-> the web server <-> the socket <-> uwsgi <-> Django
 
@@ -71,8 +56,7 @@ protocol. At the end, our complete stack of components will look like this::
 virtualenv
 ^^^^^^^^^^
 
-Make sure you are in a virtualenv for the software we need to install (we will
-describe how to install a system-wide uwsgi later):
+确保你正处在用来安装所需软件的虚拟机中 (稍后，我们将描述如何安装一个系统范围的uwsgi):
 
 .. code-block:: bash
 
@@ -83,8 +67,7 @@ describe how to install a system-wide uwsgi later):
 Django
 ^^^^^^
 
-Install Django into your virtualenv, create a new project, and ``cd`` into the
-project:
+将Django装到你的虚拟机中，创建一个新的项目，然后 ``cd`` 到该项目中:
 
 .. code-block:: bash
 
@@ -95,13 +78,10 @@ project:
 关于域名和端口
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this tutorial we will call your domain ``example.com``. Substitute your own
-FQDN or IP address.
+在这个教程中，我们将假设你的域名为 ``example.com`` 。用你自己的FQDN或者IP地址来代替。
 
-Throughout, we'll be using port 8000 for the web server to publish on, just like
-the Django runserver does by default. You can use whatever port you want of
-course, but I have chosen this one so it doesn't conflict with anything a web
-server might be doing already.
+
+从头到尾，我们将使用8000端口作为web服务器的公开端口，就像Django runserver默认的那样。当然，你可以使用任何你想要的端口，但是我已经选了这个，因此，它不会与web服务器可能已经选择的任何端口冲突。
 
 基本的uWSGI安装和配置
 ------------------------------------------
@@ -113,15 +93,12 @@ server might be doing already.
 
     pip install uwsgi
     
-Of course there are other ways to install uWSGI, but this one is as good as
-any. Remember that you will need to have Python development packages installed. 
-In the case of Debian, or Debian-derived systems such as Ubuntu, what you need 
-to have installed is ``pythonX.Y-dev``, where X.Y is your version of Python.
+当然，有其他安装uWSGI的方式，但这种方式如其他方式一样棒。记住，你将需要安装Python开发包。对于Debian，或者Debian衍生系统，例如Ubuntu，你需要安装的是 ``pythonX.Y-dev`` ，其中，X.Y是你Python的版本。
 
 基础测试
 ^^^^^^^^^^
 
-Create a file called ``test.py``::
+创建一个名为 ``test.py`` 文件::
 
     # test.py
     def application(env, start_response):
@@ -129,22 +106,22 @@ Create a file called ``test.py``::
         return [b"Hello World"] # python3
 	#return ["Hello World"] # python2
 
-.. note:: Take into account that Python 3 requires ``bytes()``.
+.. note:: 需要考虑到，对于Python 3，需要 ``bytes()`` 。
 
-Run uWSGI:
+运行uWSGI:
 
 .. code-block:: bash
 
     uwsgi --http :8000 --wsgi-file test.py
 
-The options mean:
+选项表示:
 
-* ``http :8000``: use protocol http, port 8000 
+* ``http :8000``: 使用http协议，端口8000 
 
-* ``wsgi-file test.py``: load the specified file, test.py
+* ``wsgi-file test.py``: 加载指定的文件，test.py
 
 This should serve a 'hello world' message directly to the browser on port 8000.
-Visit::
+访问::
 
     http://example.com:8000
 

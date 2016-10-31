@@ -1,20 +1,20 @@
 Nginx支持
 =============
 
-Nginx natively includes support for upstream servers speaking the :doc:`uwsgi protocol<Protocol>` since version 0.8.40.
+自0.8.40版本起，Nginx本身就包含了对使用 :doc:`uwsgi protocol<Protocol>` 的上游服务器的的支持。
 
 
 配置Nginx
 -----------------
 
-一般来说，你只需包含uwsgi_params文件 (包含在nginx发行版本中), and set the address of the uWSGI socket with uwsgi_pass directive
+一般来说，你只需包含uwsgi_params文件 (包含在nginx发行版本中)，使用uwsgi_pass指令来设置uWSGI socket的地址。
 
 ::
 
     uwsgi_pass unix:///tmp/uwsgi.sock;
     include uwsgi_params;
 
--- or if you are using TCP sockets,
+—— 或者如果你使用的是TCP socket，
 
 ::
 
@@ -22,12 +22,12 @@ Nginx natively includes support for upstream servers speaking the :doc:`uwsgi pr
     include uwsgi_params;
 
 
-Then simply reload Nginx and you are ready to rock your uWSGI powered applications through Nginx.
+然后，只需重载Nginx，你就准备好了经过Nginx的，由uWSGI驱动的应用。
 
  ``uwsgi_params`` 文件是啥？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It's convenience, nothing more! For your reading pleasure, the contents of the file as of uWSGI 1.3::
+它就是为了方便，仅此而已！为了让你阅读愉快，自uWSGI 1.3起，该文件的内容是::
 
   uwsgi_param QUERY_STRING $query_string;
   uwsgi_param REQUEST_METHOD $request_method;
@@ -45,12 +45,12 @@ It's convenience, nothing more! For your reading pleasure, the contents of the f
 
 .. seealso:: :doc:`Vars`
 
-Clustering
+集群
 ----------
 
-Nginx has a beautiful integrated cluster support for all the upstream handlers.
+对于所有的上游处理程序，Nginx支持漂亮的集群集成。
 
-Add an `upstream` directive outside the server configuration block::
+添加一个 `upstream` 指令到server配置块外::
 
     upstream uwsgicluster {
       server unix:///tmp/uwsgi.sock;
@@ -59,24 +59,24 @@ Add an `upstream` directive outside the server configuration block::
     } 
 
 
-Then modify your uwsgi_pass directive::
+然后修改你的uwsgi_pass指令::
 
     uwsgi_pass uwsgicluster;
 
-Your requests will be balanced between the uWSGI servers configured.
+这样，你的请求将会在配置的uWSGI服务器之间进行均衡。
 
 
 动态应用
 ------------
 
-The uWSGI server can load applications on demand when passed special vars.
+当传递特殊变量的使用，uWSGI服务器可以按需加载应用。
 
-uWSGI can be launched without passing it any application configuration::
+可以在不传递任何应用配置的情况下启动uWSGI::
 
   ./uwsgi -s /tmp/uwsgi.sock
 
 
-If a request sets the ``UWSGI_SCRIPT`` var, the server will load the specified module::
+如果请求设置了 ``UWSGI_SCRIPT`` 变量，那么服务器将会加载指定的模块::
 
   location / {
     root html;
@@ -85,7 +85,7 @@ If a request sets the ``UWSGI_SCRIPT`` var, the server will load the specified m
     include uwsgi_params;
   }
 
-You can even configure multiple apps per-location::
+你甚至还可以在每个location内配置多个应用::
 
   location / {
     root html;
@@ -104,9 +104,8 @@ You can even configure multiple apps per-location::
 在同一个进程中托管多个应用 (亦称管理SCRIPT_NAME和PATH_INFO)
 ----------------------------------------------------------------------------------
 
-The WSGI standard dictates that ``SCRIPT_NAME`` is the variable used to select a specific application. Unfortunately
-nginx is not able to rewrite PATH_INFO accordingly to SCRIPT_NAME. For such reason you need to instruct uWSGI to map specific apps
-in the so called "mountpoint" and rewrite SCRIPT_NAME and PATH_INFO automatically:
+WSGI标准决定了 ``SCRIPT_NAME`` 是一个用来选择特定应用的变量。不幸的是，
+nginx不能够根据SCRIPT_NAME重写PATH_INFO。出于这样的原因，你需要指示uWSGI在所谓的“挂载点”中映射特定的应用，并且自动重写SCRIPT_NAME和PATH_INFO：
 
 .. code-block:: ini
 
@@ -120,15 +119,14 @@ in the so called "mountpoint" and rewrite SCRIPT_NAME and PATH_INFO automaticall
    
    
    
-Take in account the app itself (eventually using a WSGI/Rack/PSGI middleware) can rewrite SCRIPT_NAME and PATH_INFO.
+考虑到应用本身 (最终使用WSGI/Rack/PSGI中间件) 可以重写SCRIPT_NAME和PATH_INFO。
 
-You can use the internal routing subsystem too to rewrite request vars. Especially for dynamic apps it could be a good approach.
+你也可以使用内部路由子系统来重写请求变量。特别是对于动态应用，这会是一种不错的方法。
 
-Note: ancient uWSGI versions used to support the so called "uwsgi_modifier1 30" approach. Do not do it. it is a really ugly hack
+注意：古老的uWSGI版本习惯支持所谓的"uwsgi_modifier1 30"方法。不要这样做。它实际上是一种丑陋的hack
 
 
-SCRIPT_NAME is a handy convention, but you are allowed to use any "mapping way", as an example the UWSGI_APPID variable can be used to set a key
-in the mountpoints table.
+SCRIPT_NAME是一个方便的惯例，但是允许你使用任何“映射方法”，例如，可以使用UWSGI_APPID变量在挂载点表中设置一个键。
 
 
 .. code-block:: ini
@@ -157,7 +155,7 @@ in the mountpoints table.
    }
   
   
-Remember you can use nginx variables as vars value, so you could implement some form of app routing using the Host header:
+还记得吗，你可以使用nginx变量作为变量值，因此你可以使用Host头来实行某种形式的应用路由:
 
 .. code-block::
 
@@ -169,7 +167,7 @@ Remember you can use nginx variables as vars value, so you could implement some 
    }
    
    
-now just mount your apps in uWSGI using the domain name as the mount key
+现在，只需在uWSGI挂载你的应用，将域名作为挂载键
 
 .. code-block:: ini
 
@@ -182,17 +180,17 @@ now just mount your apps in uWSGI using the domain name as the mount key
 静态文件
 ------------
 
-For best performance and security, remember to configure Nginx to serve static files instead of letting your poor application handle that.
+为了最佳性能和安全性，记得配置Nginx来提供静态文件服务，而不是让你可怜的应用自己来处理它。
 
-The uWSGI server can serve static files flawlessly but not as quickly and efficiently as a dedicated web server like Nginx.
+uWSGI服务器可以完美提供静态文件服务，但是并不如一个专用的web服务器，例如Nginx，那么快速有效。
 
-For example, the Django ``/media`` path could be mapped like this::
+例如，可以像这样映射Django的 ``/media`` 路径::
 
   location /media {
     alias /var/lib/python-support/python2.6/django/contrib/admin/media;
   }
 
-Some applications need to pass control to the UWSGI server only if the requested filename does not exist::
+只有在请求的文件名不存在的时候，一些应用需要传递控制权给UWSGI服务器::
 
   if (!-f $request_filename) {
     uwsgi_pass uwsgicluster;
@@ -201,14 +199,14 @@ Some applications need to pass control to the UWSGI server only if the requested
 
 .. admonition:: WARNING
 
-  If used incorrectly a configuration like this may cause security problems. For your sanity's sake, double-triple-quadruple check that your application files, configuration files and any other sensitive files are outside of the root of the static files.
+  如果使用不当，那么像这样的配置可能会引发安全性问题。理智考虑，请务必三番五次检查你的应用文件、配置文件和其他敏感文件位于静态文件的根目录之外。
 
 虚拟主机
 ---------------
 
-You can use Nginx's virtual hosting without particular problems.
+你可以使用Nginx虚拟主机，这并无什么特殊问题。
 
-If you run "untrusted" web apps (such as those of your clients if you happen to be an ISP) you should limit their memory/address space usage and use a different `uid` for each host/application::
+如果你运行“不可信的”web应用 (如果你恰巧是ISP，那么就如你那些客户一样)，那么你应该限制它们的内存/地址空间使用，并且对每个主机/应用使用不同的 `uid` ::
 
     server {
       listen 80;
@@ -244,7 +242,7 @@ If you run "untrusted" web apps (such as those of your clients if you happen to 
     }    
 
 
-The customers' applications can now be run (using the process manager of your choice, such as `rc.local`, :doc:`Upstart`, `Supervisord` or whatever strikes your fancy) with a different uid and a limited (if you want) address space for each socket::
+现在，可以在为每个socket使用不同的uid和受限（如果你想的话）地址空间来运行客户应用 (使用你选择的进程管理器，例如 `rc.local`, :doc:`Upstart`, `Supervisord` 或者任何激起你想象的工具) ::
 
   uwsgi --uid 1001 -w customer1app --limit-as 128 -p 3 -M -s 127.0.0.1:3031
   uwsgi --uid 1002 -w customer2app --limit-as 128 -p 3 -M -s 127.0.0.1:3032
