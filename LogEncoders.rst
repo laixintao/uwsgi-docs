@@ -23,7 +23,7 @@ uWSGI 1.9.16开始就有了“日志编码”功能。
    
 使用这个配置，日志服务器将会接收 "i am gzip encoded" string followed by the tru log message encoded in gzip
 
-The log encoder syntax is the following:
+日志编码器的语法如下：
 
 log-encoder = <encoder>[ args]
 
@@ -231,6 +231,6 @@ that will be stored in elasticsearch
 小抄
 *****
 
-Encoders automatically enable --log-master
+编码器自动启用--log-master
 
-For best performance consider allocating a thread for log sending with --threaded-logger
+要获得最佳性能，考虑使用--threaded-logger为日志发送分配一个线程

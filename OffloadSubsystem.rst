@@ -24,7 +24,7 @@ The first offload-aware component is the static file serving system.
 When offload threads are available, the whole transfer of the file is delegated to one of those threads, freeing your worker
 suddenly (so it will be ready to accept new requests)
 
-Example:
+例如：
 
 .. code-block:: ini
 
@@ -41,7 +41,7 @@ The router_uwsgi and router_http plugins are offload-friendly.
 You can route requests to external uwsgi/HTTP servers without being worried about having a blocked worker during
 the response generation.
 
-Example:
+例如：
 
 .. code-block:: ini
 

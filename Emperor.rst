@@ -1,27 +1,23 @@
 uWSGI Emperor —— 多应用部署
 =========================================
 
-如果你需要在单个服务器，或者一组服务器上部署大量的应用，那么Emperor模式就是你的最佳选择。它是一个特殊的uWSGI实例，会监控特定的事件，并且will spawn/stop/reload instances (known
-as :term:`vassals<vassal>`, when managed by an Emperor) on demand.
+如果你需要在单个服务器，或者一组服务器上部署大量的应用，那么Emperor模式就是你的最佳选择。它是一个特殊的uWSGI实例，会监控特定的事件，并且会按需生成/停止/重载实例 (当被一个Emperor管理的时候，被称为 :term:`vassals<vassal>`)。
 
-By default the Emperor will scan specific directories for supported (.ini,
-.xml, .yml, .json, etc.) uWSGI configuration files, but it is extensible using
-:term:`imperial monitor` plugins.  The ``dir://`` and ``glob://`` plugins are
-embedded in the core, so they need not be loaded, and are automatically
-detected. The ``dir://`` plugin is the default.
+默认情况下，Emperor将会扫描特定目录搜索支持的(.ini,
+.xml, .yml, .json, 等等) uWSGI配置文件，但可以使用
+:term:`imperial monitor` 插件来对其进行扩展。 ``dir://`` 和 ``glob://`` 插件是嵌入到核心中的，因此，不需要加载它们，它们会被自动检测到。 ``dir://`` 是默认插件。
 
-* Whenever an imperial monitor detects a new configuration file, a new uWSGI instance will be spawned with that configuration.
-* Whenever a configuration file is modified (its modification time changed, so ``touch --no-dereference`` may be your friend), the corresponding app will be reloaded.
-* Whenever a config file is removed, the corresponding app will be stopped.
-* If the emperor dies, all the vassals die.
-* If a vassal dies for any reason, the emperor will respawn it.
+* 每当一个imperial监控器检测到一个新的配置文件的时候，将会根据该配置文件生成一个新的uWSGI实例。
+* 每当一个配置文件被修改的时候 (它的修改时间发生了改变，因此 ``touch --no-dereference`` 或许会是你的好伙伴)，就会重载相应的应用。
+* 每当一个配置文件被删除的时候，就会停止相应的应用。
+* 如果emperor死掉了，那么所有的vassal都会死掉。
+* 如果出于某种原因，一个vassal死掉了，那么emperor将会重新生成它。
 
-Multiple sources of configuration may be monitored by specifying ``--emperor`` multiple times.
+可以通过多次指定 ``--emperor`` 来监控配置的多个来源。
 
 .. seealso::
 
-  See :doc:`ImperialMonitors` for a list of the Imperial Monitor plugins
-  shipped with uWSGI and how to use them.
+  见 :doc:`ImperialMonitors` 以获得uWSGI出厂的Imperial Monitor插件列表，以及如何使用它们。
 
 .. toctree::
 
@@ -29,14 +25,11 @@ Multiple sources of configuration may be monitored by specifying ``--emperor`` m
   EmperorProtocol
   OnDemandVassals
 
-Special configuration variables
+特殊配置变量
 -------------------------------
 
-Using :ref:`Placeholders` and :ref:`MagicVars` in conjunction with the Emperor
-will probably save you a lot of time and make your configuration more DRY.
-Suppose that in /opt/apps there are only Django_ apps.  /opt/apps/app.skel (the
-.skel extension is not a known configuration file type to uWSGI and will be
-skipped)
+将 :ref:`Placeholders` 与 :ref:`MagicVars` 和Emperor一起使用可能会节省你大量的时间，并且让你的配置更DRY。假设在/opt/apps中，只有 Django_ 应用。/opt/apps/app.skel (
+.skel扩展名并不是uWSGI已知的配置文件类型，因此将会被跳过)
 
 .. code-block:: ini
 
@@ -47,21 +40,21 @@ skipped)
   env = DJANGO_SETTINGS_MODULE=%n.settings
   module = django.core.handlers.wsgi:WSGIHandler()
 
-And then for each app create a symlink::
+然后，为每个应用，创建一个符号链接::
 
   ln -s /opt/apps/app.skel /opt/apps/app1.ini
   ln -s /opt/apps/app.skel /opt/apps/app2.ini
 
-Finally, start the Emperor with the ``--emperor-nofollow`` option. Now you can reload each vassal separately with the command::
+最后，使用 ``--emperor-nofollow`` 选项启动Emperor。现在，你可以使用以下命令来分别重载每个vassal了::
 
   touch --no-dereference $INI_FILE
 
 .. _Django: http://djangoproject.com
 
-Passing configuration parameters to all vassals
+传递配置参数给所有的vassal
 -----------------------------------------------
 
-Starting from 1.9.19 you can pass options using the ``--vassal-set`` facility
+从1.9.19开始，你可以使用 ``--vassal-set`` 来传递选项了
 
 .. code-block:: ini
 
@@ -70,66 +63,49 @@ Starting from 1.9.19 you can pass options using the ``--vassal-set`` facility
    vassal-set = processes=8
    vassal-set = enable-metrics=1
    
-this will add ``--set processes=8`` and ``--set enable-metrics=1`` to each vassal
+这将会添加 ``--set processes=8`` 和 ``--set enable-metrics=1`` 到每个vassal中
 
-You can force the Emperor to pass options to uWSGI instances using environment
-variables too.  Every environment variable of the form ``UWSGI_VASSAL_xxx`` will be
-rewritten in the new instance as ``UWSGI_xxx``, with the usual
+你还可以强制Emperor使用环境变量传递选项给uWSGI实例。每个形式为  ``UWSGI_VASSAL_xxx`` 的环境变量将会在新的实例中重写为 ``UWSGI_xxx`` ，并带有一般的
 :ref:`configuration implications<ConfigEnv>`.  
 
-For example::
+例如::
 
   UWSGI_VASSAL_SOCKET=/tmp/%n.sock uwsgi --emperor /opt/apps
 
-will let you avoid specifying the socket option in configuration files.
+会让你避免在配置文件中指定socket选项。
 
-Alternatively, you can use the ``--vassals-include`` option let each
-vassal automatically include a complete config file::
+另外，你可以使用 ``--vassals-include`` 选项，让每个
+vassal自动包含一个完整的配置文件::
 
   uwsgi --emperor /opt/apps --vassals-include /etc/uwsgi/vassals-default.ini
 
-Note that if you do this, ``%n`` (and other magic variables) in the
-included file will resolve to the name of the included file, not the
-original vassal configuration file. If you want to set options in the
-included file using the vassal name, you'll have to use placeholders.
-For example, in the vassal config, you write::
+注意，如果你这样做，被包含的文件中的 ``%n`` (及其他魔术变量) 将被解析为被包含的文件的名字，而不是原始的vassal配置文件的名字。如果你想要使用vassal名在被包含的文件中设置选项，那么你必须使用占位符。例如，在vassal配置中，这样写::
 
   [uwsgi]
   vassal_name = %n
   ... more options
 
-In the ``vassal-defaults.ini``, you write::
+在 ``vassal-defaults.ini`` 中，这样写::
 
   [uwsgi]
   socket = /tmp/sockets/%(vassal_name).sock
 
 .. _Tyrant:
 
-Tyrant mode (secure multi-user hosting)
+Tyrant模式 (安全的多用户托管)
 ---------------------------------------
 
-The emperor is normally run as root, setting the UID and GID in each
-instance's config. The vassal instance then drops privileges before serving
-requests. In this mode, if your users have access to their own uWSGI
-configuration files, you can't trust them to set the correct ``uid`` and
-``gid``. You could run the emperor as unprivileged user (with ``uid`` and
-``gid``) but all of the vassals would then run under the same user, as
-unprivileged users are not able to promote themselves to other users.  For this
-case the Tyrant mode is available -- just add the ``emperor-tyrant`` option.
+emperor通常以root运行，在每个实例的配置中设置UID和GID。然后，vassal实例在处理请求之前删除特权。在这个模式下，如果你的用户可以访问自己的uWSGI配置文件，那么你不能信任他们会设置正确的 ``uid`` 和
+``gid`` 。你可以以非特权用户运行emperor (使用 ``uid`` 和
+``gid``)，但是所有的vassal之后将会运行在相同的用户之下，因因为非特权用户不能自己切换成其他用户。对于这种情况，可以使用Tyrant模式 —— 仅需添加 ``emperor-tyrant`` 选项。
 
-In Tyrant mode the Emperor will run the vassal using the UID/GID of the vassal
-configuration file (or for other Imperial Monitors, by some other method of
-configuration).  If Tyrant mode is used, the vassal configuration files must
-have UID/GID > 0. An error will occur if the UID or GID is zero, or if the UID
-or GID of the configuration of an already running vassal changes.
+在Tyrant模式下，Emperor会使用vassal配置文件（或者对于其他Imperial监控器，通过一些配置的其他方法）的UID/GID来运行vassal。如果使用了Tyrant模式，那么vassal配置文件必须是UID/GID > 0。如果UID或者GID为0，或者一个已经在运行的vassal的配置的UID或GID发生了变化，那么将会出现一个错误。
 
 
-Tyrant mode for paranoid sysadmins (Linux only)
+适用于偏执型系统管理员的Tyrant模式 (仅Linux)
 ***********************************************
 
-If you have built a uWSGI version with :doc:`Capabilities` options enabled, you
-can run the Emperor as unprivileged user but maintaining the minimal amount of
-root-capabilities needed to apply the tyrant mode
+如果你构建了一个启用了 :doc:`Capabilities` 选项的uWSGI版本，那么你可以以非特权用户运行Emperor，但是维持应用到tyrant模式所需的最小的root能力。
 
 .. code-block:: ini
 
@@ -144,60 +120,44 @@ root-capabilities needed to apply the tyrant mode
 Loyalty
 -------
 
-As soon as a vassal manages a request it will became "loyal". This status is
-used by the Emperor to identify bad-behaving vassals and punish them.
+一旦一个vassal管理了一个请求，那么它将变得“loyal”。Emperor使用这个状态来识别行为不良的vassal并惩罚它们。
 
-Throttling
+节流
 ----------
 
-Whenever two or more vassals are spawned in the same second, the Emperor will
-start a throttling subsystem to avoid `fork bombing`_.  The system adds a
-throttle delta (specified in milliseconds via the :ref:`OptionEmperorThrottle`
-option) whenever it happens, and waits for that duration before spawning a new
-vassal.  Every time a new vassal spawns without triggering throttling, the
-current throttling duration is halved.
+每当在同一秒中生成了两个或以上的vassal，Emperor就会启动一个节流子系统来避免 `fork bombing`_ 。每当这种情况发生的时候，该系统就会增加一个节流差 (通过 :ref:`OptionEmperorThrottle` 选项指定，以毫秒为单位)，然后在生成一个新的vassal之前等待该节流差指定的时间。每当一个新的vassal的生成不触发节流的时候，当前的节流持续时间就会减半。
 
 .. _fork bombing: http://en.wikipedia.org/wiki/Fork_bomb
 
-Blacklist system
+黑名单系统
 ----------------
 
-Whenever a non-loyal vassal dies, it is put in a shameful blacklist.  When in a
-blacklist, that vassal will be throttled up to a maximum value (tunable via
-:ref:`OptionEmperorMaxThrottle`), starting from the default throttle delta of
-3.  Whenever a blacklisted vassal dies, its throttling value is increased by
-the delta (:ref:`OptionEmperorThrottle`).
+每当一个不loyal的vassal死掉的时候，它就会被放在一个耻辱黑名单中。当vassal在黑名单的时候，它就会被节流至一个最大值 (可以通过
+:ref:`OptionEmperorMaxThrottle` 调整)，从默认的节流差3开始。每当一个位于黑名单中的vassal死掉的时候，它的节流值就会增加节流差指定的数值 (:ref:`OptionEmperorThrottle`)。
 
-You can also empty the blacklist by sending the signal SIGURG to the emperor
-process. This will reset the throttle value.
+你也可以通过发送信号SIGURG给emperor进程来清空黑名单。这将会重置节流值。
 
-Heartbeat system
+心跳系统
 ----------------
 
-Vassals can voluntarily ask the Emperor to monitor their status.  Workers of
-heartbeat-enabled vassals will send "heartbeat" messages to the Emperor. If the
-Emperor does not receive heartbeats from an instance for more than N (default
-30, :ref:`OptionEmperorRequiredHeartbeat`) seconds, that instance will be
-considered hung and thus reloaded.  To enable sending of heartbeat packet in a
-vassal, add the :ref:`OptionHeartbeat` option.
+vassal可以自愿让Emperor监控它们的状态。启用了心跳的vassal的worker会发送"heartbeat"消息给Emperor。如果超过N(默认
+30, :ref:`OptionEmperorRequiredHeartbeat`)秒后，
+Emperor都没有接收到来自一个实例的心跳，那么就会认为那个实例挂起，因此会对它进行重载。要在一个vassal中启动发送心跳包，则添加 :ref:`OptionHeartbeat` 选项。
 
 .. important::
 
-  If all of your workers are stuck handling perfectly legal requests such as
-  slow, large file uploads, the Emperor will trigger a reload as if the workers
-  are hung.  The reload triggered is a graceful one, so you can be able to tune
-  your config/timeout/mercy for sane behaviour.
+  如果你所有的worker都卡在处理完全合法的请求，例如缓慢的大文件上传，那么Emperor将会触发重载，仿佛worker都挂起了。触发的重载是优雅地重载，因此你可以为理智的行为调整你的配置/超时时间/容忍度。
 
 .. TODO: Clarify the above admonition
 
-Using Linux namespaces for vassals
+将Linux命名空间用于vassal
 ----------------------------------
 
-On Linux you can tell the Emperor to run vassals in "unshared" contexts. That means you can run each vassal with a dedicated view of the filesystems, ipc, uts, networking, pids and uids.
+在Linux上，你可以告诉Emperor在“非共享”上下文中运行vassal。那意味着你可以使用文件系统、ipc、uts、网络、pid和uid的专用视图来运行每个vassal。
 
-Things you generally do with tools like ``lxc`` or its abstractions like ``docker`` are native in uWSGI.
+你通常使用诸如 ``lxc`` 或者它的抽象，例如 ``docker`` ，来做的事在uWSGI中都是自然而然的。
 
-For example if you want to run each vassals in a new namespace:
+例如，如果你想在一个新的名字空间内运行每个vassal：
 
 .. code-block:: ini
 
@@ -205,12 +165,11 @@ For example if you want to run each vassals in a new namespace:
    emperor = /etc/uwsgi/vassals
    emperor-use-clone = fs,net,ipc,pid,uts
    
-now each vassal will be able to modify the filesystem layout, networking, hostname and so on without damaging the main system.
+现在，每个vassal将能够修改文件系统布局，网络，主机名等等等等，而不会损坏主系统。
 
-A couple of helper daemons are included in the uWSGI distribution to simplify management of jailed vassals. Most notably :doc:`TunTapRouter` allows full user-space networking in jails, while
-the ``forkpty router`` allows allocation of pseudoterminals in jails
+uWSGI发布版本中包含了几个辅助守护进程，用来简化监禁vassal的管理。最值得注意的是， :doc:`TunTapRouter` 允许jail中的完整用户空间网络，而 ``forkpty router`` 允许jail中的虚拟终端分配。
 
-It is not needed to unshare all of the subsystem in your vassals, sometimes you only want to give dedicated ipc and hostname to a vassal and hide from the processes list:
+无需在你的vassal中取消共享所有的子系统，有时候，你只想要把专用的ipc和主机名给一个vassal，并从进程列表中隐藏:
 
 .. code-block:: ini
 
@@ -218,7 +177,7 @@ It is not needed to unshare all of the subsystem in your vassals, sometimes you 
    emperor = /etc/uwsgi/vassals
    emperor-use-clone = fs,ipc,pid,uts
    
-a vassal could be:
+vassal可以是:
 
 .. code-block:: ini
 
@@ -237,25 +196,18 @@ a vassal could be:
    psgi = myapp.pl
 
 
-The Imperial Bureau of Statistics
+Imperial统计局
 ---------------------------------
 
-You can enable a statistics/status service for the Emperor by adding the
-:ref:`OptionEmperorStats` option with a TCP address. By connecting to that
-address, you'll get a JSON-format blob of statistics.
+你可以添加
+:ref:`OptionEmperorStats` 选项，将用一个TCP地址作为该选项的值，来为Emperor启用统计/状态服务。通过连接到该地址，你将获得一个JSON格式的统计信息块。
 
 .. _BinaryPatch:
 
-Running non-uWSGI apps or using alternative uWSGIs as vassals
+将非uWSGI应用当成vassal运行或者把替代的uWSGI当成vassal使用
 -------------------------------------------------------------
 
-You can ``exec()`` a different binary as your vassal using the
-``privileged-binary-patch``/``unprivileged-binary-patch`` options.  The first
-one patches the binary after socket inheritance and shared socket
-initialization (so you will be able to use uWSGI-defined sockets).  The second
-one patches the binary after privileges drop. In this way you will be able to
-use uWSGI's UID/GID/chroot/namespace/jailing options.  The binary is called
-with the same arguments that were passed to the vassal by the Emperor.
+你可以使用 ``privileged-binary-patch``/``unprivileged-binary-patch`` 选项，把一个不同的二进制文件当成你的vassal ``exec()`` 。第一个选项在socket继承和共享socket初始化后对二进制文件打补丁（这样你就可以使用uWSGI定义的socket了）。第二个选项在特权删除后对二进制文件打补丁。用这种方式，你将能够使用uWSGI的UID/GID/chroot/namespace/jailing选项。使用与Emperor传递给vassal的相同的参数来调用该二进制文件。
 
 .. code-block:: ini
 
@@ -268,11 +220,9 @@ with the same arguments that were passed to the vassal by the Emperor.
 
 .. important::
 
-  *DO NOT DAEMONIZE* your apps. If you do so, the Emperor will lose its connection with them.
+  *不要守护* 你的应用。如果你这样做，那么Emperor将会失去与它们的连接。
 
-The uWSGI arguments are passed to the new binary. If you do not like that
-behaviour (or need to pass custom arguments) add ``-arg`` to the binary patch
-option, yielding:
+会给新的二进制文件传递uWSGI参数。如果你不喜欢这种行为 (或者需要传递自定义参数)，那么添加 ``-arg`` 到二进制补丁选项:
 
 .. code-block:: ini
 
@@ -284,7 +234,7 @@ option, yielding:
   unshare = net
   unprivileged-binary-patch-arg = ps aux
 
-or:
+或者
 
 .. code-block:: ini
 
@@ -294,45 +244,38 @@ or:
 
 .. seealso::
 
-  Your custom vassal apps can also speak with the emperor using the :doc:`emperor protocol <EmperorProtocol>`.
+  你自定义的vassal应用也可以使用 :doc:`emperor protocol <EmperorProtocol>` 与emperor通信。
 
-Integrating the Emperor with the FastRouter
+将Emperor和FastRouter集成在一起
 -------------------------------------------
 
-The FastRouter is a proxy/load-balancer/router speaking :doc:`Protocol`.  Yann
-Malet from `Lincoln Loop`_ has released `a draft about massive Emperor +
-Fastrouter deployment`_ (PDF) using :doc:`Caching` as a hostname to socket
-mapping storage.
+FastRouter是一个使用 :doc:`Protocol` 的代理/负载均衡器/路由器。来自  `Lincoln Loop`_  的Yann
+Malet发布了 `a draft about massive Emperor +
+Fastrouter deployment`_ (PDF)，使用 :doc:`Caching` 作为socket映射存储的主机名。
 
 .. _Lincoln Loop: http://lincolnloop.com/
 
 .. _`a draft about massive Emperor + Fastrouter deployment`: http://projects.unbit.it/uwsgi/raw-attachment/wiki/Emperor/lincolnloop.pdf
 
-Notes
+注意
 -----
 
-* At startup, the emperor ``chdir()`` to the vassal dir. All vassal instances will start from here.
-* If the uwsgi binary is not in your system path you can force its path with ``binary-path``::
+* 启动时，emperor ``chdir()`` 到vassal目录。所有的vassal实例将从这里启动。
+* 如果uwsgi二进制文件不在你的系统路径中，那么你可以使用 ``binary-path`` 来强制其路径::
     
     ./uwsgi --emperor /opt/apps --binary-path /opt/uwsgi/uwsgi
 
-* Sending ``SIGUSR1`` to the emperor will print vassal status in its log.
-* Stopping (``SIGINT``/``SIGTERM``/``SIGQUIT``) the Emperor will invoke
-  Ragnarok and kill all the vassals.
-* Sending ``SIGHUP`` to the Emperor will reload all vassals.
-* Sending ``SIGURG`` to the Emperor will remove all vassals from the blacklist
-* The emperor should generally not be run with ``--master``, unless master
-  features like advanced logging are specifically needed.
-* The emperor should generally be started at server boot time and left alone,
-  not reloaded/restarted except for uWSGI upgrades; emperor reloads are a bit
-  drastic, reloading all vassals at once. Instead vassals should be reloaded
-  individually when needed, in the manner of the imperial monitor in use.
+* 发送 ``SIGUSR1`` 到emperor将会在其日志中打印vassal状态。
+* 停止 (``SIGINT``/``SIGTERM``/``SIGQUIT``) Emperor将会调用
+  Ragnarok，并杀死所有vassal。
+* 发送 ``SIGHUP`` 到Emperor将会重载所有的vassal。
+* 发送 ``SIGURG`` 到Emperor将会把所有的vassal从黑名单中移除。
+* 一般来讲，不应该带 ``--master`` 运行emperor，除非有特别需要的master特性，例如高级日志记录。
+* 一般来讲，emperor应该在服务器启动时启动，并且保持不动，不重载/重启，除非uWSGI升级；emperor重载有点猛，会一次性重载所有的vassal。相反，vassal应该在需要的时候单独重载，以使用imperial监控器的方式。
 
-Todo
-----
+待办事项
+--------
 
-* Docs-TODO: Clarify what the "chdir-on-startup" behavior does with
-  non-filesystem monitors.
-* Export more magic vars
-* Add support for multiple sections in xml/ini/yaml files (this will allow to
-  have a single config file for multiple instances)
+* 文档待办事项：使用非文件系统监控器理清"启动时更改目录"行为做了什么。
+* 导出更多魔术变量
+* 增加对xml/ini/yaml文件中多部分的支持 (这将允许将单个配置文件用于多个实例中)

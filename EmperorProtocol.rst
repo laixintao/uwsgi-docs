@@ -1,17 +1,14 @@
 Emperor协议
 ====================
 
-As of 1.3 you can spawn custom applications via the :doc:`Emperor<Emperor>`.
+从1.3开始，你可以通过 :doc:`Emperor<Emperor>` 生成自定义应用。
 
-Non-uWSGI Vassals should never daemonize, to maintain a link with the Emperor.
-If you want/need better integration with the Emperor, implement the Emperor
-protocol.
+非uWSGI Vassal应该永不进行守护，以维持与Emperor的链接。如果你想/需要与Emperor更好的集成，那么实现Emperor协议。
 
-The protocol
+协议
 ------------
 
-An environment variable ``UWSGI_EMPEROR_FD`` is passed to every vassal,
-containing a file descriptor number.
+环境变量 ``UWSGI_EMPEROR_FD`` 会被传递给每个vassal，包含一个文件描述符号。
 
 .. code-block:: python
 
@@ -20,7 +17,7 @@ containing a file descriptor number.
   if has_emperor:
      print "I'm a vassal snake!"
 
-Or in Perl,
+或者在Perl中，
 
 .. code-block:: python
 
@@ -29,7 +26,7 @@ Or in Perl,
     print "I am a vassal.\n"
   }
 
-Or in C,
+或者在C中，
 
 .. code-block:: c
 
@@ -40,17 +37,17 @@ Or in C,
       fprintf(stderr, "I am a vassal.\n");
   }
 
-From now you can receive (and send) messages from (and to) the Emperor over this file descriptor.
+从现在开始，你可以通过这个文件描述符从Emperor接收信息（发送信息到Emperor）。
 
-Messages are byte sized (0-255), and each number (byte) has a meaning.
+消息时字节大小 (0-255)，并且每个数字 (字节) 都有其含义。
 
 == ==
-0  Sent by the Emperor to stop a vassal
-1  Sent by the Emperor to reload a vassal / sent by a vassal when it has been spawned
-2  Sent by a vassal to ask the Emperor for configuration chunk
-5  Sent by a vassal when it is ready to accept requests
-17 Sent by a vassal after the first request to announce loyalty
-22 Sent by a vassal to notify the Emperor of voluntary shutdown
-26 Heartbeat sent by the vassal. After the first received heartbeat, the Emperor will expect more of them from the vassal.
-30 Sent by the vassal to ask for :doc:`Broodlord` mode.
+0  由Emperor发送，用来停止一个vassal
+1  由Emperor发送，用来重载一个vassal / 当vassal已经生成时，由其发送
+2  由vassal发送，用来向Emperor请求配置块
+5  当vassal准备好接收请求时，由其发送
+17 在第一个宣告loyalty的请求后，由vassal发送
+22 由vassal发送，用来通知Emperor自愿的关闭
+26 vassal发送的心跳。在第一个接收到的心跳之后，Emperor将会期待更多来自该vassal的心跳。
+30 由vassal发送，用来请求 :doc:`Broodlord` 模式。
 == ==

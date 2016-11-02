@@ -1,23 +1,22 @@
-Fallback configuration
+后备配置
 ======================
 
-(available from 1.9.15-dev)
+(从1.9.15-dev起可用)
 
-If you need a "reset to factory defaults", or "show a welcome page if the user has made mess with its config" scenario, fallback configuration
-is your silver bullet
+如果你需要一个"重置到出厂默认设置"，或者"在用户把配置弄得一团糟的时候显示一个欢迎页面"的场景，那么后备配置就是你的银弹。
 
-Simple case
+简单的例子
 ***********
 
-A very common problem is screwing-up the port on which the instance is listening.
+一个非常普遍的问题是screwing-up the port on which the instance is listening.
 
-To emulate this kind of error we try to bind on port 80 as an unprivileged user:
+为了模拟这样的错误，我们试着以非特权用户来绑定80端口:
 
 .. code-block:: sh
 
    uwsgi --uid 1000 --http-socket :80
    
-uWSGI will exit with:
+uWSGI将会退出:
 
 .. code-block:: sh
 
@@ -57,7 +56,7 @@ Your error will be now something like:
 As you can see, the instance has detected the exit code 1 and has binary patched itself with a new config (without changing the pid, or calling fork())
 
 
-Broken apps
+已破坏应用
 ***********
 
 Another common problem is the inability to load an application, but instead of bringing down the whole site we want to load
@@ -69,13 +68,13 @@ an alternate application:
    
 Here the key is --need-app. It will call exit(1) if the instance has not been able to load at least one application.
 
-Multiple fallback levels
+多种回退层次
 ************************
 
 Your fallback config file can specify a fallback-config directive too, allowing multiple fallback levels. BEWARE OF LOOPS!!!
 
-How it works
-************
+它是如何工作的
+***************
 
 The objective is catching the exit code of a process before the process itself is destroyed (we do not want to call another fork(), or destroy already opened file descriptors)
 

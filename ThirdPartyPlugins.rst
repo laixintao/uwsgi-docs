@@ -1,9 +1,9 @@
 uWSGI第三方插件
 =========================
 
-The following plugins (unless otherwise specified) are not commercially supported.
+以下插件 (除非另有特殊说明)非商业支持。
 
-Feel free to add your plugin to the list by sending a pull request to the ``uwsgi-docs`` project.
+你可以随意通过发送pull请求给 ``uwsgi-docs`` 项目来添加你的插件到该列表。
 
 uwsgi-capture
 *************
@@ -12,7 +12,7 @@ uwsgi-capture
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-capture
 
-Allows gathering video4linux frames in a sharedarea.
+允许在共享区域内收集video4linux帧。
 
 
 uwsgi-wstcp
@@ -22,7 +22,7 @@ uwsgi-wstcp
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-wstcp
 
-Maps websockets to TCP connections (useful for proxying via javascript).
+映射websocket到TCP连接 (适用于通过javascript的代理)。
 
 uwsgi-pgnotify
 **************
@@ -31,7 +31,7 @@ uwsgi-pgnotify
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-pgnotify
 
-Integrates the PostgreSQL notification system with the uWSGI signal framework.
+将PostgreSQL通知系统和uWSGI信号框架集成在一起。
 
 uwsgi-quota
 ***********
@@ -40,7 +40,7 @@ uwsgi-quota
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-quota
 
-Allows to set and monitor filesystem quotas.
+允许设置和监控文件系统配额。
 
 uwsgi-eventfd
 *************
@@ -49,7 +49,7 @@ uwsgi-eventfd
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-eventfd
 
-Allows to monitor eventfd() objects (like events sent by the cgroup system).
+允许监控eventfd()对象 (例如由cgroup系统发送的事件)。
 
 uwsgi-console-broadcast
 ***********************
@@ -58,7 +58,7 @@ uwsgi-console-broadcast
 * 作者： unbit
 * 网站： https://github.com/unbit/uwsgi-console-broadcast
 
-Exposes hooks for sending broadcast messages to user terminals.
+公开用于发送广播消息给用户终端的钩子。
 
 uwsgi-strophe
 *************

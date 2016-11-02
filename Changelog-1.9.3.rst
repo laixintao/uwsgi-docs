@@ -7,11 +7,11 @@ uWSGI 1.9.3
 错误修复
 ********
 
-fixed imports in the JVM build system when virtualenvs are used (Ryan Kaskel)
+修复当使用虚拟环境的时候，在JVM构建系统中的导入问题 (Ryan Kaskel)
 
-fixed mod_proxy_uwsgi with apache 2.4
+修复apache 2.4的mod_proxy_uwsgi问题
 
-fixed php headers generation when Status is created from the php app itself
+修复当Status是由php应用自身创建的时候的php头部问题
 
 
 新特性
@@ -60,27 +60,26 @@ Emperor已被扩展来支持可插拔配置器：
 即用setuid和setgid
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a recent uWSGI maling-list thread, the need to not rely on file system permissions for the tyrant mode emerged.
+在最近的uWSGI邮件列表支线中，对于tyrant模式，不依赖于文件系统权限的需求应运而生。
 
-Albeit it is the most secure approach, two new options --immediate-uid and --immediate-gid have been added.
+尽管它是最安全的方法，但是还是添加了两个新的选项--immediate-uid和--immediate-gid。
 
-Setting them on top of your vassal file will force the instance to setuid()/setgid() as soon as possible and without the (theoretical) possibility to override them.
+在你的vassal文件顶部设置它们将会强制实例尽快setuid()/setgid()，并且（理论上来讲）不可能覆盖掉它们。
 
-The word "theoretical" here is the key, you always need to remember that a security bug in uWSGI could allow a malicious user to change privileges, so if you really
-care security (or do not trust uWSGI developers ;) always drop privileges before the vassal/instance is spawned (like in standard tyrant mode)
+这里，“理论上来讲”这个词是关键，你需要记住，uWSGI中的一个安全性问题可能允许恶意用户修改权限，因此，如果你真的在意安全性 (或者不信任uWSGI开发者;) ，那么就要在生成vassal/实例之前删除权限 (就像在标准的tyrant模式中)
 
 Honouring symlinks in tyrant mode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The option --emperor-tyrant-nofollow has been added forcing the emperor to now follow symlinks when searching for uid/gid in tyrant mode.
+已经添加了选项--emperor-tyrant-nofollow，用来在tyrant模式中搜索uid/gid的时候，迫使emperor遵循symlinks。
 
 This option allows the sysadmin to simply symlink configurations and just change the uid/gid of the symlink it self (remember to
 pass the -h option to chown !!!)
 
-The "rpcret" routing action (or usa Lua to write advanced rules)
+"rpcret"路由动作 (或者使用Lua编写高级规则)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :doc:`InternalRouting` continue to be improved.
+:doc:`InternalRouting` 在持续改善中。
 
 You can already call rpc function for the routing system (to generate response bypassing WSGI/PSGI/Rack/... engines):
 
@@ -145,6 +144,6 @@ a JIT compiler is the best approach.
 可用性
 ************
 
-uWSGI 1.9.3 has been released on 20130328 and can be downloaded from:
+uWSGI 1.9.3已经在20130328发布，你可以从下面的地址中下载：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.3.tar.gz
