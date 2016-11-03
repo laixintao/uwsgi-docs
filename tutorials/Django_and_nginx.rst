@@ -387,13 +387,12 @@ uWSGI使用该文件运行。这使得管理配置更容易。
     # Or install LTS (long term support).
     pip install http://projects.unbit.it/downloads/uwsgi-lts.tar.gz
 
-The uWSGI wiki describes several `installation procedures`_. Before installing
-uWSGI system-wide, it's worth considering which version to choose and the most
-apppropriate way of installing it.
+uWSGI的wiki描述了几种 `installation procedures`_. 在系统级安装
+uWSGI之前，值得考虑下要选择哪个版本，以及最合适的安装方法。
 
 .. _installation procedures: http://projects.unbit.it/uwsgi/wiki/Install
  
-Check again that you can still run uWSGI just like you did before:
+再次检查你是否仍然能如之前那样运行uWSGI:
     
 .. code-block:: bash
 
@@ -402,10 +401,9 @@ Check again that you can still run uWSGI just like you did before:
 Emperor模式
 ------------
 
-uWSGI can run in 'emperor' mode. In this mode it keeps an eye on a directory of
-uWSGI config files, and will spawn instances ('vassals') for each one it finds.
+uWSGI可以运行在'emperor'模式。在这种模式下，它会监控uWSGI配置文件目录，然后为每个它找到的配置文件生成实例 ('vassals')。
 
-Whenever a config file is amended, the emperor will automatically restart the
+每当修改了一个配置文件，emperor将会自动重启
 vassal.
 
 .. code-block:: bash
@@ -418,55 +416,47 @@ vassal.
     # run the emperor
     uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
 
-You may need to run uWSGI with sudo:
+你或许需要使用sudo来运行uWSGI:
 
 .. code-block:: bash
 
     sudo uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
 
-The options mean:
+选项表示:
 
-* ``emperor``: where to look for vassals (config files)
-* ``uid``: the user id of the process once it's started
-* ``gid``: the group id of the process once it's started
+* ``emperor``: 查找vassals (配置文件)的地方
+* ``uid``: 进程一旦启动后的用户id
+* ``gid``: 进程一旦启动后的组id
  
-Check the site; it should be running.
+检查站点；它应该在运行。
 
 系统启动时运行uWSGI
 ----------------------------------------
 
-The last step is to make it all happen automatically at system startup time.
+最后一步是让这一切在系统启动的时候自动发生。
 
-For many systems, the easiest (if not the best) way to do this is to use the ``rc.local`` file.
+对于许多系统来说，最简单 (如果不是最好的)的方式是使用 ``rc.local`` 文件。
 
-Edit ``/etc/rc.local`` and add::
+编辑 ``/etc/rc.local`` 然后在"exit 0"行前添加::
 
     /usr/local/bin/uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data --daemonize /var/log/uwsgi-emperor.log
 
-before the line "exit 0".
 
-And that should be it!
+应该就这样！
 
 进一步的配置
 ---------------------
 
-It is important to understand that this has been a *tutorial*, to get you
-started. You **do** need to read the nginx and uWSGI documentation, and study
-the options available before deployment in a production environment.
+理解这就是一个让你开始的 *教程* 很重要。你 **真的真的** 需要读一读nginx和uWSGI文档，并在将部署到生产环境之前学习可用的选项。
 
-Both nginx and uWSGI benefit from friendly communities, who are able to offer
-invaluable advice about configuration and usage.
+nginx和uWSGI都从友好的社区中获益，这些社区都能提供关于配置和使用的宝贵建议。
 
 nginx
 ^^^^^
 
-General configuration of nginx is not within the scope of this tutorial though
-you'll probably want it to listen on port 80, not 8000, for a production
-website.
+然而，nginx的一般配置并不在这篇教程的范围之内，对于一个生产网站，你可能会想要让它监听80端口，而不是8000。
 
-You should also configure a separate nginx location block for serving non-Django
-files. For example, it's inefficient to serve static files via uWSGI. Instead, 
-serve them directly from Nginx and completely bypass uWSGI.
+你应该也为提供非Django的文件服务配置一个独立的nginx location块。例如，通过uWSGI提供静态文件服务并不有效。相反，直接从Nginx对其提供服务，并且完全绕过uWSGI会更有效。
 
 uWSGI
 ^^^^^
@@ -477,9 +467,7 @@ uWSGI支持多种配置方式。见 `uWSGI's documentation`_ 和
 .. _uWSGI's documentation: https://uwsgi-docs.readthedocs.io
 .. _examples: http://projects.unbit.it/uwsgi/wiki/Example
 
-在这篇教程中，已经提到了一些uWSGI选项；others you ought to
-look at for a deployment in production include (listed here with example
-settings)::
+在这篇教程中，已经提到了一些uWSGI选项；对于生产上的部署，其他你应该看一看的选项包括 (通过样例设置列在这里)::
 
     env = DJANGO_SETTINGS_MODULE=mysite.settings # set an environment variable
     safe-pidfile = /tmp/project-master.pid # create a pidfile

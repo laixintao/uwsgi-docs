@@ -91,14 +91,14 @@ You can run an unlimited number of zerg pools (on several UNIX sockets) and map 
 
 With a config like this, you will have two zergpools, each serving two sockets.
 
-You can now attach instances to them.
+现在，你可以把实例附加到它们上了。
 
 .. code-block:: sh
 
   uwsgi --zerg /tmp/zergpool_1 --wsgi-file myapp.wsgi --master --processes 8
   uwsgi --zerg /tmp/zergpool_2 --rails /var/www/myapp --master --processes 4
 
-or you can attach a single instance to multiple Zerg servers.
+或者你可以附加一个单一的实例到多个Zerg服务器上。
 
 .. code-block:: sh
 
