@@ -1,9 +1,9 @@
-The PyPy plugin
+PyPy插件
 ===============
 
-Requires uWSGI >= 2.0.9
+要求uWSGI >= 2.0.9
 
-Introduction
+介绍
 ^^^^^^^^^^^^
 
 Idea/Design: Maciej Fijalkowski
@@ -119,7 +119,7 @@ If you want to retrieve the contents of the embedded pypy_setup.py file you can 
 
    uwsgi --print-sym uwsgi_pypy_setup
 
-WSGI support
+WSGI支持
 ^^^^^^^^^^^^
 
 The plugin implements PEP 333 and PEP 3333. You can load both WSGI modules and ``mod_wsgi`` style ``.wsgi`` files.
@@ -173,7 +173,7 @@ Having a runtime shell for making tests is very nice to have. You can use IPytho
    uwsgi --socket :3031 --pypy-home /opt/pypy --pypy-eval "import IPython; IPython.embed()" --honour-stdin
    
    
-uWSGI API status
+uWSGI API状态
 ^^^^^^^^^^^^^^^^
 
 The following API functions, hooks and attributes are supported as of 20130526.
@@ -202,7 +202,7 @@ The following API functions, hooks and attributes are supported as of 20130526.
 * :func:`uwsgi.register_rpc()`
 * :func:`uwsgi.register_signal()`
   
-Options
+选项
 ^^^^^^^
 
 
@@ -220,8 +220,8 @@ Options
 * ``pypy-ini-paste`` - load a paste.deploy .ini configuration and use its [uwsgi] section
 
 
-Notes
-^^^^^
+注意事项
+^^^^^^^^
 
 * Mixing libpython with libpypy-c is explicitly forbidden. A check in the pypy plugin prevents you from doing such a hellish thing.
 * The PyPy plugin is generally somewhat more "orthodox" from a Python programmer point of view, while the CPython one may be a little blasphemous in many areas. We have been able to make that choice as we do not need backward compatibility with older uWSGI releases.

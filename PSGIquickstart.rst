@@ -1,4 +1,4 @@
-Quickstart for perl/PSGI applications
+perl/PSGI应用快速入门
 =====================================
 
 

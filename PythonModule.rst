@@ -137,10 +137,10 @@ SNMP函数
 .. function:: snmp_set_counter64(oidnum, value)
 .. function:: snmp_set_gauge(oidnum, value)
 
-   :param oidnum: An integer containing the oid number target.
-   :param value: An integer containing the new value of the counter or gauge.
+   :param oidnum: 一个包含oid数字目标的整数
+   :param value: 一个包含计数器或测量新值的整数。
 
-   Sets the counter or gauge to a specific value.
+   设置计数器或测量为一个指定的值。
 
 .. function:: snmp_incr_counter32(oidnum, value)
 .. function:: snmp_incr_counter64(oidnum, value)
@@ -149,31 +149,31 @@ SNMP函数
 .. function:: snmp_decr_counter64(oidnum, value)
 .. function:: snmp_decr_gauge(oidnum, value)
 
-   :param oidnum: An integer containing the oid number target.
-   :param value: An integer containing the amount to increase or decrease the counter or gauge. If not specified the default is 1.
+   :param oidnum: 一个包含oid数字目标的整数。
+   :param value: 一个包含增加/减少计数器或测量的量整数值。如果未指定，默认为1.
 
-   Increases or decreases the counter or gauge by a specific amount.
+   增加或减少计数器或测量一个特定的量。
 
-   .. note:: uWSGI OID tree starts at 1.3.6.1.4.1.35156.17
+   .. note:: uWSGI OID树从1.3.6.1.4.1.35156.17开始
 
 spooler函数
 -----------------
 
 .. function:: send_to_spooler(message_dict=None, spooler=None, priority=None, at=None, body=None, **kwargs)
 
-   :param message_dict: The message (string keys, string values) to spool. Either this, or **kwargs may be set.
-   :param spooler: The spooler (id or directory) to use.
-   :param priority: The priority of the message. Larger = less important.
-   :param at: The minimum UNIX timestamp at which this message should be processed.
-   :param body: A binary (bytestring) body to add to the message, in addition to the message dictionary itself. Its value will be available in the key ``body`` in the message.
+   :param message_dict: 发送到spool的消息 (字符串键，字符串值)。要么这样，要么设置**kwargs。
+   :param spooler: 要使用的spooler (id或者目录)
+   :param priority: 消息的优先级。越大越不重要。
+   :param at: 应该处理这条信息的最小的UNIX时间戳。
+   :param body: 除了消息字典本身，添加到消息的一个二进制 (字节字符串)体。它的值可通过消息中的 ``body`` 键访问。
 
-   Send data to the :doc:`Spooler`. Also known as `spool()`.
+   发送数据到 :doc:`Spooler`. 又名 `spool()`.
 
-   .. note:: Any of the keyword arguments may also be passed in the message dictionary. This means they're reserved words, in a way...
+   .. note:: 所有的关键字参数也可以在消息字典中传递。这意味着它们是保留字，嗯，某种程度上……
 
 .. function:: set_spooler_frequency(seconds)
 
-   Set how often the spooler runs.
+   设置spooler运行的频率。
 
 
 .. function:: spooler_jobs()
@@ -183,7 +183,7 @@ spooler函数
 
 .. function:: spooler_get_task(path)
 
-   :param path: The relative or absolute path to the task to read
+   :param path: 读取任务的相对/绝对路径
 
 
 高级方法
@@ -191,9 +191,9 @@ spooler函数
 
 .. function:: send_message()
 
-   Send a generic message using :doc:`Protocol`.
+   使用 :doc:`Protocol` 发送一般消息。
 
-   .. note:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_uwsgi_message()``.
+   .. note:: 这个函数被称为 ``send_uwsgi_message()`` ，直到版本 `2f970ce58543278c851ff30e52758fd6d6e69fdc`.
 
 
 .. function:: route()
@@ -201,26 +201,24 @@ spooler函数
 
 .. function:: send_multi_message()
 
-   Send a generic message to multiple recipients using :doc:`Protocol`.
+   使用 :doc:`Protocol` 发送一条一般消息到多个接收者
 
-   .. note:: Until version `2f970ce58543278c851ff30e52758fd6d6e69fdc` this function was called ``send_multi_uwsgi_message()``.
+   .. note:: 这个函数被称为 ``send_multi_uwsgi_message()`` ，直到 `2f970ce58543278c851ff30e52758fd6d6e69fdc` 版本。
 
-   .. seealso:: :doc:`Clustering` for examples
+   .. seealso:: 查看 :doc:`Clustering` 获得更多例子
 
 
 
 .. function:: accepting(accepting=True)
 
-   Set the accepting flag of the current worker to the value. This is
-   required when using `Overriding Workers`_ and touch-chain-reload at
-   the same time.
+   设置当前worker的接受标志的值。在同时使用 `Overriding Workers`_ 和加载时建立链的时候必须。
 
    .. seealso:: :doc:`WorkerOverride`
 
 
 .. function:: reload()
 
-   Gracefully reload the uWSGI server stack.
+   优雅地重载uWSGI服务器栈。
 
    .. seealso:: :doc:`Reload`
 
@@ -230,25 +228,25 @@ spooler函数
 
 .. function:: workers() -> dict
 
-   Get a statistics dictionary of all the workers for the current server. A dictionary is returned.
+   为当前服务器获取所有worker的统计数据字典。返回一个字典。
 
 
 .. function:: masterpid() -> int
 
-   Return the process identifier (PID) of the uWSGI master process.
+   返回uWSGI master进程的进程标识符 (PID)。
 
 
 .. function:: total_requests() -> int
 
-   Returns the total number of requests managed so far by the pool of uWSGI workers.
+   返回的至今由uWSGI worker池管理的请求总数。
 
 .. function:: get_option()
 
-   Also available as `getoption()`.
+   也可作为 `getoption()` 使用。
 
 .. function:: set_option()
 
-   Also available as `setoption()`.
+   也可作为 `setoption()` 使用。
 
 
 .. function:: sorry_i_need_to_block()
@@ -283,7 +281,7 @@ spooler函数
 
 .. function:: lock(locknum=0)
 
-   :param locknum: The lock number to lock. Lock 0 is always available.
+   :param locknum: 要锁的锁号。Lock 0总是可用的。
 
 
 .. function:: is_locked()
@@ -291,7 +289,7 @@ spooler函数
 
 .. function:: unlock(locknum=0)
 
-   :param locknum: The lock number to unlock. Lock 0 is always available.
+   :param locknum: 要解锁的锁号。Lock 0总是可用的。
 
 
 .. function:: cl()
@@ -324,15 +322,15 @@ spooler函数
 
 .. function:: signal(num)
 
-   :param num: the signal number to raise
+   :param num: 引发的信号
 
 
 .. function:: signal_wait([signum])
 
-   Block the process/thread/async core until a signal is received. Use ``signal_received`` to get the number of the signal received.
-   If a registered handler handles a signal, ``signal_wait`` will be interrupted and the actual handler will handle the signal.
+   阻塞进程/线程/异步核心直到接收到了一个信号。使用 ``signal_received`` 来获取接收到的信号值。
+   如果已经为该信号注册了一个处理函数，那么 ``signal_wait`` 将被终端，而实际的处理函数将处理该信号。
 
-   :param signum: Optional - the signal to wait for
+   :param signum: 可选 - 要等待的信号
 
 
 .. function:: signal_registered()
@@ -340,7 +338,7 @@ spooler函数
 
 .. function:: signal_received()
 
-   Get the number of the last signal received. Used in conjunction with ``signal_wait``.
+   获取最后收到的信号值。结合 ``signal_wait`` 使用。
 
 
 .. function:: add_file_monitor()
@@ -348,8 +346,8 @@ spooler函数
 
 .. function:: add_timer(signum, seconds)
 
-   :param signum: The signal number to raise.
-   :param seconds: The interval at which to raise the signal.
+   :param signum: 引发的信号值。
+   :param seconds: 引发信号的时间间隔。
 
 
 .. function:: add_probe()
@@ -359,21 +357,21 @@ spooler函数
 
    Add an user-space (red-black tree backed) timer.
 
-   :param signum: The signal number to raise.
-   :param seconds: The interval at which to raise the signal.
-   :param iterations: How many times to raise the signal. 0 (the default) means infinity.
+   :param signum: 引发的信号值。
+   :param seconds: 引发信号的时间间隔。
+   :param iterations: 引发信号的次数。0 (默认) 表示无数次。
 
 
 .. function:: add_cron(signal, minute, hour, day, month, weekday)
 
-   For the time parameters, you may use the syntax ``-n`` to denote "every n". For instance ``hour=-2`` would declare the signal to be sent every other hour.
+   对于时间参数，你可以使用语法 ``-n`` 来表示“每n”。例如， ``hour=-2`` 将声明会每隔一个小时发送一次信号。
 
-   :param signal: The signal number to raise.
-   :param minute: The minute on which to run this event.
-   :param hour: The hour on which to run this event.
-   :param day: The day on which to run this event. This is "OR"ed with ``weekday``.
-   :param month: The month on which to run this event.
-   :param weekday: The weekday on which to run this event. This is "OR"ed with ``day``. (In accordance with the POSIX standard, 0 is Sunday, 6 is Monday)
+   :param signal: 引发的信号值。
+   :param minute: 运行该事件的分钟。
+   :param hour: 运行该事件的小时。
+   :param day: 运行该事件的天。这会和 ``weekday`` 进行或运算。
+   :param month: 运行该事件的月。
+   :param weekday: 运行该事件的工作日。这会与 ``day`` 进行或运算。 (根据POSIX标准，0是星期天，6是星期一)
 
 .. function:: register_rpc()
 
@@ -452,9 +450,9 @@ spooler函数
 
 .. function:: embedded_data(symbol_name)
 
-   :param string: The symbol name to extract.
+   :param string: 要提取的符号名。
 
-   Extracts a symbol from the uWSGI binary image.
+   从uWSGI二进制镜像中提取一个符号。
 
    .. seealso:: :doc:`Embed`
 
@@ -464,19 +462,19 @@ spooler函数
 
 .. function:: mule_msg(string[, id])
 
-   :param string: The bytestring message to send.
-   :param id: Optional - the mule ID to receive the message. If you do not specify an ID, the message will go to the first available programmed mule.
+   :param string: 要发送的字节字符串消息。
+   :param id: 可选 - 接收该消息的mule ID。如果你不指定一个ID，那么这条消息就会被发送到第一个可用的编程mule。
 
-   Send a message to a mule.
+   发送一条消息给一个mule。
 
 .. function:: farm_msg()
 
 
 .. function:: mule_get_msg()
 
-   :return: A mule message, once one is received.
+   :return: 一旦接收到一条mule消息，则返回。
 
-   Block until a mule message is received and return it. This can be called from multiple threads in the same programmed mule.
+   阻塞，直到接收到了一条Mule消息，并返回这条消息。可以在同一个编程mule中从多个线程中调用该函数。
 
 
 .. function:: farm_get_msg()
@@ -497,9 +495,9 @@ spooler函数
 
 .. function:: async_sleep(seconds)
 
-   Suspend handling the current request for ``seconds`` seconds and pass control to the next async core.
+   暂停处理当前请求 ``seconds`` 秒，并将控制权传给下一个异步核心。
 
-   :param seconds: Sleep time, in seconds.
+   :param seconds: 休眠时间，以秒为单位。
 
 
 .. function:: async_connect()
@@ -513,24 +511,23 @@ spooler函数
 
 .. function:: suspend()
 
-   Suspend handling the current request and pass control to the next async core clamoring for attention.
+   挂起处理当前请求，并将控制权传给下一个要求控制权的异步核心。
 
 .. function:: wait_fd_read(fd[, timeout])
 
-   Suspend handling the current request until there is something to be read on file descriptor ``fd``.
-   May be called several times before yielding/suspending to add more file descriptors to the set to be watched.
+   挂起处理当前请求，直到文件描述符 ``fd`` 上有可读数据。在挂起以添加更多文件描述符到被监控的集合中之前可能会被多次调用。
 
-   :param fd: File descriptor number.
-   :param timeout: Optional timeout (infinite if omitted).
+   :param fd: 文件描述符号。
+   :param timeout: 可选的超时 (如果省略，则是无限).
 
 
 .. function:: wait_fd_write(fd[, timeout])
 
-   Suspend handling the current request until there is nothing more to be written on file descriptor ``fd``.
-   May be called several times to add more file descriptors to the set to be watched.
+   挂起处理当前请求，直到文件描述符 ``fd`` 上没有更多可写的内容。
+   在添加更多文件描述符到被监控的集合中之前可能会被多次调用。
 
-   :param fd: File descriptor number.
-   :param timeout: Optional timeout (infinite if omitted).
+   :param fd: 文件描述符号。
+   :param timeout: 可选的超时 (如果省略，则是无限).
 
 
 .. _SharedAreaAPI:
@@ -542,59 +539,59 @@ SharedArea函数
 
 .. function:: sharedarea_read(pos, len) -> bytes
 
-   Read a byte string from the uWSGI :doc:`SharedArea`.
+   从uWSGI :doc:`SharedArea` 读取一个字节字符串。
 
-   :param pos: Starting position to read from.
-   :param len: Number of bytes to read.
-   :return: Bytes read, or ``None`` if the shared area is not enabled or the read request is invalid.
+   :param pos: 读取的起始位置。
+   :param len: 要读取的字节数。
+   :return: 读取的字节，或者当共享区域未启用/读取请求无效时，返回 ``None`` 。
 
 .. function:: sharedarea_write(pos, str) -> long
 
-   Write a byte string into the uWSGI :doc:`SharedArea`.
+   将一个字节字符串写入到uWSGI :doc:`SharedArea`.
 
-   :param pos: Starting position to write to.
-   :param str: Bytestring to write.
-   :return: Number of bytes written, or ``None`` if the shared area is not enabled or the write could not be fully finished.
+   :param pos: 写入的起始位置。
+   :param str: 要写入的字节字符串。
+   :return: 已写入的字节数，或者当共享区域未启用/不能完全结束写入时，返回 ``None`` 。
 
 .. function:: sharedarea_readbyte(pos) -> int
 
-   Read a single byte from the uWSGI :doc:`SharedArea`.
+   从uWSGI :doc:`SharedArea` 读取单个字节。
 
-   :param pos: The position to read from.
-   :return: Bytes read, or ``None`` if the shared area is not enabled or the read request is invalid.
+   :param pos: 读取的起始位置。
+   :return: 读取的字节，或者当共享区域未启用/读取请求无效时，返回 ``None`` 。
 
 .. function:: sharedarea_writebyte(pos, val) -> int
 
-   Write a single byte into the uWSGI :doc:`SharedArea`.
+   将单个字节写入到uWSGI :doc:`SharedArea`.
 
-   :param pos: The position to write the value to.
-   :param val: The value to write.
-   :type val: integer
-   :return: The byte written, or ``None`` if the shared area is not enabled or the write request is invalid.
+   :param pos: 写入该值的位置。
+   :param val: 要写入的值。
+   :type val: 整型
+   :return: 已写入的字节，或者当共享区域未启用/写请求无效时，返回 ``None`` 。
 
 .. function:: sharedarea_readlong(pos) -> int
 
-   Read a 64-bit (8-byte) long from the uWSGI :doc:`SharedArea`.
+   从uWSGI :doc:`SharedArea` 读取一个64位（8字节）长的值。
 
-   :param pos: The position to read from.
-   :return: The value read, or ``None`` if the shared area is not enabled or the read request is invalid.
+   :param pos: 读取的位置。
+   :return: 读取的值，或者当共享区域未启用/读请求无效时，返回 ``None`` 。
 
 .. function:: sharedarea_writelong(pos, val) -> int
 
-   Write a 64-bit (8-byte) long into the uWSGI :doc:`SharedArea`.
+   将一个64位（8字节）长的值写入到uWSGI :doc:`SharedArea`.
 
-   :param pos: The position to write the value to.
-   :param val: The value to write.
+   :param pos: 要写入该值的位置。
+   :param val: 要写的值。
    :type val: long
-   :return: The value written, or ``None`` if the shared area is not enabled or the write request is invalid.
+   :return: 已写的值，或者当共享区域未启用/写请求无效时，返回 ``None`` 。
 
 .. function:: sharedarea_inclong(pos) -> int
 
-   Atomically increment a 64-bit long value in the uWSGI :doc:`SharedArea`.
+   自动增加uWSGI :doc:`SharedArea` 中的一个64位long值。
 
-   :param pos: The position of the value.
+   :param pos: 值的位置。
    :type val: long
-   :return: The new value at the given position, or ``None`` if the shared area is not enabled or the read request is invalid.
+   :return: 给定位置上的新的值，或者当共享区域未启用/读请求无效时，返回 ``None`` 。
 
 Erlang函数
 ----------------
@@ -607,7 +604,7 @@ Erlang函数
 
 .. function:: erlang_connect(address)
 
-   :return: File descriptor or -1 on error
+   :return: 文件描述符，或者错误时返回-1
 
 .. function:: erlang_rpc(node, module, function, argument)
 

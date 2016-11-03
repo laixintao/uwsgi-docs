@@ -83,13 +83,13 @@ Virtualenv支持
 Python 3
 --------
 
-The WSGI specification was updated for Python 3 as PEP3333_. 
+WSGI规范随着 PEP3333_ 为Python 3进行了更新。
 
-One major change is that applications are required to respond only with ``bytes`` instances, not (Unicode) strings, back to the WSGI stack.
+一个主要的改变时应用必须响应 ``bytes`` 实例，而非 (Unicode) 字符串到WSGI栈。
 
 .. _pep3333: http://www.python.org/dev/peps/pep-3333/
 
-You should encode strings or use bytes literals:
+你应该对字符串进行编码，或者使用bytes literal:
 
 .. code-block:: python
 
@@ -103,25 +103,25 @@ You should encode strings or use bytes literals:
 Paste支持
 -------------
 
-If you are a user or developer of Paste-compatible frameworks, such as Pyramid_, Pylons_ and Turbogears_ or applications using them, you can use the uWSGI ``--paste`` option to conveniently deploy your application.
+If you are a user or developer of 如果你是Paste兼容的框架（例如 Pyramid_, Pylons_ 和 Turbogears_  或者使用它们的应用）的用户或开发者，那么你可以使用uWSGI ``--paste`` 选项来方便地部署应用。
 
 .. _pyramid: http://docs.pylonsproject.org/projects/pyramid/en/latest/
 .. _turbogears: http://turbogears.org
 .. _pylons: http://www.pylonsproject.org 
 
-For example, if you have a virtualenv in :file:`/opt/tg2env` containing a Turbogears app called ``addressbook`` configured in :file:`/opt/tg2env/addressbook/development.ini`::
+例如，如果你有一个位于 :file:`/opt/tg2env` 的虚拟环境，包含一个名为 ``addressbook`` 的Turbogears应用，并把它配置在了 :file:`/opt/tg2env/addressbook/development.ini`::
 
   uwsgi --paste config:/opt/tg2env/addressbook/development.ini --socket :3031 -H /opt/tg2env
 
-That's it! No additional configuration or Python modules to write.
+就这样！无需编写额外的配置或者Python模块。
 
 .. warning::
 
-  If you setup multiple process/workers (:term:`master` mode) you will receive an error::
+  如果你设置多个进程/worker (:term:`master` mode) ，那么你将收到一个错误::
 
     AssertionError: The EvalException middleware is not usable in a multi-process environment
 
-  in which case you'll have to set the ``debug`` option in your paste configuration file to False -- or revert to single process environment.
+  在这种情况下，你将必须把你的paste配置文件中的 ``debug`` 选项设置为False —— 或者恢复到单进程环境。
 
 
 .. _PythonPecan:
@@ -129,21 +129,21 @@ That's it! No additional configuration or Python modules to write.
 Pecan支持
 -------------
 
-If you are a user or developer of the Pecan_ WSGI framework, you can use the uWSGI ``--pecan`` option to conveniently deploy your application.
+如果你是 Pecan_ WSGI框架的用户或开发者，那么你可以使用uWSGI的 ``--pecan`` 选项来方便地部署应用。
 
 .. _pecan: http://pecanpy.org
 
-For example, if you have a virtualenv in :file:`/opt/pecanenv` containing a Pecan app called ``addressbook`` configured in :file:`/opt/pecanenv/addressbook/development.py`::
+例如，如果你有一个位于 :file:`/opt/pecanenv` 的虚拟环境，包含一个名为 ``addressbook`` 的Pecan应用，并把它配置在了 :file:`/opt/pecanenv/addressbook/development.py`::
 
   uwsgi --pecan /opt/pecanenv/addressbook/development.py --socket :3031 -H /opt/pecanenv
 
 .. warning::
 
-  If you setup multiple process/workers (:term:`master` mode) you will receive an error::
+  如果你设置多个进程/worker (:term:`master` 模式)，那么你将收到一个错误::
 
     AssertionError: The DebugMiddleware middleware is not usable in a multi-process environment
 
-  in which case you'll have to set the ``debug`` option in your pecan configuration file to False -- or revert to single process environment.
+  在这种情况下，你将必须把你的Pecan配置文件中的 ``debug`` 选项设置为False —— 或者恢复到单进程环境。
 
 使用Django应用django-uwsgi
 --------------------------------

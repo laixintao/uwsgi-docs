@@ -120,39 +120,36 @@ Django
 
 * ``wsgi-file test.py``: 加载指定的文件，test.py
 
-This should serve a 'hello world' message directly to the browser on port 8000.
+当浏览器访问8000端口时，这将直接提供一个'hello world'消息。
 访问::
 
     http://example.com:8000
 
-to check. If so, it means the following stack of components works::
+来看一看。如果是这样，那么意味着以下的组件栈正常::
 
     the web client <-> uWSGI <-> Python
 
 测试你的Django项目
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now we want uWSGI to do the same thing, but to run a Django site instead of the
-``test.py`` module.
+现在，我们想让uWSGI做同样的事，但是返回一个Django站点而不是
+``test.py`` 模块。
 
-If you haven't already done so, make sure that your ``mysite`` project actually works::
+如果你还没有这样做，那么请确保你的 ``mysite`` 项目实际上正常工作::
 
     python manage.py runserver 0.0.0.0:8000
 
-And if it that works, run it using uWSGI::
+而如果正常，则使用uWSGI来运行它::
 
     uwsgi --http :8000 --module mysite.wsgi
 
-* ``module mysite.wsgi``: load the specified wsgi module
+* ``module mysite.wsgi``: 加载指定的wsgi模块
 
-Point your browser at the server; if the site appears, it means uWSGI is able to
-serve your Django application from your virtualenv, and this stack operates
-correctly::
+将你的浏览器指向该服务器；如果站点出现，那么意味着uWSGI可以为你虚拟环境中的Django应用服务，而这个栈工作正常::
 
     the web client <-> uWSGI <-> Django
 
-Now normally we won't have the browser speaking directly to uWSGI. That's a job
-for the webserver, which will act as a go-between.
+现在，通常我们不会让浏览器直接与uWSGI通信。那是web服务器的工作，这是个穿针引线的活。
 
 基本的nginx
 -----------
@@ -165,27 +162,22 @@ for the webserver, which will act as a go-between.
     sudo apt-get install nginx  
     sudo /etc/init.d/nginx start    # start nginx
 
-And now check that the nginx is serving by visiting it in a web browser on port
-80 - you should get a message from nginx: "Welcome to nginx!". That means these
-components of the full stack are working together::
+现在，通过在一个web浏览器上通过端口80访问它，来检查nginx是否正常 - 你应该会从nginx获得一个消息："Welcome to nginx!". 那意味着整个栈的这些模块都能一起正常工作::
 
     the web client <-> the web server
 
-If something else *is* already serving on port 80 and you want to use nginx
-there, you'll have to reconfigure nginx to serve on a different port. For this
-tutorial though, we're going to be using port 8000.
+如果有其他的东东已经提供端口80的服务了，并且你想要在那里使用nginx，那么你将必须重新配置nginx来提供另一个端口的服务。但是，在这个教程中，我们将使用端口8000。
 
 为你的站点配置nginx
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You will need the ``uwsgi_params`` file, which is available in the ``nginx``
-directory of the uWSGI distribution, or from
+你会需要 ``uwsgi_params`` 文件，可用在uWSGI发行版本的 ``nginx`` 目录下，或者从
 https://github.com/nginx/nginx/blob/master/conf/uwsgi_params
+找到。
 
-Copy it into your project directory. In a moment we will tell nginx to refer to
-it.
+将其拷贝到你的项目目录中。一会儿，我们将告诉nginx引用它。
 
-Now create a file called mysite_nginx.conf, and put this in it::
+现在，创建一个名为mysite_nginx.conf的文件，然后将这个写入到它里面::
 
     # mysite_nginx.conf
 
@@ -222,13 +214,9 @@ Now create a file called mysite_nginx.conf, and put this in it::
         }
     }
 
-This conf file tells nginx to serve up media and static files from the
-filesystem, as well as handle requests that require Django's intervention. For a
-large deployment it is considered good practice to let one server handle
-static/media files, and another handle Django applications, but for now, this
-will do just fine.
+这个配置文件告诉nginx提供来自文件系统的媒体和静态文件，以及处理那些需要Django干预的请求。对于一个大型部署，让一台服务器处理静态/媒体文件，让另一台处理Django应用，被认为是一种很好的做法，但是现在，这样就好了。
 
-Symlink to this file from /etc/nginx/sites-enabled so nginx can see it:
+将这个文件链接到/etc/nginx/sites-enabled，这样nginx就可以看到它了:
 
 .. code-block:: bash
 
@@ -237,14 +225,13 @@ Symlink to this file from /etc/nginx/sites-enabled so nginx can see it:
 部署静态文件
 ^^^^^^^^^^^^^^^^
 
-Before running nginx, you have to collect all Django static files in the static 
-folder. First of all you have to edit mysite/settings.py adding:
+在运行nginx之前，你必须收集所有的Django静态文件到静态文件夹里。首先，必须编辑mysite/settings.py，添加:
 
 .. code-block:: Python
 
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-and then run
+然后运行
 
 .. code-block:: bash
 
@@ -261,90 +248,78 @@ and then run
 
     sudo /etc/init.d/nginx restart
 
-To check that media files are being served correctly, add an image called
-``media.png`` to the ``/path/to/your/project/project/media directory``, then
-visit http://example.com:8000/media/media.png - if this works, you'll know at
-least that nginx is serving files correctly.
+要检查是否正确的提供了媒体文件服务，添加一个名为
+``media.png`` 的图像到 ``/path/to/your/project/project/media directory`` 中，然后访问http://example.com:8000/media/media.png - 如果这能正常工作，那么至少你知道nginx正在正确的提供文件服务。
 
-It is worth not just restarting nginx, but actually stopping and then starting
-it again, which will inform you if there is a problem, and where it is.
+值得不仅仅是重启nginx，而是实际停止然后再次启动它，这将会通知是否有问题，以及问题在哪里。
 
 nginx和uWSGI以及test.py
 ---------------------------
 
-Let's get nginx to speak to the "hello world" ``test.py`` application.
+让nginx对 ``test.py`` 应用说句"hello world"吧。
 
 .. code-block:: bash
 
     uwsgi --socket :8001 --wsgi-file test.py
 
-This is nearly the same as before, except this time one of the options is
-different:
+这几乎与之前相同，除了这次有一个选项不同：
 
-* ``socket :8001``: use protocol uwsgi, port 8001 
+* ``socket :8001``: 使用uwsgi协议，端口为8001 
 
-nginx meanwhile has been configured to communicate with uWSGI on that port, and
-with the outside world on port 8000. Visit:
+同时，已经配置了nginx在那个端口与uWSGI通信，而对外使用8000端口。访问:
 
 http://example.com:8000/
 
-to check. And this is our stack::
+来检查。而这是我们的栈::
 
     the web client <-> the web server <-> the socket <-> uWSGI <-> Python
 
-Meanwhile, you can try to have a look at the uswgi output at
-http://example.com:8001 - but quite probably, it won't work because your browser
-speaks http, not uWSGI, though you should see output from uWSGI in your
-terminal.
+同时，你可以试着看看在http://example.com:8001的uswgi输出 - 但很有可能它不会正常工作，因为你的浏览器使用http，而不是uWSGI，但你应该能够在终端上看到来自uWSGI的输出。
 
 使用Unix socket而不是端口
 -----------------------------------
 
-So far we have used a TCP port socket, because it's simpler, but in fact it's
-better to use Unix sockets than ports - there's less overhead.
+目前，我们使用了一个TCP端口socket，因为它简单些，但事实上，使用Unix socket会比端口更好 - 开销更少。
 
-Edit ``mysite_nginx.conf``, changing it to match:: 
+编辑 ``mysite_nginx.conf``, 修改它以匹配:: 
 
     server unix:///path/to/your/mysite/mysite.sock; # for a file socket
     # server 127.0.0.1:8001; # for a web port socket (we'll use this first) 
 
-and restart nginx.
+然后重启nginx.
 
-Run uWSGI again:
+再次运行uWSGI:
 
 .. code-block:: bash
 
     uwsgi --socket mysite.sock --wsgi-file test.py 
 
-This time the ``socket`` option tells uWSGI which file to use.
+这次， ``socket`` 选项告诉uWSGI使用哪个文件。
 
-Try http://example.com:8000/ in the browser.
+在浏览器中尝试访问http://example.com:8000/。
 
 如果那不行
 ^^^^^^^^^^^^^^^^^^^^
 
-Check your nginx error log(/var/log/nginx/error.log). If you see something like::
+检查nginx错误日志(/var/log/nginx/error.log)。如果你看到像这样的信息::
 
     connect() to unix:///path/to/your/mysite/mysite.sock failed (13: Permission
     denied)
 
-then probably you need to manage the permissions on the socket so that nginx is
-allowed to use it.
+那么可能你需要管理这个socket上的权限，从而允许nginx使用它。
 
-Try::
+尝试::
 
     uwsgi --socket mysite.sock --wsgi-file test.py --chmod-socket=666 # (very permissive)
 
-or::
+或者::
 
     uwsgi --socket mysite.sock --wsgi-file test.py --chmod-socket=664 # (more sensible) 
 
-You may also have to add your user to nginx's group (which is probably
-www-data), or vice-versa, so that nginx can read and write to your socket
-properly. 
+你可能还必须添加你的用户到nginx的组 (可能是
+www-data)，反之亦然，这样，nginx可以正确地读取或写入你的socket。
 
-It's worth keeping the output of the nginx log running in a terminal window so
-you can easily refer to it while troubleshooting.
+值得保留nginx日志的输出在终端窗口中滚动，这样，在解决问题的时候，你就可以容易的参考它们了。
 
 使用uwsgi和nginx运行Django应用
 ---------------------------------------------------
@@ -355,16 +330,15 @@ you can easily refer to it while troubleshooting.
 
     uwsgi --socket mysite.sock --module mysite.wsgi --chmod-socket=664
 
-Now uWSGI and nginx should be serving up not just a "Hello World" module, but
-your Django project.
+现在，uWSGI和nginx应该不仅仅可以为一个"Hello World"模块服务，还可以为你的Django项目服务。
 
 配置uWSGI以允许.ini文件
 -----------------------------------------
 
-We can put the same options that we used with uWSGI into a file, and then ask
-uWSGI to run with that file. It makes it easier to manage configurations.
+我们可以将用在uWSGI上的相同的选项放到一个文件中，然后告诉
+uWSGI使用该文件运行。这使得管理配置更容易。
 
-Create a file called ```mysite_uwsgi.ini```::
+创建一个名为 ```mysite_uwsgi.ini``` 的文件::
 
     # mysite_uwsgi.ini file
     [uwsgi]
@@ -389,25 +363,24 @@ Create a file called ```mysite_uwsgi.ini```::
     # clear environment on exit
     vacuum          = true           
 
-And run uswgi using this file:
+然后使用这个文件运行uswgi：
 
 .. code-block:: bash
 
     uwsgi --ini mysite_uwsgi.ini # the --ini option is used to specify a file
 
-Once again, test that the Django site works as expected.
+再次，测试Django站点是否如预期工作。
 
 系统级安装uWSGI
 -------------------------
 
-So far, uWSGI is only installed in our virtualenv; we'll need it installed
-system-wide for deployment purposes.
+目前，uWSGI只装在我们的虚拟环境中；出于部署需要，我们将需要让它安装在系统范围中。
 
-Deactivate your virtualenv::
+停用你的虚拟环境::
 
     deactivate
 
-and install uWSGI system-wide::
+然后在系统范围中安装uWSGI::
 
     sudo pip install uwsgi
                                                              
@@ -498,13 +471,13 @@ serve them directly from Nginx and completely bypass uWSGI.
 uWSGI
 ^^^^^
 
-uWSGI supports multiple ways to configure it. See `uWSGI's documentation`_ and
+uWSGI支持多种配置方式。见 `uWSGI's documentation`_ 和
 `examples`_.
 
 .. _uWSGI's documentation: https://uwsgi-docs.readthedocs.io
 .. _examples: http://projects.unbit.it/uwsgi/wiki/Example
 
-Some uWSGI options have been mentioned in this tutorial; others you ought to
+在这篇教程中，已经提到了一些uWSGI选项；others you ought to
 look at for a deployment in production include (listed here with example
 settings)::
 

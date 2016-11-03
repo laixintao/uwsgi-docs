@@ -1,23 +1,23 @@
 uGreen -- uWSGI Green线程
 =============================
 
-uGreen is an implementation of `green threads`_ on top of the :doc:`uWSGI async platform<Async>`.
+uGreen是在 :doc:`uWSGI async platform<Async>` 之上的一个 `green threads`_ 实现。
 
-It is very similar to Python's greenlet but built on top of the POSIX ``swapcontext()`` function. To take advantage of uGreen you have to set the number of async cores that will be mapped to green threads.
+它与Python的greenlet非常相似，但是是构建在POSIX的 ``swapcontext()`` 函数之上的。要利用uGreen，你必须设置将会映射到green线程的异步核心数。
 
-For example if you want to spawn 30 green threads:
+例如，如果你想要生成30个green线程：
 
 .. code-block:: sh
 
   ./uwsgi -w tests.cpubound_green -s :3031 --async 30 --ugreen
 
-The ``ugreen`` option will enable uGreen on top of async mode.
+``ugreen`` 选项将会在async模式之上启用uGreen。
 
-Now when you call :py:func:`uwsgi.suspend` in your app, you'll be switched off to another green thread.
+现在，当你在应用中调用 :py:func:`uwsgi.suspend` 时，你将会被切换到另一个green线程。
 
 .. _green threads: http://en.wikipedia.org/wiki/Green_threads
 
-Security and performance
+安全性和性能
 ------------------------
 
 To ensure (relative) isolation of green threads, every stack area is protected by so called "guard pages".
@@ -41,12 +41,12 @@ The context switch is very fast, we can see it as:
 The stack/registers switch is done by the POSIX ``swapcontext()`` call and we don't have to worry about it.
 
 
-Async I/O
+异步I/O
 ---------
 
 For managing async I/O you can use the Async mode FD wait functions :py:func:`uwsgi.wait_fd_read` and :py:func:`uwsgi.wait_fd_write`.
 
-Stack size
+栈大小
 ----------
 
 You can choose the uGreen stack size using the ``ugreen-stacksize <pages>`` option. The argument is in pages, not bytes.
@@ -63,7 +63,7 @@ What about ``python-coev``?
 
 Lots of uGreen has been inspired by it. The author's way to map Python threads to their implementation allows ``python-coev`` to be a little more "trustworthy" than Stackless Python. However, like Stackless, it requires a patched version of Python... :(
 
-Can I use uGreen to write Comet apps?
+我可以使用uGreen来写Comet应用吗？
 -------------------------------------
 
 Yeah! Sure! Go ahead. In the distribution you will find the ``ugreenchat.py`` script. It is a simple/dumb multiuser Comet chat. If you want to test it (for example 30 users) run it with
@@ -76,7 +76,7 @@ The code has comments for every ugreen-related line. You'll need `Bottle`_, an a
 
 .. _Bottle: http://bottlepy.org/docs/dev/
 
-Psycopg2 improvements
+Psycopg2改进
 ---------------------
 
-uGreen can benefit from the new psycopg2 async extensions and the psycogreen project. See the :file:`tests/psycopg2_green.py` and :file:`tests/psycogreen_green.py` files for examples.
+uGreen can benefit from the new psycopg2 async extensions and the psycogreen project. 见 :file:`tests/psycopg2_green.py` 和 :file:`tests/psycogreen_green.py` 文件获得样例信息。
