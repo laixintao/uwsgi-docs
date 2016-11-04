@@ -1,11 +1,9 @@
 HTTPS支持 (自1.3起)
 ============================
 
-Use the ``https <socket>,<certificate>,<key>`` option. This option may be
-specified multiple times.  First generate your server key, certificate signing
-request, and self-sign the certificate using the OpenSSL toolset:
+使用 ``https <socket>,<certificate>,<key>`` 选项。这个选项可能会被多次指定。首先使用OpenSSL工具生成你服务器的密钥，证书签名请求，以及自注册证书:
 
-.. note:: You'll want a real SSL certificate for production use.
+.. note:: 你会想要一个用于生产的真正的SSL证书的。
 
 ::
   
@@ -13,26 +11,22 @@ request, and self-sign the certificate using the OpenSSL toolset:
   openssl req -new -key foobar.key -out foobar.csr
   openssl x509 -req -days 365 -in foobar.csr -signkey foobar.key -out foobar.crt
 
-Then start the server using the SSL certificate and key just generated::
+然后使用刚刚生成的SSL证书和密钥启动服务器::
 
   uwsgi --master --https 0.0.0.0:8443,foobar.crt,foobar.key
 
-As port 443, the port normally used by HTTPS, is privileged (ie. non-root
-processes may not bind to it), you can use the shared socket mechanism and drop
-privileges after binding like thus::
+由于端口443（这个端口通常用于HTTPS）是特权端口 (即非root进程可能不会绑定它)，因此你可以使用共享socket机制，像这样绑定后去除特权::
 
   uwsgi --shared-socket 0.0.0.0:443 --uid roberto --gid roberto --https =0,foobar.crt,foobar.key
 
-uWSGI will bind to 443 on any IP, then drop privileges to those of ``roberto``,
-and use the shared socket 0 (``=0``) for HTTPS.
+uWSGI将会绑定到任何IP的443端口，然后删除那些 ``roberto`` 的特权，接着讲共享socket 0 (``=0``) 用于HTTPS。
 
-.. note:: The =0 syntax is currently undocumented.
+.. note:: =0语法目前未公开。
 
-Setting SSL/TLS ciphers
+设置SSL/TLS加密
 -----------------------
 
-The ``https`` option takes an optional fourth argument you can use to specify
-the OpenSSL cipher suite.
+``https`` 选项的第四个参数是可选的，你可以用它来指定OpenSSL加密套件。
 
 .. code-block:: ini
 
@@ -46,31 +40,27 @@ the OpenSSL cipher suite.
    http-to = /tmp/uwsgi.sock
 
 
-This will set all of the **HIGHest** ciphers (whenever possible) for your
-SSL/TLS transactions.
+这将会为你的SSL/TLS事务（尽可能）设置所有的 **HIGHest（最高的）** 密码。
 
-Client certificate authentication
+客户端证书认证
 ---------------------------------
 
-The ``https`` option can also take an optional 5th argument. You can use it to
-specify a CA certificate to authenticate your clients with.  Generate your CA
-key and certificate (this time the key will be 4096 bits and
-password-protected)::
+``https`` 还可以有可选的第五个参数。你可以用它来指定一个CA证书来对你的客户端进行鉴权。生成你的CA密钥和证书 (这次，密钥将会是4096位，并且有密保)::
 
   openssl genrsa -des3 -out ca.key 4096
   openssl req -new -x509 -days 365 -key ca.key -out ca.crt
 
-Generate the server key and CSR (as before)::
+生成服务器密钥和CSR (如前)::
 
   openssl genrsa -out foobar.key 2048
   openssl req -new -key foobar.key -out foobar.csr
 
-Sign the server certificate with your new CA::
+使用你的新CA注册服务器证书::
 
   openssl x509 -req -days 365 -in foobar.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out foobar.crt
 
-Create a key and a CSR for your client, sign it with your CA and package it as
-PKCS#12. Repeat these steps for each client.
+为你的客户端创建一个密钥和一个CSR，使用CA进行对其进行注册，然后将其打包为
+PKCS#12。为每个客户端重复这些步骤。
 
 ::
 
@@ -80,7 +70,7 @@ PKCS#12. Repeat these steps for each client.
   openssl pkcs12 -export -in client.crt -inkey client.key -name "Client 01" -out client.p12
 
 
-Then configure uWSGI for certificate client authentication
+然后为证书客户端鉴权配置uWSGI
 
 .. code-block:: ini
 
@@ -92,5 +82,4 @@ Then configure uWSGI for certificate client authentication
   https = =0,foobar.crt,foobar.key,HIGH,!ca.crt
   http-to = /tmp/uwsgi.sock
 
-.. note:: If you don't want the client certificate authentication to be
-   mandatory, remove the '!' before ca.crt in the https options.
+.. note:: 如果你不想要强制客户端证书鉴权，那么移除https选项中ca.crt之前的'!'。
