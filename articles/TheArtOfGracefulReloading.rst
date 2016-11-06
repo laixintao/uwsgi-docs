@@ -3,302 +3,230 @@
 
 作者：Roberto De Ioris
 
-The following article is language-agnostic, and albeit uWSGI-specific, some of
-its initial considerations apply to other application servers and platforms
-too.
+以下文章是语言无关的，而虽然有些是uWSGI特有的，但是它的一些初始考虑也适用于其他的应用服务器和平台。
 
-All of the described techniques assume a modern (>= 1.4) uWSGI release with
-the master process enabled.
+所有所述技术都假设使用的是一个现代的 (>= 1.4) uWSGI发行版本，并且启用了master进程
 
 什么是“优雅重载”？
 ****************************
 
-During the life-cycle of your webapp you will reload it hundreds of times.
+在你web应用的生命周期里，你会重载它上百次。
 
-You need reloading for code updates, you need reloading for changes in the
-uWSGI configuration, you need reloading to reset the state of your app.
+你需要为代码更新重载，你需要为uWSGI配置文件的变化重载，你需要为重置应用状态重载。
 
-Basically, reloading is one of the most simple, frequent and **dangerous**
-operation you do every time.
+基本上，重载是你每次做的最简单，最常的 **最危险** 的操作之一。
 
-So, why "graceful"?
+那么，为什么是“优雅的”？
 
-Take a traditional (and highly suggested) architecture: a proxy/load balancer
-(like nginx) forwards requests to one or more uWSGI daemons listening on various
-addresses.
+使用一种传统的（和高度建议的）架构：一个代理/负载均衡器
+(例如nginx) 将请求转发到一个或多个监听各个地址的uWSGI守护程序。
 
-If you manage your reloads as "stop the instance, start the instance", the time
-slice between two phases will result in a brutal disservice for your customers.
+如果你把重载当成“停止实例，启动实例”，那么这两个阶段之间的时间片将给你的客户带来粗鲁的无服务。
 
-The main trick for avoiding it is: not closing the file descriptors mapped to
-the uWSGI daemon addresses and abusing the Unix ``fork()`` behaviour (read:
-file descriptors are inherited by default) to ``exec()`` the ``uwsgi`` binary
-again.
+避免这种事情发生的主要窍门是：不要关闭映射到uWSGI守护进程地址的文件描述符，并且尽情使用Unix的 ``fork()`` 行为 (默认继承文件描述符) 来再次 ``exec()``  ``uwsgi`` 二进制文件。
 
-The result is your proxy enqueuing requests to the socket until the latter
-will be able to ``accept()`` them again, with the user/customer only seeing
-a little slowdown in the first response (the time required for the app to be
-fully loaded again).
+结果就是，你的代理将请求排列到socket中，直到后者能够再次 ``accept()`` 它们，而用户／客户只会看到在第一个请求中有些许的减速 (需要时间来完全再次加载应用)。
 
-Another important step of graceful reload is to avoid destroying workers/threads
-that are still managing requests. Obviously requests could be stuck, so you
-should have a timeout for running workers (in uWSGI it is called the
-"worker's mercy" and it has a default value of 60 seconds).
+优雅重载的另一个重要步骤是避免破坏仍然在管理请求的worker/线程。显然，请求可能被卡住，因此，你应该为运行中的worker配置一个超时时间 (在uWSGI中，称之为“worker的宽恕期”，默认值为60秒)。
 
-These kind of tricks are pretty easy to accomplish and basically all of the
-modern servers/application servers do it (more or less).
+这类招数是很容易做到的，并且基本上所有的服务器/应用服务器都这样做 (或多或少)。
 
-But, as always, the world is an ugly place and lot of problems arise, and the
-"inherited sockets" approach is often not enough.
+但是，一如既往，这个世界很丑陋，会有许多问题出现，而“继承socket”方法往往是不够的。
 
 出问题了
 ***************
 
-We have seen that holding the uWSGI sockets alive allows the proxy webserver
-to enqueue requests without spitting out errors to the clients. This is true
-only if your app restarts fast, and, sadly, this may not always happen.
+我们已经看到了，保持uWSGI socket活跃允许代理web服务器在不向客户端喷错误的情况下将请求入队。这只有当你的应用快速重启的时候才会发生，而不幸的是，这并不总是发生。
 
-Frameworks like Ruby on Rails or Zope start up really slow by default, your
-app could start up slowly by itself, or your machine could be so overloaded that
-every process spawn (``fork()``) takes ages.
+如Ruby on Rails或者Zope这样的框架默认情况下启动得相当慢，你的应用本身也可能启动得很慢，或者你的机器太过载了，以致于每个进程生成 (``fork()``) 都需要时间。
 
-In addition to this, your site could be so famous that even if your app restarts
-in a couple of seconds, the queue of your sockets could be filled up forcing the
-proxy server to raise an error.
+除此之外，你的站点可能非常有名，以致于即使应用载几秒钟内重启，socket队列也可能爆满，迫使代理服务器产生一个错误。
 
-Do not forget, your workers/threads that are still running requests could block
-the reload (for various reasons) for more seconds than your proxy server could
-tolerate.
+不要忘了，你那仍然载运行请求的worker/线程可能会阻塞重载（出于各种原因），以致于超过了代理服务器容忍的时间。
 
-Finally, you could have made an application error in your just-committed code,
-so uWSGI will not start, or will start sending wrong things or errors...
+最后，也有可能在你刚刚提交的代码中有一个应用错误，因此uWSGI无法启动，或者开始发送错误的东东或错误……
 
-Reloads (brutal or graceful) can easily fail.
+重载（粗鲁或者优雅）很容易失败。
 
 监听队列
 ****************
 
-Let's start with the dream of every webapp developer: *success*.
+让我们从每个web应用开发者的梦想开始： *成功*.
 
-Your app is visited by thousands of clients and you obviously make money with
-it. Unfortunately, it is a very complex app and requires 10 seconds to warm up.
+数以千计的客户访问你的应用，显然，你靠它赚钱。不幸的是，这是一个非常复杂的应用，它需要10秒预热。
 
-During graceful reloads, you expect new clients to wait 10 seconds (best case)
-to start seeing contents, but, unfortunately, you have hundreds of concurrent
-requests, so first 100 customers will wait during the server warm-up, while
-the others will get an error from the proxy.
+在优雅重载期间，你希望新客户等待10秒 (最好的情况下)
+然后才开始看到内容，但是，不幸的是，你有上百个并发请求，因此，头100个用户将在服务器预热时等待，而其他用户则得到来自代理的一个错误。
 
-This happens because the default size of uWSGI's listen queue is 100 slots.
-Before you ask, it is an average value chosen by the maximum value allowed
-by default by your kernel.
+因为uWSGI默认队列是100，因此这才发生。在你问问题之前，你得知道，这是选自你的内核默认允许的最大值的平均值。
 
-Each operating system has a default limit (Linux has 128, for example), so
-before increasing it you need to increase your kernel limit too.
+每个操作系统都有一个默认的限制 (例如，Linux是128)，因此，在增加它之前，你还需要增加你的内核限制。
 
-So, once your kernel is ready, you can increase the listen queue to the
-maximum number of users you expect to enqueue during a reload.
+因此，一旦准备好你的内核，你就可以增加监听队列的大小至期望在重载期间入队的最大用户数。
 
-To increase the listen queue you use the ``--listen <n>`` option where
-``<n>`` is the maximum number of slots.
+要增加监听队列，使用 ``--listen <n>`` 选项，其中
+``<n>`` 是队列位置的最大数。
 
-To raise kernel limits, you should check your OS docs. Some examples:
+要提高内核限制，你应该检查你的操作系统文档。一些简单的例子：
 
-* sysctl ``kern.ipc.somaxconn`` on FreeBSD
-* ``/proc/sys/net/core/somaxconn`` on Linux.
+* FreeBSD上的sysctl ``kern.ipc.somaxconn``
+* Linux 上的 ``/proc/sys/net/core/somaxconn``
 
 .. note::
 
-   This is only one of the reasons to tune the listen queue, but do not blindly
-   set it to huge values as a way to increase availability.
+   调整监听队列只是其中一个原因，不要盲目地以将其设置为巨大值作为提高可用性的方法。
 
 代理超时
 **************
 
-This is another thing you need to check if your reloads take a lot of time.
+如果你的重载花费大量的时间，那么这就是另一个你需要检查的东西了。
 
-Generally, proxies allow you to set two timeouts:
+一般来说，代理允许你设置两种超时：
 
 connect
-    Maximum amount of time the proxy will wait for a successful connection.
+    代理将等待成功连接的最大时间数。
 
 read
-    Maximum amount of time the server will be able to wait for data before
-    giving up.
+    服务器在放弃之前能够等待数据的最大时间数。
 
-When tuning the reloads, only the "connection" timeout matters. This timeout
-enters the game in the time slice between uWSGI's bind to an interface (or
-inheritance of it) and the call to ``accept()``.
 
-Waiting instead of errors is good, no errors and no waiting is even better
+调整重载的时候，只有"connection"超时有关系。这个超时会进入uWSGI绑定到接口（或者它的继承）和调用 ``accept()`` 之间的时间片的活动之中。
+
+等待而不是报错是不错的，而无错误无等待甚至更不错
 **************************************************************************
 
-This is the focus of this article. We have seen how to increase the tolerance
-of your proxy during application server reloading. The customers will wait
-instead of getting scary errors, but we all want to make money, so why force
-them to wait?
+这是本文的重点。我们已经看到了如何提高应用服务器重载期间代理的容忍性。客户将会等待，而不是获得可怕的错误，但我们都希望赚钱，因此，何必强迫他们等待呢？
 
-*We want zero-downtime and zero-wait.*
+*我们想要零停机时间以及零等待。*
 
 Preforking VS lazy-apps VS lazy
 *******************************
 
-This is one of the controversial choices of the uWSGI project.
+这是uWSGI项目具有争议的选择之一。
 
-By default uWSGI loads the whole application in the first process and after
-the app is loaded it does ``fork()`` itself multiple times.
-This is the common Unix pattern, it may highly reduce the memory usage of your
-app, allows lot of funny tricks and on some languages may bring you a lot of
-headaches.
+默认情况下，uWSGI在第一个进程中加载整个应用，然后在加载完应用之后，会多次 ``fork()`` 自己。这是常见的Unix模式，它可能会大大减少应用的内存使用，允许很多好玩的技巧，而在一些语言上，可能会让带给你很多烦恼。
 
-Albeit its name, uWSGI was born as a Perl application server (it was not called
-uWSGI and it was not open source), and in the Perl world preforking is
-generally the blessed way.
+尽管它的名声如此，但是uWSGI是作为一个Perl应用服务器 (它不叫做
+uWSGI，并且它也并不开源) 诞生的，而在Perl的世界里，preforking一般是一种受到祝福的方式。
 
-This is not true for a lot of other languages, platforms and frameworks, so
-before starting dealing with uWSGI you should choose how to manage ``fork()``
-in your stack.
+然而，对于许多其他的语言、平台和框架来说，这并不是真的，因此，在开始处理uWSGI之前，你应该选择在你的栈中如何管理 ``fork()`` 。
 
-Seeing it from the "graceful reloading" point of view, preforking extremely
-speeds up things: your app is loaded only one time, and spawning additional
-workers will be really fast. Avoiding disk access for each worker of your
-stack will decrease startup times, especially for frameworks or languages
-doing a lot of disk access to find modules.
+而从“优雅重载”的角度来看，preforking极大的提高了速度：只加载你的应用一次，而生成额外的worker将会非常快。避免栈中的每个worker都访问磁盘会降低启动时间，特别是对于那些花费大量时间访问磁盘以查找模块的框架或者语言。
 
-Unfortunately, the preforking approach forces you to reload the whole stack
-whenever you make code changes instead of reloading only the workers.
+不幸的是，每当你的修改代码时，preforking方法迫使你重载整个栈，而不是只重载worker。
 
-In addition to this, your app could need preforking, or could completely
-crash due to it because of the way it has been developed.
+除此之外，你的应用可能需要preforking，或者由于其开发的方式，可能完全因其崩溃。
 
-lazy-apps mode instead loads your application one time per worker. It will
-require about O(n) time to load it (where n is the number of workers),
-will very probably consume more memory, but will run in a more consistent
-and clean environment.
+取而代之的是，lazy-apps模式会每个worker加载你的应用一次。它将需要大约O(n)次加载 (其中，n是worker数)，非常有可能会消耗更多内存，但会运行在一个更加一致干净的环境中。
 
-Remember: lazy-apps is different from lazy, the first one only instructs
-uWSGI to load the application one time per worker, while the second is
-more invasive (and generally discouraged) as it changes a lot of internal
-defaults.
+记住：lazy-apps与lazy不同，前者只是指示
+uWSGI对于每个worker加载应用一次，而后者更具侵略性些 (一般不提倡)，因为它改变了大量的内部默认行为。
 
-The following approaches will show you how to accomplish zero-downtime/wait
-reloads in both preforking and lazy modes.
+下面的方法将会向你展示如何在reforking和lazy模式下完成零停机时间/零等待的重载。
 
 .. note:: 
 
-    Each approach has pros and cons, choose carefully.
+    每种方式都有其利弊，请谨慎选择。
 
-Standard (default/boring) graceful reload (aka ``SIGHUP``)
+标准的 (默认/无趣的) 的优雅重载 (又名 ``SIGHUP``)
 **********************************************************
 
-To trigger it, you can:
+要触发它，你可以：
 
-* send ``SIGHUP`` to the master
-* write ``r`` to :doc:`../MasterFIFO`
-* use ``--touch-reload`` option
-* call ``uwsgi.reload()`` API.
+* 发送 ``SIGHUP`` 到master
+* 将 ``r`` 写入到 :doc:`../MasterFIFO`
+* 使用 ``--touch-reload`` 选项
+* 调用 ``uwsgi.reload()`` API.
 
-In preforking and lazy-apps mode, it will:
+在preforking和lazy-apps模式下，它会：
 
-1. Wait for running workers.
-2. Close all of the file descriptors except the ones mapped to sockets.
-3. Call ``exec()`` on itself.
+1. 等待正在运行的worker。
+2. 关闭除了映射到socket之外的所有文件描述符。
+3. 在自身上调用 ``exec()`` 。
 
-In lazy mode, it will:
+在lazy模式，它会：
 
-1. Wait for running workers.
-2. Restart all of them (this means you cannot change uWSGI options during
-   this kind of reload).
+1. 等待正在运行的worker。
+2. 重启它们所有 (这意味着你不能在这类重载期间修改uWSGI选项)。
 
 .. warning::
 
-    lazy is discouraged!
+    不鼓励lazy模式！
 
-Pros:
+优点：
 
-* easy to manage
-* no corner-case problems
-* no inconsistent states
-* basically full reset of the instance.
+* 易于管理
+* 无边缘情况问题
+* 无不一致状态
+* 基本上对实例完全重置。
 
-Cons:
+缺点：
 
 * the ones we seen before
 * listen queue filling up
 * stuck workers
 * potentially long waiting times.
 
-Workers reloading in lazy-apps mode
+在lazy-apps模式重载worker
 ***********************************
 
-Requires ``--lazy-apps`` option.
+需要 ``--lazy-apps`` 选项。
 
-To trigger it:
+要触发它：
 
-* write ``w`` to :doc:`../MasterFIFO`
-* use ``--touch-workers-reload`` option.
+* 将 ``w`` 写入到 :doc:`../MasterFIFO`
+* 使用 ``--touch-workers-reload`` 选项。
 
-It will wait for running workers and then restart each of them.
+它将会等待运行中的worker，然后重启它们中的每一个。
 
-Pros:
+优点：
 
-* avoids restarting the whole instance.
+* 避免重启整个实例。
 
-Cons:
+缺点：
 
-* no user-experience improvements over standard graceful reload, it is
-  only a shortcut for situation when code updates do not imply instance
-  reconfiguration.
+* 相较于标准的优雅重载，并无用户体验的提高，它只是代码更新不意味着实例重新配置的情况下的一种快捷方式。
 
-Chain reloading (lazy apps)
+链式重载 (lazy apps)
 ***************************
 
-Requires ``--lazy-apps`` option.
+需要 ``--lazy-apps`` 选项。
 
-To trigger it:
+要触发它：
 
-* write ``c`` to :doc:`../MasterFIFO`
-* use ``--touch-chain-reload`` option.
+* 将 ``c`` 写入到 :doc:`../MasterFIFO`
+* 使用 ``--touch-chain-reload`` 选项。
 
-This is the first approach that improves user experience. When triggered,
-it will restart one worker at time, and the following worker is not reloaded
-until the previous one is ready to accept new requests.
+这是第一个提高用户体验的方式。当被触发的时候，它会重启一个worker，而后面的worker将会不会被重载，直到前一个准备好接收新请求为止。
 
-Pros:
+优点：
 
-* potentially highly reduces waiting time for clients
-* reduces the load of the machine during reloads (no multiple processes loading
-  the same code).
+* 潜在极大地降低客户端的等待时间
+* 减少重载期间机器的负载 (没有多个处理器加载相同的代码)。
 
-Cons:
+缺点：
 
-* only useful for code updates
-* you need a good amount of workers to get a better user experience.
+* 只对代码更新有用
+* 你需要一个不错的worker数，才能获得更好的用户体验。
 
-Zerg mode
+Zerg模式
 *********
 
-Requires a zerg server or a zerg pool.
+要求zerg服务器或者zerg池。
 
-To trigger it, run the instance in zerg mode.
+要触发它，请以zerg模式运行实例。
 
-This is the first approach that uses multiple instances of the same application
-to increase user experience.
+这是第一种使用相同应用的多个实例来提高用户体验的方法。
 
-Zerg mode works by making use of the venerable "fd passing over Unix sockets"
-technique.
+Zerg模式是通过利用古老的“通过Unix socket传递文件描述符”技术来工作的。
 
-Basically, an external process (the zerg server/pool) binds to the various
-sockets required by your app. Your uWSGI instance, instead of binding by
-itself, asks the zerg server/pool to pass it the file descriptor. This means
-multiple unrelated instances can ask for the same file descriptors and work
-together.
+基本上，一个外部进程 (zerg服务器/池) 绑定到你的应用所需的各个socket上。你的uWSGI实例，并不是通过自身绑定，而是要求zerg服务器/池传给它文件描述符。这意味着，多个无关实例可以请求相同的文件描述符，并且一起工作。
 
-Zerg mode was born to improve auto-scalability, but soon became one of the most
-loved approaches for zero-downtime reloading.
+Zerg模式生来就是为了提高自动扩展性的，但很快就成为了用于零停机时间的重载的最受喜爱的方式之一。
 
-Now, examples.
+现在，例子来了。
 
-Spawn a zerg pool exposing ``127.0.0.1:3031`` to the Unix socket
+生成一个zerg池，它将 ``127.0.0.1:3031`` 暴露给Unix socket
 ``/var/run/pool1``:
 
 .. code-block:: ini
@@ -307,7 +235,7 @@ Spawn a zerg pool exposing ``127.0.0.1:3031`` to the Unix socket
    master = true
    zerg-pool = /var/run/pool1:127.0.0.1:3031
 
-Now spawn one or more instances attached to the zerg pool:
+现在，生成一个或多个绑定到这个zerg池的实例：
 
 .. code-block:: ini
 
@@ -315,66 +243,44 @@ Now spawn one or more instances attached to the zerg pool:
    ; this will give access to 127.0.0.1:3031 to the instance
    zerg = /var/run/pool1
 
-When you want to make update of code or options, just spawn a new instance
-attached to the zerg, and shut down the old one when the new one is ready to
-accept requests.
+当你想要更新代码或者选项的时候，只需生成一个附加到这个zerg的新的实例，然后在新的实例准备好接收请求的时候关闭旧的实例。
 
-The so-called "zerg dance" is a trick for automation of this kind of reload.
-There are various ways to accomplish it, the objective is to automatically
-"pause" or "destroy" the old instance when the new one is fully ready and able
-to accept requests. More on this below.
+所谓的"zerg之舞"是一种这类型重载的自动化的把戏。有多种方式来完成它，目标是在新的实例完全准备好并且能够接收新的请求的时候，自动“停止”或者“销毁”旧的实例。更多相关信息，见下。
 
-Pros:
+优点：
 
-* potentially the silver bullet
-* allows instances with different options to cooperate for the same app.
+* 潜在的银弹
+* 允许使用不同选项的实例为相同的应用协作。
 
-Cons:
+缺点：
 
-* requires an additional process
-* can be hard to master
-* reload requires copy of the whole uWSGI stack.
+* 要求一个额外的进程
+* 可能难以掌控
+* 重载要求对整个uWSGI栈进行拷贝。
 
-The Zerg Dance: Pausing instances
+Zerg之舞: 暂停实例
 *********************************
 
-We all make mistakes, sysadmins must improve their skill of fast disaster
-recovery. Focusing on avoiding them is a waste of time. Unfortunately, we
-are all humans.
+我们都会犯错，系统管理员需要提高他们快速进行灾难恢复的能力。着眼于规避它们是在浪费时间。不幸的是，我们都是人类（难免会犯错误）。
 
-Rolling back deployments could be your life-safer.
+回滚部署可能是你的救生员。
 
-We have seen how zerg mode allows us to have multiple instances asking on
-the same socket. In the previous section we used it to spawn a new instance
-working together with the old one. Now, instead of shutting down the old
-instance, why not "pause" it? A paused instance is like the standby mode
-of your TV. It consumes very few resources, but you can bring it back very
-quickly.
+我们已经看到了zerg模式是如何让我们在相同的socket上有多个实例的。在上一节中，我们用它来生成一个与旧的实例一起工作的新实例。现在，为什么不用“暂停”来取代旧实例的关闭呢？一个已暂停的实例就像你的TV的待机模式。它消耗很少的资源，但是你可以快速的把它唤醒。
 
-"Zerg Dance" is the battle-name for the procedure of continuous swapping of
-instances during reloads. Every reload results in a "sleeping" instance and
-a running one. Following reloads destroy the old sleeping instance and
-transform the old running to the sleeping one and so on.
+"Zerg之舞"是在重载期间不断的实例交换过程的战斗名。每一个重载的结果是一个“休眠中的”实例以及一个运行中的实例。接下来的重载销毁旧的休眠中的实例，然后将旧的运行中的实例转换成休眠中的实例，以此类推。
 
-There are literally dozens of ways to accomplish the "Zerg Dance", the fact
-that you can easily use scripts in your reloading procedures makes this
-approach extremely powerful and customizable.
+字面上理解，有几十种方式完成"Zerg之舞"，你可以很容易地在你的重载过程中使用脚本这一事实使得这个方法非常强大以及可定制。
 
-Here we will see the one that requires zero scripting, it could be the less
-versatile (and requires at least uWSGI 1.9.21), but should be a good starting
-point for the improvements.
+这里，我们将看到一种需要零脚本的方式，它可能功能较少 (并且需要至少是uWSGI 1.9.21)，但是应该是这种改善的一个不错的起点。
 
-:doc:`../MasterFIFO` is the best way to manage instances instead of relying
-on Unix signals. Basically, you write single-char commands to govern the
-instance.
+:doc:`../MasterFIFO` 是管理实例，而不是依赖于Unix信号的最好的方式。基本上，你写入单字符命令来管理实例。
 
-The funny thing about the Master FIFOs is that you can have many of them
-configured for your instance and swap one with another very easily.
 
-An example will clarify things.
+关于Master FIFO的一个有趣的事情是，你可以为你的实例配置很多个，并且用一个交换另一个是非常容易的。
 
-We spawn an instance with 3 Master FIFOs: new (the default one), running
-and sleeping:
+下面举例说明。
+
+我们生成一个带有3个Master FIFO的实例：新的 (默认)，运行中的，以及休眠中的：
 
 .. code-block:: ini
 
@@ -389,14 +295,9 @@ and sleeping:
    zerg = /var/run/pool1
    ; other options ...
    
-By default the "new" one will be active (read: will be able to process
-commands).
+默认情况下，“新的”那个将会是活跃状态 (也就是：将能够处理命令)。
 
-Now we want to spawn a new instance, that once is ready to accept requests will
-put the old one in sleeping mode. To do it, we will use uWSGI's advanced hooks.
-Hooks allow you to "make things" at various phases of uWSGI's life cycle.
-When the new instance is ready, we want to force the old instance to start
-working on the sleeping FIFO and be in "pause" mode:
+现在，我们想要生成一个新的实例，一旦这个新的实例准备好了接收请求，就会把旧的那个置于休眠模式。要做到这点，我们将使用uWSGI的高级钩子。钩子允许你在uWSGI的生命周期的各种阶段“做些事”。当新的实例准备好的时候，我们想要强制旧的实例开始工作在休眠FIFO，并且处于“暂停”模式。
 
 .. code-block:: ini
 
@@ -423,27 +324,18 @@ working on the sleeping FIFO and be in "pause" mode:
     ; force this instance to became the running one (slot 1)
     hook-accepting1-once = writefifo:/var/run/new.fifo 1
 
-The ``hook-accepting1-once`` phase is run one time per instance soon after the
-first worker is ready to accept requests.
-The ``writefifo`` command allows writing to FIFOs  without failing if the
-other peers are not connected (this is different from a simple ``write``
-command that would fail or completely block when dealing with bad FIFOs).
+第一个worker准备好接收请求后， 会立即在每个实例中运行一次 ``hook-accepting1-once`` 阶段。 ``writefifo`` 命令允许在未连接其他对端的情况下无失败写入到FIFO (这与一个简单的 ``write`` 命令不同，后者在处理不正常的FIFO的时候会失败或者完全阻塞)。
 
 .. note::
 
-    Both features have been added only in uWSGI 1.9.21, with older releases you can
-    use the ``--hook-post-app`` option instead of ``--hook-accepting1-once``, but
-    you will lose the "once" feature, so it will work reliably only in preforking
-    mode.
+    自uWSGI 1.9.21才同时有了这两个特性，而对于较老的发布版本，你可以使用 ``--hook-post-app`` 选项来取代 ``--hook-accepting1-once`` ，但是你会失去“一次”特性，因此它将只会在preforking模式下才能可靠工作。
 
-    Instead of ``writefifo`` you can use the shell variant:
-    ``exec:echo <string> > <fifo>``.
+    你可以使用shell变量
+    ``exec:echo <string> > <fifo>`` ，来取代 ``writefifo`` 
 
-Now start running instances with the same config files over and over again.
-If all goes well, you should always end with two instances, one sleeping and
-one running.
+现在，开始反复使用相同的配置文件来启动实例。如果一切顺利，那么你应该总是拥有两个实例，一个休眠，而一个正在运行。
 
-Finally, if you want to bring back a sleeping instance, just do:
+最后，如果你想唤醒一个休眠中的实例，那么仅需：
 
 .. code-block:: sh
 
@@ -453,83 +345,71 @@ Finally, if you want to bring back a sleeping instance, just do:
    # unpause the sleeping instance and set it as the running one
    echo p1 > /var/run/sleeping.fifo
    
-Pros:
+优点：
 
-* truly zero-downtime reload.
+* 真正的零停机时间重载。
 
-Cons:
+缺点：
 
-* requires high-level uWSGI and Unix skills.
+* 要求高级的uWSGI和Unix技能。
 
-``SO_REUSEPORT`` (Linux >= 3.9 and BSDs)
+``SO_REUSEPORT`` (Linux >= 3.9 和BSD们)
 ****************************************
 
-On recent Linux kernels and modern BSDs you may try ``--reuse-port`` option.
-This option allows multiple unrelated instances to bind on the same network
-address. You may see it as a kernel-level zerg mode. Basically, all of the Zerg
-approaches can be followed.
+在最近的Linux内核和现代BSD们上，你可以尝试 ``--reuse-port`` 选项。这个选项允许多个无关实例绑定到相同的网络地址上。你可能会把它看成一个内核级别的zerg模式。基本上讲，可以遵循所有的zerg方法。
 
-Once you add ``--reuse-port`` to you instance, all of the sockets will have
-the ``SO_REUSEPORT`` flag set.
+一旦你把 ``--reuse-port`` 添加到了你的实例中，那么所有的socket都将会设置 ``SO_REUSEPORT`` 标志。
 
-Pros:
+优点：
 
-* similar to zerg mode, could be even easier to manage.
+* 与zerg模式相似，甚至可能会更容易管理。
 
-Cons:
+缺点：
 
-* requires kernel support
-* could lead to inconsistent states
-* you lose ability to use TCP addresses as a way to avoid incidental multiple
-  instances running.
+* 要求内核支持
+* 可能导致不一致状态
+* 失去把使用TCP地址作为一种避免意外运行多个实例的方式的能力。
 
-The Black Art (for rich and brave people): master forking
+黑色艺术 (对于富饶勇敢的人们): master forking
 *********************************************************
 
-To trigger it, write ``f`` to :doc:`../MasterFIFO`.
+要触发它，将 ``f`` 写入到 :doc:`../MasterFIFO`.
 
-This is the most dangerous of the ways to reload, but once mastered, it could
-lead to pretty cool results.
+这是一种最危险的重载方式，但是一旦掌握了，就可能会导致很酷的结果。
 
-The approach is: call ``fork()`` in the master, close all of the file
-descriptors except the socket-related ones, and ``exec()`` a new uWSGI
-instance.
+方法是：在master中调用 ``fork()`` ，关闭除了socket相关的文件描述符之外的所有文件描述符，然后 ``exec()`` 一个新的uWSGI实例。
 
-You will end with two specular uWSGI instances working on the same set of
-sockets.
 
-The scary thing about it is how easy (just write a single char to the master
-FIFO) is to trigger it...
+最后，你将会获得两个镜面uWSGI实例，它们工作在相同一组socket之上。
 
-With a bit of mastery you can implement the zerg dance on top of it.
 
-Pros:
+有关它的可怕之处是，触发它是多么的容易 (仅需将一个字符写入到master
+FIFO中)……
 
-* does not require kernel support nor an additional process
-* pretty fast.
+有了一点掌握，你就可以在其上实现Zerg之舞。
 
-Cons:
+优点：
 
-* a whole copy for each reload
-* inconstent states all over the place (pidfiles, logging, etc.: the master
-  FIFO commands could help fix them).
+* 不需要内核支持或者额外的进程
+* 非常快
 
-Subscription system
+缺点：
+
+* 每次重载都是完整的拷贝
+* 到处都是不一致状态 (pid文件，日志记录等等：master
+  FIFO命令可以帮助解决这些问题).
+
+订阅系统
 *******************
 
-This is probably the best approach when you can count on multiple servers.
-You add the "fastrouter" between your proxy server (e.g., nginx) and your
-instances.
+这可能是当你能依赖多服务器的时候最好的方法了。
+在你的代理服务器（例如，nginx）和你的实例之间添加"fastrouter"。
 
-Instances will "subscribe" to the fastrouter that will pass requests
-from proxy server (nginx) to them while load balancing and constantly
-monitoring all of them.
+实例会“订阅”fastrouter，在负载均衡的时候，它将会把请求从代理服务器 (nginx) 传递到实例，并且不断监控所有实例。
 
-Subscriptions are simple UDP packets that instruct the fastrouter which
-domain maps to which instance or instances.
+订阅是简单的UDP包，它指示fastrouter将哪个域映射到哪个（些）实例。
 
-As you can subscribe, you can unsubscribe too, and this is where the magic
-happens:
+就像你可以订阅一样，你也可以取消订阅，而这里就是魔法发生的地方：
 
 .. code-block:: ini
 
@@ -538,44 +418,37 @@ happens:
    unsubscribe-on-graceful-reload = true
    ; all of the required options ...
    
-Adding ``unsubscribe-on-graceful-reload`` will force the instance to send an
-"unsubscribe" packet to the fastrouter, so until it will not be back no request
-will be sent to it.
+添加 ``unsubscribe-on-graceful-reload`` 将会强制实例发送“取消订阅”包到fastrouter，所以将不会有请求发送给它直到不会再回来。
 
-Pros:
+优点：
 
-* low-cost zero-downtime
-* a KISS approach (*finally*).
+* 低成本零停机时间
+* 一种KISS方法 (*终于来了*).
 
-Cons:
+缺点：
 
-* requires a subscription server (like the fastrouter) that introduces overhead
-  (even if we are talking about microseconds).
+* 需要一个订阅服务器 (例如fastrouter) ，它会带来开销
+  (即使我们谈论到是微妙级别的)。
 
-Inconsistent states
+不一致状态
 *******************
 
-Sadly, most of the approaches involving copies of the whole instance (like
-Zerg Dance or master forking) lead to inconsistent states.
+难过的是，大部分的方法都会涉及对整个实例的拷贝 (例如
+Zerg之舞或者master forking)，导致不一致状态。
 
-Take, for example, an instance writing pidfiles: when starting a copy of it,
-that pidfile will be overwritten.
+就举一个实例写pid文件的例子：当启动它的一个拷贝的时候，将会重写那个pid文件。
 
-If you carefully plan your configurations, you can avoid inconsistent states,
-but thanks to :doc:`../MasterFIFO` you can manage some of them (read: the most
-common ones):
+如果你小心地规划你的配置，那么你就能避免不一致状态，但是多亏了 :doc:`../MasterFIFO` ，你可以管理其中一些 (也就是：最常见的那些):
 
-* ``l`` command will reopen logfiles
-* ``P`` command will update all of the instance pidfiles.
+* ``l`` 命令将会重新打开日志文件
+* ``P`` 命令将会更新所有实例pid文件。
 
-Fighting inconsistent states with the Emperor
+使用Emperor对抗不一致状态
 *********************************************
 
-If you manage your instances with the :doc:`Emperor<../Emperor>`, you can
-use its features to avoid (or reduce number of) inconsistent states.
+如果你通过 :doc:`Emperor<../Emperor>` 管理你的实例，那么你可以使用它的特性来规避（或者减少）不一致状态。
 
-Giving each instance a different symbolic link name will allow you to map
-files (like pidfiles or logs) to different paths:
+为每个实例赋予一个不同的符号链接名将会允许你将文件（例如pid文件或者日志文件）映射到不同的路径上：
 
 .. code-block:: ini
 
@@ -584,22 +457,15 @@ files (like pidfiles or logs) to different paths:
     safe-pidfile = /var/run/%n.pid
     ; and so on ...
 
-The ``safe-pidfile`` option works similar to ``pidfile`` but performs the write
-a little later in the loading process. This avoids overwriting the value when
-app loading fails, with the consequent loss of a valid PID number.
+``safe-pidfile`` 选项与 ``pidfile`` 的效果相同，但是在加载过程中会稍微晚点执行写入。这避免了在应用加载失败的时候重写其值，以一个有效的PID号的损失作为代价。
 
-Dealing with ultra-lazy apps (like Django)
+处理ultra-lazy应用 (例如Django)
 ******************************************
 
-Some applications or frameworks (like Django) may load the vast majority of
-their code only at the first request. This means that customer will continue
-to experience slowdowns during reload even when using things like zerg mode
-or similar.
+一些应用或者框架 (例如Django) 可能只会在第一个请求的时候才加载它们绝大多数的代码。这意味着，即使使用了诸如Zerg模式或者类似的东西，客户也会在重载过程中感受到速度的下降。
 
-This problem is hard to solve (impossible?) in the application server itself,
-so you should find a way to force your app to load itself ASAP. A good trick
-(read: works with Django) is to call the entry-point function (like the WSGI
-callable) in the app itself:
+这个问题在应用服务器本身是难以（不可能？）解决的，因此你应该找到一种强制你的应用尽快加载自己的方式。一个不错的窍门是
+(说明：对Django有用) 是在应用自身调用入口点函数 (例如WSGI可调用)：
 
 .. code-block:: python
 
@@ -609,20 +475,18 @@ callable) in the app itself:
 
     application({}, lambda x, y: None)  # call the entry-point function
 
-You may need to pass CGI vars to the environ to make a true request: it depends
-on the WSGI app.
+你可能需要传递CGI变量给environ以进行一个真正的请求：这取决于WSGI应用。
 
-Finally: Do not blindly copy & paste!
+最后：不要盲目地复制粘贴！
 *************************************
 
-Please, turn on your brain and try to adapt shown configs to your needs, or
-invent new ones.
+请用脑子想想，试着将显示的配置调整以适应你的需求，或者创建新的配置。
 
-Each app and system is different from the others.
+每个应用和系统都是彼此之间不同的。
 
-Experiment before making a choice.
+作出选择之前请进行实验。
 
-References
+参考
 **********
 
 :doc:`../MasterFIFO`
