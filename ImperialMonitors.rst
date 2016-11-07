@@ -1,16 +1,15 @@
-Imperial monitors
+Imperial监控器
 =================
 
 
-``dir://`` -- scan a directory for uWSGI config files
+``dir://`` -- 扫描目录中的uWSGI配置文件
 -----------------------------------------------------
 
-Simply put all of your config files in a directory, then point the uWSGI
-emperor to it. The Emperor will start scanning this directory. When it finds
-a valid config file it will spawn a new uWSGI instance.
+简单将你所有的配置文件放到一个目录中，然后将uWSGI
+emperor指向它。Emperor将会开始扫描这个目录。当它发现了一个有效的配置文件的时候，它将生成一个新的uWSGI实例。
 
-For our example, we're deploying a Werkzeug_ test app, a Trac_ instance, a Ruby
-on Rails app and a Django_ app.
+在我们的例子中，我们部署一个 Werkzeug_ 测试应用，一个 Trac_ 实例，一个Ruby
+on Rails应用和一个 Django_ 应用。
 
 werkzeug.xml
 
@@ -59,35 +58,31 @@ django.ini
   module = django.core.handlers.wsgi:WSGIHandler()
   chdir = /opt/djangoapp001
 
-Put these 4 files in a directory, for instance :file:`/etc/uwsgi/vassals` in our example, then spawn the Emperor:
+把这四个文件放到一个目录中，例如我们例子中的 :file:`/etc/uwsgi/vassals` ，然后生成Emperor:
 
 .. code-block:: sh
 
   uwsgi --emperor /etc/uwsgi/vassals
 
-The emperor will find the uWSGI instance configuration files in that directory
-(the ``dir://`` plugin declaration is implicit) and start the daemons needed to
-run them.
+Emperor将会在那个目录中查找uWSGI实例( ``dir://`` 插件是隐式声明的)，然后启动所需守护进程来运行它们。
 
 .. _Werkzeug: http://werkzeug.pocoo.org/
 .. _Trac: http://trac.edgewall.org/
 .. _Django: http://djangoproject.com/
 
-``glob://`` -- monitor a shell pattern
+``glob://`` -- 监控一个shell模式
 --------------------------------------
 
-``glob://`` is similar to ``dir://``, but a glob expression must be specified:
+``glob://`` 与 ``dir://`` 类似，但是必须指定一个glob表达式：
 
 .. code-block:: sh
 
  uwsgi --emperor "/etc/vassals/domains/*/conf/uwsgi.xml"
  uwsgi --emperor "/etc/vassals/*.ini"
 
-.. note:: Remember to quote the pattern, otherwise your shell will most likely
-   interpret it and expand it at invocation time, which is not what you want.
+.. note:: 记得用引号将模式括住，否则你的shell将很有可能解析它，然后在调用的时候对其进行展开，这并不是你想要的。
 
-As the Emperor can search for configuration files in subdirectory hierarchies,
-you could have a structure like this:
+由于Emperor可以搜索子目录层次的配置文件，因此你可以使用一个像这样的结构：
 
 .. code-block:: sh
 
@@ -96,76 +91,64 @@ you could have a structure like this:
   /opt/apps/app2/app2.ini
   /opt/apps/app2/...all the app files...
 
-and run uWSGI with:
+然后这样运行uWSGI：
 
 .. code-block:: sh
 
   uwsgi --emperor /opt/apps/app*/app*.*
 
 
-``pg://`` -- scan a PostgreSQL table for configuration
+``pg://`` -- 扫描一个用于配置的PostgreSQL表
 ------------------------------------------------------
 
-You can specify a query to run against a PostgreSQL database. Its result must
-be a list of 3 to 6 fields defining a vassal:
+你可以针对PostgreSQL数据库来运行一个指定查询。它的结果必须是定义一个vassal的由3到6个字段组成的列表：
 
-1. The instance name, including a valid uWSGI config file extension. (Such as
+1. 实例名，包含一个有效的uWSGI配置文件扩展名。 (例如
    ``django-001.ini``)
-2. A ``TEXT`` blob containing the vassal configuration, in the format based on
-   the extension in field 1
-3. A number representing the modification time of this row in UNIX format
-   (seconds since the epoch).
-4. The UID of the vassal instance. Required in :ref:`Tyrant` mode only.
-5. The GID of the vassal instance. Required in :ref:`Tyrant` mode only.
-6. Socket for on demand vassal activation. If specified, vassal will be run
-   in on demand mode. If omitted or empty, vassal will be run normally. Go to
-   :doc:`OnDemandVassals` for more information.
+2. 一个 ``TEXT`` 块，包含该vassal的配置，它的格式基于字段1的扩展。
+3. 一个数字，表示这一行的修改时间，使用UNIX格式
+   (自纪元起，以秒为单位)。
+4. vassal实例的UID。只在 :ref:`Tyrant` 模式下是必须的。
+5. vassal实例的GID。只在 :ref:`Tyrant` 模式下是必须的。
+6. 用于按需vassal激活的socket。如果指定该字段，那么就会在按需模式下运行vassal。如果省略或者为空，那么将会正常运行vassal。查看
+   :doc:`OnDemandVassals` 以获取更多信息。
 
 .. code-block:: sh
 
   uwsgi --plugin emperor_pg --emperor "pg://host=127.0.0.1 user=foobar dbname=emperor;SELECT name,config,ts FROM vassals"
 
-* Whenever a new tuple is added a new instance is created and spawned with the
-  config specified in the second field.
-* Whenever the modification time field changes, the instance is reloaded.
-* If a tuple is removed, the corresponding vassal will be destroyed.
+* 每当添加了一个新的元组，就会创建一个新的实例，并且使用第二个字段中指定的配置来生成它。
+* 每当修改时间字段发生了改变，就会重载该实例。
+* 如果移除了一个元组，那么对应的vassal也将会被销毁。
 
 
-``mongodb://`` -- Scan MongoDB collections for configuration
+``mongodb://`` -- 扫描用于配置的MongoDB集合
 ------------------------------------------------------------
 
 .. code-block:: sh
 
   uwsgi --plugin emperor_mongodb --emperor "mongodb://127.0.0.1:27107,emperor.vassals,{enabled:1}"
 
-This will scan all of the documents in the ``emperor.vassals`` collection
-having the field ``enabled`` set to 1.  An Emperor-compliant document must
-define three fields: ``name``, ``config`` and ``ts``. In :ref:`Tyrant` mode, 2
-more fields are required. There is also optional ``socket`` field for on
-demand vassal mode.
+这将会扫描字段 ``enabled`` 设置为1的 ``emperor.vassals`` 集合中所有的document。一个兼容Emperor的document必须定义三个字段： ``name``, ``config`` 和 ``ts`` 。在 :ref:`Tyrant` 模式下，需要2个额外的字段。对于按需vassal模式，也有可选的 ``socket`` 字段。
 
-* ``name`` (string) is the name of the vassal (remember to give it a valid extension, like .ini)
-* ``config`` (multiline string) is the vassal config in the format described by the ``name``'s extension.
-* ``ts`` (date) is the timestamp of the config (Note: MongoDB internally stores the timestamp in milliseconds.)
-* ``uid`` (number) is the UID to run the vassal as. Required in :ref:`Tyrant` mode only.
-* ``gid`` (number) is the GID to run the vassal as. Required in :ref:`Tyrant` mode only.
-* ``socket`` (string) Socket for on demand vassal activation. If specified,
-  vassal will be run in on demand mode. If omitted or empty, vassal will be run
-  normally. Go to :doc:`OnDemandVassals` for more information.
+* ``name`` (字符串) 是vassal的名字 (记得给它一个有效的扩展名，例如.ini)
+* ``config`` (多行字符串) 是vassal配置，该配置的格式由 ``name`` 的扩展名所描述。
+* ``ts`` (日期) 是配置的时间戳 (注意：MongoDB内部将时间戳以毫秒为单位进行存储。)
+* ``uid`` (数字) vassal实例的UID。仅在 :ref:`Tyrant` 模式下是必须的。
+* ``gid`` (数字) vassal实例的GID。仅在 :ref:`Tyrant` 模式下是必须的。
+* ``socket`` (字符串) 用于按需vassal激活的Socket。如果指定，那么
+  vassal将会运行在按需模式。如果省略或者为空，那么vassal将会正常运行。查看 :doc:`OnDemandVassals` 以获得更多信息。
 
-``amqp://`` -- Use an AMQP compliant message queue to announce events
+``amqp://`` -- 使用一个AMQP兼容的消息队列来宣告事件
 ---------------------------------------------------------------------
 
-Set your AMQP (RabbitMQ, for instance) server address as the --emperor argument:
+把你的AMQP (例如，RabbitMQ) 服务器地址作为--emperor参数的值设置：
 
 .. code-block:: sh
 
   uwsgi --plugin emperor_amqp --emperor amqp://192.168.0.1:5672
 
-Now the Emperor will wait for messages in the ``uwsgi.emperor`` exchange. This
-should be a `fanout` type exchange, but you can use other systems for your
-specific needs.  Messages are simple strings containing the absolute path of a
-valid uWSGI config file.
+现在，Emperor将会等待 ``uwsgi.emperor`` 交换机中的消息。这应该是一个类型为 `fanout` 的交换机，但是你可以根据你的特殊需求使用其他系统。消息是包含一个有效的uWSGI配置文件的绝对路径的简单字符串。
 
 .. code-block:: python
 
@@ -180,36 +163,27 @@ valid uWSGI config file.
   # publish a new config file
   channel.basic_publish(exchange='uwsgi.emperor', routing_key='', body='/etc/vassals/mydjangoapp.xml')
 
-The first time you launch the script, the emperor will add the new instance (if
-the config file is available).  From now on every time you re-publish the
-message the app will be reloaded. When you remove the config file the app is
-removed too.
+你第一次启动脚本的时候，emperor将会添加新的实例 (如果该配置文件可用)。从那时开始，每当你重发布消息，应用将会被重载。当你移除配置文件的时候，应用也会被移除。
 
 .. tip::
 
-  You can subscribe all of your emperors in the various servers to this
-  exchange to allow cluster-synchronized reloading/deploy.
+  你可以订购不同服务器上的所有emperor到这个交换机，从而实现集群同步的重载/部署。
 
-AMQP with HTTP
+使用HTTP的AMQP
 ^^^^^^^^^^^^^^
 
 uWSGI :ref:`is capable of loading configuration files over
-HTTP<LoadingConfig>`. This is a very handy way to dynamically generate
-configuration files for massive hosting.  Simply declare the HTTP URL of the
-config file in the AMQP message. Remember that it must end with one of the
-valid config extensions, but under the hood it can be generated by a script.
-If the HTTP URL returns a non-200 status code, the instance will be removed.
+HTTP<LoadingConfig>`. 这是一种非常方便的为大量主机动态生成配置文件的方式。简单在AMQP消息中声明配置文件的HTTP URL。记住，它必须以有效配置文件的扩展名结尾，但在钩子之下，它可以由脚本生成。如果该HTTP URL返回一个非200状态码，那么将会移除该实例。
 
 .. code-block:: python
 
   channel.basic_publish(exchange='uwsgi.emperor', routing_key='', body='http://example.com/confs/trac.ini')
 
-Direct AMQP configuration
+直接的AMQP配置
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Configuration files may also be served directly over AMQP. The ``routing_key``
-will be the (virtual) config filename, and the message will be the content of
-the config file.
+也可能直接通过AMQP提供配置文件。 ``routing_key``
+将是（虚拟）配置文件名，而消息将是配置文件的内容。
 
 .. code-block:: python
 
@@ -223,8 +197,7 @@ the config file.
   module = trac.web.main:dispatch_request
   processes = 4""")
 
-The same reloading rules of previous modes are valid. When you want to remove
-an instance simply set an empty body as the "configuration".
+前一个模式的相同的重载规则是有效的。当你想要移除一个实例的时候，则简单将一个空的body作为“配置”进行设置。
 
 .. code-block:: python
 
@@ -233,32 +206,26 @@ an instance simply set an empty body as the "configuration".
 ``zmq://`` -- ZeroMQ
 --------------------
 
-The Emperor binds itself to a ZeroMQ PULL socket, ready to receive commands.
+Emperor把自己绑定到一个ZeroMQ PULL socket，准备好接收命令。
 
 .. code-block:: sh
 
    uwsgi --plugin emperor_zeromq --emperor zmq://tcp://127.0.0.1:5252
 
-Each command is a multipart message sent over a PUSH zmq socket.  A command is
-composed by at least 2 parts: ``command`` and ``name``. ``command`` is the
-action to execute, while ``name`` is the name of the vassal. 4 optional parts
-can be specified.
+每个命令都是一条通过PUSH zmq socket发送的多部分消息。一个命令至少由两部分组成： ``command`` 和 ``name`` 。 ``command`` 是要执行的动作，而 ``name`` 是vassal的名字。可以指定4个可选部分。
 
-* ``config`` (a string containing the vassal config)
-* ``uid`` (the user id to drop priviliges to in case of tyrant mode)
-* ``gid`` (the group id to drop priviliges to in case of tyrant mode)
-* ``socket`` (socket for on demand vassal activation. If specified,
-  vassal will be run in on demand mode. If omitted or empty, vassal will be run
-  normally. Go to :doc:`OnDemandVassals` for more information)
+* ``config`` (一个包含vassal配置的字符串)
+* ``uid`` (tyrant模式下移除特权的用户id)
+* ``gid`` (tyrant模式下移除特权的组id)
+* ``socket`` (用于按需vassal激活的socket。如果指定，如果指定，那么
+  vassal将会运行在按需模式。如果省略或者为空，那么vassal将会正常运行。查看 :doc:`OnDemandVassals` 以获得更多信息。)
 
-There are 2 kind of commands (for now):
+有两类命令 (目前):
 
 * ``touch``
 * ``destroy``
 
-The first one is used for creating and reloading instances while the second is
-for destroying.  If you do not specify a config string, the Emperor will assume
-you are referring to a static file available in the Emperor current directory.
+第一个用于创建和重载实例，而第二个用于销毁。如果你不指定一个配置字符串，那么Emperor将会假设你指的是Emperor当前目录下的一个可用的静态文件。
 
 .. code-block:: python
 
@@ -272,9 +239,9 @@ you are referring to a static file available in the Emperor current directory.
 ``zoo://`` -- Zookeeper
 -----------------------
 
-Currently in development.
+目前正在开发中。
 
 ``ldap://`` -- LDAP
 -------------------
 
-Currently in development.
+目前正在开发中。

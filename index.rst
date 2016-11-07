@@ -141,7 +141,7 @@ uWSGI子系统
    Metrics
    Chunked
 
-Scaling with uWSGI
+使用uWSGI进行扩大化
 ==================
 
 .. toctree::
@@ -154,7 +154,7 @@ Scaling with uWSGI
    DynamicApps
    SSLScaling
 
-Securing uWSGI
+安全的uWSGI
 ==============
 
 .. toctree::
@@ -317,10 +317,10 @@ Web服务器支持
 
 ================== =
 邮件列表       http://lists.unbit.it/cgi-bin/mailman/listinfo/uwsgi
-Gmane mirror       http://dir.gmane.org/gmane.comp.python.wsgi.uwsgi.general
-IRC                #uwsgi @ irc.freenode.org. The owner of the channel is `unbit`.
+Gmane镜像       http://dir.gmane.org/gmane.comp.python.wsgi.uwsgi.general
+IRC                #uwsgi @ irc.freenode.org. 该channel的所有者是 `unbit`.
 Twitter            http://twitter.com/unbit
-Commercial support http://unbit.com/
+商业支持 http://unbit.com/
 ================== =
 
 .
@@ -333,13 +333,13 @@ Commercial support http://unbit.com/
 捐赠
 ======
 
-uWSGI development is sponsored by the Italian ISP `Unbit <http://unbit.it/>`_ and its customers. You can buy commercial support and licensing. If you are not an Unbit customer, or you cannot/do not want to buy a commercial uWSGI license, consider making a donation. Obviously please feel free to ask for new features in your donation.
+uWSGI的发展是由意大利ISP `Unbit <http://unbit.it/>`_ 及其客户赞助的。你可以购买商业支持和许可。如果你不是一个Unbit客户，或者你不能/不想要购买一个商业uWSGI证书，那么可以考虑进行捐赠。当然，请在你的捐赠中随意要求新特性。
 
-We will give credit to everyone who wants to sponsor new features.
+我们将信任任何想要赞助新特性的人。
 
-Check http://unbit.it/uwsgi_donate for the donation link. You can also donate via `GitTip <https://www.gittip.com/unbit/>`_.
+访问该捐赠链接 http://unbit.it/uwsgi_donate 。你也可以通过 `GitTip <https://www.gittip.com/unbit/>`_ 来捐赠。
 
-Indices and tables
+索引和表
 ==================
 
 * :ref:`genindex`
