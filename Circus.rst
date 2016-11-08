@@ -1,19 +1,15 @@
-Running uWSGI instances with Circus
+使用Circus运行uWSGI实例
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Circus (https://circus.readthedocs.io/en/0.7/) is a process manager written in
-Python. It is very similar to projects like Supervisor, but with several
-additional features.  Although most, if not all, of it's functionalities have a
-counterpart in uWSGI, Circus can be used as a library allowing you to build
-dynamic configurations (and extend uWSGI patterns). This aspect is very
-important and may be the real selling point of Circus.
+Circus (https://circus.readthedocs.io/en/0.7/)是一个用Python写的进程管理器。它非常类似于像Supervisor这样的工程，但具有一些额外特性。虽然大部分，主要的功能在uWSGI中都能找到对应的，但是Circus可以被当成一个库使用，让你可以构建动态配置 (并且扩展uWSGI模式)。这个部分是非常重要的，并且可能就是Circus的真正卖点。
 
-Socket activation
+
+Socket激活
 *****************
 
-Based on the venerable inetd pattern, Circus can bind to sockets and pass them to children.
+基于古老的inetd模式，Circu可以绑定到socket，并且将其传递给它的孩子。
 
-Start with a simple Circus config (call it circus.ini):
+从一个简单的Circus配置开始 (称之为circus.ini):
 
 .. code-block:: ini
 
@@ -32,18 +28,16 @@ Start with a simple Circus config (call it circus.ini):
    host = 0.0.0.0
    port = 8888
 
-run it with
+这样运行它
 
 .. code-block:: sh
 
     circusd circus.ini
 
-(Better) Socket activation
+(更好的) Socket激活
 **************************
 
-If you want to spawn instances on demand, you will likely want to shut them
-down when they are no longer used.  To accomplish that use the --idle uWSGI
-option.
+如果你想按需生成实例，那么你可能会想要在不再使用它们的时候将其关闭。要实现这点，则使用--idle uWSGI选项。
 
 .. code-block:: ini
 
@@ -64,5 +58,4 @@ option.
    host = 0.0.0.0
    port = 8888
 
-This time we have enabled the master process. It will manage the --idle option, shutting down the instance if it is
-inactive for more than 60 seconds.
+这一次，我们启用了master进程。它将会管理--idle选项，在实例不活跃时间超过60秒的时候关闭它。

@@ -28,22 +28,12 @@ uWSGI通过可插拔算法，提供了动态扩展运行的worker数量的能力
    cheaper-step = 1
 
 
-This configuration will tell uWSGI to run up to 10 workers under load. If the
-app is idle uWSGI will stop workers but it will always leave at least 2 of them
-running.  With ``cheaper-initial`` you can control how many workers should be
-spawned at startup. If your average load requires more than minimum number of
-workers you can have them spawned right away and then "cheaped" (killed off) if
-load is low enough.  When the cheaper algorithm decides that it needs more
-workers it will spawn ``cheaper-step`` of them. This is useful if you have a
-high maximum number of workers -- in the event of a sudden load spike it would
-otherwise take a lot of time to spawn enough workers one by one.
+这个配置将会告诉WSGI负载之下最多运行10个worker。如果应用处于idle状态，那么uWSGI将会停止worker，但它总是会让至少2个worker在运行。使用 ``cheaper-initial`` ，你可以控制在启动的时候应该生成几个worker。如果你的平均负载要求比最小数量的worker还要多，那么你可以让它们立即生成，然后在负载足够低的情况下，"省省" (杀死它们)。当cheaper算法决定它需要更多的worker时，它会生成它们的 ``cheaper-step`` 。这在你有一个高的最大worker数的时候有用 —— 否则在突然尖峰负载的情况下，它会花费大量的时间来一个一个生成足够的worker。
 
 设置内存限制
 ---------------------
 
-Starting with 1.9.16 rss memory limits can be set to stop cheaper spawning
-new workers if process count limit was not reached, but total sum of rss
-memory used by all workers reached given limit.
+自1.9.16起，可以设置rss内存限制，从而在没有达到进程数量限制，但是所有worker使用的rss内存的总数量达到指定限制的时候停止cheapter生成新worker。
 
 .. code-block:: ini
 
@@ -57,39 +47,32 @@ memory used by all workers reached given limit.
    # we use 160MB hard limit below (values are in bytes)
    cheaper-rss-limit-hard = 167772160
 
-Notes:
+注意：
 
-- Hard limit is optional, soft limit alone can be used.
-- Hard value must be higher then soft value, both values shouldn't be too close to each other.
-- Hard value should be soft + at least average worker memory usage for given app.
-- Soft value is the limiter for cheaper, it won't spawn more workers, but already running workers
-  memory usage might grow, to handle that reload-on-rss can be set too. To set unbreakable barrier
-  for app memory usage cgroups are recommended.
+- 硬限制是可选的，可以单独使用软限制。
+- 硬限制值必须比软限制值高，这两个值都不应该彼此太接近。
+- 硬限制值应该是软限制值 + 至少是用于给定应用的平均worker内存使用。
+- 软限制值是cheaper的限制器，它不会生成更多的worker，但已运行中的worker的内存使用可能会增长，要处理它，也可以设置reload-on-rss。建议为应用内存使用cgroups设置牢不可破的限制。
 
 
 ``spare`` cheaper算法
 ---------------------------
 
-This is the default algorithm.  If all workers are busy for
-``cheaper_overload`` seconds then uWSGI will spawn new workers. When the load
-is gone it will begin stopping processes one at a time.
+这是默认的算法。如果所有的worker在 ``cheaper_overload`` 秒内都处于忙碌状态，那么uWSGI将会生成新的worker。当负载消失的时候，它将开始一次停止一个进程。
 
 
 ``spare2`` cheaper算法
 ----------------------------
 
-This algorithm is similar to spare, but suitable for large scale by increase workers faster and
-decrease workers slower.
+这个算法与spare类似，但适用于更快增长worker数，并且较慢降低worker数的大规模。
 
-When number of idle workers is smaller than number specified by ``cheaper``, it spawns (``cheaper`` -
-number of idle workers) workers.  Maximum workers spawned at once can be limited by ``cheaper-step``.
-For example, ``cheaper`` is 4, there are 2 idle workers and ``cheaper-step`` is 1, it spawns 1 worker.
+当idle状态的worker数比 ``cheaper`` 指定的数量小的时候，它生成 (``cheaper`` -
+idle状态的worker数) worker。一次生成worker的数量的最大值可以通过 ``cheaper-step`` 来限制。例如。 ``cheaper`` 是4，有2个idle状态的worker，并且 ``cheaper-step`` 为1，它会生成1个worker。
 
-When number of idle workers is larger than ``cheaper``, it increments internal counter.
-When number of idle workers is smaller than or equal to ``cheaper``, reset the counter.
-When the counter is equal to ``cheaper-idle``, cheap one worker and reset the counter.
+当idle状态的worker数比 ``cheaper`` 大时，它会增加内部计数器。当idle状态的worker数小于或等于 ``cheaper`` 时，会重置计数器。
+当计数器等于 ``cheaper-idle`` 时，省掉一个worker，然后重置计数器。
 
-Sample configuration:
+样例配置：
 
 .. code-block:: ini
 
@@ -105,97 +88,66 @@ Sample configuration:
 ``backlog`` cheaper算法
 -----------------------------
 
-.. note:: ``backlog`` is only available on Linux and only on TCP sockets (not UNIX domain sockets).
+.. note:: ``backlog`` 只适用于Linux以及TCP socket (不是UNIX域的socket)。
 
-If the socket's listen queue has more than ``cheaper_overload`` requests
-waiting to be processed, uWSGI will spawn new workers.  If the backlog is lower
-it will begin killing processes one at a time.
+如果socket的监听队列有超过 ``cheaper_overload`` 个请求在等待处理，那么uWSGI将会生成新的worker。如果积压降低，它将会开始一次杀掉一个进程。
 
 ``busyness`` cheaper算法
 ------------------------------
 
-.. note:: This algorithm is optional, it is only available if the ``cheaper_busyness`` plugin is compiled and loaded.
+.. note:: 这个算法是可选的，只有在编译并加载了 ``cheaper_busyness`` 插件的情况下，才可以用它。
 
-This plugin implements an algorithm which adds or removes workers based on
-average utilization for a given time period. It's goal is to keep more workers
-than the minimum needed available at any given time, so the app will always
-have capacity for new requests. If you want to run only minimum number of
-workers then use the spare or backlog algorithms.
+该插件实现了这样一个算法，基于给定时间周期内的平均利用率来添加或移除worker。它的目标是保持在任意有比需要的最小值的worker数还多的worker可用，这样，应用将总是能够处理新的请求。如果你只想运行最小数量的worker，那么使用spare或者backlog算法。
 
-This plugin primarily is used because the way spare and backlog plugins work
-causes very aggressive scaling behavior. If you set a low ``cheaper`` value
-(for example 1), then uWSGI will keep only 1 worker running and spawn new
-workers only when that running worker is overloaded.  If an app requires more
-workers, then uWSGI will be spawning and stopping workers all the time. Only
-during times of very low load the would the minimum number of workers be
-enough.  
+使用该插件主要是因为spare和backlog插件工作的方式引发非常激进的缩放行为。如果你设置一个低的 ``cheaper`` 值
+(例如，1)，那么uWSGI将会一直只运行1个worker，然后只在运行中的那个worker过载的时候才生成新的worker。如果应用要求更多的worker，那么uWSGI将会一直生成停止worker。只有在非常低的负载期间，最小数量的worker才够。
 
-The Busyness algorithm tries to do the opposite: spawn as many workers as
-needed and stop some of them only when there is a good chance that they are not
-needed. This should lead to a more stable worker count and much less respawns.
-Since for most of the time we have more worker capacity  than actually needed,
-average application response times should be lower than with other plugins.
+Busyness算法试着与其相反：按需生成worker，然后只有在很有肯能不需要它们的时候才停止一些。这应该会使得worker数量更加稳定，并且更少进行重新生成。由于大部分的时间里，我们比实际需要的拥有更多的worker，因此平均应用响应时间应该比使用其他插件更低。
 
-Options:
+选项：
 
 cheaper-overload
 ****************
 
-Specifies the window, in seconds, for tracking the average busyness of workers. Example:
+指定窗口，以秒为单位，用于追踪worker的平均busyness。例如：
 
 .. code-block:: ini
 
    cheaper-overload = 30
 
-This option will check busyness every 30 seconds. If during the last 30 seconds
-all workers were running for 3 seconds and idle for the remaining 27 seconds
-the calculated busyness will be 10% (3/30). This value will decide how fast
-uWSGI can respond to load spikes. New workers will be spawned at most every
-``cheaper-overload`` seconds (unless you are running uWSGI on Linux -- see
-``cheaper-busyness-backlog-alert`` for details).  
+这个选项将会每30秒检查busyness。如果在上一个30秒期间，所有worker都是运行3秒，并且在剩下的27秒内出于idle状态，那么计算所得的busyness将会是10% (3/30)。这个值将会决定uWSGI可以多快响应负载尖峰。至少每 ``cheaper-overload`` 秒会生成新的worker (除非你在Linux上运行uWSGI —— 详情请见
+``cheaper-busyness-backlog-alert`` )。
 
-If you want to react to load spikes faster, keep this value low so busyness is
-calculated more often. Keep in mind this may cause workers to be
-started/stopped more often than required since every minor spike may spawn new
-workers. With a high ``cheaper-overload`` value the worker count will change
-much less since longer cycles will eat all short spikes of load and extreme
-values.
-Default is 3, for busyness plugin it's best to use higher value (10-30).
+如果你想要更快地对负载尖峰进行响应，那么为这个值取一个小的值，这样，就会更频繁地计算busyness。记住，这可能会导致比需要的更频繁地启动/停止worker，因为每一个小的尖峰都会生成新的worker。使用一个高的 ``cheaper-overload`` 值，则worker数量将会更少发生改变，因为较长的周期将会吞掉所有负载短尖峰和极端值。默认是3，对于busyness插件，最好使用较高的值 (10-30)。
 
 cheaper-step
 ************
 
-How many workers to spawn when the algorithm decides they are needed. Default
-is 1.
+当算法决策需要worker的时候，要生成worker的数目。默认是1。
 
 cheaper-initial
 ***************
 
-The number of workers to be started when starting the application. After the
-app is started the algorithm can stop or start workers if needed.
+启动应用的时候，启动的worker数。在应用启动之后，如果需要的话，算法可以停止或者启动worker。
 
 cheaper-busyness-max
 ********************
 
-This is the maximum busyness we allow. Every time the calculated busyness for
-last ``cheaper-overload`` seconds is higher than this value, uWSGI will spawn
-``cheaper-step`` new workers.  Default is 50.
+这是允许的最大busyness。每次上一个 ``cheaper-overload`` 秒计算的busyness比这个值高的时候，uWSGI将会生成
+``cheaper-step`` 新worker。默认是50.
 
 cheaper-busyness-min
 ********************
 
-This is minimum busyness. If current busyness is below this value, the app is
-considered as being in an "idle cycl" and uWSGI will start counting them. Once
-we reach needed number of idle cycles uWSGI will kill one worker.  Default is
-25.
+这是最小的busyness。如果当前的busyness位于该值之下，那么应用就会被认为处在一个“idle周期”中，而uWSGI将会开始对它们进行计数。一旦到达idle周期的所需数目，uWSGI将会杀掉一个worker。默认是25.
 
 cheaper-busyness-multiplier
 ***************************
 
-This option tells uWSGI how many idle cycles we need before stopping a worker.
-After reaching this limit uWSGI will stop a worker and reset this counter.
+这个选项告诉uWSGI在停止一个worker之前，我们需要多少个idle周期。
+在到达这个限制之后，uWSGI将会停止一个worker，并且设置这个计数器。
 
-For example:
+例如：
 
 .. code-block:: ini
    
@@ -203,7 +155,7 @@ For example:
    cheaper-busyness-multiplier = 20
    cheaper-busyness-min = 25
 
-If average worker busyness is under 25% for 20 checks in a row, executed every
+如果平均worker busyness低于25% for 20 checks in a row, executed every
 10 seconds (total of 200 seconds), tone worker will be stopped. The idle cycles
 counter will be reset if average busyness jumps above ``cheaper-busyness-max``
 and we spawn new workers. If during idle cycle counting the average busyness
@@ -286,16 +238,16 @@ they would stay in the request queue until that long running request is
 completed. With this option we can detect such a condition and spawn new worker
 to prevent queued requests from being timed out.  Default is 60.
 
-Notes regarding Busyness
-************************
+关于Busyness的一些注意事项
+**************************
 
-* Experiment with settings, there is no one golden rule of what values should be used for everyone. Test and pick values that are best for you. Monitoring uWSGI stats (via Carbon, for instance) will make it easy to decide on good values.
-* Don't expect busyness to be constant. it will change frequently. In the end, real users interact with your apps in very random way. It's recommended to use longer --cheaper-overload values (>=30) to have less spikes.
-* If you want to run some benchmarks with this plugin, you should use tools that add randomness to the work load
+* 通过实验确定设置。对于每个人而言，没有哪个万金油值应该被使用。测试并挑选对你来说的最佳值。监控uWSGI统计数据 (例如，通过Carbon) 会使得决定使用哪个值简单一些。
+* 不要指望busyness恒久不变。它会经常改变。最终，真正的用户是以非常随机的方式与你的应用进行交互的。推荐使用更长的--cheaper-overload值 (>=30) ，使得尖峰更少。
+* 如果你想要运行这个插件的一些基准，那么你应该使用添加随机性到工作负载的工具。
 * With a low number of workers (2-3) starting new worker or stopping one might affect busyness a lot, if You have 2 workers with busyness of 50%, than stopping one of them will increase busyness to 100%. Keep that in mind when picking min and max levels, with only few workers running most of the time max should be more than double of min, otherwise every time one worker is stopped it might increase busyness to above max level.
 * With a low number of workers (1-4) and default settings expect this plugin will keep average busyness below the minimum level; adjust levels to compensate for this.
 * With a higher number of workers required to handle load, worker count should stabilize somewhere near minimum busyness level, jumping a little bit around this value
-* When experimenting with this plugin it is advised to enable ``--cheaper-busyness-verbose`` to get an idea of what it is doing. An example log follows.
+* 在对这个插件进行实验的时候，建议启用 ``--cheaper-busyness-verbose`` ，从而知道它正在做什么。一个样例日志如下。
 
   .. code-block:: python
 

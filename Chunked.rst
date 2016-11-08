@@ -5,13 +5,13 @@ An API for managing HTTP chunked input requests has been added in uWSGI 1.9.13.
 
 The API is very low-level to allow easy integration with standard apps.
 
-There are only two functions exposed:
+只公开了两个函数：
 
 * ``chunked_read([timeout])``
 
 * ``chunked_read_nb()``
 
-This API is supported (from uWSGI 1.9.20) on CPython, PyPy and Perl.
+This API is supported (从uWSGI 1.9.20起) on CPython, PyPy and Perl.
 
 Reading chunks
 **************
@@ -22,15 +22,15 @@ To read a chunk (blocking) just run
 
    my $msg = uwsgi::chunked_read
    
-If no timeout is specified, the default one will be used. If you do not get a chunk in time, the function will croak (or raise an exception when under Python).
+如果未指定超时时间，则会使用默认值。If you do not get a chunk in time, the function will croak (or raise an exception when under Python).
 
-Under non-blocking/async engines you may want to use
+在非阻塞/异步引擎下，你或许想要使用
 
 .. code-block:: perl
 
    my $msg = uwsgi::chunked_read_nb
    
-The function will soon return ``undef`` (or ``None`` on Python) if no chunks are available (and croak/raise an exception on error).
+该函数将会立即返回 ``undef`` (或者在Python上是 ``None``) if no chunks are available (and croak/raise an exception on error).
 
 A full PSGI streaming echo example:
 
@@ -66,7 +66,7 @@ All of the messages are always stored in the same buffer. If a message bigger th
 By default the buffer is limited to 1 MB. You can tune it with the ``--chunked-input-limit`` option (bytes).
 
 
-Integration with proxies
+与代理集成
 ************************
 
 If you plan to put uWSGI behind a proxy/router be sure it supports chunked input requests (or generally raw HTTP requests).
@@ -77,7 +77,7 @@ HAProxy works out of the box.
 
 Nginx >= 1.4 supports chunked input.
 
-Options
+选项
 *******
 
 * ``--chunked-input-limit``: the limit (in bytes) of a chunk message (default 1MB)

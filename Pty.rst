@@ -1,14 +1,14 @@
-The Pty plugin
+Pty插件
 ==============
 
-- Available since uWSGI 1.9.15, supported on Linux, OpenBSD, FreeBSD and OSX
+-自uWSGI 1.9.15起可用，Linux, OpenBSD, FreeBSD和OSX皆支持。
 
 This plugin allows you to attach pseudo terminals to your applications.
 
 Currently the pseudoterminal server can be attached (and exposed over network) only on the first worker
 (this limit will be removed in the future).
 
-The plugin exposes a client mode too (avoiding you to mess with netcat, telnet or screen settings)
+该插件还公开了一个客户端模式 (避免你把它跟netcat, telnet或者screen设置混在一起)
 
 
 Building it
