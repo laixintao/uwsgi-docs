@@ -2,53 +2,47 @@ uWSGI 1.9
 =========
 
 
-This is the version that will lead to the LTS 2.0. It includes a lot of internal changes and removal of a lot of basically unused, broken, or too ugly functionality.
+这是一个将会指向LTS 2.0点版本。它引入了许多内部改动，并且移除了大量基本未使用、不能用或者太丑的功能。
 
-Options deprecated in 1.0.x have been definitely removed.
 
-Non-blocking for all
+1.0.x弃用的选项已经被永久删除。
+
+一切皆非阻塞
 ********************
 
-From now on, all of the request plugins, need to be non-blocking. A new set of
-C/C++/Obj-C api have been added to help the user/developer writing non-blocking
-code in a safe way.  Plugins like the RPC one have been rewritten using that
-new api, allowing you to use it with engines like Gevent or Coro::Anyevent The
-async mode has been rewritten to better cooperate with this new rule. More info
-can be found on :doc:`Async` The new async mode requires some form of
-coroutine/greenthread/suspend engine to correctly work. Again, check
+从现在开始，所有的请求差距，都需要是非阻塞的。已经添加了一个新的
+C/C++/Obj-C api集合，来帮助用户／开发者安全编写非阻塞代码。诸如RPC这样的插件已经使用新api进行重写了，这让你能够通过像Gevent或者Coro::Anyevent这样的引擎来使用它。重写了异步模式，从而更好地配合新规则。你可以在 :doc:`Async` 找到更多信息。新的异步模式要求某些形式的协程/绿色线程/挂起引擎正确工作。再次，看看
 :doc:`Async`
 
 Coro::AnyEvent
 **************
 
-The Perl/PSGI plugin is one of the most ancient in the uWSGI project, but used to not support the async mode in advanced ways.
+这个Perl/PSGI插件是uWSGI项目最老的插件之一，但过去它并不支持高级方式下的异步模式。
 
-Thanks to the new :doc:`Async` mode, a Coro::Anyevent (coroae) loop engine has been added.
+多亏了新的 :doc:`Async` 模式，才添加了一个Coro::Anyevent (coroae)循环引擎。
 
-To build it you need the Coro::Anyevent package (you can use cpanm to get it), then just add --coroae <n> to your options
-where <n> is the number of async cores to spawn.
+要构建它，你需要Coro::Anyevent包 (可以使用cpanm来获取它)，然后添加--coroae <n> 到你的选项中，其中，<n>是要生成的异步核心数。
 
 
-The JVM plugin
+JVM插件
 **************
 
-We finally have a truly working JVM infrastructure in uWSGI 1.9.  Check the new
-docs at :doc:`JVM` Improved :doc:`JWSGI` support is available as well as the
-new Clojure :doc:`Ring` plugin
+在uWSGI 1.9中，我们终于有了一个真正可用的JVM基础设施了。看看 :doc:`JVM` 中的文档吧。改进的 :doc:`JWSGI` 支持，以及新的Clojure :doc:`Ring` 插件都可以使用了。
 
-The Mono ASP.NET plugin
+Mono ASP.NET插件
 ***********************
 
-The first Mono plugin attempt (in 2010) was a total failure. Now we have a new shining implementation.
+第一次Mono插件尝试 (在2010年) 就是一次彻底的失败。现在，我们有了一个新的闪亮实现。
 
-Check docs here :doc:`Mono`
+看看这个文档： :doc:`Mono`
 
-Language independent HTTP body management
+语言独立的HTTP体管理
 *****************************************
 
-One of the most annoying task in writing uWSGI request plugins, was re-implementing the management of HTTP body reader every time.
+写uWSGI请求插件最恼人的任务之一就是每次都要重新实现http体读取器的管理。
 
-The new non-blocking api added 3 simple generic C/C++/Obj-C functions to deal with it in a language independent way:
+新的非阻塞api添加了3个简单通用的C/C++/Obj-C函数来以一种语言独立的方式处理它：
+
 
 .. code-block:: c
 
@@ -57,33 +51,29 @@ The new non-blocking api added 3 simple generic C/C++/Obj-C functions to deal wi
    void uwsgi_request_body_seek(struct wsgi_request *wsgi_req, off_t pos); 
 
 
-they automatically manage post-buffering, non-blocking and upload progress.
+它们自动管理post缓存，非阻塞和上传进展。
 
-All of the request plugins have been updated to the new api
+所有的请求插件已更新到新的API。
 
 
 
-Faster uwsgi/HTTP/FastCGI/SCGI native sockets
+更快的uwsgi/HTTP/FastCGI/SCGI原生socket
 *********************************************
 
-All of the --socket protocol parsers have been rewritten to be faster (less
-syscall usage) and to use less memory.  They are now more complex, but you
-should note (on loaded site) a reduced amount of syscalls per-request.
+所有的--socket协议解析器已经全部被重写，从而更快 (更少的使用系统调用)，并且使用更少的内存。现在，它们更复杂了，但是你应该注意到 (在已加载站点上) 每个请求的系统调用数的减少。
 
-The SCGI protocol support has been added, while a NPH fastcgi mode (where the output is HTTP instead of cgi) has been implemented.
 
-The FastCGI protocol now supports true sendfile() usage
+添加了对SCGI协议的支持，并且已实现了NPH fastcgi模式 (这里，输出是HTTP，而不是cgi)。
 
-The old behaviour of storing the request body for HTTP and FastCGI on a temp
-file, has been removed (unless you use post-buffering).  This means you can now
-have upload progress with protocols other than uwsgi.
+FastCGI协议现在支持真正的sendfile()使用
 
-Request logging VS err logging
+为HTTP和FastCGI将请求体存储在一个临时文件中的这种老做法已经被移除 (除非你使用post缓存)。这意味着，除了uwsgi之外，你现在可以使用其他协议进行上传了。
+
+
+请求日志记录 VS 错误日志记录
 ******************************
 
-One of the most annoying problem with older uWSGI releases was the lack of
-ability to easily split request logs from error logs.  You can now create a
-logger and map it only to request logging:
+较老的uWSGI发布版本的最恼人的问题之一是缺乏方便地把请求日志从错误日志中分割出来的能力。现在，你可以创建一个记录器，然后让它只记录请求：
 
 .. code-block:: ini
 
@@ -91,7 +81,7 @@ logger and map it only to request logging:
    req-logger = syslog
    ...
 
-As an example you may want to send request logging to syslog and redis, and error log to mongodb (on the foo.bar collection):
+举个例子，你也许想要发送请求日志到syslog和redis，发送错误日志到mongodb (放到foo.bar集合中):
 
 .. code-block:: ini
 
@@ -101,7 +91,7 @@ As an example you may want to send request logging to syslog and redis, and erro
    logger = mongodblog:127.0.0.1:9090,foo.bar
    ...
 
-Or just use (boring) files
+或者只是使用 (无聊到) 文件
 
 .. code-block:: ini
 
@@ -110,55 +100,39 @@ Or just use (boring) files
    logger = file:/tmp/errlog
    ...
 
-Chain reloading
+链式重载
 ***************
 
-When in lazy/lazy_apps mode, you can simply destroy a worker to force it to
-reload the application code.
+当位于lazy/lazy_apps模式时，你可以简单地销毁一个worker，以迫使它重载应用代码。
 
-A new reloading system named "chain reload", allows you to reload one worker at
-time (opposed to the standard way where all of the workers are destroyed in
-bulk)
+一个新的名为“链式重载”的重载系统，允许你有时重载一个worker (与批量销毁所有worker这种标准方式相对)
 
-Chain reloading can only be triggered via "touch": --touch-chain-reload <file>
+只能通过"touch"来触发链式重载: --touch-chain-reload <file>
 
-Offloading improvements
+卸载改进
 ***********************
 
-Offloading appeared in uWSGI 1.4 and is one of the most loved features.  In 1.9
-we added a new engine: "write", that allows you to offload the write of files
-on disk.  A general function api uwsgi.offload() is on work, to allow
-applications to access the offload engine.  All of the uWSGI parts sending
-static files (including the language-specific implementations, like WSGI
-wsgi.file_wrapper) have been extended to automatically use offloading if
-available.  This means you can use your Framework's way for serving static
-files, without losing too much performance and (more important) without
-blocking your workers.
+卸载是在uWSGI 1.4出现的，并且是最受喜爱的特性之一。在1.9种，我们添加了一个新的引擎： "write"，它允许你卸载磁盘上文件的写。有一个通用函数api uwsgi.offload()，它允许应用访问卸载引擎。所有发送静态文件的uWSGI部分 (包括语言特定的实现，像WSGI
+wsgi.file_wrapper) 都得到了扩展，以在可用的情况下自动使用卸载。这意味着，你可以使用你的框架的方式来提供静态文件服务，而不会损失太多的性能，并且(更重要的是)不会阻塞你的worker。
 
 
-Better static files management/serving
+更好的静态文件管理/服务
 **************************************
 
-uWSGI 1.9 received many improvements in static file serving.
+uWSGI 1.9在提供静态文件服务方面有了许多改进。
 
-You may want to check: :doc:`StaticFiles`
+你或许想要看看： :doc:`StaticFiles`
 
-For syadmins one of the most interesting new features is the ability to use the
-uWSGI new generation cacheing (see below) to store request -> absolute_path
-mappings
+对于系统管理员来说，最有趣的新特性之一是能够使用
+uWSGI新一代的缓存 (见下) 来存储请求 -> 绝对路径映射
 
-The New Generation Cache subsystem (cache2)
+新一代的缓存子系统 (cache2)
 *******************************************
 
-The uWSGI caching subsystem has been completely rewritten to be a more general
-purpose in-memory key/value store.  The old caching subsystem has been re-built
-on top of it, and is now more of a general "web caching" system.  The new
-cache subsystem allows you to control all of the aspects of your memory store,
-from the hashing algorithm to the amount of blocks.
+uWSGI缓存子系统已经被完全重写，变成一个更通用的内存键/值存储。旧的缓存子系统已在它之上进行了重建，现在更多是一个通用的“web缓存”系统。新的缓存子系统允许你控制内存存储的所有方面，从哈希算法到块的数量。
 
-You can now have multiple caches per-instance (identified by name)
-
-To create a cache just use the new --cache2 option
+现在，对于每个实例，你可以有多个缓存 (由名称标识)
+选项
 
 .. code-block:: ini
 
@@ -169,128 +143,100 @@ To create a cache just use the new --cache2 option
    ...
 
 
-In this example we created 3 caches: mycache, faster and fslike.
+在这个例子中，我们创建了3个缓存：mycache, faster和fslike.
 
-The first one is a standard old-style, cache able to store 100 items of a
-maximum size of 64k with keys limited to 2048 bytes using djb33x hashing
-algorithm The second one use the murmur2 hashing algorithm, each key can be at
-most 1000 bytes, can store 200 items of max 4k The last one works like a
-filesystem, where each item can span over multiple blocks. That means, fslike
-cache can save lot of memory for boject of different size (but it will be
-slower than non-bitmap based caches)
+第一个是标准的旧式缓存，能够存储100个项，最大是64k，键的大小限制为2048字节，使用djb33x哈希算法。第二个使用murmur2哈希算法，每个键最大可以是100字节，可以存储200个项，最大是4k。最后一个就像文件系统一样，其中，每个项可以跨多个块。这意味着，fslike缓存可以为不同大小的对象节省大量的内存 (但它会比基于非bitmap的缓存更慢)
 
-The options you can specify in cache2 are the following:
+你在cache2中可以指定的选项如下：
 
-``name`` the name of the cache (must be unique) REQUIRED
+``name`` 缓存名 (必须唯一) 必要
 
-``items/max_items/maxitems`` set the max number of items the cache can store REQUIRED
+``items/max_items/maxitems`` 设置缓存剋存储的最大项数。必要
 
-``blocksize`` set the size of a single block
+``blocksize`` 设置单个块的大小
 
-``blocks`` set the number of blocks (used only in bitmap mode)
+``blocks`` 设置块数 (只在bitmap模式使用)
 
-``hash`` set the hashing algorithm, currently supported: djbx33 and murmur2
+``hash`` 设置哈希算法，目前支持：djbx33盒murmur2
 
-``hashsize/hash_size`` set the size of the hash table (default to 65536 items)
+``hashsize/hash_size`` 设置哈希表大小 (默认为65536个项)
 
-``keysize/key_size`` set the max size of a key
+``keysize/key_size`` 设置键大小
 
-``store`` set the filename in which to persistent store the cache
+``store`` 设置永久化存储缓存的文件名
 
-``store_sync/storesync`` set the frequency (in seconds) at which msync() is called to flush cache on disk (when in persistent mode)
+``store_sync/storesync`` 设置频率 (以秒为单位)，其中，调用msync()来把缓存刷新至磁盘 (当在永久化模式时)
 
-``node/nodes`` the new cache subsystem can send cache updates via udp packet. With this option you set one or more (separated with `;`) udp addresses on which to send updates
+``node/nodes`` 新的缓存子系统可以通过udp包发送缓存更新。使用这个选项，设置一或多个 (使用 `;` 分隔) 发送更新的udp地址
 
-``sync`` set it to the address of a cache server. Its whole content will be copied in the new cache (use it for initial sync)
+``sync`` 将其设置为缓存服务器的地址。它的全部内容将会被拷贝到新的缓存 (将其用于初始化同步)
 
-``udp/udp_servers/udp_server/udpservers/udpserver`` bind to the specified udp addresses (separated with `;`) listening for cache updates
+``udp/udp_servers/udp_server/udpservers/udpserver`` 绑定到特定的udp地址 (使用 `;` 分隔) ，监听缓存更新
 
-``bitmap`` enable botmap mode (set it to 1)
+``bitmap`` 启用bitmap模式 (设置其为1)
 
-If you are asking yourself why such low-level tunings exists, you have to take in account that the new caching subsystem is used in lot of areas, so for different
-needs you may want different tuning. Just check :doc:`SSLScaling` for an example
+如果你问，为啥会存在这样低层次的调整，那么你必须考虑到，新的缓存子系统被用在大量的地方，因此，对于不同的需求，你或许想要不同的调整。以 :doc:`SSLScaling` 为例
 
-The old --cache-server option has been removed. The threaded cache server added in 0.9.8 has been completed superseeded
-by the new non blocking infrastructure. If you load the "cache" plugin (enabled by default in monolithic build) a cache server
-will be available and managed by the workers.
+旧的--cache-server选项已被移除。0.9.8添加的线程缓存服务器已经完全被新的非阻塞基础设施所代替。如果你加载"缓存（cache）"插件 (单件构建时默认启用)，那么将提供一个缓存服务器，它由worker管理。
 
 
-Update docs are available here :doc:`Caching`
+更新文档可以看看这里 :doc:`Caching`
 
-The Legion subsystem
+Legion子系统
 ********************
 
-The Legion subsystem is a new whole addition to the uWSGI project.  It has
-superseeded the old Clustering subsystem (which has been removed in 1.9).  It
-implements a quorum system to manage shared resources in clustered
-environments.  Docs are already available: :doc:`Legion`
+Legion子系统是uWSGI项目全新增加的一个系统。它取代了旧的集群子系统 (已在1.9删除)。它实现了一个quorum系统来管理集群环境中的共享资源。文档已经有了： :doc:`Legion`
 
-Cygwin (windows) support
+Cygwin (windows) 支持
 ************************
 
-uWSGI can be compiled on windows machines using the cygwin POSIX emulation
-system.  The event subsystem uses simple poll() (mapped to select() on cygwin),
-while the lock engine uses windows mutexes.  Albeit from our tests it looks
-pretty solid, we consider the porting still "experimental"
+通过cygwin POSIX仿真系统，可以在windows机器上变异uWSGI。事件系统使用简单的poll() (映射到cygwin上的select())，而锁引擎使用windows的mutex。尽管从我们的测试看来，它相当的稳固，但是我们认为该移植仍然是“实验性的”
 
 
-Advanced Exceptions subsystem
+高级异常子系统
 *****************************
 
-As well as the request body language-independent management, an exception
-management system has been added.  Currently supported only in the Python and
-Ruby plugins, allows language-independent handling of exceptions cases (like
-reloading on a specific exception).  The --catch-exception option has been
-improved to show lot of useful information. Just try it (in development !!!)
-Future development will allow automatic sending of exception to system like
-Sentry or Airbrake.
+与语言独立的请求体管理一样，添加了一个异常管理系统。目前仅Python和
+Ruby插件支持，允许对异常情况(例如对指定的异常进行重载)的语言无关处理。已对--catch-exception选项进行改进，以显示大量的有用信息。试试看 (尚在开发中!!!)。未来的开发将允许发送异常到诸如
+Sentry或者Airbrake这样的系统。
 
-SPDY, SSL and SNI
+SPDY, SSL和SNI
 *****************
 
-Exciting new features have been added to the SSL system and the HTTP router
+已经添加了令人兴奋的新特性到SSL系统和HTTP路由器中。
 
-SPDY support (currently only version 3) will get lot of users attention, but SNI subsystem is what sysadmins will love
+SPDY支持 (当前只是版本3) 将会受到大量用户关注，而SNI子系统则会受到系统管理员青睐。
 
-Preliminary docs are available
+初步文档可用
 
 :doc:`SPDY`
 
 :doc:`SNI`
 
-HTTP router keepalive, auto-chunking, auto-gzip and transparent websockets
+HTTP路由器保持连接，自动分块，自动gzip和透明的websockets
 ***************************************************************************
 
-Many users have started using the HTTP/HTTPS/SPDY router in production,
-so we started adding features to it. Remember this is ONLY a router/proxy, NO
-I/O is allowed, so you may not be able to throw away your
-old-good webserver.
+许多用户已经开始在生产上使用HTTP/HTTPS/SPDY路由器了，因此，我们开始对其添加特性。记住，这只是一个路由器／代理，不允许任何I/O，因此你可能不能够丢掉你老的，但是工作良好的web服务器。
 
-The new options:
+新选项：
 
-``--http-keepalive`` enable HTTP/1.1 keepalive connections
+``--http-keepalive`` 启用HTTP/1.1保持连接（keepalive）连接
 
-``--http-auto-chunked`` for backend response without content-length (or chunked encoding already enabled), transform the output in chunked mode to maintain keepalive connections
+``--http-auto-chunked`` 对于没有内容长度的后端响应 (或者已经启用块编码)，在块模式下转换输出，以维持keepalive连接
 
-``--http-auto-gzip`` automatically gzip content if uWSGI-Encoding header is set to gzip, but content size (Content-Length/Transfer-Encoding) and Content-Encoding are not specified
+``--http-auto-gzip`` 如果uWSGI-Encoding头被设置为gzip，则自动gzip压缩内容，但是内容大小 (Content-Length/Transfer-Encoding) 和Content-Encoding不会被指定
 
-``--http-websockets`` automatically detect websockets connections to put the request handler in raw mode
+``--http-websockets`` 自动检测websockets连接，以把请求处理器置于原始（raw）模式
 
-The SSL router (sslrouter)
+SSL路由器 (sslrouter)
 **************************
 
-A new corerouter has been added, it works in the same way as the rawrouter one,
-but will terminate ssl connections.  The sslrouter can use sni for implementing
-virtualhosting (using the --sslrouter-sni option)
+添加了一个新的corerouter，它与rawrouter的工作方式相同，但是它会终止ssl连接。该sslrouter可以使用sni来实现虚拟主机 (使用--sslrouter-sni选项)
 
 Websockets api
 **************
 
-20Tab S.r.l. (a company working on HTML5 browsers game) sponsored the
-development of a fast language-independent websockets api for uWSGI. The api is
-currently in very good shape (and maybe faster than any other implementation).
-Docs still need to be completed but you may want to check the following
-examples (a simple echo):
+20Tab S.r.l. (一个开发HTML5浏览器游戏的公司) 为uWSGI赞助了一个快速的语言无关的websockets api的开发。该api目前处于一个非常良好的状态(也许比其他实现更快)。仍然需要完成文档，但是你可以看看下面的例子 (一个简单的echo):
 
 https://github.com/unbit/uwsgi/blob/master/tests/websockets_echo.pl (perl)
 
@@ -298,95 +244,84 @@ https://github.com/unbit/uwsgi/blob/master/tests/websockets_echo.py (python)
 
 https://github.com/unbit/uwsgi/blob/master/tests/websockets_echo.ru (ruby)
 
-New Internal Routing (turing complete ?)
+新的内部路由 (图灵完备？)
 ****************************************
 
-The internal routing subsystem has been rewritten to be 'programmable'. You can
-see it as an apache mod_rewrite with steroids (and goto ;) Docs still need to
-be ported, but the new system allows you to modify/filter CGI vars and HTTP
-headers on the fly, as well as managing HTTP authentication and caching.
+内部路由子系统已经被重写，现在它是“可编程的”。你可以把它看成使用steroids (和goto ;)的apache mod_rewrite。仍然需要移植文档，但是这个新的系统允许你在线修改/过滤CGI变量和HTTP头，以及管理HTTP鉴权和缓存。
 
-Updated docs here (still work in progress) :doc:`InternalRouting`
+已更新的文档在这里 (仍在进行中) :doc:`InternalRouting`
 
-Emperor ZMQ plugin
+Emperor ZMQ插件
 ******************
 
-A new imperial monitor has been added allowing vassals to be governed over zeromq messages:
+添加了一个新的imperial监控器，允许通过zeromq消息管理vassal：
 
 https://uwsgi-docs.readthedocs.io/en/latest/ImperialMonitors.html#zmq-zeromq
 
-Total introspection via the stats server
+通过统计信息服务器的完全检查
 ****************************************
 
-The stats server now exports all of the request variables of the currently
-running requests for each core, so it works in multithread mode too. This is a
-great way to inspect what your instance is doing and how it does it In the
-future, uwsgitop could be extended to show the currently running request in
-realtime.
+现在，统计信息服务器为每个核导出了当前运行中的请求的所有请求变量，因此，它也工作在多线程模式下。这是检查你的实例在做什么，以及如何做的一种棒棒哒的方式。在未来，会扩展uwsgitop，从而实时显示当前运行的请求。
 
-Nagios plugin
+Nagios插件
 *************
 
-Ping requests sent using nagios plugin will no longer be counted in apps
-request stats.  This means that if application had --idle option enabled nagios
-pings will no longer prevent app from going to idle state, so starting with 1.9
---idle should be disabled when nagios plugin is used. Otherwise app may be put
-in idle state just before nagios ping request, when ping arrives it needs to
-wake from idle and this might take longer than ping timeout, causing nagios
-alerts.
+使用nagios插件发送Ping请求将不再算到应用请求统计数据中。这意味着，如果应用使用--idle选项，那么启用的nagios
+ping将不再阻止应用变成idle状态，因此，从1.9起，当使用nagios插件的时候，应该禁用
+--idle。否则，应用可能刚好在nagios ping请求之前置于idle状态，当ping抵达的时候，它需要从idle中醒来，而这可能花费的时间会比ping超时时间更长，从而引发nagios告警。
 
-Removed and deprecated features
+移除和弃用特性
 *******************************
 
-- The --app option has been removed. To load applications on specific mountpoints use the --mount option
+- 已移除--app选项。要在指定的挂载点加载应用，请使用--mount选项
 
-- The --static-offload-to-thread option has been removed. Use the more versatile --offload-threads
+- 已移除--static-offload-to-thread选项。使用更灵活的--offload-threads
 
-- The grunt mode has been removed. To accomplish the same behaviour just use threads or directly call fork() and uwsgi.disconnect()
+- 已移除grunt模式。要实现相同的行为，只需使用线程，或者直接调用fork()和uwsgi.disconnect()
 
-- The send_message/recv_message api has been removed (use language-supplied functions)
+- 已移除send_message/recv_message api (使用语言提供的函数)
 
-Working On, Issues and regressions
+进行中的，问题和回归
 ***********************************
 
-We missed the timeline for a bunch of expected features:
+对于大量预期特性，我们错过了时间：
 
-- SPNEGO support, this is an internal routing instruction to implement SPNEGO authentication support
+- SPNEGO支持，这是一个内部路由指令，用来实现SPNEGO认证支持
 
-- Ruby 1.9 fibers support has been rewritten, but need tests
+- Ruby 1.9 fibers支持已经被重写了，但是需要测试
 
-- Erlang support did not got required attention, very probably will be post-poned to 2.0
+- Erlang支持并为获得所需关注，非常有可能会延迟到2.0
 
-- Async sleep api is incomplete
+- 异步休眠API未完成
 
-- SPDY push is still not implemented
+- 仍然未实现SPDY推送
 
-- RADIUS and LDAP internal routing instructions are unimplemented
+- RADIUS和LDAP内部路由指令未实现
 
-- The channel subsystem (required for easy websockets communications) is still unimplemented
+- channel子系统 (为方便的websockets通信所需) 仍然未实现
 
-In addition to this we have issues that will be resolved in upcoming minor releases:
+除此之外，我们还有一些将会在接下来的小版本中解决的问题：
 
-- the --lazy mode lost usefulness, now it is like --lazy-apps but with workers-reload only policy on SIGHUP
+- --lazy模式没用了，现在它像--lazy-apps，但是在SIGHUP上只有workers-reload策略
 
-- it looks like the JVM does not cooperate well with coroutine engines, maybe we should add a check for it
+- 看起来JVM与协程引擎不能很好的工作，或许我们应该为它添加一个检查
 
-- Solaris and Solaris-like systems did not get heavy testing
+- Solaris和类Solaris系统并未获得严格测试
 
-Special thanks
+特别鸣谢
 **************
 
-A number of users/developers helped during the 1.9 development cycle. We would like to make special thanks to:
+许多用户/开发者在1.9开发周期中提供了帮助。我们想要特别感谢：
 
-Łukasz Mierzwa (fastrouters scalability tests)
+Łukasz Mierzwa (fastrouters伸缩性测试)
 
-Guido Berhoerster (making the internal routing the new skynet)
+Guido Berhoerster (让内部路由新天网)
 
-Riccardo Magliocchetti (static analysis)
+Riccardo Magliocchetti (静态分析)
 
-André Cruz (HTTPS and gevent battle tests)
+André Cruz (HTTPS和gevent battle测试)
 
-Mingli Yuan (Clojure/Ring support and test suite)
+Mingli Yuan (Clojure/Ring支持和测试套件)
 
 
 
