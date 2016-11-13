@@ -68,20 +68,19 @@ Emperor已被扩展来支持可插拔配置器：
 
 这里，“理论上来讲”这个词是关键，你需要记住，uWSGI中的一个安全性问题可能允许恶意用户修改权限，因此，如果你真的在意安全性 (或者不信任uWSGI开发者;) ，那么就要在生成vassal/实例之前删除权限 (就像在标准的tyrant模式中)
 
-Honouring symlinks in tyrant mode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tyrant模式中的遵循符号链接（Honouring symlinks）
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-已经添加了选项--emperor-tyrant-nofollow，用来在tyrant模式中搜索uid/gid的时候，迫使emperor遵循symlinks。
+已经添加了选项--emperor-tyrant-nofollow，用来在tyrant模式中搜索uid/gid的时候，迫使emperor遵循符号链接。
 
-This option allows the sysadmin to simply symlink configurations and just change the uid/gid of the symlink it self (remember to
-pass the -h option to chown !!!)
+该选项允许系统管理员简单的符号连接配置，并且只是修改符号连接自身的uid/gid (记得把-h选项传递给chown!!!)
 
 "rpcret"路由动作 (或者使用Lua编写高级规则)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 :doc:`InternalRouting` 在持续改善中。
 
-You can already call rpc function for the routing system (to generate response bypassing WSGI/PSGI/Rack/... engines):
+你已经可以为路由系统调用rpc函数了 (生成绕过WSGI/PSGI/Rack/...引擎的响应):
 
 .. code-block:: ini
 
@@ -89,11 +88,11 @@ You can already call rpc function for the routing system (to generate response b
    lua-load = myrpcfunctions.lua
    route = ^/foo/(.+)/call rpc:hello_world ${REMOTE_ADDR} $1
 
-the hello_world rpc function is defined (and registered) in the myrpcfunctions.lua taking two arguments.
+hello_world rpc函数是在myrpcfunctions.lua中定义（以及注册）的，它接收两个参数。
 
-The function is called when the routing regexp matches, and its output sent to the client.
+当路由正则表达式匹配上的时候，会调用该函数，而它的输出会被发送给客户端。
 
-The "rpcret" works in similar way, but instead generating a response, you generate a routing return code:
+"rpcret"工作方式相似，但不是生成响应，而是生成一个路由返回码：
 
 .. code-block:: lua
 
@@ -108,7 +107,7 @@ The "rpcret" works in similar way, but instead generating a response, you genera
    print('Hello Hello')
    uwsgi.register_rpc('choose', choose)
 
-and the uWSGI config:
+以及uWSGI配置：
 
 .. code-block:: ini
 
@@ -119,26 +118,25 @@ and the uWSGI config:
    route-label = topogigio
    route-run = log:i am topogigio !!!
 
-The 'choose' rpc function will be invoked at every request passing REQUEST_URI and REMOTE_ADDR as its argument.
+这个'choose' rpc函数将会在每个请求中被调用，传递REQUEST_URI和REMOTE_ADDR作为它的参数。
 
-The return string of the function will be used to know what to do next (from the internal ruting point of view).
+函数的返回字符串将会被用来指示下一步做什么 (从内部路由的角度)。
 
-Currently supported return strings are:
+目前支持的返回字符串是：
 
-``next`` move to the next rule
+``next`` 移到下一条规则
 
-``continue`` pass the request to the request handler
+``continue`` 将请求传递给请求处理器
 
-``goon`` move to the next rule with a different action
+``goon`` 移动到下一个有着不同动作的规则
 
-``break`` close the connection with an optional status code
+``break`` 关闭连接，有一个可选的状态码
 
-``goto <label>`` goto to the specified label
+``goto <label>`` 跳到指定的标签
 
 
-Obviously rpc functions for rpcret can be written in any language/platform supported by uWSGI, but we strongly suggest to go with Lua for performance reasons
-(the inpact compared to pure C code is pretty irrelevant). If you are lucky and can use LuaJit you will experiment even better performance as for this kind of job
-a JIT compiler is the best approach.
+显然，可以在任何uWSGI支持的语言/平台中编写用于rpcret的rpc函数，但是我们强烈建议出于性能原因，使用Lua
+(与纯C相比，影响是非常不相关的)。如果你幸运，可以使用LuaJit，你会体验到甚至更好的性能，因为对于这种任务，JIT编译器是最好的方法。
 
 
 可用性
