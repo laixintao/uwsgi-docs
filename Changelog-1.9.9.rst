@@ -28,7 +28,7 @@ This new approach should reduce security problems caused by wrong configurations
 新特性
 ************
 
-The WebDav plugin
+WebDav插件
 ^^^^^^^^^^^^^^^^^
 
 WebDav is one of the much requested features for the project. We now have a beta-quality plugin, already supporting
@@ -64,7 +64,7 @@ LOCK/UNLOCK support is still incomplete
 
 Official docs will be available soon.
 
-Support for Go 1.1 (more or less, sad news for go users...)
+支持Go 1.1 (或多或少，对于go用户而言，是个坏消息……)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Albeit you can successfully embed go 1.1 apps in uWSGI, go 1.1 will be completely fork() unsafe.
@@ -79,12 +79,12 @@ Go 1.0.x will continue to be supported (unless gccgo shows itself as a better al
 
 More to come soon.
 
-Improved async modes
+改进的异步模式
 ^^^^^^^^^^^^^^^^^^^^
 
 Stackless, Greenlet and Fiber support have been updated to support new async features
 
-The radius plugin
+radius插件
 ^^^^^^^^^^^^^^^^^
 
 You can now authenticate over radius servers using the router_radius plugin:
@@ -98,7 +98,7 @@ You can now authenticate over radius servers using the router_radius plugin:
    route-run = radius:realm=CardDav uWSGI server,server=127.0.0.1:1812
    webdav-mount = /home/foobar
 
-The SPNEGO plugin
+SPNEGO插件
 ^^^^^^^^^^^^^^^^^
 
 Another authentication backend, using SPNEGO (kerberos)
@@ -119,7 +119,7 @@ More reports are wellcomed
 The ldap authenticator
 ^^^^^^^^^^^^^^^^^^^^^^
 
-(Author: Łukasz Mierzwa)
+(作者：Łukasz Mierzwa)
 
 Currently it lacks SASL support. Will be improved soon.
 
@@ -132,7 +132,7 @@ Currently it lacks SASL support. Will be improved soon.
 
 
 
-New internal routing features
+新的内部路由特性
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We removed the GOON action, as it was messy and basically useless with the new authentication approach
@@ -152,7 +152,7 @@ The "regexp" routing conditions has been improved to allows grouping. Now you ca
 
 this will take the first char of foo and place in the PIPPO request var
 
-Gevent atexit hook
+Gevent atexit钩子
 ^^^^^^^^^^^^^^^^^^
 
 uwsgi.atexit hook is now honoured by the gevent plugin (Author: André Cruz)
@@ -165,7 +165,7 @@ Transformations can be applied on the fly (no buffering involved).
 
 Check updated docs: :doc:`Transformations`
 
-The xattr plugin
+xattr插件
 ^^^^^^^^^^^^^^^^
 
 The xattr plugin allows you to reference files extended attributes in the internal routing subsystem:
@@ -189,10 +189,10 @@ or (variant with 2 vars)
    route-run = log:The attribute is ${xattr2[MYFILE:MYATTR]}
 
 
-The airbrake plugin
+airbrake插件
 ^^^^^^^^^^^^^^^^^^^
 
-(Author: Łukasz Mierzwa)
+(作者：Łukasz Mierzwa)
 
 Currently at early stage of development allows sending uWSGI exceptions and alarms to airbrake servers.
 
@@ -201,7 +201,7 @@ Official docs will be available soon.
 Legion Daemons
 ^^^^^^^^^^^^^^
 
-(Author: Łukasz Mierzwa)
+(作者：Łukasz Mierzwa)
 
 No, it is not a blackmetal band, it is a new feature of :doc:`Legion` allowing you to run external processes
 only when an instance is a lord:
