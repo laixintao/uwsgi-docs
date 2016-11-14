@@ -3,34 +3,34 @@ uWSGI 2.0.14
 
 [20161003]
 
-Maintenance release
+维护版本
 
-Changes
+改动
 -------
 
-- backported gevent-early-monkey-patch (jianbin-wei)
-- Fixed OpenBSD version check (Pavel Korovin)
-- PSGI/Perl cache api fixes (Alexander Demenshin)
-- Correctly decode PATH_INFo in router_rewrite plugin (Ben Hearsum)
-- add uwsgi.accepting() for chain-reload + worker-override combo (enkore)
-- fixed workers killing when in cheaper modes (shoham-stratoscale)
-- added --cgi-safe option (nnnn20430)
-- Implemented graceful reload for COROAE plugin (aleksey-mashanov)
-- Added --php-fallback2, --php-fallback-qs (Felicity unixwitch)
-- Added ipv4in and ipv6in routing rules (Felicity unixwitch)
-- Fixed readline support in python3 when working interactively (Anthony Sottile)
-- Implement touch-reloading for mules and spoolers (Alexandre Bonnetain)
-- add request_start timestamp in stats (Ben Plotnick)
-- Fixed double free in uwsgi_routing_func_rewrite (William Orr)
-- Various mod_proxy_uwsgi fixes (Ya-Lin Huang)
-- support for 'no-answer' in PSGI (Anton Petrusevich)
-- added php-constant option (Дамјан Георгиевски [gdamjan])
-- added the stdio logger (Дамјан Георгиевски [gdamjan])
-- spooler: fix reading inconsistent data (Pavel Patrin)
-- Removed -WError from the build procedure (Riccardo Magliocchetti, suggested by Ian Denhardt)
-- The usual amount of coverity-based fixes (Riccardo Magliocchetti)
+- 回迁gevent早期猴子补丁 (jianbin-wei)
+- 修复OpenBSD版本检查 (Pavel Korovin)
+- PSGI/Perl缓存api修复 (Alexander Demenshin)
+- 在router_rewrite插件中挣钱解码PATH_INFo (Ben Hearsum)
+- 为链式重载 + worker覆盖组合添加uwsgi.accepting() (enkore)
+- 修复cheapter模式下的worker杀死 (shoham-stratoscale)
+- 添加--cgi-safe选项 (nnnn20430)
+- 已为COROAE插件实现优雅重载 (aleksey-mashanov)
+- 添加--php-fallback2, --php-fallback-qs (Felicity unixwitch)
+- 添加ipv4in和ipv6in路由规则 (Felicity unixwitch)
+- 修复在交互式工作时，python3中的readline支持 (Anthony Sottile)
+- 为mule和spooler实现touch重载（touch-reloading） (Alexandre Bonnetain)
+- 添加request_start时间戳到统计数据中 (Ben Plotnick)
+- 修复uwsgi_routing_func_rewrite中的双重释放 (William Orr)
+- 各种mod_proxy_uwsgi修复 (Ya-Lin Huang)
+- 支持PSGI中的'no-answer' (Anton Petrusevich)
+- 添加php-constant选项 (Дамјан Георгиевски [gdamjan])
+- 添加标准输入输出日志记录器 (Дамјан Георгиевски [gdamjan])
+- spooler: 修复读取不一致数据 (Pavel Patrin)
+- 从构建过程删除-WError (Riccardo Magliocchetti, 由Ian Denhardt提议)
+- 常量基于coverity的修复 (Riccardo Magliocchetti)
 
-Availability
+可用性
 ------------
 
-You can download uWSGI 2.0.14 from http://projects.unbit.it/downloads/uwsgi-2.0.14.tar.gz
+你可以从http://projects.unbit.it/downloads/uwsgi-2.0.14.tar.gz下载uWSGI 2.0.14
