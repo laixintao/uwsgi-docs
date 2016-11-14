@@ -24,10 +24,10 @@ X-Sendfile模拟
    response-route-if-not = empty:${X_SENDFILE} static:${X_SENDFILE}
    
 
-Force HTTPS
------------
+强制使用HTTPS
+-------------
 
-This will force HTTPS for the whole site.
+这将会强制整个站点使用HTTPS。
 
 .. code-block:: ini
 
@@ -37,7 +37,7 @@ This will force HTTPS for the whole site.
    plugins = router_redirect
    route-if-not = equal:${HTTPS};on redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}
    
-And this only for ``/admin``
+而这个只会强制 ``/admin`` (使用HTTPS)
 
 .. code-block:: ini
 
@@ -52,7 +52,7 @@ And this only for ``/admin``
    route-label = https
    route-if-not = equal:${HTTPS};on redirect-permanent:https://${HTTP_HOST}${REQUEST_URI}
    
-Eventually you may want to send HSTS (HTTP Strict Transport Security) header too.
+最终，你可能也想要发送HSTS (强制安全传输技术，HTTP Strict Transport Security)头。
 
 .. code-block:: ini
 
@@ -64,7 +64,7 @@ Eventually you may want to send HSTS (HTTP Strict Transport Security) header too
    route-if = equal:${HTTPS};on addheader:Strict-Transport-Security: max-age=31536000
    
    
-Python Auto-reloading (DEVELOPMENT ONLY!)
+Python自动重载 (DEVELOPMENT ONLY!)
 -----------------------------------------
 
 In production you can monitor file/directory changes for triggering reloads (touch-reload, fs-reload...).
@@ -134,7 +134,7 @@ mountpoint. So /var/cgi/foo.lua will be run on request to /cgi-bin/foo.lua
 Multiple flask apps in different mountpoints
 --------------------------------------------
 
-Let's write three flask apps:
+写3个flask应用：
 
 .. code-block:: py
 
@@ -305,7 +305,7 @@ First create ``auth_kafka.py``:
    import uwsgi
    uwsgi.register_rpc('auth_kafka', auth_kafka)
    
-Then create ``auth_kafka.ini``:
+然后创建 ``auth_kafka.ini``:
 
 .. code-block:: ini
 
@@ -357,7 +357,7 @@ wide-open/generic kafka -> websocket gateway and delegates auth needs to the app
 proxied requests do *NOT* block workers; using ``httpdumb`` prevents mangling the request (``http`` action forces ``HTTP/1.0``)
 
 
-SELinux and uWSGI
+SELinux和uWSGI
 -----------------
 
 SELinux allows you to isolate web application processes from each other, and limits each program to its purpose only. The applications can be placed into strongly isolated individual sandboxes, separating them from one another and from the underlying operating system. Since SELinux is implemented within the kernel, applications do not need to be specifically written or modified to work under SELinux. There is an `SELinux security policy for web applications  <https://github.com/reinow/sepwebapp>`_ at github well suited for uWSGI. This security policy also supports the uWSGI emperor process running in one domain, and each web application's worker processes running in a separate domain, requiring only minimal privileges for the worker processes even if Linux namespaces are used. Of course, there is no requirement for emperor mode, or Linux namespaces, to use SELinux with uWSGI.

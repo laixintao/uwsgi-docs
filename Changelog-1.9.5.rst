@@ -1,44 +1,43 @@
 uWSGI 1.9.5
 ===========
 
-Changelog 20130404
+更新日志20130404
 
 错误修复
 ********
 
-* fixed a memory leak with cachestore routing instruction (Riccardo Magliocchetti)
-* fixed a memory leak in carbon plugin (Riccardo Magliocchetti)
-* fixed a memory leak in the cgi plugin (Riccardo Magliocchetti)
-* fixed old-style python dynamic apps
-* force the emperor to honour --max-fd for vassals
-* improved PSGI seek with post-buffering
-* fixed kvlist escaping
+* 修复cachestore路由指令的内存泄漏 (Riccardo Magliocchetti)
+* 修复carbon插件中的内存泄漏 (Riccardo Magliocchetti)
+* 修复cgi插件中的内存泄漏 (Riccardo Magliocchetti)
+* 修复旧式python动态应用
+* 强制emperor对vassal遵循--max-fd
+* 改进的使用post缓存的PSGI查找
+* 修复kvlist转义
 
 
 新特性
 ********
 
-The GridFS plugin
+GridFS插件
 ^^^^^^^^^^^^^^^^^
 
-A plugin exporting GridFS features is available, check official docs: :doc:`GridFS`
+一个导出GridFS特性的插件已推出，查看官方文档: :doc:`GridFS`
 
-V8 improvements
+V8改进
 ^^^^^^^^^^^^^^^
 
-The V8 plugin continues to improve. Preliminary JSGI 3.0 support is available as well as multithreading.
+V8插件继续改进。JSGI 3.0初步支持，以及多线程已经可用。
 
-The 'require' commonjs standard has been implemented.
+已实现'require' commonjs标准。
 
-Writing commonjs specs will be a very long work, so maybe a partnership with projects like teajs (the old v8cgi) would be a better
-path to follow.
+编写commonjs规格说明将是一个非常漫长的工作，因此，也许与像teajs (老的v8cgi)这样的项目合作将是一个更好的选择。
 
-In the mean time, we are working on docs: :doc:`V8`
+与此同时，我们正在输出文档： :doc:`V8`
 
-The 'cgi' routing instruction
+'cgi'路由指令
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now call CGI script directly from the :doc:`InternalRouting`
+你可以直接从 :doc:`InternalRouting` 调用CGI脚本
 
 .. code-block:: ini
 
@@ -50,6 +49,6 @@ You can now call CGI script directly from the :doc:`InternalRouting`
 可用性
 ************
 
-uWSGI 1.9.5 will be available since 20130404 at this url
+uWSGI 1.9.5自20130404起可用，你可以在下面的url中找到它
 
 http://projects.unbit.it/downloads/uwsgi-1.9.5.tar.gz

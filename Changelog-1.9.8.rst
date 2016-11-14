@@ -1,7 +1,7 @@
 uWSGI 1.9.8
 ===========
 
-Changelog [20130423]
+更新日志[20130423]
 
 Note: this is an "emergency" release fixing 2 regressions causing a crash during reloads and when using async+uGreen
 

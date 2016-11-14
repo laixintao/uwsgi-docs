@@ -5,31 +5,31 @@ uWSGI 1.9.7
 错误修复
 ********
 
-- fixed teajs engine build
+- 修复teajs引擎构建
 
-- fixed offloading status code (set to 202 when a request is offloaded)
+- 修复卸载状态码 (当卸载请求的时候，设置为202)
 
-- execute cron tasks within 60 second resolution, instead of 61 seconds
+- 在60秒分辨率内执行cron任务，而不是61秒
 
-- fixed websocket proxy
+- 修复websocket代理
 
-- check for python3 unicode encoding (instead of crashing...)
+- 检查python3 unicode编码 (而不是崩溃……)
 
-- fixed ipcsem removal on reload
+- 修复重载时的ipcsem移除
 
-- fixed kqueue timer on OpenBSD, NetBSD and DragonFlyBSD
+- 修复OpenBSD, NetBSD和DragonFlyBSD上的kqueue定时器
 
-- fixed/reimplemented perl uwsgi::register_rpc
+- 修复/重新实现perl的uwsgi::register_rpc
 
-- fixed fd leak on sendfile() error
+- 修复sendfile()错误时的fd泄漏
 
-- fixed Content-Length when gzip file variant is used
+- 修复在使用gzip文件变量时的Content-Length
 
-- allows non-request plugins to register rpc functions
+- 允许非请求插件注册rpc函数
 
-- more robust error checking for cgroups
+- 对于cgroups更健壮的错误检查
 
-- honour SCRIPT_NAME the in the PSGI plugin when multiple perl apps are mounted
+- 当挂载多个perl应用的时候，遵循PSGI插件中更多SCRIPT_NAME
 
 
 新特性
@@ -39,8 +39,7 @@ uWSGI 1.9.7
 Legion cron
 ^^^^^^^^^^^
 
-A common needs when multiple instances of an application are running, is to force only one
-of them to run cron tasks. The new --legion-cron uses :doc:`Legion` to accomplish that:
+当应用的多个实例在运行的时候，一个共同的需求是强制只有其中一个实例运行cron任务。新的--legion-cron使用 :doc:`Legion` 来做到这点：
 
 .. code-block:: ini
 
@@ -54,7 +53,7 @@ of them to run cron tasks. The new --legion-cron uses :doc:`Legion` to accomplis
 Curl cron
 ^^^^^^^^^
 
-The curl_cron plugin has been added allowing the cron subsystem to call urls (via libcurl) instead of unix commands:
+添加了curl_cron插件，允许cron子系统调用url (通过libcurl) 而非unix命令：
 
 .. code-block:: ini
 
@@ -62,42 +61,40 @@ The curl_cron plugin has been added allowing the cron subsystem to call urls (vi
    ; call http://uwsgi.it every minute
    curl-cron = -1 -1 -1 -1 -1 http://uwsgi.it/
 
-The output of the request is reported in the log
+请求的输出会被记录在日志中
 
-The UWSGI_EMBED_PLUGINS build variable
+UWSGI_EMBED_PLUGINS构建变量
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ou can now embed plugins on the fly during the build phase. Check this example:
+现在在构建阶段可以动态嵌入插件了。看看这个例子：
 
 .. code-block:: sh
 
    UWSGI_EMBED_PLUGINS=gridfs,rack UWSGI_PROFILE=psgi make
 
-this will build a monolithic binary with the default profile for psgi + the gridfs and the rack plugins (both embedded in the binary)
+这将会构建一个单片二进制文件，对psgi使用默认的配置文件，以及带有gridfs和rack插件 (都嵌入到二进制文件中)
 
 
-Gzip caching
+Gzip缓存
 ^^^^^^^^^^^^
 
-The cachestore routing function can now directly store items in gzip format.
+cachestore路由功能现在可以直接将项以gzip格式存储了。
 
-Check the CachingCookbook: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/CachingCookbook.html
+看看CachingCookbook: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/CachingCookbook.html
 
 --skip-atexit
 ^^^^^^^^^^^^^
 
-A bug in the mongodb client library could cause a crash of the uWSGI server during shutdown/reload. This option
-avoid calling atexit() hooks. If you are building a :doc:`GridFS` infrastructure you may want to use this option while the MongoDB guys solve the issue.
+mongodb客户端库中的一个错误可能会导致uWSGI服务器在关机/重载期间崩溃。这个选项避免了调用atexit()钩子。如果你在构建一个 :doc:`GridFS` 基础设施，那么你也许想要使用这个选项，同时让MongoDB小伙伴解决问题。
 
-proxyhttp and proxyuwsgi
+proxyhttp和proxyuwsgi
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The http and uwsgi routing instructions are now more smart. You can cache their output and get the right status code in the logs.
+http和uwsgi路由指令现在更智能了。你可以缓存它们的输出，并且在日志中获取正确的状态码。
 
-This requires you to NOT use offloading. If offloading is in place and do not want to use it for this two router use the proxy-prefixed variant
-that will skip offloading.
+这要求你不要使用卸载。如果卸载就在那里，并且对于这两个路由器不想使用卸载，那么使用以proxy为前缀的变量，这将会跳过卸载。
 
-You can now make cool things like:
+现在，你可以做些很酷的事情了，例如：
 
 .. code-block:: ini
 
@@ -115,18 +112,18 @@ You can now make cool things like:
 The transformation api
 ^^^^^^^^^^^^^^^^^^^^^^
 
-A generic api for manipulating the response has been added (cachestore uses it)
+已经添加了一个用于操作响应的通用API (cachestore使用它)
 
-check :doc:`Transformations`
+看看 :doc:`Transformations`
 
 --alarm-fd
 ^^^^^^^^^^
 
-We are improving :doc:`AlarmSubsystem` to be less-dependent on loglines. You can now trigger alarms when an fd is ready for read.
+我们正在改进 :doc:`AlarmSubsystem` ，让它更少依赖日志行。现在，当fd准备好读的时候，你可以触发告警了。
 
-This is really useful for integration with the Linux eventfd() facility.
+这对于与Linux的eventfd()功能集成是非常有用的。
 
-For example you can monitor (and throw an alarm) when your cgroup is running the OOM-Killer:
+例如，当你的cgroup正在运行OOM-Killer的时候，你可以监控（以及抛出一个异常）
 
 .. code-block:: ini
 
@@ -136,12 +133,11 @@ For example you can monitor (and throw an alarm) when your cgroup is running the
    ; raise the alarm (with the specified message) when fd is ready (this is an eventfd se we read 8 bytes from the fd)
    alarm-fd = outofmemory $(CGROUP_OOM_FD):8 OUT OF MEMORY !!!
 
-in this example CGROUP_OOM_FD is an environment variable mapping to the number of an eventfd() filedescriptor inherited from some kind
-of startup script. Maybe (in the near future) we could be able to directly define this kind of monitor directly in uWSGI.
+在这个例子中，CGROUP_OOM_FD是一个环境变量，映射到从某些启动脚本继承过来的一个eventfd()文件描述符数目。或许 (在不久的将来)，我们会能够直接在uWSGI中定义这类型的监控。
 
-More information on the eventfd() + cgroup integration are here: https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt
+更多关于eventfd() + cgroup集成在这里：https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt
 
-an example perl startup script:
+一个样例perl启动脚本：
 
 .. code-block:: pl
 
@@ -159,19 +155,17 @@ an example perl startup script:
 
    exec 'uwsgi','mem.ini';
 
-The spooler server plugin and the cheaper busyness algorithm compiled in by default
+默认编译的spooler服务器插件和cheaper busyness算法
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In extremely high-loaded scenario the busyness cheaper algorithm (by Łukasz Mierzwa) has been a real
-silver bullet in the past months allowing adaptive process spawning to be based on real usage time taking in account
-performance and response time. For this reason the plugin is now builtin by default.
+在极端高负载场景中，busyness cheaper算法 (来自Łukasz Mierzwa) 在过去就是一个银弹，它允许基于实时使用时间，考虑性能和响应时间，自适应生成进程。出于这个原因，现在默认内置了这个插件。
 
-In addition to this the remote spooler plugin (allowing external process to enqueue jobs) has been added too in the default build profile.
+除此之外，还在默认构建配置文件中添加了远程spooler插件 (允许外部进程排队作业) 。
 
 
 可用性
 ************
 
-uWSGI 1.9.7 will be available since 20130422 at this url:
+uWSGI 1.9.7自20130422其可用，你可以在下面的url中找到它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.7.tar.gz

@@ -1,19 +1,18 @@
-Pushing statistics (from 1.4)
+推送统计信息 (从1.4起)
 =============================
 
-IMPORTANT: the Metrics subsystem offers a better introduction to the following concepts. See :doc:`Metrics`
+重要：度量子系统提供了对以下概念更好的介绍。见 :doc:`Metrics`
 
-Starting from uWSGI 1.4 you can push statistics (the same JSON blob you get with the :doc:`StatsServer`)
-via various systems (called stats pushers).
+从uWSGI 1.4起，你可以通过各种系统(称之为统计信息推送器)推送统计数据 (与你通过 :doc:`StatsServer` 获得的相同的JSON块)。
 
-Statistics are pushed at regular intervals (default 3 seconds).
+会定期 (默认是3秒) 对统计数据进行推送。
 
-The 'file' stats pusher
+'file'统计信息推送器
 ***********************
 
-By default the 'file' stats pusher is available up to 1.9.18. Starting from 1.9.19 is available as a plugin (stats_pusher_file).
+默认情况下，直到1.9.18，就可以使用'file' 统计信息推送器了。从1.9.19起，它可以作为一个插件 (stats_pusher_file) 使用。
 
-It allows you to save json chunks to a file (open in appended mode)
+它允许你保存json数据块到一个文件中 (以附加模式打开)
 
 .. code-block:: ini
 
@@ -23,14 +22,13 @@ It allows you to save json chunks to a file (open in appended mode)
    master = true
    stats-push = file:path=/tmp/foobar,freq=10
 
-this config will append JSON to the /tmp/foobar file every 10 seconds
+这个配置将会每10秒附加JSON到/tmp/foobar文件
 
 
-The 'mongodb' stats pusher
+'mongodb'统计信息推送器
 **************************
 
-This is the first developed stats pusher plugin, allowing you to store JSON
-data directly on a mongodb collection
+这是第一个开发的统计信息推送器插件，它允许你直接在一个mongodb集合上存储JSON数据
 
 .. code-block:: ini
 
@@ -41,16 +39,15 @@ data directly on a mongodb collection
    master = true
    stats-push = mongodb:addr=127.0.0.1:5151,collection=uwsgi.mystats,freq=4
 
-This config will insert JSON data to the collection uwsgi.mystats on the mongodb server 127.0.0.1:5151
-every 4 seconds.
+这个配置将会每4秒把JSON数据插入到mongodb服务器127.0.0.1:5151上的集合uwsgi.mystats中。
 
-To build the plugin you need mongodb development headers (mongodb-dev on Debian/Ubuntu)
+要构建这个插件，你需要mongodb开发头文件 (Debian/Ubuntu上是mongodb-dev)
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/stats_pusher_mongodb
 
-will do the trick
+将会达到目的
 
 
 小抄

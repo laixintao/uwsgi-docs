@@ -1,38 +1,37 @@
 uWSGI 1.9.6
 ===========
 
-Changelog 20130409
+更新日志20130409
 
 错误修复
 ********
 
-* workaround for building the python plugin with gcc 4.8
+* 使用gcc 4.8构建python插件的解决方法
 
-Sorry, this is not a real bugfix, but making a release without bugfixes seems wrong...
+抱歉，这并不是一个正在的错误修复，但是一个发布没有错误修复似乎是不对的……
 
 新特性
 ************
 
-Sqlite and LDAP pluginization
+Sqlite和LDAP插件化
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Storing configurations in sqlite databases or LDAP tree is a pretty "uncommon" way to configure uWSGI
-instances. For such a reason they have been moved to dedicated plugins.
+将配置存储在sqlite数据库或者LDAP树中是一个非常“罕见的”配置uWSGI实例的方式。出于这样的原因，已将它们转移到专用插件。
 
-If you store config in a sqlite database, just add --plugin sqlite3. For LDAP, just add --plugin ldap:
+如果你将配置存储到一个sqlite数据库库中，只需添加--plugin sqlite3。对于LDAP，仅需条件--plugin ldap：
 
 .. code-block:: sh
 
    uwsgi --plugin sqlite --sqlite config.db
 
-Configuring dynamic apps with internal routing
+配置带内部路由的动态应用
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-'Til now, you need to configure your webserver to load apps dinamically.
+直至现在，你需要配置你的web服务器动态加载应用。
 
-Three new instructions have been added to load application on demand.
+添加了三条新指令来按需加载应用。
 
-Check the example:
+看看这个例子：
 
 .. code-block:: ini
 
@@ -53,15 +52,15 @@ Check the example:
    route = ^/bar setfile:/var/uwsgi/app002.py
    route = ^/bar break:
 
-as you can see, rewriting SCRIPT_NAME is now very easy. The sethome instruction is currently available only for python application
-(it means 'virtualenv')
+正如你所看到的，现在重写SCRIPT_NAME非常容易。sethome指令目前仅适用于python应用
+(它表示'virtualenv')
 
-Carbon avg computation (Author: Łukasz Mierzwa)
+Carbon平均值计算 (作者：Łukasz Mierzwa)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now configure how the carbon plugin send the response average when no requests have been managed.
+现在，你可以配置carbon插件在尚未管理任何请求的时候，如何发送响应平均数。
 
-You have three ways:
+有三种方式：
 
    --carbon-idle-avg none - don't push any avg_rt value if no requests were made
 
@@ -71,20 +70,20 @@ You have three ways:
 
 
 
-Numeric checks for the internal routing
+内部路由的数值检查
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-New check are available:
+有了新的检查：
 
-ishigher or '>'
+ishigher 或者 '>'
 
-islower or '<'
+islower 或者 '<'
 
-ishigherequal or '>='
+ishigherequal 或者 '>='
 
-islowerequal or '<='
+islowerequal 或者 '<='
 
-Example:
+例如：
 
 .. code-block:: ini
 
@@ -92,15 +91,14 @@ Example:
    route-if = ishigher:${CONTENT_LENGTH};1000 break:403 Forbidden
 
 
-Math and time for the internal routing subsystem
+内部路由子系统中的math和time
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you build uWSGI with matheval support (matheval-dev on debian/ubuntu) you will get
-math support in your routing system via the 'math' routing var.
+如果你构建具有matheval（debian/ubuntu上是matheval-dev）支持的uWSGI，那么你将通过'math'路由变量，在你的路由系统中获得math支持。
 
-The 'time' routing var has been added currently exporting only the 'unix' field returning the epoch.
+目前，添加了'time'路由变量，它只导出'unix'字段，返回纪元。
 
-Check this crazy example:
+看看这个疯狂的例子：
 
 .. code-block:: ini
 
@@ -112,42 +110,40 @@ Check this crazy example:
    route-run = log:tempo = ${TEMPO}
 
 
-As you can see the routing subsystem can store values in request variables (here we create a 'TEMPO' var, and you will be able to access it even in your app request vars)
+正如你所见，路由子系统可以存储值到请求变量中 (这里，我们创建了一个'TEMPO'变量，然后你将能够访问它，甚至是在你的应用请求变量中也可以访问它)
 
-The 'math' operations can reference request vars
+'math'运算可以引用请求变量
 
-Check the matheval docs for the supported operations: http://matheval.sourceforge.net/docs/index.htm
+查看matheval文档，看看支持的运算：http://matheval.sourceforge.net/docs/index.htm
 
-Added non-standard seek() and tell() to wsgi.input (post-buffering required)
+新增非标准的seek()和tell()到wsgi.input (要求post缓存)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While testing the 'smart mode' of the 'Klaus' project (https://github.com/jonashaag/klaus) we noticed it was violating
-the WSGI standard calling seek() and tell() when in smart mode.
+在测试'Klaus'项目 (https://github.com/jonashaag/klaus)的'smart模式'时，我们注意到当处于smart模式时，它违反了WSGI的标准调用seek()和tell()。
 
-We have added support for both methods when post-buffering is enabled.
+当post缓存启用的时候，我们添加了对这两种方法的支持。
 
-REMEMBER: they violate the WSGI standard, so try to avoid them (if you can). There are better ways to accomplish that.
+记住：它们违反了WSGI标准，因此，试着避免使用它们 (如果可以的话)。有更好的方式可以来完成相同的事。
 
-Pyshell improvements, AKA Welcome IPython (Idea: C Anthony Risinger)
+Pyshell改进，亦称Welcome IPython (想法：C Anthony Risinger)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can invoke the ipython shell instead of the default one when using --pyshell:
+在使用--pyshell的时候，你可以调用ipython shell而不是默认的：
 
 .. code-block:: sh
 
    uwsgi -s :3031 --pyshell="from IPython import embed; embed()"
 
-Obviously you can pass whatever code to --pyshell
+显然，你可以传递任何代码给--pyshell
 
-The 'rpcraw' routing instruction
+'rpcraw'路由指令
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Another powerful and extremely dangerous routing action. It will call a rpc function
-sending its return value directly to the client (without further processing).
+另一个强大但是极度危险的动作。它会调用一个rpc函数，直接发送其返回值给客户端  (不进行进一步的处理)。
 
-Empty return values means "go to the next routing rule".
+空的返回值表示“进入下一条路由规则”。
 
-Return values must be valid HTTP:
+返回值必须是有效的HTTP：
 
 .. code-block:: js
 
@@ -166,23 +162,22 @@ Return values must be valid HTTP:
    route = ^/foo rpcraw:myrules ${REQUEST_URI}
 
 
-Preliminary support for the HTTP Range header
+HTTP Range头的初步支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The range request header allows requesting only part of a resource (like a limited set of bytes of a static file).
+range请求头允许只请求资源的一部分 (例如，一个静态文件的有限字节集合)。
 
-The system can be used when serving static files, but it is disabled by default. Just add --honour-range to enable it.
+当提供静态文件服务的时候，可以使用该系统，但默认禁用它。仅需添加--honour-range来启用它。
 
-In the future it will be used for file wrappers (like wsgi.file_wrapper) and for :doc:`GridFS` (this is the reason for not enabling it by default
-as you could have already implemented range management in your app)
+未来，它将用于文件封装 (例如wsgi.file_wrapper) 和 :doc:`GridFS` (这就是默认不启用它的原因，因为你很有可能已经在你的应用中实现了range管理)
 
 
-The 'lord' routing condition
+'lord'路由条件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We are working hard on making a truly amazing cluster subsystem using :doc:`Legion`
+我们在努力地实现一个使用 :doc:`Legion` 的真正令人惊奇的集群子系统。
 
-You can now execute internal routing rules when an instance is a lord:
+现在，当一个实例是lord的时候，你可以执行内部路由规则了：
 
 .. code-block:: ini
 
@@ -190,19 +185,19 @@ You can now execute internal routing rules when an instance is a lord:
    ...
    route-if = lord:mylegion log:I AM THE LORD !!!
 
-the "I AM THE LORD !!!" logline will be printed only when the instance is a lord of the legion 'mylegion'
+这个"I AM THE LORD !!!"日志行只有在实例是legion 'mylegion'的lord时才会打印
 
-GridFS authentication
+GridFS认证
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can now connect to authenticated MongoDB servers when using :doc:`GridFS`
+现在，当使用 :doc:`GridFS` 的时候，你可以连接到已认证的MongoDB服务器了。
 
-Just add the username and password parameters to the mount definition
+只需添加用户名和密码参数到挂载定义中
 
-The --for-times config logic
+--for-times配置逻辑
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can use --for-times for running uWSGI options the specified number of times:
+你可以使用--for-times来运行多次（指定数目）uWSGI选项：
 
 .. code-block:: ini
 
@@ -211,15 +206,14 @@ You can use --for-times for running uWSGI options the specified number of times:
       mule = true
    endfor =
 
-this will spawn 8 mules
+这将会生成8个mule
 
-The 'uwsgi' routing var
+'uwsgi'路由变量
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Accessing uWSGI internal parameters when defining routing rules could be handy. The 'uwsgi' routing var
-is the container for such vars.
+在定义路由规则的时候访问uWSGI内部参数将会很方便。'uwsgi'路由变量就是这样的变量的容器。
 
-Currently it exports 'wid' (the id of the worker running the rule) and 'pid' (the pid of the worker running the rule)
+目前，它导出'wid' (运行该规则的worker的id) 和'pid' (运行该规则的worker的pid)
 
 .. code-block:: ini
 
@@ -229,10 +223,10 @@ Currently it exports 'wid' (the id of the worker running the rule) and 'pid' (th
    ; stupid rule... break connections to the worker 4
    route-if = ishigher:${uwsgi[wid]};3 break:403 Forbidden
 
-The 'alarm' routing action
+'alarm'路由动作
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now trigger alarms from the routing subsystem:
+现在，你可以从路由子系统触发告警：
 
 .. code-block:: ini
 
@@ -243,60 +237,59 @@ You can now trigger alarms from the routing subsystem:
    route = ^/help alarm:pippo ${uwsgi[wid]} ${uwsgi[pid]}
    http-socket = :9090
 
-when /help is requested the 'pippo' alarm is triggered passing the wid and the pid as the message
+当请求/help的时候，会触发'pippo'告警，传递wid和pid作为消息
 
-Welcome to the ruby shell
+欢迎来到ruby shell
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As well as the --pyshell we now have the ruby shell:
+和--pyshell一样，现在，我们有ruby shell了：
 
 .. code-block:: sh
 
    uwsgi --rbshell -s :3031
 
-or
+或者
 
 .. code-block:: sh
 
    uwsgi --rbshell="require 'pry';binding.pry" -s :3031
 
-for using the pry shell: http://pryrepl.org/
+关于使用pry shell: http://pryrepl.org/
 
-... and welcome to the Lua shell
+... 以及欢迎来到Lua shell
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As python and ruby, even Lua got its shell. Just add --lua-shell
+跟python和ruby一样，甚至Lua都有其shell了。仅需添加--lua-shell
 
-Goodbye to the old (and useless) probe subsystem
+再见了，老的（没用的）探测子系统
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The probe subsystem was added during 0.9 development cycle but it was badly designed and basically broken.
+探测子系统是在0.9开发周期中添加的，但是它设计糟糕，基本上不能用了。
 
-It has been definitely removed (the deprecation phase has been skipped as 1.9 is not an LTS release and 1.4 still support it)
+已经明确删除它了 (跳过了弃用阶段，因为1.9并不是一个LTS版本，而1.4仍然支持它)
 
 
-Improvements in the Legion subsystem (Author: Łukasz Mierzwa)
+Legion子系统的改进 (作者：Łukasz Mierzwa)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Two new hooks have been added: --legion-node-joined and --legion-node-left
+添加了两个新的钩子：--legion-node-joined和--legion-node-left
 
-More fine-tuning
+更多的微调
 ^^^^^^^^^^^^^^^^
 
---socket-sndbuf and --socket-rcvbuf have been added to allow tuning of the send a receive buffer of the uWSGI sockets (use with caution)
+添加了--socket-sndbuf和--socket-rcvbuf，从而允许调整发送uWSGI socket的接收缓存 (小心使用)
 
-V8 improvements and TeaJS integration
+V8改进和TeaJS集成
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :doc:`V8` plugin continue to improve. The main target is still :doc:`InternalRouting` but JSGI support is almost complete
-and we are working for TeaJS (old v8cgi) integration: http://code.google.com/p/teajs/
+:doc:`V8` 插件正继续改进中。主要的目标仍然是 :doc:`InternalRouting` ，但是JSGI支持基本完成了，我们正在致力于TeaJS (老的v8cgi)集成：http://code.google.com/p/teajs/
 
-more to come soon...
+更多内容很快就会实现……
 
 
 可用性
 ************
 
-uWSGI 1.9.6 will be available since 20130409 at this url:
+uWSGI 1.9.6自20130409起可用，你可以在下面的url中找到它：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.6.tar.gz

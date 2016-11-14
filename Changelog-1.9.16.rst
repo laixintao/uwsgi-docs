@@ -1,7 +1,7 @@
 uWSGI 1.9.16
 ============
 
-Changelog [20130914]
+更新日志[20130914]
 
 
 Important change in the gevent plugin shutdown/reload procedure !!!

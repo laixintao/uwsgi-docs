@@ -1,38 +1,37 @@
 uWSGI 1.9.4
 ===========
 
-Changelog 20130330
+更新日志20130330
 
 错误修复
 ********
 
-fixed cache statistics exported by the stats subsystem (Łukasz Mierzwa)
+修复统计信息子系统导出的缓存统计信息 (Łukasz Mierzwa)
 
-fixed CoroEV bug in after_request (Tom Molesworth and John Berthels)
+修复after_request中的CoroEV错误 (Tom Molesworth和John Berthels)
 
-update cache items after a restore from persistent storage (Łukasz Mierzwa)
+更新从永久化存储中恢复之后的缓存项 (Łukasz Mierzwa)
 
-fixed signal handling in non-worker processes
+修复非worker进程中的信号处理
 
-fixed thundering herd in multiple mules setup
+修复多个Mule设置中的惊群效应(thundering herd)
 
-ported the cplusplus skeletal plugin to the new api
+移植C++骨架插件到新API
 
-fixed uWSGI reloading when build as a shared library
+修复当uWSGI作为共享库构建时的重载
 
 新特性
 ********
 
-SmartOS official support
+SmartOS官方支持
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-From now on, SmartOS is included in the officially supported operating systems
+从现在起，官方支持的操作系统包含了SmartOS
 
-V8 initial support
+V8初始支持
 ^^^^^^^^^^^^^^^^^^
 
-The Lua previous suggestion for writing uWSGI routing rules and configurations, woke up lot of javascript users stating that javascript
-itself could be a valid alternative. A V8 plugin is now available, supporting RPC, signal handlers and configurations. You need libv8 headers to build it:
+之前关于使用Lua编写uWSGI路由规则和配置的建议，提醒了大量的javascript用户，他们指出，javascript自身可能是一个有效的替代品。V8插件现已推出，支持RPC，信号处理器和配置。要构建它，你需要libv8头文件：
 
 .. code-block:: sh
 
@@ -52,7 +51,7 @@ itself could be a valid alternative. A V8 plugin is now available, supporting RP
 
    uwsgi --plugin v8 --config foo.js
 
-The previous example will allows you to write dynamic configs in javascript, while you can export javascript functions via the RPC subsystem:
+前一个例子将让你用javascript编写动态配置，而你可以通过RPC子系统来导出javascript函数：
 
 .. code-block:: js
 
@@ -89,29 +88,27 @@ The previous example will allows you to write dynamic configs in javascript, whi
    route-run = rpcnext:part3 ${REQUEST_URI} ${REMOTE_ADDR}
    route-run = break:
 
-The previous example generates an HTTP response from 3 javascript functions and store it in the uWSGI cache.
+前一个例子从3个javascript函数中生成一个HTTP响应，让后将其存储在uWSGI缓存中。
 
-Curious about rpcnext ?
+对rpcnext感到好奇？
 
-The rpcnext routing action
+rpcnext路由动作
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We can already call rpc functions from the routing subsystem to generate response. With the rpcnext action (aliased as rpcblob too)
-you can call multiple rpc functions and assemble the return values in a single response.
+我们已经可以调用路由子系统中的rpc函数来生成响应了。通过此rpcnext动作 (别名又为rpcblob)，你可以调用多个rpc函数，并且在一个单一的响应中组装返回值。
 
-Legion improvements
+Legion改进
 ^^^^^^^^^^^^^^^^^^^
 
-We are hardly working in stabilizing :doc:`Legion` The objective is have a rock-solid clustering implementation for uWSGI 2.0
-that you can use even from your applications.
+我们基本没对 :doc:`Legion` 进行加固。其目标是对于uWSGI 2.0，可以拥有一个坚如磐石的集群实现，让你甚至可以从你的应用使用它。
 
-The code in 1.9.4 has been refactored a bit by Łukasz Mierzwa to allow easier integration with external plugins.
+1.9.4中的代码已经被Łukasz Mierzwa做了一点重构，使得与外部插件的集成更容易些。
 
-A new "join" hook has been added, it is called as soon as a node becomes active part of a legion (read, it is part of a quorum).
+添加了一个新的"join"钩子，当一个节点变成legion的一个活跃的部分时会立即调用它 (也就是说，它是quorum的一部分)。
 
 可用性
 ************
 
-uWSGI 1.9.4 will be available since 20130330 at this url
+uWSGI 1.9.4已经在20130330发布，你可以从下面的地址中下载：
 
 http://projects.unbit.it/downloads/uwsgi-1.9.4.tar.gz
