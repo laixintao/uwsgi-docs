@@ -3,7 +3,7 @@ uWSGI 1.9.12
 
 更新日志[20130605]
 
-Bugfixes
+错误修复
 ^^^^^^^^
 
 - offloading cache writes will return the correct status code and not 202
@@ -13,7 +13,7 @@ Bugfixes
 - fixed fastcgi parser corner-case bug with big uploads
 - fixed support for newest cygwin
 
-New Features
+新特性
 ^^^^^^^^^^^^
 
 Offloading responses
@@ -70,7 +70,7 @@ You can set the limit (in bytes) after disk buffering passing an argument to the
    route-run = offload:1024
    
    
-JWSGI and JVM improvements
+JWSGI和JVM改进
 **************************
 
 The JVM plugin has been extended to support more objects helper (like ArrayList), while JWSGI can now be used as
@@ -105,7 +105,7 @@ A new offload engine allowing transfer from a socket to the client has been adde
 it will be automatically used in the new router_memacached and router_redis plugins
 
 
-memcached router improvements
+memcached路由改进
 *****************************
 
 
@@ -130,7 +130,7 @@ obviously you can get them too
    
 The memcached router is now builtin in the default profiles
 
-The new redis router
+新的redis路由器
 ********************
 
 Based on the memcached router, a redis router has been added. It works in the same way:
@@ -155,7 +155,7 @@ Based on the memcached router, a redis router has been added. It works in the sa
 
 The redis router is builtin by default
 
-The "hash" router
+"hash"路由器
 *****************
 
 this special routing action allows you to hash a string and return a value from a list (indexed with the hashed key).
@@ -214,7 +214,7 @@ you can even choose the hashing algo from those supported in uWSGI
 
 the router_hash plugin is compiled-in by default
 
-Availability
+可用性
 ^^^^^^^^^^^^
 
 uWSGI 1.9.12于20130605发布

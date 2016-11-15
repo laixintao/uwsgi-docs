@@ -6,48 +6,46 @@ uWSGI 1.9.11
 错误修复
 ********
 
-* Fixed Python 3 stdout/stderr buffering
-* Fixed mule messages (``@mulefunc`` is now reliable)
-* Fixed ``SCRIPT_NAME`` handling in dynamic mode
-* Fixed X-Sendfile with gzip static mode
-* Fixed cache item maximum size with custom block size
-* Fixed cache path handling
+* 修复Python 3 stdout/stderr缓冲
+* 修复mule消息 (``@mulefunc`` 现在是可靠的了)
+* 修复在动态模式下的 ``SCRIPT_NAME`` 处理
+* 修复gzip静态模式下的X-Sendfile
+* 用自定义块大小修复缓存项最大大小
+* 修复缓存路径处理
 
 新特性
 ********
 
-The new high-performance PyPy plugin
+新的高性能PyPy插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Credits: Maciej Fijalkowski
+关于作者：Maciej Fijalkowski
 
-We are pleased to announce the availability of the new PyPy plugin.
+我们很高兴地宣布，新的PyPy插件可以用了。
 
-PyPy team has been great in helping us. We hope the uWSGI integration (that exposed new challenges to the PyPy project)
-will help PyPy becaming better and better.
+PyPy团队给予了我们巨大的帮助。我们希望此uWSGI集成 (这给PyPy项目带来了新的挑战)将会帮助PyPy变得越来越好。
 
-Official docs: :doc:`PyPy`
+官方文档 :doc:`PyPy`
 
-Cron improvements
+Cron改进
 ^^^^^^^^^^^^^^^^^
 
-Credits: Łukasz Mierzwa
+关于作者：Łukasz Mierzwa
 
-Unique crons
+唯一cron
 ------------
 
-You can now avoid overlapping crons. The uWSGI master will track death of a single task, and until its death the same cron
-will not be triggered:
+你现在可以避免重复cron了。uWSGI的master将会跟踪单个任务的结束，直到它结束了，才会触发相同的cron：
 
 .. code-block:: ini
 
    [uwsgi]
    unique-cron = -1 -1 -1 -1 -1 my_script.sh
 
-cron2 syntax
+cron2语法
 ------------
 
-A key/value variant of the --cron option is now available:
+--cron选项的一个键值对变体现已可用：
 
 .. code-block:: ini
 
@@ -57,65 +55,62 @@ A key/value variant of the --cron option is now available:
 harakiri cron
 -------------
 
-When using the ``cron2`` option you are allowed to set a harakiri timeout for a cron task. Just add ``harakiri=n`` to the options.
+在使用 ``cron2`` 选项的时候，允许你为一个cron任务设置一个harakiri超时时间。仅需添加 ``harakiri=n`` 到选项中。
 
-Support for GNU Hurd
+GNU Hurd支持
 ^^^^^^^^^^^^^^^^^^^^
 
-Debian GNU/Hurd has been recently released. uWSGI 1.9.11 can be built over it, however very few tests have been made.
+Debian GNU/Hurd最近已经发布。可以在其上构建uWSGI 1.9.11，然而，已经挖槽的测试非常少。
 
-The memory offload engine
+内存卸载引擎
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Idea: Stefano Brentegani
+想法：Stefano Brentegani
 
-When serving content from the cache, a worker could get blocked during transfer from memory to the socket.
+当从缓存提供内容的时候，在从内存传输到socket期间可能会阻塞worker。
 
-A new offload engine named "memory" allows to offload memory transfers. The cache router automatically supports it.
-Support for more areas will be added soon.
+一个名为"memory"的新的卸载系统允许卸载内存传输。缓存路由器自动支持它。对更多领域的支持将会尽快添加。
 
-To enable it just add ``--offload-threads <n>``
+要启用它，仅需添加 ``--offload-threads <n>``
 
-New Websockets chat example
+新的Websockets聊天例子
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-An example websocket chat using Redis has been added to the repository:
+已添加一个使用Redis的Websockets聊天例子到这个repo中：
 
 https://github.com/unbit/uwsgi/blob/master/tests/websockets_chat.py
 
-Error routes
+错误路由
 ^^^^^^^^^^^^
 
-You can now define a routing table to be executed as soon as you set the HTTP status code in your plugin.
+现在，你可以定义一个一旦在插件中设置HTTP状态码就会立即执行的路由表。
 
-This allows you to completely modify the response. This is useful for custom error codes.
+这让你可以完全修改响应。这对于自定义错误码很有用。
 
-All of the routing standard options are available (included labels) plus an optimized ``error-route-status``
-matching a specific HTTP status code:
+所有的路由标准选项都可用 (包括标签) ，加上一个优化的 ``error-route-status`` ，它匹配指定的HTTP状态码：
 
 .. code-block:: ini
 
    [uwsgi]
    error-route-status = 502 redirect:http://unbit.it
 
-Support for corner case usage in wsgi.file_wrapper
+支持wsgi.file_wrapper中的特殊情况使用
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Generally the ``wsgi.file_wrapper`` callable expects a file-like object. PEP 333/3333 reports a special pattern when the object
-is not a file (call ``read()`` until the object is consumed). uWSGI now supports this pattern (even if in a hacky way).
+一般情况下， ``wsgi.file_wrapper`` 可调用需要一个类文件对象。PEP 333/3333报告了一种当该对象不是一个文件时的特殊模式 (调用 ``read()`` ，直到消费完该对象)。uWSGI现在支持这种模式 (即使是以一种Hack方式)。
 
-HTTP/HTTPS router keepalive improvements
+HTTP/HTTPS路由器keepalive改进
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Credits: André Cruz
+关于作者：André Cruz
 
-When using ``--http-keepalive`` you can now hold the connection open even if the request has a body.
+在使用 ``--http-keepalive`` 的时候，你现在可以保持连接打开，甚至是在请求由请求体的情况下。
 
 
-The harakiri routing action
+The harakiri路由动作
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now set a harakiri timer for each request using internal routing:
+现在，你可以使用内部路由，为每个请求设置一个harakiri计时器：
 
 .. code-block:: ini
 
@@ -123,20 +118,20 @@ You can now set a harakiri timer for each request using internal routing:
    ; set harakiri to 30 seconds for request starting with /slow
    route = ^/slow harakiri:30
 
-RPC wrappers
+RPC封装
 ^^^^^^^^^^^^
 
-The RPC plugin has been extended to allows interoperation with other standards.
+已经扩展了RPC插件，以允许与其他标准进行相互操作。
 
-Currently a simple HTTP wrapper and an XML-RPC one are exposed.
+目前，公开了一个简单的HTTP封装器和一个XML-RPC封装器。
 
-The HTTP simple wrapper works by parsing ``PATH_INFO``.
+该HTTP简单封装器通过解析 ``PATH_INFO`` 工作。
 
-A ``/foo/bar/test`` call will result in
+ ``/foo/bar/test`` 调用的结果将是
 
 uwsgi.rpc('foo', 'bar', 'test')
 
-To enable this HTTP mode just set the ``modifier2`` to '2':
+要启用此HTTP模式，仅需设置 ``modifier2`` 为 '2':
 
 .. code-block:: ini
 
@@ -147,7 +142,7 @@ To enable this HTTP mode just set the ``modifier2`` to '2':
    ; load the rpc code
    import = myrpcfuncs.py
    
-or (to have more control)
+或者 (拥有更多的控制权)
 
 .. code-block:: ini
 
@@ -158,7 +153,7 @@ or (to have more control)
    import = myrpcfuncs.py
 
 
-The XML-RPC wrapper works in the same way, but it uses the modifier2 value '3'. It requires a libxml2-enabled build of uWSGI.
+XML-RPC封装器工作方式相同，但它使用的modifier2值为'3'。它要求uWSGI的构建启用了libxml2。
 
 .. code-block:: ini
 
@@ -168,14 +163,14 @@ The XML-RPC wrapper works in the same way, but it uses the modifier2 value '3'. 
    ; load the rpc code
    import = myrpcfuncs.py
    
-Then just call it:
+然后只需调用它：
 
 .. code-block:: python
 
    proxy = xmlrpclib.ServerProxy("http://localhost:9090')
    proxy.hello('foo','bar','test') 
    
-You can combine multiple wrappers using routing.
+你可以使用路由将多个封装器组合在一起。
 
 .. code-block:: ini
 
