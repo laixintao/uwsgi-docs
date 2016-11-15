@@ -3,27 +3,27 @@ uWSGI 1.9.9
 
 更新日志[20130508]
 
-Special Warning !!!
+特别警告！！！
 *******************
 
-The router_basicauth plugin has changed its default behaviour to return "break" if authorization fails.
+router_basicauth插件已经更改了它的默认行为，当鉴权失败的时候，会返回"break"。
 
-The "basicauth-next" action, uses the old behaviour (returning "next")
+"basicauth-next"动作，使用老行为 (返回"next")
 
-This new approach should reduce security problems caused by wrong configurations
+这个新方法应该减少由错误配置引发的安全性问题
 
 错误修复
 ********
 
-* do not increment "tx" statistics counter for "unaccountable" plugins
-* fixed --backtrace-depth
-* fixed cache-sync parsing
-* fixed mule farms initialization
-* fixed multithreading bug when regexp conditional route is used
-* fixed default-app usage in the psgi plugin
-* fixed python dynamic mode + threads
-* fixed error reporting in corerouter when retry is in place
-* correctly report harakiri condition for gateways
+* 不为“不负责的”插件增加"tx"统计数据计数
+* 修复--backtrace-depth
+* 修复cache-sync解析
+* 修复mule farm初始化
+* 修复当使用正则表达式条件路由时的多线程问题
+* 修复psgi插件中的default-app使用
+* 修复python动态模式 + 线程
+* 修复重试出现时corerouter中的错误报告
+* 为网关正确报告harakiri条件
 
 新特性
 ************
@@ -31,13 +31,11 @@ This new approach should reduce security problems caused by wrong configurations
 WebDav插件
 ^^^^^^^^^^^^^^^^^
 
-WebDav is one of the much requested features for the project. We now have a beta-quality plugin, already supporting
-additional standards like the carddav:
+WebDav是该项目要求得挺多的特性之一。现在，我们有了一个测试版本的插件，已经支持诸如carddav这样的其他标准：
 
 https://github.com/unbit/uwsgi/blob/master/t/webdav/carddav.ini
 
-The official modifier is 35, and to mount a simple directory as a webdav shares (for use with windows, gnome...) you only need to
-specify the --webdav-mount option:
+官方的modifier是35，并且要把一个简单的目录作为webdav共享（适用于windows, gnome....）进行挂载，你仅需指定--webdav-mount选项：
 
 .. code-block:: ini
 
@@ -47,7 +45,7 @@ specify the --webdav-mount option:
    http-socket-modifier1 = 35
    webdav-mount = /home/foobar
 
-remember to protect shares:
+记得保护共享：
 
 .. code-block:: ini
 
@@ -58,36 +56,36 @@ remember to protect shares:
    route-run = basicauth:CardDav uWSGI server,unbit:unbit
    webdav-mount = /home/foobar
 
-WebDav attributes are stored as filesystem xattr, so be sure to use a filesystem supporting them (ext4, xfs, hfs+...)
+WebDav属性是作为文件系统xattr进行存储的，因此，一定要使用支持它的文件系统 (ext4, xfs, hfs+...)
 
-LOCK/UNLOCK support is still incomplete
+LOCK/UNLOCK支持仍然是不完整的
 
-Official docs will be available soon.
+稍后会有官方文档。
 
 支持Go 1.1 (或多或少，对于go用户而言，是个坏消息……)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Albeit you can successfully embed go 1.1 apps in uWSGI, go 1.1 will be completely fork() unsafe.
+虽然你可以成功地把go 1.1应用嵌入到uWSGI中，但是go 1.1将是完全fork()不安全的。
 
-That means you are not able to use multiprocessing, the master, mules and so on.
+那意味着，你不能使用多进程，master，mule等等。
 
-Basically half of the uWSGI features will be no more usable in go apps.
+基本上，一半的uWSGI特性在go应用中都不怎么能用。
 
-Things could change in the future, but currently our objective is better integration with the gccgo project.
+以后可能会有所改变，但目前，我们的目标是与gccgo项目更好的集成。
 
-Go 1.0.x will continue to be supported (unless gccgo shows itself as a better alternative)
+将会继续支持Go 1.0.x (除非gccgo显示了自己是一个更好的选择)
 
-More to come soon.
+将会实现更多的特性。
 
 改进的异步模式
 ^^^^^^^^^^^^^^^^^^^^
 
-Stackless, Greenlet and Fiber support have been updated to support new async features
+已经更新Stackless, Greenlet和Fiber支持，以支持新的异步特性
 
 radius插件
 ^^^^^^^^^^^^^^^^^
 
-You can now authenticate over radius servers using the router_radius plugin:
+现在，你可以使用router_radius插件来鉴权radius服务器了：
 
 .. code-block:: ini
 
@@ -101,7 +99,7 @@ You can now authenticate over radius servers using the router_radius plugin:
 SPNEGO插件
 ^^^^^^^^^^^^^^^^^
 
-Another authentication backend, using SPNEGO (kerberos)
+另一个鉴权后端，使用SPNEGO (kerberos)
 
 .. code-block:: ini
 
@@ -112,16 +110,16 @@ Another authentication backend, using SPNEGO (kerberos)
    route-run = spnego:HTTP@localhost
    webdav-mount = /home/foobar
 
-The plugin is beta quality as it leaks memory (it looks like a bug in MIT-kerberos) and Heimdal implementation does not work.
+这个插件还在测试阶段，因为它会内存泄漏 (看起来是MIT-kerberos中的一个问题)，并Heimdal实现并没有用。
 
-More reports are wellcomed
+欢迎更多的报告
 
-The ldap authenticator
+ldap认证
 ^^^^^^^^^^^^^^^^^^^^^^
 
 (作者：Łukasz Mierzwa)
 
-Currently it lacks SASL support. Will be improved soon.
+目前，它缺乏SASL支持。很快会对其进行改善。
 
 .. code-block:: ini
 
@@ -135,13 +133,13 @@ Currently it lacks SASL support. Will be improved soon.
 新的内部路由特性
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We removed the GOON action, as it was messy and basically useless with the new authentication approach
+我们移除了GOON动作，因为它乱糟糟的，并且基本上对新的鉴权方法没用
 
-The "setscriptname" action has been added to override the internally computed SCRIPT_NAME (not only the var)
+添加了"setscriptname"动作来覆盖内部计算的SCRIPT_NAME (不仅是变量)
 
-The "donotlog" action forces uWSGI to not log the current request
+"donotlog"动作强制uWSGI不要记录当前请求
 
-The "regexp" routing conditions has been improved to allows grouping. Now you can easily manipulate strings and adding them as new request VARS:
+改进了"regexp"路由条件，以允许分组。现在，你可以很容易地操作字符串，并把它们当成新的请求变量进行添加：
 
 .. code-block:: ini
 
@@ -150,25 +148,25 @@ The "regexp" routing conditions has been improved to allows grouping. Now you ca
    route-if = regexp:${REQUEST_URI};^/(.)oo addvar:PIPPO=$1
    route-run = log:PIPPO IS ${PIPPO}
 
-this will take the first char of foo and place in the PIPPO request var
+这将会获取foo的第一个字符，然后将其放到PIPPO请求变量中
 
 Gevent atexit钩子
 ^^^^^^^^^^^^^^^^^^
 
-uwsgi.atexit hook is now honoured by the gevent plugin (Author: André Cruz)
+uwsgi.atexit钩子现在由gevent插件兑现 (作者：André Cruz)
 
 
-Streaming transformations
+流转换
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Transformations can be applied on the fly (no buffering involved).
+可以在运行时应用转换 (不涉及缓冲)。
 
-Check updated docs: :doc:`Transformations`
+看看已更新的文档： :doc:`Transformations`
 
 xattr插件
 ^^^^^^^^^^^^^^^^
 
-The xattr plugin allows you to reference files extended attributes in the internal routing subsystem:
+xattr插件让你在内部路由子系统中应用文件扩展属性：
 
 .. code-block:: ini
 
@@ -178,7 +176,7 @@ The xattr plugin allows you to reference files extended attributes in the intern
    route-run = log:The attribute is ${xattr[/tmp/foo:MYATTR]}
 
 
-or (variant with 2 vars)
+或者 (带2个变量的变种)
 
 .. code-block:: ini
 
@@ -194,17 +192,16 @@ airbrake插件
 
 (作者：Łukasz Mierzwa)
 
-Currently at early stage of development allows sending uWSGI exceptions and alarms to airbrake servers.
+目前处于开发的早期阶段，允许发送uWSGI异常和高级给airbrake服务器。
 
-Official docs will be available soon.
+稍后将会有官方文档。
 
-Legion Daemons
+Legion守护进程
 ^^^^^^^^^^^^^^
 
 (作者：Łukasz Mierzwa)
 
-No, it is not a blackmetal band, it is a new feature of :doc:`Legion` allowing you to run external processes
-only when an instance is a lord:
+不，这不是一个黑金属乐队，它是 :doc:`Legion` 的一个新特性，允许你只在实例是lord的时候运行外部进程：
 
 .. code-block:: ini
 
@@ -228,7 +225,7 @@ only when an instance is a lord:
 --touch-exec
 ^^^^^^^^^^^^
 
-A new "touch" option (like --touch-reload) is available, triggering the execution of a command:
+有一个新的"touch"选项 (像--touch-reload)可以用了，触发一条命令的执行：
 
 .. code-block:: ini
 
@@ -238,35 +235,35 @@ A new "touch" option (like --touch-reload) is available, triggering the executio
    touch-exec = /var/test/foo.txt run_my_second_script.sh arg1 arg2
 
 
-Math for cache
-^^^^^^^^^^^^^^
+用于缓存的数学运算
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now use the caching subsystem to store 64bit signed numbers and apply atomic operations on them.
+现在，你可以使用缓存子系统来存储64位有符号数，并在其上应用原子操作。
 
-The uwsgi api has been extended with 5 new functions (currently exposed only by the python plugin):
+已使用5个新函数扩展了uwsgi api (目前仅有python插件公开)：
 
-*uwsgi.cache_num(key[,cache]) -> get the 64bit number from the specified item
+*uwsgi.cache_num(key[,cache]) ->从指定项获取64位数
 
-*uwsgi.cache_inc(key[,amount=1,expires,cache]) -> increment the specified key by the specified amount
+*uwsgi.cache_inc(key[,amount=1,expires,cache]) -> 增加指定键指定值
 
-*uwsgi.cache_dec(key[,amount=1,expires,cache]) -> deccrement the specified key by the specified amount
+*uwsgi.cache_dec(key[,amount=1,expires,cache]) -> 减少指定键指定值
 
-*uwsgi.cache_mul(key[,amount=2,expires,cache]) -> multiply the specified key by the specified amount
+*uwsgi.cache_mul(key[,amount=2,expires,cache]) -> 乘以指定键指定值
 
-*uwsgi.cache_div(key[,amount=2,expires,cache]) -> divide the specified key by the specified amount
+*uwsgi.cache_div(key[,amount=2,expires,cache]) -> 除以指定键指定值
 
-The new api has been exposed to the routing subsystem, allowing you to implement advanced patterns, like the request limiter:
+已将该新api暴露给路由子系统了，允许你事先高级模式，例如请求限制器：
 
 https://github.com/unbit/uwsgi/blob/master/t/routing/limiter.ini
 
-the example shows hot to limit the request of a single ip to 10 every 30 seconds
+这个例子显示了热限制一个单一的IP的请求为每30秒10个
 
-The long-term objective of this new feature is being the base for the upcoming metric subsystem
+这个新功能的长期目标是作为即将到来的度量子系统的基础
 
 可用性
 ************
 
-uWSGI 1.9.9 will be availabel since 20130508 at the following url
+uWSGI 1.9.9自20130508起可用，你可以在下面的url中找到它
 
 http://projects.unbit.it/downloads/uwsgi-1.9.9.tar.gz
 

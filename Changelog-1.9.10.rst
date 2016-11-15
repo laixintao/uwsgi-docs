@@ -6,31 +6,30 @@ uWSGI 1.9.10
 错误修复
 ********
 
-* fixed alarm threads during reloads
-* fixed uninitialized memory in --touch-* options
-* fixed a regression in --attach-daemon
+* 修复重载期间的告警线程
+* 修复--touch-*选项中的未初始化内存
+* 修复--attach-daemon中的回归
 
 新特性
 ************
 
-Welcome to gccgo
+欢迎来到gccgo
 ^^^^^^^^^^^^^^^^
 
-Go support in gcc 4.8 is amazing, thanks to the split-stack feature you can now have goroutines without allocating a whole pthread.
+gcc 4.8中的Go支持是惊人的，多亏了堆栈分割特性，现在，你可以使用goroutine，而无需分配一整个pthread。
 
-As Go 1.1 will be no no more compatible with uWSGI, gccgo will became the official way for running go apps.
+Go 1.1将不再与uWSGI兼容，而gccgo将会成为运行go应用的官方方式。
 
-The gccgo plugin is in early stage of development but it is already able to run in preforking mode.
+gccgo插件在开发的早期阶段，但是已经可以在preforking模式中运行了。
 
-We are heavy working on a true "goroutines" Loop engine. Stay tuned.
+我们在努力地开发一个"goroutines"循环引擎。敬请关注。
 
-Final routes
+最后的路由
 ^^^^^^^^^^^^
 
-You can now run routing rules after a request. Obviously not all of the exposed actions make sense after the request but you should be able
-to write even more complex setup.
+现在，你可以在一个请求之后运行路由规则了。显然，请求之后并非所有公开的操作都有意义，但你应该可以编写甚至更复杂的设置。
 
-Check this request limiter based on HTTP response status (a value you can get only after a request):
+看看这个基于HTTP响应状态的请求限制器 (一个你只能在请求之后获取的值):
 
 https://github.com/unbit/uwsgi/blob/master/t/routing/errorlimiter.ini
 
