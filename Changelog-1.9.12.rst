@@ -6,20 +6,20 @@ uWSGI 1.9.12
 错误修复
 ^^^^^^^^
 
-- offloading cache writes will return the correct status code and not 202
-- you can now control the path of temporary files setting the TMPDIR environment variable (this fixes an old issue for users without control over /tmp)
-- fixed a compilation error on amqp imperial monitor
-- cron commands are correctly escaped when reported in the stats server
-- fixed fastcgi parser corner-case bug with big uploads
-- fixed support for newest cygwin
+- 卸载缓存写入将会反悔正确的状态码，而不是202
+- 你现在可以设置TMPDIR环境变量，来控制临时文件的路径了 (这为那些没有/tmp路径控制权的用户修复了一个老问题)
+- 修复amqp imperial监控器上的一个编译错误
+- 当cron被报告到统计信息服务器的时候，会正确的被转义
+- 修复上传大文件的时候fastcgi解析器的极端情况
+- 修复对最新的cygwin的支持
 
 新特性
 ^^^^^^^^^^^^
 
-Offloading responses
+卸载响应
 ********************
 
-Take the following WSGI app:
+看看下面的WSGI应用：
 
 .. code-block:: python
 
@@ -27,14 +27,13 @@ Take the following WSGI app:
        start_response('200 OK', [('Content-Type', 'text/plain')])
        return ['u' * 100000000]
        
-it will generate about 100megs of data. 98% of the time the worker spent on the request was on the data transfer. As the whole response
-is followed by the end of the request we can offload the data write to a thread and free the worker suddenly (so it will be able to handle a new request).
+它将生成大约100兆数据。worker花费在该请求上的98%的时间都是数据传输。由于整个响应是紧随请求之后的，因此，我们可以卸载该数据写入到一个线程里，然后立即释放worker (这样，它就可以处理新的请求了)。
 
-100megs are a huge value, but even 1MB can cause a dozen of poll()/write() syscalls that blocks your worker for a bunch of milliseconds
+100兆很大，但甚至是1MB都可以引发十几个poll()/write()系统调用，这会阻塞你的worker不少毫秒
 
-Thanks to the 'memory offload' facility added in 1.9.11 implementing it has been very easy.
+多亏了在1.9.11中添加的“内存卸载”功能，实现它变得非常简单。
 
-The offloading happens via the :doc:`Transformations`
+通过 :doc:`Transformations` 实现卸载
 
 .. code-block:: ini
 
@@ -44,10 +43,9 @@ The offloading happens via the :doc:`Transformations`
    ; offload all of the application writes
    route-run = offload:
    
-By default the response is buffered to memory until it reaches 1MB size. After that it will be buffered to disk and the offload engine
-will use sendfile().
+默认情况下，会将响应缓存至内存，直到它大小为1MB为止。之后，将会将其缓存至磁盘，接着卸载引擎会使用sendfile()。
 
-You can set the limit (in bytes) after disk buffering passing an argument to the offload:
+你可以设置磁盘缓存后的限制 (以字节为单位)，传递一个参数给offload:
 
 .. code-block:: ini
 
@@ -57,7 +55,7 @@ You can set the limit (in bytes) after disk buffering passing an argument to the
    ; offload all of the application writes (buffer to disk after 1k)
    route-run = offload:1024
    
-"offload" MUST BE the last transformation in the chain
+"offload"必须是该恋中的最后一个转换
 
 .. code-block:: ini
 
@@ -73,21 +71,20 @@ You can set the limit (in bytes) after disk buffering passing an argument to the
 JWSGI和JVM改进
 **************************
 
-The JVM plugin has been extended to support more objects helper (like ArrayList), while JWSGI can now be used as
-a low-level layer to add support for more JVM-based languages.
+已扩展了JVM插件，来支持更多的扶助对象 (例如ArrayList)，而JWSGI现在可以被当成一个低级别的层次使用，来天津队更多基于JVM语言的支持。
 
-JRuby integration is the first attempt of such a usage. We have just releases a JWSGI to Rack adapter allowing you tun run
-Ruby/Rack apps on top of JRUBY:
+JRuby集成是这类应用的第一个尝试。我们刚刚发布了一个JWSGI到Rack适配器，允许你在JRUBY之上适配运行
+Ruby/Rack应用：
 
 https://github.com/unbit/jwsgi-rack
 
 
-A similar approach for Jython is on work
+关于Jython的一个类似的方法正在开发中
 
 --touch-signal
 **************
 
-A new touch option has been added allowing the rise of a uwsgi signal when a file is touched:
+添加了一个新的touch选项，允许当touch一个文件的时候，引发一个uwsgi信号：
 
 .. code-block:: ini
 
@@ -97,19 +94,19 @@ A new touch option has been added allowing the rise of a uwsgi signal when a fil
    touch-signal = /tmp/foobar 17
    ...
 
-The "pipe" offload engine
+"pipe"卸载引擎
 *************************
 
-A new offload engine allowing transfer from a socket to the client has been added.
+添加了一个允许从socket转移到客户端的新的卸载引擎。
 
-it will be automatically used in the new router_memacached and router_redis plugins
+它将自动用于新的router_memacached和router_redis插件
 
 
 memcached路由改进
 *****************************
 
 
-You can now store responses in memcached (as you can already do with uWSGI caching)
+你现在可以把响应存储到memcached中了 (正如你已经可以用uWSGI缓存做到的那样)
 
 .. code-block:: ini
 
@@ -119,7 +116,7 @@ You can now store responses in memcached (as you can already do with uWSGI cachi
    route = ^/cacheme2 memcachedstore:addr=192.168.0.1:11211,key=${REQUEST_URI}foobar
    ...
    
-obviously you can get them too
+显然，你也可以获取它们
 
 .. code-block:: ini
 
@@ -128,12 +125,12 @@ obviously you can get them too
    route-run = memcached:addr=127.0.0.1:11211,key=${REQUEST_URI}
    ...
    
-The memcached router is now builtin in the default profiles
+当前，会在默认配置文件中内置memcached路由器
 
 新的redis路由器
 ********************
 
-Based on the memcached router, a redis router has been added. It works in the same way:
+基于memcached路由器，添加了一个redis路由器。它的工作方式相同：
 
 
 .. code-block:: ini
@@ -144,7 +141,7 @@ Based on the memcached router, a redis router has been added. It works in the sa
    route = ^/cacheme2 redisstore:addr=192.168.0.1:6379,key=${REQUEST_URI}foobar
    ...
    
-... and get the values
+... 以及获取值
 
 .. code-block:: ini
 
@@ -153,14 +150,14 @@ Based on the memcached router, a redis router has been added. It works in the sa
    route-run = redis:addr=127.0.0.1:6379,key=${REQUEST_URI}
    ...
 
-The redis router is builtin by default
+默认内置redis路由器
 
 "hash"路由器
 *****************
 
-this special routing action allows you to hash a string and return a value from a list (indexed with the hashed key).
+这个特别的路由动作允许你哈希一个字符串，并从列表中返回一个值 (由哈希键索引)。
 
-Take the following list:
+看看下面的列表：
 
 127.0.0.1:11211
 
@@ -170,21 +167,21 @@ Take the following list:
 
 192.168.0.4:11321
 
-and a string: 
+以及一个字符串：
 
 /foobar
 
-we hash the string /foobar using djb33x algorithm and we apply the modulo 4 (the size of the items list) to the result.
+我们使用djb33x算法来对字符串/foobar进行哈希，然后应用模4 (项列表的大小) 到结果中。
 
-We get "1", so we will get the second items in the list (we are obviously zero-indexed).
+结果为"1"，所以，将会获得列表中的第二个项 (显然，索引是从零开始的)。
 
-Do you recognize the pattern ?
+你认出这个模式了吗？
 
-Yes, it is the standard way to distribute items on multiple servers (memcached clients for example uses it from ages).
+是的，它是一种标准的将项分布到多个服务器上的方式 (例如，memcached客户端用它已经有很长的一段时间了)。
 
-The hash router exposes this system allowing you to distribute items in you redis/memcached servers or to make other funny things.
+这个哈希路由器公开了这个系统，允许你分布项到你的redis/memcached服务器上，或者做其他有趣的事。
 
-This an example usage for redis:
+这是redis的用法示例：
 
 .. code-block:: ini
 
@@ -198,7 +195,7 @@ This an example usage for redis:
    route = ^/cacheme_as/(.*) memcached:addr=${MYNODE},key=$1
    ...
    
-you can even choose the hashing algo from those supported in uWSGI
+你甚至可以从uWSGI支持的那些哈希算法中选择使用的算法
 
 .. code-block:: ini
 
@@ -212,7 +209,7 @@ you can even choose the hashing algo from those supported in uWSGI
    route = ^/cacheme_as/(.*) memcached:addr=${MYNODE},key=$1
    ...
 
-the router_hash plugin is compiled-in by default
+默认会编译该router_hash插件
 
 可用性
 ^^^^^^^^^^^^

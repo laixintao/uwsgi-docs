@@ -3,23 +3,23 @@ uWSGI 2.0.13
 
 [20160510]
 
-Changes
+改动
 -------
 
 - Fix compilation with GCC 6
-- Remote rpc fixes (Darvame)
-- Musl support! (Natanael Copa, Matt Dainty, Riccardo Magliocchetti)
-- Create the spooler directory if it does not exist (Alexandre Bonnetain)
+- 远程rpc修复 (Darvame)
+- Musl支持！ (Natanael Copa, Matt Dainty, Riccardo Magliocchetti)
+- 在spooler目录不存在的时候创建它 (Alexandre Bonnetain)
 - Fix compilation on big endian linux (Riccardo Magliocchetti)
-- A ton of cache fixes (Darvame)
-- Make it easier to compile plugins on a different directory (Jakub Jirutka)
-- Add wheel package machinery (Matt Robenolt)
+- 大量的缓存修复 (Darvame)
+- 使得在一个不同的目录中编译插件更简单(Jakub Jirutka)
+- 添加wheel包机制 (Matt Robenolt)
 - Use EPOLLEXCLUSIVE for reading, helps with the thundering herd problem (on linux 4.5+) (INADA Naoki)
 - Fix apache 2.4 integration with unix sockets (Alexandre Rossi)
-- Add HTTP/2 support to apache 2 proxy (Michael Fladischer, OGAWA Hirofumi)
+- 添加HTTP/2支持到apache 2 proxy (Michael Fladischer, OGAWA Hirofumi)
 - Fix apache mod proxy compilation with apache 2.4.20 (Mathieu Arnold)
 - Default to clang as default compiler on MacOS X (Riccardo Magliocchetti)
-- Added --cgi-close-stdin-on-eof (Roberto De Ioris)
+- 添加--cgi-close-stdin-on-eof (Roberto De Ioris)
 
 
 可用性

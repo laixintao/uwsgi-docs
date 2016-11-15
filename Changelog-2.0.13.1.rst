@@ -3,17 +3,17 @@ uWSGI 2.0.13.1
 
 [20160513]
 
-Bugfix quick-release
+修正快速版本
 
 Changes
 -------
 
-- Fixed support for python 2.5 and python 2.6
-- Fixed support for older glibc
-- reverted EPOLLEXCLUSIVE patch, requires more investigation
+- 修复对python 2.5和python 2.6的支持
+- 修复对较老的glibc的支持
+- 恢复EPOLLEXCLUSIVE补丁，需要更多的调查
 
 
 可用性
 ------------
 
-You can download uWSGI 2.0.13.1 from http://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz
+你可以从http://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz下载uWSGI 2.0.13.1
