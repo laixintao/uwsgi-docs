@@ -4,81 +4,74 @@ uWSGI 1.9.16
 更新日志[20130914]
 
 
-Important change in the gevent plugin shutdown/reload procedure !!!
+gevent插件的关闭／重载过程的重要改动！！！
 *******************************************************************
 
-The shutdown/reload phase when in gevent mode has been changed to better integrate
-with multithreaded (and multigreenlet) environments (most notably the newrelic agent).
+gevent模式下的关闭／重载过程已经被修改以更好地与多线程（和multigreenlet）环境(最明显的是newrelic代理)进行集成。
 
-Instead of "joining" the gevent hub, a new "dummy" greenlet is spawned and "joined".
+与"加入"gevent hub相反，会生成和“加入”一个新的“虚拟”greenlet。
 
-During shutdown only the greenlets spawned by uWSGI are taken in account, and after all of them are destroyed
-the process will exit. This is different from the old approach where the process wait for ALL the currently available greenlets
-(and monkeypatched threads).
+在关闭期间，只有由uWSGI生成的greenlet才会被考虑到，而在它们所有都被销毁之后，进程将会退出。这与老方法不同，后者会等待所有当前可用的greenlet（和猴子不定线程）。
 
-If you prefer the old behaviout just specify the option --gevent-wait-for-hub 
+如果你更喜欢旧的行为，那么仅需指定选项--gevent-wait-for-hub 
 
 
-Bugfixes/Improvements
+错误修复/改进
 *********************
 
-- fixed CPython reference counting bug in rpc and signal handlers
-- improved smart-attach-daemon for slow processes
-- follow Rack specifications for QUERY_STRING,SCRIPT_NAME,SERVER_NAME and SERVER_PORT
-- report missing internal routing support (it is only a warning when libpcre is missing)
-- better ipcsem support during shutdown and zerg mode (added --persistent-ipcsem as special case)
-- fixed fastcgi bug exposed by apache mod_fastcgi
-- do not call pre-jail hook on reload
-- force linking with -lrt on solaris
-- report thunder lock status
-- allow custom priority in rsyslog plugin
+- 修复CPython在rpc和信号处理器中的引用计数错误
+- 对QUERY_STRING,SCRIPT_NAME,SERVER_NAME和SERVER_PORT遵守Rack规格
+- 报告缺少内部路由支持 (当libpcre缺失的时候，只是警告)
+- 关闭和zerg模式期间更好的ipcsem支持 (添加--persistent-ipcsem作为特例)
+- 修复apache mod_fastcgi公开的fastcgi错误
+- 重载时不调用pre-jail钩子
+- 强制在solaris上使用-lrt进行链接
+- 报告thunder锁状态
+- 允许在rsyslog插件中自定义优先级
 
 新特性
 ********
 
-FreeBSD jails native support
+FreeBSD jails原生支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-uWSGI got nativr FreeBSD jails support. Official documentation is here :doc:`FreeBSDJails`
+uWSGI有原生FreeBSD jails支持。官方文档在这里： :doc:`FreeBSDJails`
 
-The Rados plugin
+Rados插件
 ^^^^^^^^^^^^^^^^
 
-Author: Javier Guerra
+作者：Javier Guerra
 
-Based on the :doc:`GlusterFS` plugin, a new one allowing access to Rados object storage is available:
+基于 :doc:`GlusterFS` 插件，推出了一个新的允许访问Rados对象存储的插件：
 
  :doc:`Rados`
 
-The TunTap router
+TunTap路由器
 ^^^^^^^^^^^^^^^^^
 
-This new gateway is the result of tons of headaches while trying to build better (read: solid) infrastructures with Linux namespaces.
+这个新的网关时尝试使用Linux名字空间构建更好（也可以说是：稳定）的基础设施的过程中，大量让人头疼的问题的产物。
 
-While dealing with uts, ipc, pid and filesystem namespaces is pretty handy, managing networking is a real pain.
+在处理uts, ipc, pid和文件系统的时候，名字空间是相当方便的，而管理网络真心痛苦。
 
-We introduced lot of workaroud in uWSGI 1.9.15 (especially to simplify the veth management) but finally we realized
-that those systems do not scale in terms of management.
+我们在uWSGI 1.9.15引入了大量的措施 (特别是简化veth管理)，但是最后，我们意识到那些系统无法在管理方面扩展。
 
-The TunTap router tries to solve the issue moving the networking part of jailed vassals in user space.
+这个TunTap路由器试图解决在用户空间中移动jailed vassal的网络部分的问题。
 
-Basically each vassal create one or more tuntap devices. This devices are connected (via a unix socket) to the "tuntap router"
-allowing access from the vassal to the external network.
+基本上，每个vassal创建一个或多个tuntap设备。这些设备被连接（通过unix socket）到"tuntap路由器"，允许从vassal到外部网络的访问。
 
-That means a single network interface in the main namespace and one for each vassal.
+这意味着，在主名字空间中，有单个网络接口，而对于每个vassal，有一个网络接口。
 
-The performance are already quite good (we are only losing about 10% in respect of kernel-level routing) but can be optimized.
+性能已经是非常棒的了 (涉及到内核层次的路由，我们只损失了大约10%)，但还是可以优化。
 
-In addition to this the tuntap router has a simple userspace firewall you can use to manage complex routing rules.
+除此之外，tuntap路由器有一个简单的用户空间防火墙，你可以用来管理复杂的路由规则。
 
-Documentation is still in progress, but you can configure a tuntap router following the big comment on top of this file:
+文档还在编写中，但是你可以按照这个文件顶部的大大的注释来配置一个tuntap路由器：
 
 https://github.com/unbit/uwsgi/blob/master/plugins/tuntap/tuntap.c
 
-while you can connect to it with ``--tuntap-device <dev> <socket>`` where <dev> is the tuntap device to create in the vassal/client and <socket> is the unix address
-of the tuntap router
+你可以用 ``--tuntap-device <dev> <socket>`` 来连接到它，其中，<dev>要在vassal/客户端中创建的tuntap设备，而<socket>是tuntap路由器的unix地址
 
-An Example Emperor
+一个样例Emperor
 
 .. code-block:: ini
 
@@ -91,7 +84,7 @@ An Example Emperor
    emperor-use-clone = ipc,uts,fs,pid,net
    emperor = /etc/vassals
 
-and one of its vassals:
+及其vassal之一：
 
 .. code-block:: ini
 
@@ -107,61 +100,60 @@ and one of its vassals:
 Linux O_TMPFILE
 ^^^^^^^^^^^^^^^
 
-Latest Linux kernel support a new operational mode for opening files: O_TMPFILE
+最新的Linux内核一种新的操作模式来打开文件：O_TMPFILE
 
-this flag open a temporary file (read: unlinked) without any kind of race conditions.
+这个标志在没有任何形式的竞争条件下打开一个临时文件 (也就是说：未链接)。
 
-This mode is automatically used if available (no options needed)
+这个模式在可用的时候会自动使用 (无需任何选项)
 
 Linux pivot-root
 ^^^^^^^^^^^^^^^^
 
-When dealing with Linux namespaces, changing the root filesystem is one of the main task.
+在处理Linux名字空间时，修改根文件系统时其中一个主要任务。
 
-chroot() is generally too simple, while pivot-root allows you more advanced setup
+chroot()一般来讲太简单了，而pivot-root允许你进行更多高级设置
 
-The syntax is ``--pivot-root <new_root> <old_root>``
+语法是 ``--pivot-root <new_root> <old_root>``
 
 Cheaper memlimit
 ^^^^^^^^^^^^^^^^
 
-Author: Łukasz Mierzwa
+作者：Łukasz Mierzwa
 
-This new check allows control of dynamic process spawning based on the RSS usage:
+这项新的检查允许控制基于RSS使用的动态进程生成：
 
 https://uwsgi-docs.readthedocs.io/en/latest/Cheaper.html#setting-memory-limits
 
-Log encoders
+日志编码器
 ^^^^^^^^^^^^
 
-There are dozens of log engines and storage system nowadays. The original uWSGI approach was developing a plugin for every engine.
+时下，有几十个日志引擎和存储系统。原始的uWSGI方法是为每个引擎开发一个插件。
 
-While working with logstash and fluentd we realized that most of the logging pluging are reimplementations of the same concept over and over again.
+在使用logstash和fluentd的时候，我们意识到，大多数的日志插件是一次又一次地队相同概念的重新实现。
 
-We followed an even more modular approach introducing log encoders:
+我们遵循一个甚至更加模块化的方法，引入日志编码器：
 
 :doc:`LogEncoders`
 
-They are basically patterns you can apply to each logline
+它们基本上是你可以应用到每个日志行上到模式。
 
-New "advanced" Hooks
+新的“高级”钩子
 ^^^^^^^^^^^^^^^^^^^^
 
-A new series of hooks for developers needing little modifications to the uWSGI cores are available.
+有一系列开发者仅需对uWSGI核心进行少量修改的新的钩子可以用了。
 
-Documention about the whole hooks subsystem is now available (it is a work in progress):
+关于整个钩子子系统的文档现已提供 (这是一项正在进行的工作):
 
 :doc:`Hooks`
 
-New mount/umount hooks
+新的mount/umount钩子
 ^^^^^^^^^^^^^^^^^^^^^^
 
-When dealing with namespaces and jails, mounting and unmounting filesystems is one of the most common tasks.
+当处理名字空间和jails的时候，挂载和取消挂载文件系统是最常见的任务之一。
 
-As the mount and umount commands could not be available during the setup phase, these 2 hooks have been added directly calling the
-syscalls.
+由于在设置阶段，mount和umount命令不可用，因此添加了这两个钩子，直接调用系统调用。
 
-Check :doc:`Hooks`
+看看 :doc:`Hooks`
 
 
 可用性
