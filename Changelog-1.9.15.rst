@@ -3,36 +3,36 @@ uWSGI 1.9.15
 
 更新日志[20130829]
 
-Bugfixes
+错误修复
 ^^^^^^^^
 
-* fixed jvm options hashmap (#364)
-* fixed python3 wsgi.file_wrapper
-* fixed python3 --catch-exceptions
-* fixed type in pypy wsgi.input.read
-* better symbol detection for pypy
-* improved ruby libraries management on heroku
-* fixed http-keepalive memleak
-* fixed spooler body management under CPython
-* fixed unshare() usage of 'fs'
-* fixed UWSGI_PROFILE usage when building plugins with --plugin
-* improved SmartOS support and added OmniOS support 
+* 修复jvm选项hashmap (#364)
+* 修复python3 wsgi.file_wrapper
+* 修复python3 --catch-exceptions
+* 修复pypy wsgi.input.read中的类型
+* 对pypy更好的符号检测
+* 改进heroku上的ruby库管理
+* 修复http-keepalive memleak
+* 修复CPython下的spooler体管理
+* 修复'fs'的unshare()使用
+* 修复当使用--plugin构建插件时的UWSGI_PROFILE使用
+* 改进SmartOS支持，以及添加OmniOS支持
 
 
 
-New features
+新特性
 ^^^^^^^^^^^^
 
-The PTY plugin
+PTY插件
 **************
 
-This new plugin allows you to generate pseudoterminals and attach them to your workers.
+这个新的插件允许你生成伪终端，并将其附加到你的worker上。
 
-Pseudoterminals are then reachable via network (UNIX or TCP sockets).
+接着，通过网络 (UNIX或者TCP socket) 访问伪终端。
 
-You can use them for shared debugging or to have input channels on your webapps.
+你可以将它们用于共享调试，或者让你的web应用拥有输入通道。
 
-The plugin is in early stage of development (very few features) and it is not built in by default, but you can already make funny things like:
+该插件出于开发初期 (特性非常少)，并且不是默认构建的，但是你可以做一些像这样有趣的事：
 
 .. code-block:: ini
 
@@ -51,41 +51,41 @@ The plugin is in early stage of development (very few features) and it is not bu
    ; we use pry as it kick asses
    rbshell = require 'pry';binding.pry
    
-now you can access the pseudoterminal with
+现在，你可以这样访问伪终端了
 
 .. code-block:: sh
 
    uwsgi --plugin pty --pty-connect 127.0.0.1:5000
    
-you can run the client in various windows, it will be shared by all of the peers (all will access the same pseudoterminal).
+你可以在多个窗口中运行该客户端，它将由所有客户端共享 (所有都将访问同一个伪终端)。
 
-We are sure new funny uses for it will popup pretty soon
+我们相信，关于它的新的有趣的使用很快就会出现
 
-preliminary documentation is available at :doc:`Pty`
+初步文档可以在 :doc:`Pty` 这里找到
 
-strict mode
+strict模式
 ***********
 
-One of the most common error when writing uWSGI config files, are typos in option names.
+编写uWSGI配置文件时最常见的错误之一是，选项名的拼写错误。
 
-As you can add any option in uWSGI config files, the system will accept anythyng you will write even if it is not a real uWSGI option.
+由于你可以添加任何选项到uWSGI配置文件中，因此系统将会接受任何你写的东东，即使它并不是一个真正的uWSGI选项。
 
-While this approach is very powerful and allow lot of funny hacks, it can causes lot of headaches too.
+虽然这个方法是非常强大的，允许大量有趣的hack，但是，它也有可能让你很头疼。
 
-If you want to check all of your options in one step, you can now add the --strict option. Unknown options will trigger a fatal error.
+如果你想一步检查所有的选项，那么现在，你可以添加--strict选项了。未知选项将会触发一个致命错误。
 
-fallback configs
+回退配置
 ****************
 
-Being very cheap (in term of resources) and supporting lot of operating systems and architectures, uWSGI is heavily used in embedded systems.
+uWSGI非常便宜 (在资源方面)， 并且支持大量的操作系统和架构，它被大量用于嵌入式系统中。
 
-One of the common feature in such devices is the "reset to factory defaults".
+这种设备的常见特性之一就是"恢复到出厂设置"。
 
-uWSGI now natively support this kind of operation, thanks to the --fallback-config option.
+有了--fallback-config选项，uWSGI现在原生支持这类操作。
 
-If a uWSGI instance dies with exit(1) and a fallback-config is specified, the binary will be re-exec()'d with the new config as the only argument.
+如果一个uWSGI实例随着exit(1)而亡，并且指定了回退配置，那么将会使用新的配置，将其作为唯一的参数，re-exec()该二进制文件。
 
-Let's see an example of a configuration with unbindable address (unprivileged user trying to bind to privileged port)
+让我们看看一个使用了不可绑定地址的配置 (非特权用户试着绑定到一个特权端口)
 
 .. code-block:: ini
 
@@ -94,7 +94,7 @@ Let's see an example of a configuration with unbindable address (unprivileged us
    gid = 1000
    socket = :80
    
-and a fallback one (bind to unprivileged port 8080)
+以及一个回退的配置 (绑定到非特权端口8080)
 
 .. code-block:: ini
 
@@ -103,14 +103,14 @@ and a fallback one (bind to unprivileged port 8080)
    gid = 1000
    socket = :8080
    
-run it (as root, as we want to drop privileges):
+(以root用户，因为我们想删除特权) 运行它：
 
 .. code-block:: sh
 
    sudo uwsgi --ini wrong.ini --fallback-config right.ini
    
   
-you will get in your logs:
+日志中将会是：
 
 .. code-block:: sh
 
@@ -122,51 +122,50 @@ you will get in your logs:
    *** Starting uWSGI 1.9.15-dev-4046f76 (64bit) on [Thu Aug 29 07:26:26 2013] ***
    ...
 
---perl-exec and --perl-exec-post-fork
+--perl-exec和--perl-exec-post-fork
 *************************************
 
-You can now run custom perl code before and after the fork() calls.
+现在，你可以在fork()调用之前和之后运行自定义perl代码了。
 
-Both options simply take the perl script as the argument
+这两个选项都简单把perl脚本当成参数。
 
 uwsgi.cache_keys([cache])
 *************************
 
-This api function has been added to the python and pypy plugins. It allows you to iterate the keys of a local uWSGI cache.
+这个api函数已经别添加到python和pypy插件中。它允许你一个本地uWSGI缓存的键。
 
-It returns a list.
+返回一个列表。
 
-added `%(ftime)` to logformat
+添加 `%(ftime)` 到日志格式
 *****************************
 
-this is like 'ltime' but honouring the --log-date format
+这就像'ltime'，但它遵守--log-date格式
 
-protect destruction of UNIX sockets when another instance binds them
+当另一个实例绑定到UNIX socket时，保护其不受破坏
 ********************************************************************
 
-on startup uWSGI now get the inode of the just created unix socket.
+在启动时，uWSGI现在获得刚刚创建的unix socket的inode。
 
-On vacuum if the inode is changed the unlink of the socket is skipped.
+在vacuum下，如果inode发生了改变，那么会跳过socket的取消链接动作。
 
-This should help avoiding sysadmin destructive race conditions or misconfigurations
+这应该有助于避免系统管理员破坏性竞争条件或错误配置
 
 --worker-exec2
 **************
 
-this is like --worker-exec but happens after post_fork hooks
+这个就像--worker-exec，但在post_fork钩子之后运行
 
-allow post_fork hook on general plugins
+允许普通插件上的post_fork钩子
 ***************************************
 
-general plugins (the ones without the .request hook) can now expose the .post_fork hook
+普通插件 (没有.request钩子的那些) 现在可以公开.post_fork钩子了
 
---call hooks
+--call钩子
 ************
 
-In the same spirit of exec-* hooks, call hooks works in the same way but directly calling functions
-in the current process address space (they have to be exposed as valid symbols)
+与exec-*钩子有着相同的精神，call钩子工作方式相同，但是它会直接在当前进程的地址空间中调用函数 (必须将其作为有效符号公开)
 
-take this c source (call it hello.c):
+以这个C源码为例 (称之为hello.c):
 
 .. code-block:: c
 
@@ -176,13 +175,13 @@ take this c source (call it hello.c):
        printf("Hello World!!!\n");
    }
    
-and compile it as a shared library:
+并把它作为共享库编译：
 
 .. code-block:: sh
 
     gcc -o libhello.so -shared -fPIC hello.c
     
-now choose when (and where) to call it in uWSGI:
+现在，选择在uWSGI中何时 (以及何处) 调用它：
 
 .. code-block:: sh
 
@@ -203,9 +202,9 @@ now choose when (and where) to call it in uWSGI:
     --call-as-emperor2                     call the specified function(char *, pid_t) in the emperor after the vassal has been started
     --call-as-emperor4                     call the specified function(char *, pid_t, uid_t, gid_t) in the emperor after the vassal has been started
    
-options ending with a number are variants expecting arguments (the suffix is the number of arguments they take)
+以数字结尾的选项是期望参数的变体 (其后缀是它们接收的参数的数目)
 
-we want to call our function just before our application is loaded:
+我们想要就在应用被加载之前调用函数：
 
 .. code-block:: ini
 
@@ -218,32 +217,31 @@ we want to call our function just before our application is loaded:
 
 
    
-your custom function will be called just before app loading.
+将会就在应用加载之前调用你的自定义函数。
 
-Take in account those functions are called in the process address space, so you can make
-all sort of (black) magic with them.
+考虑到那些函数是在进程地址空间中调用的，因此你可以对它们施加所有类型的（黑）魔法。
 
-Note: dlopen is a wrapper for the dlopen() function, so all the same rules apply (read: USE ABSOLUTE PATHS !!!)
+注：dlopen是对dlopen()函数的封装，因此所有相同的规则都适用 (必读：适用绝对路径！！！)
    
-init_func support for plugins, and --need-plugin variant
+插件的init_func支持，以及--need-plugin变体
 ********************************************************
 
-when loading a plugin you can call a symbol defined in it soon after dlopen():
+在加载插件的时候，你可以在dlopen()之后立即调用插件中定义的符号：
 
 .. code-block:: sh
 
    uwsgi --plugin "foobar|myfunc" ...
    
-uWSGI will call the 'myfunc' symbol exposed by the 'foobar' plugin
+uWSGI将会调用'foobar'插件公开的'myfunc'符号
 
---need-plugin is like --plugin but will exit(1) the process if plugin loading fails
+--need-plugin就像--plugin，但是当插件加载失败的时候，会exit(1)进程
 
-added commodity loader for the pecan framework
+为pecan框架添加商品加载器(commodity loader)
 **********************************************
 
-Author: Ryan Petrello
+作者：Ryan Petrello
 
-A new python loader (--pecan) has been added for the pecan WSGI framework
+为pecan WSGI框架添加了一个新的python加载器 (--pecan)
 
 http://pecanpy.org/
 
@@ -252,16 +250,16 @@ https://uwsgi-docs.readthedocs.io/en/latest/Python.html#pecan-support
 UWSGI_REMOVE_INCLUDES
 *********************
 
-during the build phase you can remove include headers with the UWSGI_REMOVE_INCLUDES environment variable.
+在构建阶段，你可以用UWSGI_REMOVE_INCLUDES环境变量移除include头文件。
 
-This is useful for cross-compilation where some automatically detected includes could be wrong
+这对交叉编译有用，其中，一些自动检测的include文件可能是错误的。
 
 router_expires
 **************
 
-We already have various options in the uWSGI core to set Expires header.
+我们在uWSGI核心中已经有多个设置Expires头的选项了。
 
-This router has been added to allow customizing them:
+添加这个路由器，以允许你对它们自定义：
 
 .. code-block:: ini
 
@@ -269,88 +267,86 @@ This router has been added to allow customizing them:
    route = /^foobar1(.*)/ expires:filename=foo$1poo,value=30
    route = /^foobar2(.*)/ expires:unix=${time[unix]},value=30
 
-the router takes a filename mtime or a unix time, adds 'value' to it, and return it as an http date.
+这个路由器接收一个filename的mtime或者一个unix time，添加'value'到其上，然后将它作为一个http日期返回。
 
 
-announce Legion's death on reload/shutdown
+在重载/关机时宣布Legion的死亡
 ******************************************
 
-Every legion member will now announce its death as soon as a reload (or a shutdown) of the instance is triggered
+一旦触发了实例的重载（或者关闭），每一个legion成员现在都将会宣告它的死亡。
 
-The GlusterFS plugin (beta)
+GlusterFS插件 (beta)
 ***************************
 
-This new plugin make use ot the new glusterfs c api, avoiding the overhead of fuse when serving files stored on glusterfs servers.
+这个新的插件利用新的glusterfs c api，避免当提供存储在glusterfs服务器上的文件时的融合开销。
 
-The plugin supports the multiprocess and multithreads modes, while async modes are currently in beta.
+该插件支持多进程和多线程模式，而异步模式目前处于测试阶段。
 
-Documentation is available: :doc:`GlusterFS`
+文档在这里： :doc:`GlusterFS`
 
 --force-gateway
 ***************
 
-all of the gateways (fastrouter, httprouter, rawrouter, sslrouter ...) has to be run under the master process.
+所有的网关 (fastrouter, httprouter, rawrouter, sslrouter ...)都必须运行在master进程之下。
 
-By specifying --force-gateway, you will bypass this limit
+通过指定--force-gateway，你可以绕过这个限制
 
-preliminary python3 profiler (beta)
+初步的python3 profiler (测试版)
 ***********************************
 
-The --profiler pycall/pyline profilers have been added to python3. They are beta quality (they leaks memory), but should be usable.
+--profiler pycall/pyline profiler已添加至python3中。它们处于测试阶段 (有内存泄漏问题)，但应该可用。
 
-file monitor support for OpenBSD,NetBSD,DragonFlyBSD
+对OpenBSD,NetBSD,DragonFlyBSD的文件监控支持
 ****************************************************
 
-Both --fs-reload and the @fmon decorator now work on this operating systems.
+在这些操作系统上，--fs-reload和@fmon装饰器现在都能使用。
 
 --cwd
 *****
 
-you can force the startup "current working directory" (used by --vacuum and the reloading subsystem) with this option.
+你可以使用这个选项强制在“当前工作目录” (由--vacuum和重载子系统使用) 下启动。
 
-It is useful in chroot setups where the binary executable change its place.
+在chroot设置中有用，其中，二进制可执行文件修改它的位置。
 
 --add-gid
 *********
 
-This options allows you to add additional group ids to the current process. You can specify it multiple times.
+这个选项允许你添加额外的组id到当前的进程中。你可以多次指定它。
 
-Emperor and Linux namespaces improvements
+Emperor和Linux名字空间改进
 *****************************************
 
-Thanks to the cooperation with the pythonanywhere.com guys the Emperor has been improved for better Linux namespaces integration.
+多亏了与pythonanywhere.com那些小伙伴的合作，已对Emperor进行了改进，使其能够与Linux名字空间更好的集成。
 
-The --emperor-use-clone option allows you to use clone() instead of fork() for your vassal's spawn. In this way you can create the vassals
-directly in a new namespace. The function takes the same parameters of the --unshare one
+--emperor-use-clone选项允许你使用clone()而不是fork()来进行vassal生成。通过这种方式，你可以在一个新的名字空间中直接创建vassal。这个函数接收的参数与--unshare相同
 
 .. code-block:: sh
 
    uwsgi --emperor /etc/vassals --emperor-use-clone pid,uts
    
-will create each vassal in a new pid and uts namespace
+将会在一个新的pid和uts名字空间中创建每个vassal
 
-while
+而
 
 .. code-block:: sh
 
    uwsgi --emperor /etc/vassals --emperor-use-clone pid,uts,net,ipc,fs
    
-will basically use all of the currently available namespaces.
+将会基本上使用当前所有可用的名字空间。
 
-Two new exec (and call) hooks are available:
+两个新的exec (和call) 钩子现在可以用了：
 
---exec-as-emperor will run commands in the emperor soon after a vassal has been spawn (setting 4 env vars, UWSGI_VASSAL_CONFIG, UWSGI_VASSAL_PID, UWSGI_VASSAL_UID and UWSGI_VASSAL_GID)
+--exec-as-emperor将会在生成一个vassal后立即在emperor中运行命令 (设置4个环境变量UWSGI_VASSAL_CONFIG, UWSGI_VASSAL_PID, UWSGI_VASSAL_UID和UWSGI_VASSAL_GID)
 
---exec-as-vassal will run commands in the vassal just before calling exec() (so directly in the new namespaces)
+--exec-as-vassal将就在调用exec()之前，在vassal中运行命令 (所以直接在新的名字空间中)
 
 
 --wait-for-interface
 ^^^^^^^^^^^^^^^^^^^^
 
-As dealing with the Linux network namespace introduces lot of race conditions (especially when working with virtual ethernets), this new option
-allows you to pause an instance until a network interface is available.
+由于处理Linux网络名字空间引入了大量的竞争条件 (特别是当使用虚拟以太网时)，这个新的选项让你暂停一个实例，直到有一个网络接口可用。
 
-This is useful when waiting for the emperor to move a veth to the vassal namespace, avoiding the vassal to run commands on the interface before is available
+这在当等待emperor把veth移动到vassal名字空间的时候有用，避免vassal在接口可用之前在其之上运行命令
 
 
 .. code-block:: ini
@@ -382,7 +378,7 @@ This is useful when waiting for the emperor to move a veth to the vassal namespa
    ...
 
 
-Availability
+可用性
 ^^^^^^^^^^^^
 
 uWSGI 1.9.15于2013年08月29日发布
