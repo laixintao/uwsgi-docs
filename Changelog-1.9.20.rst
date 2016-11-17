@@ -29,7 +29,7 @@ Mongrel2 protocol support will be moved to a "mongrel2" plugin instead of being 
 新特性
 ********
 
-64bit return values for the RPC subsystem
+RPC子系统的64位返回值
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Before this release every RPC response was limited to a size of 64k (16bit).
@@ -39,14 +39,14 @@ Now the RPC protocol automatically detects if more space is needed and can scale
 Another advantage of this approach is that only the required amount of memory per-response is allocated instead of blindly
 creating a 64k chunk every time.
 
-The new GCCGO plugin
+新的GCCGO插件
 ^^^^^^^^^^^^^^^^^^^^
 
 Check official docs: :doc:`GCCGO`
 
 The plugin is in early stage of development but it's already quite solid.
 
-Simple math in configuration files
+配置文件中简单计算
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As seen before, we have removed matheval support in favor of a simplified interface:
@@ -64,7 +64,7 @@ For example, now you can automatically set the number of threads to:
 
 (``%k * 3`` is ``number_of_cpu_cores * 3``).
 
-New magic vars
+新的魔术变量
 ^^^^^^^^^^^^^^
 
 ``%t``
@@ -76,7 +76,7 @@ New magic vars
 ``%k``
     Number of detected CPU cores.
 
-Perl/PSGI improvements
+Perl/PSGI改进
 ^^^^^^^^^^^^^^^^^^^^^^
 
 * :doc:`Chunked`.
@@ -84,7 +84,7 @@ Perl/PSGI improvements
 * ``uwsgi::rpc`` and ``uwsgi::connection_fd`` from the API.
 * ``--plshell`` will invoke an interactive shell (based on ``Devel::REPL``).
 
-New native protocols: ``--https-socket`` and ``--ssl-socket``
+新的原生协议： ``--https-socket`` 和 ``--ssl-socket``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When built with SSL support, uWSGI exposes two new native socket protocols: HTTPS and uwsgi over SSL.
@@ -99,7 +99,7 @@ Both options take the following value: ``<addr>,<cert>,<key>[,ciphers,ca]``.
    
 Currently none of the mainstream webservers support uwsgi over SSL, a patch for nginx will be sent for approval in the next few hours.
 
-PROXY (version1) protocol support
+PROXY (version1)协议支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Recently Amazon ELB added support for HAProxy PROXY (version 1) protocol support. This simple protocol allows the frontend to pass
@@ -107,7 +107,7 @@ the real IP of the client to the backend.
 
 Adding ``--enable-proxy-protocol`` will force the ``--http-socket`` to check for a PROXY protocol request for setting the ``REMOTE_ADDR`` and ``REMOTE_PORT`` fields.
 
-New metrics collectors
+新的度量收集器
 ^^^^^^^^^^^^^^^^^^^^^^
 
 ``avg``
@@ -119,7 +119,7 @@ New metrics collectors
 ``multiplier``
     Multiply the sum of the specified children for the value specified in ``arg1n``.
 
-Check :doc:`Metrics`.
+看看 :doc:`Metrics`.
 
 可用性
 ************

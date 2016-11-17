@@ -7,39 +7,39 @@ uWSGI 1.9.17
 错误修复
 ********
 
-- the 'pty' client is now blocking (safer approach)
-- removed strtok() usage (substituted by a new uwsgi api function on top of strtok_r() )
-- fixed --pty-exec (Credits: C Anthony Risinger)
-- listen_queue/somaxconn linux check is now done even for UNIX sockets
+- 'pty'客户端现在是阻塞的 (更安全的方法)
+- 移除strtok()使用 (由strtok_r()之上的一个新的uwsgi api函数取代)
+- 修复--pty-exec (关于作者：C Anthony Risinger)
+- listen_queue/somaxconn linux检查现已完成，甚至是对于UNIX socket也是可用的
 
 
 
 新特性
 ********
 
-The Master FIFO
+Master FIFO
 ^^^^^^^^^^^^^^^
 
-This is a new management way in addition to UNIX signals. As we have no more free signals to use (and generally dealing with signals and pidfiles is not very funny), all of the new management features of uWSGI will be based on the master fifo.
+这是除了UNIX信号之外的一种新的管理方式。由于我们没有更多信号可以使用了 (并且一般处理信号和pid文件并不是非常有趣)，因此uWSGI的所有新的管理特性都将基于master fifo。
 
-Docs are already available: :doc:`MasterFIFO`
+文档已经有了： :doc:`MasterFIFO`
 
 
-The asap hook
+asap钩子
 ^^^^^^^^^^^^^
 
-Credits: Matthijs Kooijman
+关于作者：Matthijs Kooijman
 
-a new hook, named 'asap' has been added. It will be run soon after the options are parsed.
+添加了一个新的名为'asap'的钩子。在解析完选项后会立即运行它。
 
-Check: :doc:`Hooks`
+看看： :doc:`Hooks`
 
-The TCC (libtcc) plugin
+TCC (libtcc)插件
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-TCC is an embeddable c compilers. It includes a shared library (libtcc) you can use to compile strings of c code on the fly.
+TCC是一个嵌入式C编译器。它包含了一个共享库 (libtcc)，你可以用来在运行时编译C代码字符串。
 
-The libtcc uWSGI plugins allows compiling strings of c to process symbols. CUrrently the "tcc" hook engine has been implemented:
+libtcc uWSGI插件允许编译c字符串来处理符号。目前，已实现了"tcc"钩子引擎：
 
 .. code-block:: ini
 
@@ -51,29 +51,28 @@ The libtcc uWSGI plugins allows compiling strings of c to process symbols. CUrre
 
 
 
-The forkptyrouter gateway
+forkptyrouter网关
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While work on Linux containers/namespaces continues to improve we have added this special router/gateway allowing dynamic allocation of pseodoterminals
-in uWSGI instances. To access the sockets created by the forkptyrouter you can use the --pty-connect option exposed by the 'pty' plugin.
+由于关于Linux容器/名字空间的工作正持续进行中，因此我们添加了这个特殊的路由器/网关，允许在uWSGI实例中动态分配伪终端。要访问由forkptyrouter创建的socket，你可以使用由"pty"插件公开的--pty-connect选项。
 
-Documention is being worked on.
+相关文档正在编写中。
 
-added a new magic var for ANSI escaping
+添加了一个新的魔术变量用于ANSI转义
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The %[ magic var has been added, it allows you to define ANSI sequences in your logs.
+已添加%[魔术变量，它允许你在日志中定义ANSI序列。
 
-If you like coloured logs:
+如果你喜欢彩色日志：
 
 .. code-block:: ini
 
    log-encoder = format %[[33m${msgnl}%[[0m
    
-Routable log encoders
+可路由日志编码器
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can now attach log encoders to specific log routes:
+现在，你可以附加日志编码器到指定的日志路由上了：
 
 .. code-block:: ini
 
@@ -89,34 +88,34 @@ You can now attach log encoders to specific log routes:
 --vassals-include
 ^^^^^^^^^^^^^^^^^
 
-Credits: Matthijs Kooijman
+关于作者：Matthijs Kooijman
 
-This is like --vassal-inherit but the parsing will be "immediate" (so you can use placeholders)
+这就像--vassal-inherit，但是解析会“立即”进行 (因此，你可以使用占位符)
 
-The Emperor heartbeat system is now mercyless...
+Emperor心跳系统现在是严苛的……
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The old approach for the heartbeat Emperor subsystem was asking for "gentle" reload to bad vassals.
+Emperor子系统对于心跳的老方法是向坏掉的vassal请求“优雅”重载。
 
-Now vassals not sending heartbeat (after being registered with the heartbeat subsystem) are killed with -9
+现在，没有发送心跳（在注册到心跳子系统后）的vassal会被kill -9
 
-The result of this patch will be more robust bad vassals management
+这个补丁的结果是对于坏掉的vassal的管理更加健壮
 
 logpipe
 ^^^^^^^
 
-Author: INADA Naoki
+作者：INADA Naoki
 
-You can now send loglines to the stdin of an external command:
+现在，你可以发送日志行到一个外部命令的标准输入：
 
 .. code-block:: ini
 
    req-logger = pipe:/usr/local/bin/mylogger
 
-added "fd" logger to "logfile" plugin
+添加"fd"记录器到"logfile"插件中
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-you can directly send logs to a file descriptors:
+你可以直接发送日志到一个文件描述符：
 
 .. code-block:: ini
 

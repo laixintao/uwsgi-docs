@@ -1,105 +1,102 @@
 uWSGI 1.9.18
 ============
 
-Changelog [20131011]
+更新日志 [20131011]
 
-License change
+License变更
 **************
 
-This version of uWSGI is the first of the 1.9 tree using GPL2 + linking exception instead of plain GPL2.
+uWSGI的这个版本是1.9版本树第一个使用GPL2 + linking exception而不是简单的GPL2的版本。
 
-This new license should avoid any problems when using uWSGI as a shared library (or when linking it with non-GPL2 compatible libraries)
+这个新的license应该会避免在把uWSGI作为共享库使用（或者使用非GPL2兼容的库链接它）的时候的任何问题
 
-Remember: if you need to make closed-source modifications to uWSGI you can buy a commercial license.
+记住：如果你需要对uWSGI进行闭源修改，那么你可以购买一个商业license。
 
 错误修复
 ********
 
-- fixed uwsgi native protocol support on big endian machines
-- fixed jvm build system for arm (Jorge Gallegos)
-- fixed a memleak spotted by cppcheck in zlib management
-- chdir() at every emperor glob iteration
-- correctly honour --force-cwd
-- fixed ia64/Linux compilation (Jonas Smedegaard/Riccardo Magliocchetti)
-- fixed ruby rvm paths parsing order
-- added waitpid() after daemon's SIGTERM (Łukasz Mierzwa)
-- fixed pid numbering after --idle (Łukasz Mierzwa)
-- fixed/improved cheaper memory limits (Łukasz Mierzwa)
-- correctly close inherited sockets in gateways
-- fix checks for MAP_FAILED in mmap() (instead of NULL)
-- fixed FastCGI non-blocking body read() (patch by Arkaitz Jimenez)
-- fixed attach.py script
-- avoid crashing on non-conformant PSGI response headers
-- run the python autoreloader even in non-apps mode when non-lazy
+- 修复大端机器上的uwsgi原生协议支持
+- 为arm修复jvm构建系统 (Jorge Gallegos)
+- 修复zlib管理中由cppcheck发现的内存泄漏
+- 在每一个emperor glob迭代chdir()
+- 正确遵循--force-cwd
+- 修复ia64/Linux编译 (Jonas Smedegaard/Riccardo Magliocchetti)
+- 修复ruby rvm路径解析顺序
+- 在守护进程的SIGTERM后添加waitpid() (Łukasz Mierzwa)
+- 修复--idle后的Pid编号 (Łukasz Mierzwa)
+- 修复/改进cheaper内存限制 (Łukasz Mierzwa)
+- 正确关闭网关中的继承socket
+- 修复mmap()中对MAP_FAILED的检查 (而不是NULL)
+- 修复FastCGI非阻塞请求体read() (由Arkaitz Jimenez提供补丁)
+- 修复attach.py脚本
+- 避免因不符合标准的PSGI响应头引发的崩溃
+- 在非lazy时，（即使是在非apps模式下）运行python自动重载器
 
 新特性
 ************
 
-Minimal build profiles
+最小构建配置文件
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Albeit the memory usage of the uWSGI core is generally between 1.8 and 2.5 megs, there are use cases in which you want an even minimal
-core and set of embedded plugins.
+尽管uWSGI核心的内存使用量一般在1.8和2.5兆之间，但在一些用例下，你会想要一个最低限度的核心以及一组嵌入式插件。
 
-Examples are users not making use of uWSGI specific features, or cases in which the libraries used by uWSGI nameclash with others (like openssl or zeromq).
+例子诸如用户不利用uWSGI的指定特性，或者是uWSGI使用的库与其他库（例如openssl或者zeromq）的名字冲突这种情况。
 
-A bunch of 'minimal' build profiles have been added:
+添加了一堆“最小化”构建配置文件：
 
- * pyonly (build a minimal CPython WSGI server)
- * pypyonly (build a minimal PyPy WSGI server)
- * plonly (build a minimal PSGI server)
- * rbonly (build a minimal Rack server)
+ * pyonly (构建一个最小化的CPython WSGI服务器)
+ * pypyonly (构建一个最小化的PyPy WSGI服务器)
+ * plonly (构建一个最小化的PSGI服务器)
+ * rbonly (构建一个最小化的Rack服务器)
  
-the only supported configuration format is .ini and internal routing and legion subsystem are not builtin.
+唯一支持的配置格式是.ini，而内部路由和legion子系统并未内置。
 
-For example if you want to install a minimal uWSGI binary via pip:
+例如，如果你想要通过pip安装最小uWSGI二进制文件：
 
 .. code-block:: sh
 
    UWSGI_PROFILE=pyonly pip install uwsgi
    
-IMPORTANT: minimal build profiles do not improve performance, for the way uWSGI is designed, unused features do not waste CPU. Minimal build profiles impact on final binary size only
+重要：最小构建配置文件并不会提高性能，由于设计uWSGI的方式，未使用的特性并不会消耗CPU。最小构建配置文件只影响最终的二进制文件大小
    
 Auto-fix modifier1
 ^^^^^^^^^^^^^^^^^^
 
-Setting the modifier1 for non-python plugin is pretty annoying (read: you always forget about it).
+为非python插件设置modifier1是及其烦人的 (你往往会忘掉它)。
 
-Now if the modifier1 of the request is zero, but the python plugin is not loaded (or there are no python apps loaded) the first configured app
-will be set instead (unless you disable with feature with --no-default-app).
+现在，如果请求的modifier1是0，但未加载python插件 (或者没有已加载的python应用)，那么第一个配置的应用将会被替代设置 (除非你使用--no-default-app来禁用这个特性)。
 
-This means you can now run:
+这意味着，现在，你可以运行：
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --psgi myapp.pl
    
-instead of
+而不是
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --http-socket-modifier1 5 --psgi myapp.pl
 
-obviously try to always set the modifier1, this is only a handy hack
+显然，试着总是设置modifier1，这只是一个便捷方式
 
-Perl auto reloader
+Perl自动重载器
 ^^^^^^^^^^^^^^^^^^
 
-The --perl-auto-reload option allows the psgi plugin to check for changed modules after every request. It takes the frequency (in seconds) of the scan.
+--perl-auto-reload选项允许psgi插件在每次请求之后检查已修改的模块。它以扫描的频率（以秒为单位）作为参数。
 
-The scan happens after a request has been served. It is suboptimal, but it is the safest choice too.
+该扫描在服务了一个请求之后进行。它是次优的，但是它也是最安全的选择。
 
-The "raw" mode (preview technology, only for CPython)
+"raw"模式 (预览技术，只用于CPython)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While working on a new server-side project in Unbit we had the need to expose our web application using a very specific protocol (none of the ones supported by uWSGI).
+当在Unbit着手于一个新的服务器端项目时，我们有需要公开使用一个非常特别的协议的web应用 (uWSGI不支持它们中任何一个)。
 
-Our first way was adding the new protocol as a plugin, but soon we realize that is was too-specific. So we decided to introduce the RAW mode.
+我们的第一个方式是将新的协议作为插件添加，但很快我们就意识到这太具体了。因此，我们决定引入RAW模式。
 
-Raw mode allows you to directly parse the request in your application callable. Instead of getting a list of CGI vars/headers in your callable
-you only get the file descriptor soon after accept().
+Raw模式允许你直接在应用可调用对象中解析请求。与在可调用对象中获得CGI变量/头列表相反，accept()之后你只获得文件描述符。
 
-You can then read()/write() to that file descriptor in full freedom.
+然后你可以自由地对那个文件描述符进行read()/write()。
 
 .. code-block:: python
 
@@ -111,34 +108,31 @@ You can then read()/write() to that file descriptor in full freedom.
 
    uwsgi --raw-socket :7070 --python-raw yourapp.py
 
-Raw mode disables request logging. We currently support it only for CPython, if we get reports (or interest) about it for the other languages we will add
-support for sure.
+Raw mode禁用请求日志记录。目前，我们只对CPython支持，如果我们得知其他语言支持（或者感兴趣），那么我们肯定会添加支持。
 
-IMPORTANT: raw mode is not a standard, so do not expect any middleware or common usage patterns will apply. Use it as a low-level socket wrapper. 
-
+重要：raw模式并非标准，因此别期待会应用任何中间件或者常见使用模式。将其当成一个低层次的socket封装器使用。
 
 
-Optional NON-standard support for CPython buffer protocol for WSGI responses
+
+对于WSGI响应，CPython缓存协议的可选的非标准支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Authors: yihuang with help of INADA Naoki (methane)
+作者：yihuang，在INADA Naoki (methane)的帮助下
 
-The WSGI (PEP333/3333) is pretty clear about the type of valid objects for responses: str for python2, bytes for python3
+WSGI (PEP333/3333)对于响应的有效对象类型是非常清晰的：str用于python2，bytes用于python3
 
-uWSGI (heavily using mod_wsgi as a reference) always enforce such behaviour, so "exotic" patterns like returning bytearray
-where not supported. Such uses are somewhat involuntary supported on pure-python application servers, just because they simply call write() over them or because they cast them to string
-before returning (very inefficient)
+uWSGI (大量使用mod_wsgi作为参考) 总是强制这样的行为，因此，“怪异的”模式，例如返回不支持的字节数组。这样的使用在纯python应用服务器会有点无意识支持，只是因为它们在其之上简单调用write()，或者因为在返回之前将它们转换成字符串 (非常低效)
 
 The patch proposed by yihuang suggests the use of the low-level buffer protocol exposed by the CPython C api. Strings (in python2) and bytes (in python3) support the buffer protocol, so its use is transparent
 and backward compatibility is granted too. (for the CPython C api experts: yes we support both old and new buffer protocol)
 
-This is a NON-standard behaviour you have to voluntary enable with --wsgi-accept-buffer.
+这是一个非标行为，你必须通过--wsgi-accept-buffer来自愿启用它。
 
 Use with care as it could mask errors and/or wrong behaviours.
 
 Note: if you tried 1.9.18-dev you may note this option was enabled by default. It was an error. Thanks to Graham Dumpleton (mod_wsgi author) for pointing it out.
 
-Emperor and config improvements
+Emperor和配置改进
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Credits: Matthijs Kooijman
@@ -171,7 +165,7 @@ Its best friend is the CLONE_NEWUSER flag of linux namespaces that is now fully 
 this will create a new root user for the vassal with fewer privileges (CLONE_NEWUSER is pretty hard to understand, but the best thing
 to catch it is seeing it as a new root user with dedicated capabilities)
 
-Build system improvements
+构建系统改进
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The build system has been improved to link custom sources on the fly. This works great for low-level hooks:
@@ -201,7 +195,7 @@ and you will automatically get access for your hooks:
 Finally, Riccardo Magliocchetti rewrote the build script to use optparse instead of raw/old-fashioned sys.argv parsing
 
 
-Pluginized the 'schemes' management
+插件化'schemes'管理
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 schemes are the prefix part of uWSGI uri's. When you do
@@ -237,13 +231,13 @@ In the same way understanding how writing filesystem in userspace was silly few 
 
 So, check the article about managing Fuse filesystem with uWSGI: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/ReliableFuse.html
 
-Preliminary libffi plugin
+初步libffi插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As embedding c libraries for exposing hooks is becoming more common, we have started working on libffi integration, allowing
 safe (and sane) argument passing to hooks. More to came soon.
 
-Official support for kFreeBSD
+对kFreeBSD的官方支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Debian/kFreeBSD is officially supported.

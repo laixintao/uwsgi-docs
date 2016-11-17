@@ -1,7 +1,7 @@
 uWSGI 1.9.19
 ============
 
-Changelog [20131109]
+更改日志 [20131109]
 
 This release starts the 'hardening' cycle for uWSGI 2.0 (scheduled for the end of december 2013).
 
@@ -37,14 +37,14 @@ Waiting for decision:
 新特性
 ********
 
-The Metrics subsystem
+度量子系统
 ^^^^^^^^^^^^^^^^^^^^^
 
 This was the last piece missing before uWSGI 2.0. The Metrics subsystem allows you to store "numbers" related to monitoring, graphing and quality checks and exports them in various ways.
 
-Official docs: :doc:`Metrics`
+官方文档： :doc:`Metrics`
 
-The Tornado loop engine
+Tornado循环引擎
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 While working on nodejs integration we realized that contrary to what we used to believe, Tornado (an asynchronous, callback based module for python) is usable in uWSGI.
@@ -53,7 +53,7 @@ Note: The plugin is not built-in by default
 
 Official docs: :doc:`Tornado`
 
-The 'puwsgi' protocol
+'puwsgi'协议
 ^^^^^^^^^^^^^^^^^^^^^
 
 A "persistent" (keep-alive) version of the 'uwsgi' parser has been added named 'puwsgi' (persistent uwsgi).
@@ -77,7 +77,7 @@ You can tell the Emperor to pass specific options to every vassal using the --se
 this will add ``--set processes=8`` and ``--set enable-metrics=1`` to each vassal
 
 
-The 'template' transformation
+'template' transformation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is a transformation allowing you to apply all of the internal routing patterns to your responses.
