@@ -123,27 +123,24 @@ WSGI (PEP333/3333)对于响应的有效对象类型是非常清晰的：str用�
 
 uWSGI (大量使用mod_wsgi作为参考) 总是强制这样的行为，因此，“怪异的”模式，例如返回不支持的字节数组。这样的使用在纯python应用服务器会有点无意识支持，只是因为它们在其之上简单调用write()，或者因为在返回之前将它们转换成字符串 (非常低效)
 
-The patch proposed by yihuang suggests the use of the low-level buffer protocol exposed by the CPython C api. Strings (in python2) and bytes (in python3) support the buffer protocol, so its use is transparent
-and backward compatibility is granted too. (for the CPython C api experts: yes we support both old and new buffer protocol)
+yihuang提出的补丁建议使用 CPython C api公开的低层次的缓存协议。字符串 (python2中) 和字节 (python3中) 支持该缓存协议，因此，它的使用是透明的，并且也保证向后兼容。 (给CPython C api专家：是哒，我们同时支持老的和新的缓存协议)
 
 这是一个非标行为，你必须通过--wsgi-accept-buffer来自愿启用它。
 
-Use with care as it could mask errors and/or wrong behaviours.
+小心使用，因为它可能会掩盖错误以及/或者错误行为。
 
-Note: if you tried 1.9.18-dev you may note this option was enabled by default. It was an error. Thanks to Graham Dumpleton (mod_wsgi author) for pointing it out.
+注意：如果你尝试使用1.9.18-dev，那么你可能会注意到这个选项是默认被启用的。它是一个错误。多亏了Graham Dumpleton (mod_wsgi作者)指出。
 
 Emperor和配置改进
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Credits: Matthijs Kooijman
+关于作者：Matthijs Kooijman
 
-The config system has been improved to be even more consistent in respect to strict mode (remainder: with --strict you basically check your config files for unknown options
-avoiding headaches caused by typos).
+已改进配置系统，相对于strict模式，它甚至更加一致 (提醒：使用--strict，你基本上为未知选项检查配置文件，避免了由于错别字引发的头疼问题)。
 
-New magic vars have been added exposing the name of the original config file (this simplify templating when in Emperor mode), check them at https://github.com/unbit/uwsgi-docs/blob/master/Configuration.rst#magic-variables
+新增了魔术变量，公开原始配置文件的名字 (这在Emperor模式下简化了模板)，看一看：https://github.com/unbit/uwsgi-docs/blob/master/Configuration.rst#magic-variables
 
-The Emperor got support for Linux capabilities using the --emperor-cap option. The option takes the list of capability you want to maintain
-for your vassals when they start as root:
+使用--emperor-cap选项，Emperor获得了Linux功能的支持。该选项以vassal作为root启动的时候，你想要保持的功能列表为参数：
 
 .. code-block:: ini
 
@@ -151,9 +148,9 @@ for your vassals when they start as root:
    emperor = /etc/uwsgi/vassals
    emperor-cap = setuid,net_bind_service
    
-with this setup your vassal will be only able to drop privileges and bind to ports < 1024
+通过这个设置，你的vassal将只能够移除特权，并且绑定到<1024的端口
 
-Its best friend is the CLONE_NEWUSER flag of linux namespaces that is now fully supported on uWSGI:
+它的好基友是linux名字空间的CLONE_NEWUSER标志，现在uWSGI完全支持它：
 
 .. code-block:: ini
 
@@ -162,13 +159,12 @@ Its best friend is the CLONE_NEWUSER flag of linux namespaces that is now fully 
    emperor-use-clone = user
    emperor-cap = setuid,net_bind_service
    
-this will create a new root user for the vassal with fewer privileges (CLONE_NEWUSER is pretty hard to understand, but the best thing
-to catch it is seeing it as a new root user with dedicated capabilities)
+这将会为vassal创建一个新的带有更少特权的root用户(CLONE_NEWUSER是非常难以理解的，但理解它的最好的方式是将其视为带有专有功能的新的root用户)
 
 构建系统改进
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The build system has been improved to link custom sources on the fly. This works great for low-level hooks:
+已改进构建系统，它现在可以运行时链接自定义资源了。对于低层次的钩子，它运行良好：
 
 .. code-block:: c
 
@@ -179,42 +175,42 @@ The build system has been improved to link custom sources on the fly. This works
            printf("I Am foobar");
    }
 
-Now we can link this file to the main uWSGI binary in one shot:
+现在，我们可以一次性链接到这个文件到主uWSGI二进制文件上：
 
 
 .. code-block:: sh
 
    UWSGI_ADDITIONAL_SOURCES=embed_me.c make
 
-and you will automatically get access for your hooks:
+然后，你可以自动访问你的钩子：
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --call-asap hello_i_am_foobar
    
-Finally, Riccardo Magliocchetti rewrote the build script to use optparse instead of raw/old-fashioned sys.argv parsing
+最后，Riccardo Magliocchetti重写了构建脚本，使用optparse，而不是原始/老式的sys.argv解析
 
 
-插件化'schemes'管理
+插件化'模式(scheme)'管理
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-schemes are the prefix part of uWSGI uri's. When you do
+模式(scheme)是uWSGI uri的前缀部分。当你这样
 
 .. code-block:: sh
 
    uwsgi --ini http://foobar.local:9090/test.ini
    
-the http:// is the scheme, signalling uWSGI it has to download the config file via http.
+http://就是模式，发信号给uWSGI，告诉它必须通过http下载配置文件。
 
-Til now those 'schemes' were hardcoded. Now they are exposed as plugins, so you can add more of them (or override the default one).
+直到现在，那些'模式(scheme)'都是硬编码的。现在，它们作为茶具被公开出来，因此你可以添加更多的模式(scheme)了 (或者覆盖默认的)。
 
-The new system has been applied to the PSGI plugin too (sorry we are sure only perl developers will understand that kind of poetry :P) so you can do things like:
+新的系统也已被应用到PSGI插件了 (抱歉啦，我们确保只有perl开发者才会明白那种诗意 :P)，因此，你可以做这样的事：
 
 .. code-block:: sh
 
    uwsgi --http-socket :1717 --psgi http://yourapps.local/dancer.pl
    
-or
+或者
 
 .. code-block:: sh
 
@@ -222,27 +218,26 @@ or
    cat blob001 >> ./uwsgi
    ./uwsgi --http-socket :1717 --psgi data://0
 
-mountpoints checks
+挂载点检查
 ^^^^^^^^^^^^^^^^^^
 
-It could be hard to understand why an application server should check for mountpoints.
+可能很难理解为什么一个应用服务器应该检查挂载点。
 
-In the same way understanding how writing filesystem in userspace was silly few years ago.
+正如几年前，理解如何在用户空间内写入文件系统是件傻事。
 
-So, check the article about managing Fuse filesystem with uWSGI: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/ReliableFuse.html
+因此，看看这篇关于用uWSGI管理Fuse文件系统的文章： https://uwsgi-docs.readthedocs.io/en/latest/tutorials/ReliableFuse.html
 
 初步libffi插件
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As embedding c libraries for exposing hooks is becoming more common, we have started working on libffi integration, allowing
-safe (and sane) argument passing to hooks. More to came soon.
+随着为公开的钩子嵌入c库变得越来越普遍，我们开始致力于libffi集成，允许传给钩子安全（而理智）的参数。很快就会有相关内容了。
 
 对kFreeBSD的官方支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Debian/kFreeBSD is officially supported.
+官方支持Debian/kFreeBSD。
 
-You can even use FreeBSD jails too !!!
+你甚至可以也使用FreeBSD jails了!!!
 
 :doc:`FreeBSDJails`
 

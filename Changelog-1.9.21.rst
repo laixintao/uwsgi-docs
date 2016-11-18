@@ -1,35 +1,35 @@
 uWSGI 1.9.21
 ============
 
-Latest 1.9 before 2.0 (scheduled at December 30th 2013)
+2.0(定于2013年12月30日)之前的最后一个1.9版本
 
-From now on, all of the releases will be -rc's (no new features will be added)
+从现在起，所有的版本都将-rc (将不会增加新功能)
 
-A document describing notes for upgrades from the (extremely obsolete) 1.2 and 1.4 versions is on work.
+一个描述从 (非常过时) 1.2 和 1.4版本起升级的注意事项的文档正在进行中。
 
-This release includes a new simplified plugins builder subsystem directly embedded in the uWSGI binary.
+这个版本包括一个直接嵌入到uWSGI二进制文件中的新的简化插件构建器子系统。
 
-A page reporting third plugins is available: :doc:`ThirdPartyPlugins` (feel free to add yours)
+一个报告第三方插件的页面在这里: :doc:`ThirdPartyPlugins` (请随意添加你的插件)
 
-And now....
+然后现在……
 
-Changelog [20131211]
+更新日志 [20131211]
 
 错误修复
 ********
 
 - croak if the psgi streamer fails
-- allows building coroae on raspberrypi
+- 允许在raspberrypi上构建coroae
 - do not wait for write availability until strictly required
 - avoid segfault when async mode api is called without async mode
 - fixed plain (without suspend engine) async mode
 - do not spit errors on non x86 timerfd_create
-- support timerfd_create/timerfd_settime on __arm__
+- 支持 __arm__ 上的timerfd_create/timerfd_settime
 
-Optimizations
+优化
 *************
 
-writev() for the first chunk
+用于第一个块的writev()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Inernally when the first response body is sent, uWSGI check if response headers have been sent too, and eventually send them with an additional write() call.
@@ -48,7 +48,7 @@ This patch forces the reuse of a single dynamic buffer. For games this should re
 新特性
 ********
 
-removed zeromq api
+已移除zeromq api
 ^^^^^^^^^^^^^^^^^^
 
 The zeromq api (a single function indeed) has been removed. Each plugin rquiring zeromq cam simply call zmq_init() insteadd of uwsgi_zeromq_init().
@@ -149,10 +149,10 @@ Check this article for more infos: https://uwsgi-docs.readthedocs.io/en/latest/a
 this option allows you to call specific C functions (in chains) after each request. While you should use the framework/interface features for this kind of job, sometimes it is not possible to execute
 code after the logging phase. In such a case feel free to abuse this option.
 
-error pages
+错误页面
 ^^^^^^^^^^^
 
-Three new options allow the definition of custom error pages (html only):
+3个新的选项允许你自定义错误页面 (仅限html):
 
 ``--error-page-403 <file>``                     add an error page (html) for managed 403 response
 
@@ -160,10 +160,10 @@ Three new options allow the definition of custom error pages (html only):
 
 ``--error-page-500 <file>``                     add an error page (html) for managed 500 response
 
-Simplified plugins builder
+简化插件构建器
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Building uWSGI plugins is now super easy:
+构建uWSGI插件现在超级简单：
 
 .. code-block:: sh
 
@@ -174,7 +174,7 @@ this option will create a sane environment based on the current binary (no need 
 No external files (included uwsgi.h) are needed as the uWSGI binary embeds them.
 
 
-TODO for 2.0
+2.0任务清单
 ************
 
 - implement websockets and sharedarea support in Lua
