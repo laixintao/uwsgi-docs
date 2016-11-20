@@ -2,49 +2,49 @@ uWSGI 2.0.2
 ===========
 
 
-Changelog 20140226
+更新日志 20140226
 
 
 错误修复
 --------
 
-* fixed python3 support on older compilers/libc
-* allow starting in spooler-only mode
-* fixed cache bitmap support and added test suite (credits: Danila Shtan)
-* fixed ftime log var
-* added async remote signal management
-* fixed end-for and end-if
-* fixed loop in internal-routing response chain
-* fixed pypy execute_source usage
-* logpipe: Don't setsid() twice (credits: INADA Naoki)
+* 修复在较老的编译器/libc上的python3支持
+* 允许以仅spooler模式启动
+* 修复缓存bitmap支持，并添加测试套件 (关于作者：Danila Shtan)
+* 修复ftime日志变量
+* 添加异步远程信号管理
+* 修复end-for和end-if
+* 修复内部路由响应链中的循环
+* 修复pypy execute_source使用
+* logpipe: 不setsid()两次 (关于作者：INADA Naoki)
 
-New features and improvements
+新特性和改进
 -----------------------------
 
-CGI plugin
+CGI插件
 **********
 
-The plugin has been improved to support streaming.
+已改进此插件以支持流式传输。
 
-In addition to this the long-awaited async support is finally ready. Now you can have CGI concurrency
-without spawning a gazillion of expensive threads/processes
+除此之外，long-awaited异步支持最终准备好了。现在，你可以拥有CGI并发，而无需生成许许多多昂贵的线程/进程
 
-Check: :doc:`CGI`
+看看： :doc:`CGI`
 
-PSGI loading improvements
+PSGI加载改进
 *************************
 
-The PSGI loader now tries to use Plack::Util::load_psgi() function instead of simple eval. This addresses various inconsistences
-in the environment (like the double parsing/compilation/execution of psgi scripts).
+PSGI加载器现在尝试使用Plack::Util::load_psgi()函数，而不是简单的eval。这解决了环境中各种不一致 (例如psgi脚本的双次解析／编译／执行)。
 
-If the Plack module is not available, a simple do-based code is used (very similar to load_psgi)
+如果Plack模块不可用，那么会使用一个简单的基于do的代码 (非常类似于load_psgi)
 
-Many thanks to Ævar Arnfjörð Bjarmason of booking.com for having discovered the problem
+非常感谢booking.com的Ævar Arnfjörð Bjarmason，他发现了这个问题
+
 
 可用性
 ************
 
-uWSGI 2.0.2 can be downloaded from: http://projects.unbit.it/downloads/uwsgi-2.0.2.tar.gz
+你可以从以下地址下载uWSGI 2.0.2：
+http://projects.unbit.it/downloads/uwsgi-2.0.2.tar.gz
 
 
 

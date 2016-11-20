@@ -5,7 +5,7 @@ uWSGI 2.0.13.1
 
 修正快速版本
 
-Changes
+改动
 -------
 
 - 修复对python 2.5和python 2.6的支持

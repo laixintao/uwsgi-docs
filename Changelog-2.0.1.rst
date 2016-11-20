@@ -1,45 +1,45 @@
 uWSGI 2.0.1
 ===========
 
-Changelog [20140209]
+更新日志 [20140209]
 
-Bugfixes and improvements
+错误修复和改进
 *************************
 
-- due to a wrong prototype declaration, building uWSGI without SSL resulted in a compilation bug. The issue has been fixed.
-- a race condition preventing usage of a massive number of threads in the PyPy plugin has been fixed
-- check for heartbeat status only if heartbeat subsystem has been enabled
-- improved heartbeat code to support various corner cases
-- improved psgi.input to support offset in read()
-- fixed (and simplified) perl stacktrace usage
-- fixed sni secured subscription
+- 由于错误的原型声明，无SSL构建uWSGI会导致编译错误。此问题已得到修复。
+- 已修复PyPy插件中防止大量线程使用的竞争条件
+- 只有在心跳子系统已启用的情况下才检查心跳状态
+- 改进心跳代码，以支持各种边缘情况
+- 改进psgi.input以支持read()中的偏移
+- 修复 (和简化) perl堆栈跟踪使用情况
+- 修复sni安全订阅
 - CGI plugin does not require anymore that Status header is the first one (Andjelko Horvat)
-- fixed CPython mule_msg_get timeout parsing
-- allows embedding of config files via absolute paths
-- fixed symcall rpc
-- fixed a memory leak in CPython spooler api (xiaost)
-- The --no-orphans hardening has been brought back (currently Linux-only)
-- improved dotsplit router mode to reduce DOS risk
-- sub-Emperor are now loyal by default
-- fixed non-shared ruby 1.8.7 support
-- fixed harakiri CPython tracebacker
-- request vars are now correctly exposed by the stats server
-- support log-master for logfile-chown
-- improved legion reload
-- fixed tuntap netmask
+- 修复CPython mule_msg_get超时时间解析
+- 允许通过绝对路径嵌入配置文件
+- 修复symcall rpc
+- 修复CPython spooler api中的内存泄漏 (xiaost)
+- --no-orphans加固已经回来了 (目前仅Linux)
+- 改进dotsplit路由器模式，以减少DOS风险
+- 子Emperor现在默认是loyal的
+- 修复非共享ruby 1.8.7支持
+- 修复harakiri CPython对tracebacker
+- 请求变量现在正确由统计信息服务器公开
+- 对logfile-chown支持log-master
+- 改进legion重载
+- 修复tuntap网络掩码
 - fixed busyness plugin without metrics subsystem
 
 新特性
 ********
 
-uWSGI 2.0 is a LTS branch, so do not expect too much new features. 2.0.1 is the first maintainance release, so you still get a bunch of them
-(mainly features not complete in 2.0)
+uWSGI 2.0是一个LTS分支，因此，别期待有灰常多的新特性。2.0.1是第一个维护发布版本，因此，你仍然可以获得一堆新特性
+(主要特性并未在2.0完成)
 
 
-Perl native Spooler support
+Perl原生Spooler支持
 ---------------------------
 
-Perl finally got full support for the Spooler subsystem. In 2.0 we added server support, in 2.0.1 we completed client support too.
+Perl最终获得了对Spooler子系统的支持。在2.0中，我们添加了服务器支持，而在2.0.1中，我们也完成了客户端支持。
 
 .. code-block:: pl
 
@@ -57,7 +57,7 @@ Perl finally got full support for the Spooler subsystem. In 2.0 we added server 
 --alarm-backlog
 ---------------
 
-Raise the specified alarm when the listen queue is full
+当监听队列满的时候，引发指定告警
 
 .. code-block:: ini
 
@@ -68,19 +68,18 @@ Raise the specified alarm when the listen queue is full
 --close-on-exec2
 ----------------
 
-Credits: Kaarle Ritvanen
+关于作者：Kaarle Ritvanen
 
-this flag applies CLOSE_ON_EXEC socket flag on all of the server socket. Use it if you do not want you request-generated processes to inherit the server file descriptor.
+这个标志在所有服务器socket上应用CLOSE_ON_EXEC socket标志。如果你不想要你请求生成进程继承服务器描述符，那么使用它。
 
-Note: --close-on-exec applies the flag on all of the sockets (client and server)
+注意：--close-on-exec在所有的socket（客户端和服务器）上应用此标志
 
-simple notifications subsystem
+简单通知子系统
 ------------------------------
 
-An annoying problem with subscriptions is that the client does not know if it has been correctly subscribed to the server.
+订阅的一个烦人问题是，客户端不知道它是否已正确被订阅至服务器了。
 
-The notification subsystem allows you to add to the subscription packet a datagram address (udp or unix) on which the server will send back
-messages (like successful subscription)
+该通知子系统允许你添加订阅包到一个数据报地址 (udp或者unix)，服务器将会发送回消息（例如成功的订阅）到该地址
 
 .. code-block:: ini
 
@@ -91,23 +90,23 @@ messages (like successful subscription)
    subscription-notify-socket = /tmp/notify.socket
    ...
    
-the notification subsystem is really generic. Expect more subsystem to use it in the future.
+该通知子系统是真正通用的。期待未来会有更多的子系统使用它。
 
-pid namespace for daemons (Linux only)
+用于守护进程的pid名字空间 (仅Linux)
 --------------------------------------
 
-This is a Linux-only, epxerimental feature allowing you to spawn a daemon in a new pid namespace. This feature requires the master running as root.
+这是一个仅Linux的实验性特性，允许你在一个新的pid名字空间内生成守护进程。这个特性要求master作为root运行。
 
-Check: :doc:`AttachingDaemons`
+看看： :doc:`AttachingDaemons`
 
-Resubscriptions
+重订阅
 ---------------
 
-The fastrouter and the http/https/spdy router now support "resubscription".
+fastrouter和http/https/spdy路由器现在支持"重订阅"。
 
-You can specify a dgram address (udp or unix) on which all of the subscriptions request will be forwarded to (obviously changing the node address to the router one)
+你可以指定一个数据报地址 (udp或unix)，所有的订阅请求将会被转发到该地址 (明显改变节点地址到这个路由器地址)
 
-The system could be useful to build 'federated' setup:
+这个系统在构建“联合”设置时会有用：
 
 .. code-block:: ini
 
@@ -116,30 +115,30 @@ The system could be useful to build 'federated' setup:
    fastrouter-subscription-server = 127.0.0.1:5000
    fastrouter-resubscribe = 192.168.0.2:5000
    
-with this setup the fastrouter on 192.168.0.2 will have all of the records of 192.168.0.1 with the destination set to 192.168.0.1:3031.
+使用这个设置，192.168.0.2上的fastrouter会拥有目的被设置为192.168.0.1:3031的所有192.168.0.1的记录。
 
-filesystem monitor api
+文件系统监控API
 ----------------------
 
-The real-time filesystem notification api has been standardized and it is now usable by plugins. The prototype to register a monitor is:
+该实时文件通知API已被标准化，现在可以通过插件使用它了。注册一个监控器的原型是：
 
 .. code-block:: c
 
    struct uwsgi_fsmon *uwsgi_register_fsmon(char *path, void (*func) (struct uwsgi_fsmon *), void *data) {
    
-it will register a monitor on "path" triggering the function "func" passing "data" as argument.
+它将会在“path”上注册一个监控器，触发函数"func"，并将"data"作为参数传递给该函数。
 
-Remember, this is different from the "touch" api, that is poll-based and can only monitor files. (while fsmon can monitor directories too)
+记住，这与"touch" api不同，它是基于poll的，并且只能监控文件。(而fsmon还可以监控文件夹)
 
-support for yajl 1.0
+对yajl 1.0的支持
 --------------------
 
-2.0 added support yajl JSON parser (version 2). 2.0.1 added support for 1.0 too
+2.0添加了yajl JSON解析器 (version 2)的支持。2.0.1也添加了对1.0的支持。
 
 for-readline
 ------------
 
-a config-logic iterator that yield file lines:
+一个配置逻辑迭代器，它生成（yield）文件行：
 
 .. code-block:: ini
 
@@ -148,23 +147,23 @@ a config-logic iterator that yield file lines:
      env = %(_)
    end-for =
 
-%i and %j magic vars
+%i和%j魔术变量
 --------------------
 
-%i -> returns the inode of the currently parsed file
+%i -> 返回当前解析文件的inode
 
-%j -> returns hex representation of 32bit djb33x hashing of the currently parsed absolute filename
+%j -> 返回当前解析绝对文件名的32位djb33x哈希的十六进制表示
 
---inject-before and --inject-after
+--inject-before 和 --inject-after
 ----------------------------------
 
-This two new options should make the config templating system complete for everyone.
+这两个新的选项应该为每个人使配置模板系统完整。
 
-They basically prepend and append 'blobs' to a config file.
+它们基本上前置和附加'blobs'到一个配置文件。
 
-Yeah, it sound a bit nonsense.
+是哒，这听起来有点扯淡。
 
-Check the following example:
+看看下面的例子：
 
 header.xml:
 
@@ -180,52 +179,52 @@ footer.xml:
    <master/>
        </uwsgi>
        
-and body.xml:
+和body.xml:
 
 .. code-block:: xml
 
    <processes>8</processes>
    
-you can build a single config tree with:
+你可以这样构建一个单一的配置树：
 
 .. code-block:: sh
 
    uwsgi --show-config --inject-before header.xml --inject-after footer.xml --xml body.xml
    
-this approach, albeit raw, allows you to use magic-vars in more advanced ways (as you have control on the context of the file using them)
+这个方法，虽然原始，但是让你以更高级的方式使用魔术变量（因为你可以使用它们控制文件的上下文）
 
-Note: ordering is important, --inject-before and --inject-after must be specified before the relevant config option.
+注意：顺序很重要，--inject-before和--inject-after必须在相关配置选项之前指定。
 
 --http-server-name-as-http-host
 -------------------------------
 
-Some Ruby/Rack middleware make a questionable check on SERVER_NAME/HTTP_HOST matching.
+一些Ruby/Rack中间件在SERVER_NAME/HTTP_HOST检查的时候进行可疑检查。
 
-This flag allow the http router to map SERVER_NAME to HTTP_HOST automatically instead of instructing your uWSGI instances to do it.
+这个标志允许http路由器自动映射SERVER_NAME到HTTP_HOST，而不是指示你的uWSGI实例来做这件事。
 
-better Emperor's Ragnarok (shutdown procedure)
+更好的Emperor的Ragnarok (关闭过程)
 ----------------------------------------------
 
-The 'Ragnarok' is the Emperor phase executed when you ask him to shutdown.
+'Ragnarok'是Emperor阶段，当你让它关闭时，会执行此阶段。
 
-Before 2.0.1, this procedure simply send KILL to vassals to brutally destroy them.
+在2.0.1之前，这个过程简单发送KILL给vassal，来粗暴销毁它们。
 
-The new Ragnarok is way more benevolent, asking vassals to gracefully shutdown.
+而这个新的Ragnarok则是一种更加仁慈的方式，让vassal优雅关闭。
 
-The Emperor tolerance for vassals not shutting down can be tuned with --reload-mercy (default 30 seconds)
+Emperor对vassal不关闭的容忍可以使用--reload-mercy来调整 (默认30秒)
 
-PyPy paste support
+PyPy粘贴支持
 ------------------
 
-Two new options for PyPy plugin have been added for paste support:
+已添加两个用于PyPy插件的新选项，用于粘贴支持：
 
 --pypy-paste <config>
 
 --pypy-ini-paste <ini>
 
-they both maps 1:1 to the CPython variants, but contrary to it they automatically fix logging
+它们都1:1映射到CPython变量，但与其相反，它们自动修复日志记录
 
 可用性
 ************
 
-You can download uWSGI 2.0.1 from: http://projects.unbit.it/downloads/uwsgi-2.0.1.tar.gz
+你可以从这里下载uWSGI 2.0.1： http://projects.unbit.it/downloads/uwsgi-2.0.1.tar.gz

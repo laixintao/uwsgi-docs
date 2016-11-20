@@ -18,12 +18,12 @@ uWSGI 1.9.21
 错误修复
 ********
 
-- croak if the psgi streamer fails
+- 如果psgi streamer失败，则中止
 - 允许在raspberrypi上构建coroae
-- do not wait for write availability until strictly required
-- avoid segfault when async mode api is called without async mode
-- fixed plain (without suspend engine) async mode
-- do not spit errors on non x86 timerfd_create
+- 不等待可写，除非严格要求
+- 在非异步模式下调用异步模式API时，避免段错误
+- 修复纯 (无挂起引擎) 异步模式
+- 在非x86 timerfd_create上，不显示错误
 - 支持 __arm__ 上的timerfd_create/timerfd_settime
 
 优化
@@ -32,18 +32,18 @@ uWSGI 1.9.21
 用于第一个块的writev()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Inernally when the first response body is sent, uWSGI check if response headers have been sent too, and eventually send them with an additional write() call.
+在内部发送第一个响应体时，uWSGI检查是否也发送了响应头，并最终使用额外的write()调用来发送它们。
 
-This new optimizations allows uWSGI to send both headers and the first body chunk with single writev() syscall.
+这个新的优化允许uWSGI使用单个writev()系统调用来发送第一个响应体块。
 
-If the writev() returns with an incomplete write on the second vector, the system will fallback to simple write().
+如果writev()返回了第二个向量上不完整的写入，那么该系统将会回退到简单的write()。
 
-use a single buffer for websockets outgoing packets
+对websockets传出数据包使用单个缓冲区
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Before this patch every single websocket packet required to allocate a memory chunk.
+在这个补丁之前，需要为每个单一的websocket包分配一个内存块。
 
-This patch forces the reuse of a single dynamic buffer. For games this should result in a pretty good improvement in responsiveness.
+这个补丁强制重新使用单个动态缓冲区。这应该对响应有一个相当不错的提高。
 
 新特性
 ********
@@ -51,81 +51,80 @@ This patch forces the reuse of a single dynamic buffer. For games this should re
 已移除zeromq api
 ^^^^^^^^^^^^^^^^^^
 
-The zeromq api (a single function indeed) has been removed. Each plugin rquiring zeromq cam simply call zmq_init() insteadd of uwsgi_zeromq_init().
+已移除zeromq api (实际上是一个单一的函数)。每个需要zeromq的插件可以简单调用zmq_init()，而不是uwsgi_zeromq_init()。
 
-The mongrel2 support has been moved to a 'mongrel2' plugin.
+mongrel2支持已被移到'mongrel2'插件上。
 
-To pair uWSGI with mongrel2 the same options as before can be used, just remember to load (and build) the mongrel2 plugin
+uWSGI与mongrel2配对，可以使用跟之前一样的选项，只是记得要加载（和构建）mongrel2插件
 
-The new sharedarea
+新的共享区域
 ^^^^^^^^^^^^^^^^^^
 
-The shared area subsystem has been rewritten (it is incompatible with the old api as it requires a new argument as it now supports multiple memory areas).
+已重写共享区域子系统 (它与旧的API不兼容，因为它现在支持多内存区域了，因此它需要一个新的参数)。
 
-Check updated docs: :doc:`SharedArea`
+看看已更新文档： :doc:`SharedArea`
 
-report request data in writers and readers
+在写入器和读取器中报告请求数据
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-every error when reading and writing to/from the client will report current request's data.
+在从客户端读取/写入客户单时发生的每个错误将会报告当前请求数据。
 
-This should simplify debugging a lot.
+这应该会大大简化调试
 
-Modular logchunks management
+模块化日志块管理
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The uWSGI api has been extended to allow plugins to define their log-request vars.
+已扩展uWSGI api，允许插件定义它们的日志请求变量。
 
-Check: :doc:`LogFormat`
+看看： :doc:`LogFormat`
 
-tmsecs and tmicros, werr, rerr, ioerr, var.XXX
+tmsecs 和 tmicros, werr, rerr, ioerr, var.XXX
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6 new request logging variables are available:
+有6个新的请求日志变量可以用了：
 
-tmsecs: report the current unix time in milliseconds
+tmsecs: 报告当前unix实现，以毫秒为单位
 
-tmicros: report the current unix time in microseconds
+tmicros: 报告当前unix实现，以微秒为单位
 
-werr: report the number of write errors for the current request
+werr: 报告当前请求的写错误数
 
-rerr: report the number of read errors for the current request
+rerr: 报告当前请求的读错误数
 
-ioerr: the sum of werr and rerr
+ioerr: werr和rerr的总数
 
-var.XXX: report the context of the request var XXX (like var.PATH_INFO)
+var.XXX: 报告请求变量XXX (例如var.PATH_INFO) 的上下文
 
-mountpoints and mules support for symcall
+symcall的挂载点和mule支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The symcall plugin has been improved to support mules and mountpoints.
+已改进symcall插件，支持mule和挂载点。
 
-To run a C function in a mule just specify it as ``--mule=foobar()`` when the mule finds an argument ending
-with () it will consider it a function symbol.
+要在一个mule中运行一个c函数，仅需将其指定为 ``--mule=foobar()`` 。当该mule发现有个参数以()结尾，它将会把它当成一个函数符号。
 
-read2 and wait_milliseconds async hooks
+read2和wait_milliseconds异步钩子
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This two non-blocking hooks adds new capabilities to the non-blocking system.
+这两个非阻塞钩子添加新的功能到非阻塞系统上。
 
-The first one allows to wait on two file descriptors with the same call (currently implemented only in plain async mode)
+第一个允许用同一个调用等待两个文件描述符 (目前只在纯异步模式下实现了它)
 
-The second one is used to have a millisecond resolution sleep. (this is currently used only by the sharedarea waiting system)
+第二个用于进行毫秒级别的休眠。 (这个目前只被共享区域等待系统使用)
 
-websockets binary messages
+websockets二进制消息
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can now send websocket binary message. Just use ``uwsgi.websocket_send_binary()`` instead of ``uwsgi.websocket_send()``
+你现在可以发送websockets二进制消息了。仅需使用 ``uwsgi.websocket_send_binary()`` 来代替 ``uwsgi.websocket_send()``
 
-the 'S' master fifo command
+'S' master fifo命令
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sending 'S' to the master fifo, enable/disable the sending of subscription packets
+发送'S'到master fifo，启用／禁用订阅包的发送
 
-as-mule hook
+as-mule钩子
 ^^^^^^^^^^^^
 
-this new custom hooks allows you to execute custom code in every mule:
+这个新的自定义钩子允许你在每个mule中执行自定义代码：
 
 .. code-block:: ini
 
@@ -134,31 +133,30 @@ this new custom hooks allows you to execute custom code in every mule:
    ...
 
 
-accepting hook and improved chain reloading
+接收钩子和改进的链式重载
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The chain reloading subsystem has been improved to take in account when a worker is really ready to accept() requests.
+已改进链式重载子系统，以考虑worker何时真正准备好accept()请求。
 
-This specific state is announced to the Emperor too.
+此特定的状态也会被宣告到Emperor。
 
-Check this article for more infos: https://uwsgi-docs.readthedocs.io/en/latest/articles/TheArtOfGracefulReloading.html
+看看这篇文章，以获得更多信息： https://uwsgi-docs.readthedocs.io/en/latest/articles/TheArtOfGracefulReloading.html
 
 --after-request-call
 ^^^^^^^^^^^^^^^^^^^^
 
-this option allows you to call specific C functions (in chains) after each request. While you should use the framework/interface features for this kind of job, sometimes it is not possible to execute
-code after the logging phase. In such a case feel free to abuse this option.
+这个选项允许你在每个请求后调用指定的C函数 (链式)。虽然你应该为这种任务使用框架/接口特性，但是有时在日志记录阶段之后不可能执行代码。在这种情况下，随意滥用该选项。
 
 错误页面
 ^^^^^^^^^^^
 
 3个新的选项允许你自定义错误页面 (仅限html):
 
-``--error-page-403 <file>``                     add an error page (html) for managed 403 response
+``--error-page-403 <file>``                     为受管理的403响应添加一个错误页面（html）
 
-``--error-page-404 <file>``                     add an error page (html) for managed 404 response
+``--error-page-404 <file>``                     为受管理的404响应添加一个错误页面（html）
 
-``--error-page-500 <file>``                     add an error page (html) for managed 500 response
+``--error-page-500 <file>``                     为受管理的500响应添加一个错误页面（html）
 
 简化插件构建器
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,17 +167,17 @@ code after the logging phase. In such a case feel free to abuse this option.
 
    uwsgi --build-plugin <directory>
    
-this option will create a sane environment based on the current binary (no need to fight with build profiles and #ifdef) and will build the plugin.
+这个选项将会基于当前二进制创建一个健全的环境（无需使用构建配置文件和#ifdef），并且将会构建插件。
 
-No external files (included uwsgi.h) are needed as the uWSGI binary embeds them.
+无需任何外部文件 (包括uwsgi.h)，因为uWSGI二进制文件内置了它们。
 
 
 2.0任务清单
 ************
 
-- implement websockets and sharedarea support in Lua
-- complete sharedarea api for CPython, Perl, Ruby and PyPy
-- implement read2 and wait_milliseconds hook in all of the available loop engines
+- 实现Lua中的websockets和sharedarea支持
+- 用于CPython, Perl, Ruby和PyPy的完整的sharedarea api
+- 在所有可用的循环引擎中实现read2和wait_milliseconds钩子
 
 可用性
 ************

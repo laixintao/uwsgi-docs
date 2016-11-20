@@ -1,20 +1,20 @@
 uWSGI 2.0
 =========
 
-Changelog [20131230]
+更新日志 [20131230]
 
-Important changes
+重要改动
 *****************
 
-Dynamic options have been definitely removed as well as the broken_plugins directory
+已确定删除动态选项，以及broken_plugins目录
 
-Bugfixes and improvements
+错误修复和改进
 *************************
 
-- improved log rotation
-- do not rely on unix signals to print request status during harakiri
-- added magic vars for uid and gid
-- various Lua fixes
+- 改进日志循环
+- 不依赖unix信号在harakiri期间打印请求状态
+- 为uid和gid添加魔术变量
+- 各种Lua修复
 - a tons of coverity-governed bugfixes made by Riccardo Magliocchetti
 
 新特性
@@ -23,60 +23,59 @@ Bugfixes and improvements
 --attach-daemon2
 ^^^^^^^^^^^^^^^^
 
-this is a keyval based option for configuring external daemons.
+这是一个用于配置外部守护进程的基于键值的选项。
 
-Updated docs are: :doc:`AttachingDaemons`
+已更新文档： :doc:`AttachingDaemons`
 
-Linux setns() support
+Linux setns()支持
 ^^^^^^^^^^^^^^^^^^^^^
 
-One of the biggest improvements in uWSGI 1.9-2.0 has been the total support for Linux namespaces.
+uWSGI 1.9-2.0中的最大的改进之一是对Linux名字空间的完全支持。
 
-This last patch adds support for the setns() syscall.
+这最后的补丁添加了对setns()系统调用的支持。
 
-This syscall allows a process to "attach" to a running namespace.
+该系统调用允许一个进程“附加”到一个正在运行中的名字空间。
 
-uWSGI instances can exposes their namespaces file descriptors (basically they are the files in /proc/self/ns) via a unix socket.
+uWSGI实例可以通过unix socket公开它们的名字空间文件描述符 (基本上，它们是/proc/self/ns中的文件)。
 
-External instances connects to that unix socket and automatically enters the mapped namespace.
+外部实例连接到那个unix socket，然后自动进入映射到名字空间。
 
-to spawn an instance in "namespace server mode", you use the ``--setns-socket <addr>`` option
+要以“名字空间服务器模式”生成一个实例，则使用 ``--setns-socket <addr>`` 选项
 
 .. code-block:: sh
 
    uwsgi --setns-socket /var/run/ns.socket --unshare net,ipc,uts ...
    
    
-to attach you simply use ``--setns <addr>``
+要附加，则简单使用 ``--setns <addr>``
 
 
 .. code-block:: sh
 
    uwsgi --setns /var/run/ns.socket ...
    
-Updated docs: :doc:`Namespaces`
+已更新文档： :doc:`Namespaces`
 
-"private" hooks
+"私有"钩子
 ^^^^^^^^^^^^^^^
 
-When uWSGI runs your hooks, it verbosely print the whole hook action line. This could be a security problem
-in some scenario (for example when you run initial phases as root user but allows unprivileged access to logs).
+当uWSGI运行你的钩子时，它冗长打印整个钩子动作信息。这在某些场景（例如，当你作为root用户运行初始阶段，并且允许非特权用户访问日志时）下会是一个安全问题。
 
-Prefixing your action with a '!' will suppress full logging:
+在你的动作前面加上前缀'!'会抑制完全日志记录：
 
 .. code-block:: ini
 
    [uwsgi]
    hook-asap = !exec:my_secret_command
 
-Support for yajl library (JSON parser)
+yajl库 (JSON解析器) 支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Til now uWSGI only supported jansson as the json parser required for managing .js config files.
 
 You can now use the yajl library (available in centos) as alternative JSON parser (will be automatically detected)
 
-Perl spooler support
+Perl spooler支持
 ^^^^^^^^^^^^^^^^^^^^
 
 The perl/PSGI plugin can now be used as a spooler server:
@@ -94,7 +93,7 @@ The client part is still missing as we need to fix some internal api problem.
 
 Expect it in 2.0.1 ;)
 
-Gateways can drop privileges
+网关可以移除特权
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Gateways (like http router, sslrouter, rawrouter, forkptyrouter ...) can now drop privileges independently by the master.
@@ -114,12 +113,12 @@ The subscription subsystem now supports 3 additional keys (you can set them with
 
 all of the takes a path to the relevant ssl files.
 
-Check: :doc:`SNI`
+看看： :doc:`SNI`
 
 
 可用性
 ************
 
-uWSGI 2.0 has been released on 20131230 and can be downloaded from:
+uWSGI 2.0已于20131230发布，你可以从这里下载：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.tar.gz
