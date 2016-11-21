@@ -6,85 +6,85 @@ uWSGI 2.0.4
 错误修复
 --------
 
-- fixed "mime" routing var (Steve Stagg)
-- allow duplicate headers in http parsers
-- faster on_demand Emperor management
-- fixed UWSGI_ADDITIONAL_SOURCES build option
-- merge duplicated headers when SPDY is enabled (Łukasz Mierzwa)
-- fixed segfault for unnamed loggers
-- --need-app works in lazy-apps mode
-- fixed fatal hooks management
+- 修复"mime"路由变量 (Steve Stagg)
+- http解析器允许重复的http头
+- 更快的即需Emperor管理
+- 修复UWSGI_ADDITIONAL_SOURCES构建选项
+- 当启用SPDY时，合并重复的头 (Łukasz Mierzwa)
+- 为未命名记录器修复段错误
+- lazy-apps模式下可用--need-app
+- 修复致命钩子管理
 
 
-New features
+新特性
 ------------
 
-The experimental asyncio loop engine (CPython >= 3.4)
+实验性asyncio循环引擎 (CPython >= 3.4)
 *****************************************************
 
-asyncio (also known as 'tulip') is the new infrastructure for writing non-blocking/async/callback-based code with Python 3.
+asyncio (也被称为'tulip')是使用Python 3编写基于非阻塞/异步/回调代码的新的基础结构。
 
-This (experimental) plugin allows you to use asyncio as the uWSGI loop engine.
+这个 (实验性的) 插件允许你将asyncio当成uWSGI循环引擎使用。
 
-Docs: https://uwsgi-docs.readthedocs.io/en/latest/asyncio.html
+文档：https://uwsgi-docs.readthedocs.io/en/latest/asyncio.html
 
-httprouter advanced timeout management
+httprouter高级超时时间管理
 **************************************
 
-The HTTP router learned 2 new specific timeouts:
+HTTP路由器有2个新的特定超时时间：
 
-* `--http-headers-timeout <n>`: defines the timeout while waiting for http headers
-* `--http-connect-timeout <n>`: defines the timeout when connecting to backend instances
+* `--http-headers-timeout <n>`: 定义等待http头的超时时间
+* `--http-connect-timeout <n>`: 定义连接到后端实例时的超时时间
 
-These should help sysadmins to improve security and availability.
+这应该能帮助系统管理员提高安全性和可用性。
 
-Credits: Łukasz Mierzwa
+关于作者：Łukasz Mierzwa
 
-allow disabling cache warnings in --cache2
+允许在--cache2禁用缓存告警
 ******************************************
 
-Author: Łukasz Mierzwa
+作者：Łukasz Mierzwa
 
-The 'ignore_full' keyval option has been added to cache2. This will disable warnings when a cache is full.
+已添加'ignore_full'键值到cache2。这将会在缓存满时禁用告警。
 
-purge LRU cache feature by Yu Zhao (getcwd)
+清理LRU缓存特性，来自Yu Zhao (getcwd)
 *******************************************
 
-This new mode allows you to configure a cache to automatically expire the least recently used (LRU) items to make space when it's running out.
+这个新模式允许你配置一个缓存，来自动终止最近最少使用 (LRU) 的元素，从而在空间耗尽的时候腾出空间。
 
-Just add `purge_lru=1` into your cache2 directive.
+仅需添加 `purge_lru=1` 到你的cache2指令中。
 
-support embedded config on FreeBSD
+支持FreeBSD上的嵌入配置
 **********************************
 
-You can now embed configuration files into the binary also on FreeBSD systems: 
+现在，你也可以在FreeBSD系统上，把配置文件嵌入到二进制文件中：
 
 https://uwsgi-docs.readthedocs.io/en/latest/Embed.html#step-2-embedding-the-config-file
 
-RPC hook
+RPC钩子
 ********
 
-Two new hooks have been added:
+已添加两个新的钩子：
 
-* 'rpc' -> call the specified RPC function (fails on error)
-* 'rpcretry' -> call the specified RPC function (retries on error)
+* 'rpc' -> 调用指定的RPC函数 (错误时失败)
+* 'rpcretry' -> 调用指定的RPC函数 (错误时重试)
 
-`setmodifier1` and `setmodifier2` routing actions
+`setmodifier1` 和 `setmodifier2` 路由动作
 *************************************************
 
-Having to load the 'uwsgi' routing plugin to simply set modifiers was really annoying.
+只是为了设置modifier而必须加载'uwsgi'路由插件真的真的很烦。
 
-These two new routing options allow you to dynamically set request modifiers.
+这两个新的选项让你可以动态设置请求modifier。
 
-`no_headers` option for static router
+用于静态路由器的 `no_headers` 选项
 *************************************
 
-keyval based static routing actions can now avoid rewriting response headers (useful for X-Sendfile), just add no_headers=1 to your keyval options.
+基于键值的静态路由动作现在可以避免重写响应头了 (对X-Sendfile有用)，仅需添加no_headers=1到你的键值选项上。
 
 可用性
 ------------
 
-uWSGI 2.0.4 has been released on 20140422, you can download it from:
+uWSGI 2.0.4已于20140422发布，你可以从这里下载它：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.4.tar.gz
 

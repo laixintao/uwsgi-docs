@@ -4,38 +4,38 @@ uWSGI 2.0.6
 更新日志 [20140701]
 
 
-Bugfixes
+错误修复
 ^^^^^^^^
 
-* fixed a memory leak in the subscription system
-* fixed shortcut for ssl-socket
-* fixed Apache2 mod_proxy_uwsgi. It is now considered stable with all Apache MPM engines.
-* fixed SCRIPT_NAME and PATH_TRANSLATED generation in the PHP plugin (thanks Matthijs Kooijman)
-* remove the old FIFO socket from the event queue when recreating it (thanks Marko Tiikkaja)
+* 修复订阅系统中的内存泄漏
+* 修复ssl-socket快捷方式
+* 修复Apache2 mod_proxy_uwsgi。现在，它对所有的Apache MPM引擎都是稳定的。
+* 修复PHP插件中的SCRIPT_NAME和PATH_TRANSLATED生成 (感谢Matthijs Kooijman)
+* 重建时将老的FIFO socket从事件队列移除 (感谢Marko Tiikkaja)
 
 
-New features
+新特性
 ^^^^^^^^^^^^
 
-The new Rados plugins
+新的Rados插件
 *********************
 
-Credits: Marcin Deranek
+关于作者：Marcin Deranek
 
-The Rados plugin has been improved and stabilized, and now it is considered stable and usable in production.
+Rados插件已经被改进和加固，现在对生产来说，可以算是稳定和可用的了。
 
-Async modes and multithreading correctly work.
+异步模式和多线程正常工作。
 
-Support for uploading objects (via PUT) and creating new pools (MKCOL) has been added.
+已添加对上传对象（通过PUT）和创建新的池 (MKCOL) 的支持。
 
-Expect WebDAV support in uWSGI 2.1.
+期望在uWSGI 2.1支持WebDAV。
 
-Docs have been updated: https://uwsgi-docs.readthedocs.io/en/latest/Rados.html
+文档已更新：https://uwsgi-docs.readthedocs.io/en/latest/Rados.html
 
 --if-hostname
 *************
 
-This is configuration logic for including options only when the system's hostname matches a given value.
+这是配置逻辑，用来只有当系统的主机名匹配到一个给定的值的时候，才包含选项。
 
 .. code-block:: ini
 
@@ -48,7 +48,7 @@ This is configuration logic for including options only when the system's hostnam
      socket = /var/run/foo.socket
    endif = 
    
-Apache2 `mod_proxy_uwsgi` stabilization
+Apache2 `mod_proxy_uwsgi` 固化
 ***************************************
 
 After literally years of bug reports and corrupted data and other general badness, `mod_proxy_uwsgi` is finally stable.
@@ -57,12 +57,12 @@ On modern Apache2 releases it supports UNIX sockets too.
 
 Updated docs: https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-proxy-uwsgi
 
-uwsgi[rsize] routing var
+uwsgi[rsize]路由变量
 ************************
 
 The new `uwsgi[rsize]` routing variable (meaningful only in the 'final' chain) exposes the response size of the request.
 
-the `callint` scheme
+`callint`模式
 ********************
 
 This scheme allows you to generate blobs from functions exposed by your uWSGI instance:
@@ -85,21 +85,21 @@ PHP 5.5 opcode caching via --php-sapi-name
 
 For mysterious reasons the PHP 5.5+'s opcode caching is not enabled in the "embed" SAPI. This option allows you to fake the SAPI name -- `apache` is a good option -- to force the opcode caching engine to turn on.
 
-Improved chain-reloading
+改进链式重载
 ************************
 
-Thanks to Marko Tiikkaja, the chain reloading procedure correctly works in cheaper modes and is more verbose.
+多亏了Marko Tiikkaja，链式重载过程正确地在cheaper模式下工作，并且更加详细。
 
-added 'chdir' keyval to --attach-daemon2
+添加'chdir'键值到--attach-daemon2
 ****************************************
 
 You can now set where attached daemons need to chdir().
 
-Availability
+可用性
 ^^^^^^^^^^^^
 
-uWSGI 2.0.6 has been released on 20140701
+uWSGI 2.0.6已于20140701发布
 
-You can download it from
+你可以从这里下载它：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz

@@ -6,39 +6,39 @@ uWSGI 2.0.3
 错误修复
 ********
 
-* fixed spooler 'at' key usage
-* fixed a memory and fd leak with on-demand Emperor sokets
-* on __APPLE__ use LOG_NOTICE for syslog plugin
-* fixed mongrel2 support
-* hack for avoiding libmongoclient to crash on broken cursor
-* log alarm is now a uwsgi_log_verbose() wrapper
-* fixed tuntap router memory corruption
-* Set ECDHE curve independently from DHE parameters (Hynek Schlawack)
-* do not wait for a whole Emperor cycle before checking for each waitpid
-* fix a regression with caller() not indicating the starting *.psgi program (Ævar Arnfjörð Bjarmason)
+* 修复spooler的'at'键使用
+* 使用即需Emperor socket修复内存和fd泄漏
+* 在__APPLE__上，为syslog插件使用LOG_NOTICE
+* 修复mongrel2支持
+* hack以避免libmongoclient在处理损坏的指针时崩溃
+* 日志告警现在是一个uwsgi_log_verbose()封装器
+* 修复tuntap路由器内存损坏
+* 独立于DHE参数设置ECDHE曲线 (Hynek Schlawack)
+* 在检查每一个waitpid之前，不等待整个Emperor循环
+* fix a regression with caller() not indicating the starting *.psgi程序 (Ævar Arnfjörð Bjarmason)
 
 新特性
 ********
 
-Emperor SIGWINCH and SIGURG
+Emperor SIGWINCH和SIGURG
 ---------------------------
 
-The Emperor now responds to two new signals:
+Emperor现在响应两种新的信号：
 
-SIGWINCH: force an emperor rescan of vassals
+SIGWINCH: 强制emperor重新扫描vassal
 
-SIGURG: cleanup the Emperor states (for now it only clears its blacklist)
+SIGURG: 清理Emperor状态 (目前，它只清理它的黑名单)
 
-Building plugins on-the-fly from git repositories
+从git仓库，实时构建插件
 -------------------------------------------------
 
-You can now build plugins stored on git servers:
+现在，你可以构建存储在git服务器上的插件了：
 
 .. code-block:: sh
 
    uwsgi --build-plugin https://github.com/unbit/uwsgi-bonjour
    
-or
+或者
 
 .. code-block:: sh
 
@@ -47,7 +47,7 @@ or
 uwsgi.add_var(key, value)
 -------------------------
 
-You can now set request variables direcly from your app, for better integration with the internal routing subsystem
+现在，你可以直接从你的应用设置请求变量，以更好地与内部路由子系统集成
 
 .. code-block:: pl
 
@@ -60,20 +60,19 @@ You can now set request variables direcly from your app, for better integration 
 
    uwsgi --http-socket :9090 --psgi hello.pl --response-route-run "log:\${newvar}"
    
-add_var has been implemented in the CPython and Perl plugins
+add_var已在CPython和Perl插件中实现
 
-'disableheaders' routing action
+'disableheaders'路由动作
 -------------------------------
 
 This new action disables the sending of response headers, independently by the current request state
 
-Smarter Emperor on bad conditions
+糟糕的条件下更智能的Emperor
 ---------------------------------
 
-Now the Emperor completely destroys internal vassal-related structures when it is impossible to correctly kill a broken vassal
-(both for inconsistent Emperor state or for internal system problems)
+现在，Emperor在它不可能正确地杀死一个损坏的vassal时（无论是不一致的Emperor状态，还是由于内部系统问题），会完全销毁内部vassal相关的结构
 
 可用性
 ************
 
-You can download uWSGI 2.0.3 from: http://projects.unbit.it/downloads/uwsgi-2.0.3.tar.gz
+你可以从这里下载uWSGI 2.0.3：http://projects.unbit.it/downloads/uwsgi-2.0.3.tar.gz
