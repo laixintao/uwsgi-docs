@@ -56,7 +56,7 @@ backported wait-for-fs/mountpoints from 2.1
 * ``--wait-for-dir <path>`` suspend the uWSGI startup until a directory is available
 * ``--wait-for-mountpoint <path>`` suspend the uWSGI startup until a mountpoint is available
 
-improved the offload api (backport from 2.1)
+改进卸载api (backport from 2.1)
 ********************************************
 
 uWSGI 2.0.8 is compatible with the upcoming https://github.com/unbit/uwsgi-realtime plugin that allows the use of realtime features
@@ -72,7 +72,7 @@ uwsgi binary with the Avahi and realtime plugins as:
 
    UWSGI_EMBED_PLUGINS="avahi=https://github.com/20tab/uwsgi-avahi,realtime=https://github.com/unbit/uwsgi-realtime" make
 
-Automatically manage HTTP_X_FORWARDED_PROTO
+自动管理HTTP_X_FORWARDED_PROTO
 *******************************************
 
 Albeit a new standard is avavailble in the HTTP world for forwarded sessions (http://tools.ietf.org/html/rfc7239) this release
@@ -81,6 +81,6 @@ adds support for the X-Forwarded-Proto header, automatically setting the request
 可用性
 ------------
 
-uWSGI 2.0.8 has been released on 20141026. Download it from:
+uWSGI 2.0.8已于20141026发布。在这下载它：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz

@@ -51,21 +51,21 @@ Rados插件已经被改进和加固，现在对生产来说，可以算是稳定
 Apache2 `mod_proxy_uwsgi` 固化
 ***************************************
 
-After literally years of bug reports and corrupted data and other general badness, `mod_proxy_uwsgi` is finally stable.
+经过真真多年的问题报告和损坏的数据，以及其他一般糟糕的事， `mod_proxy_uwsgi` 终于稳定了。
 
-On modern Apache2 releases it supports UNIX sockets too.
+在现代的Apache2版本中，它也支持UNIX socket。
 
-Updated docs: https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-proxy-uwsgi
+已更新文档： https://uwsgi-docs.readthedocs.io/en/latest/Apache.html#mod-proxy-uwsgi
 
 uwsgi[rsize]路由变量
 ************************
 
-The new `uwsgi[rsize]` routing variable (meaningful only in the 'final' chain) exposes the response size of the request.
+新的 `uwsgi[rsize]` 路由变量 (只有在“最终”链中才有意义) 公开了请求的响应大小。
 
 `callint`模式
 ********************
 
-This scheme allows you to generate blobs from functions exposed by your uWSGI instance:
+该模式允许你从由你的uWSGI实例公开的函数生成blob：
 
 .. code-block:: ini
 
@@ -76,14 +76,14 @@ This scheme allows you to generate blobs from functions exposed by your uWSGI in
 --fastrouter-fallback-on-no-key
 *******************************
 
-The corerouter's fallback procedure requires that a valid key (domain name) has been requested.
+这个核心路由器的回退过程要求已请求一个有效键（域名）。
 
-This option forces the various routers to trigger the fallback procedure even if a key has not been found.
+这个选项强制各个路由器触发回退过程，即使尚未发现一个键。
 
-PHP 5.5 opcode caching via --php-sapi-name
+通过--php-sapi-name进行PHP 5.5指令缓存
 ******************************************
 
-For mysterious reasons the PHP 5.5+'s opcode caching is not enabled in the "embed" SAPI. This option allows you to fake the SAPI name -- `apache` is a good option -- to force the opcode caching engine to turn on.
+出于神秘的原因，并未在“嵌入的”SAPI中启用PHP 5.5+的指令缓存。这个选项允许你伪造SAPI名 -- `apache` 是个不错的选项 -- 来强制指令缓存引擎打开。
 
 改进链式重载
 ************************
@@ -93,7 +93,7 @@ For mysterious reasons the PHP 5.5+'s opcode caching is not enabled in the "embe
 添加'chdir'键值到--attach-daemon2
 ****************************************
 
-You can now set where attached daemons need to chdir().
+现在，你可以设置附加的守护进程需要chdir()到哪里。
 
 可用性
 ^^^^^^^^^^^^
