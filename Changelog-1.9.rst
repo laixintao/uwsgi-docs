@@ -51,7 +51,7 @@ Mono ASP.NET插件
    void uwsgi_request_body_seek(struct wsgi_request *wsgi_req, off_t pos); 
 
 
-它们自动管理post缓存，非阻塞和上传进展。
+它们自动管理post-buffering，非阻塞和上传进展。
 
 所有的请求插件已更新到新的API。
 
@@ -67,7 +67,7 @@ Mono ASP.NET插件
 
 FastCGI协议现在支持真正的sendfile()使用
 
-为HTTP和FastCGI将请求体存储在一个临时文件中的这种老做法已经被移除 (除非你使用post缓存)。这意味着，除了uwsgi之外，你现在可以使用其他协议进行上传了。
+为HTTP和FastCGI将请求体存储在一个临时文件中的这种老做法已经被移除 (除非你使用post-buffering)。这意味着，除了uwsgi之外，你现在可以使用其他协议进行上传了。
 
 
 请求日志记录 VS 错误日志记录

@@ -6,24 +6,23 @@ uWSGI 2.0.12
 错误修复
 --------
 
-- 'rpcvar' routing action correctly returns NEXT on empty response
-- uwsgiconfig: fix handling of empty keys in python3 (Simone Basso)
-- plugins/alarm_speech: fix AppKit spelling to support case-sensitive filesystems (Andrew Janke)
-- Fix inheriting INET address 0.0.0.0 (INADA Naoki)
-- core/xmlconf: correctly initialize libxml2 (Riccardo Magliocchetti)
-- Pass LIBDIR to linker in python plugin (Borys Pierov)
-- Platforms-related build fixes for pty, forkptyrouter and mono plugins (Jonas Smedegaard and Riccardo Magliocchetti)
+- 'rpcvar'路由动作在空响应时正确返回NEXT
+- uwsgiconfig: 修复python3中的空键处理 (Simone Basso)
+- plugins/alarm_speech: 修复AppKit拼写，以支持大小写敏感的文件系统 (Andrew Janke)
+- 修复继承INET地址0.0.0.0 (INADA Naoki)
+- core/xmlconf: 正确初始化libxml2 (Riccardo Magliocchetti)
+- python插件中传递LIBDIR给linker (Borys Pierov)
+- 对于pty, forkptyrouter和mono插件的平台相关的构建修复 (Jonas Smedegaard和Riccardo Magliocchetti)
 
-New Features and Backports
+新的特性和反向移植
 --------------------------
 
-The custom worker api
+自定义worker api
 *********************
 
-Finally you are able to override the uWSGI processing model to completely get control of it. This is very similar to what
-you can do in projects like gunicorn (and its integration with tornado or gevent). Obviously native plugins are still the best approach (they allow integration with uWSGI api and states), but in some case you may want to use uWSGI process management facilities and let your app do the rest of the work.
+你终于可以覆盖uWSGI处理模型，来获得它的完全控制权。这与你可以在诸如gunicorn（以及它与tornado或者gevent的集成）这样的项目中可以做的事情非常类似。显然，原生的插件仍然是最佳方法 (它们允许与uWSGI api和states的集成)，但在一些情况下，你也许想要使用uWSGI进程管理功能，让你的应用做剩下的工作。
 
-Currently only the python plugin supports "overriding" of workers, an aiohttp (asyncio) example module is available:
+目前，只有python插件支持对worker的“覆盖”，有一个aiohttp (asyncio)样例模块：
 
 https://github.com/unbit/uwsgi-docs/blob/master/WorkerOverride.rst
 
@@ -31,27 +30,27 @@ https://github.com/unbit/uwsgi-docs/blob/master/WorkerOverride.rst
 --wsgi-disable-file-wrapper
 ***************************
 
-This option disables the wsgi.file_wrapper optimization of the WSGI standard. In some corner case this is the only trick to avoid errors.
+这个选项禁用WSGI标准的wsgi.file_wrapper优化。在一些边缘情况中，这是避免错误的唯一技巧。
 
-Official PHP 7 support
+官方PHP 7支持
 **********************
 
-PHP 7 is now officially supported in the php plugin.
+php插件中现在官方支持PHP 7。
 
 
-uwsgi.spooler_get_task api (Credits: Alexandre Bonnetain)
+uwsgi.spooler_get_task api (关于作者：Alexandre Bonnetain)
 *********************************************************
 
-This patch allows you to easily parse spooler files.
+这个补丁允许你轻松解析spooler文件。
 
-Check the example/test here:
+看看这里的例子/测试：
 
 https://github.com/unbit/uwsgi/blob/master/t/spooler/read.py
 
---if-hostname-match (Credits: Alexandre Bonnetain)
+--if-hostname-match (关于作者：Alexandre Bonnetain)
 **************************************************
 
-This options for config logic allows you to define options only when a regexp over the hostname matches:
+这个选项用于配置逻辑，允许你只有在关于主机名的正则表达式匹配上时才定义选项：
 
 .. code-block:: ini
 
@@ -65,4 +64,4 @@ This options for config logic allows you to define options only when a regexp ov
 可用性
 ------------
 
-You can download uWSGI 2.0.12 from http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz
+你可以从http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz下载uWSGI 2.0.12

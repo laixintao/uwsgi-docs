@@ -6,16 +6,16 @@ uWSGI 2.0.11.1
 错误修复
 ********
 
-* fixed HTTPS router resource deallocation and fiel descriptors leak
-* do not spit out ssl errors when errno is 0
+* 修复HTTPS路由器资源释放和文件描述符泄漏
+* 当errno为0的时候，不吐出ssl错误
 
 新特性
 ************
 
-The unix_signal hook
+unix_signal钩子
 ^^^^^^^^^^^^^^^^^^^^
 
-You can now remap UNIX signals to specific functions symbols:
+现在，你可以重新映射UNIX信号到指定的函数符号：
 
 .. code-block:: c
 
@@ -30,11 +30,11 @@ You can now remap UNIX signals to specific functions symbols:
    gcc -o libhello.so -shared hello.c
    uwsgi --dlopen ./libhello.so --hook-master-start "unix_signal:1 hello_world" ...
    
-will run the function hello_world whenever signal 1 (SIGHUP) is raised
+每当引发信号1 (SIGHUP)时，就会运行函数hello_world
 
 可用性
 ************
 
-You can download uWSGI 2.0.11.1 from
+你可以从这里下载uWSGI 2.0.11.1：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.11.1.tar.gz

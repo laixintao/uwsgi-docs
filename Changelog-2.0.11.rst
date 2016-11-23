@@ -6,40 +6,40 @@ uWSGI 2.0.11
 错误修复
 ********
 
-- [pypy] fixed misuse of ffi.string
-- fixed detection for gcc 5 (jimfunk)
-- fixed shared sockets for gateways
-- [psgi] Changed abs to labs because offset is declared as a long (Peter H. Ezetta)
-- add null terminator to uwsgi_get_dot_h() and uwsgi_config_py() (Jay Oster)
-- fixed thread waiting during stop/restart (Kaiwen Xu)
-- fixed chain reloading verbosity
-- [python] fixed spooler job reference counting (Curtis Maloney)
-- various static analysis improvements (Riccardo Magliocchetti)
-- fixed sharedarea support for very big ranges
-- fixed gzip transformation for zero-sized responses (Curtis Maloney)
-- fixed management of https client certificate authentication (Vladimir Didenko)
-- fixed OpenBSD build
-- fixed TMPFILE permissions
+- [pypy] 修复ffi.string的错误使用
+- 修复gcc 5检测 (jimfunk)
+- 修复用于网关的共享socket
+- [psgi] 将abs更改为labs，因为offset被声明为long类型 (Peter H. Ezetta)
+- 添加null结束符号到uwsgi_get_dot_h()和uwsgi_config_py() (Jay Oster)
+- 修复停止/重启期间的线程等待 (Kaiwen Xu)
+- 修复链式重载信息显示
+- [python] 修复spooler任务引用计数 (Curtis Maloney)
+- 多种静态分析改进 (Riccardo Magliocchetti)
+- 修复对于非常大范围的共享区域支持
+- 修复大小为0的响应的gzip转换 (Curtis Maloney)
+- 修复https客户端证书认证管理 (Vladimir Didenko)
+- 修复OpenBSD构建
+- 修复TMPFILE权限
 
 
 新特性
 ************
 
-The mem_collector thread
+mem_collector线程
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Evil memory monitors (like --evil-reload-on-rss) are now asynchronously managed by a dedicated thread.
+Evil内存监控器 (例如--evil-reload-on-rss) 现在是由专有线程异步管理。
 
-This solves the issue of runaway processes not catched by the master.
+这解决了失控进程不被master捕获到的问题。
 
-fixpathinfo routing action
+fixpathinfo路由动作
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is another step in removing the need of the infamous uwsgi_modifier1 30 relic.
+这是移除臭名昭著的uwsgi_modifier1 30遗留物需要的另一步。
 
-This routing action assumes the PATH_INFO cgi var has the SCRIPT_NAME part included.
+这个路由动作假设PATH_INFO cgi变量包含了SCRIPT_NAME部分。
 
-This action allows you to set SCRIPT_NAME in nginx without bothering to rewrite the PATH_INFO (something nginx cannot afford)
+这个动作允许你在nginx中设置SCRIPT_NAME，而无需重写PATH_INFO (这是nginx无法承担的)
 
 .. code-block:: ini
 
@@ -47,10 +47,10 @@ This action allows you to set SCRIPT_NAME in nginx without bothering to rewrite 
    ; blindly assumes PATH_INFO is clobbered with SCRIPT_NAME
    route-run = fixpathinfo:
 
-uwsgi[sor] and time[micros] routing vars
+uwsgi[sor]和time[micros]路由变量
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This two new vars exposes the start of the current request (in micros) and the current time (again in micros)
+这两个新的变量公开了当前请求的开始时间 (以微秒为单位) 和当前时间 (再次，以微秒为单位)
 
 .. code-block:: ini
 
@@ -61,16 +61,16 @@ This two new vars exposes the start of the current request (in micros) and the c
 wait-for-socket
 ^^^^^^^^^^^^^^^
 
-This works like wait-for-fs/iface/file/dir
+这与wait-for-fs/iface/file/dir类似
 
-The spawn of the instance is suspended until the specified tcp/unix socket is ready.
+挂起实例的生成，直到特定的tcp/unix socket准备好了。
 
-You can use it to synchronize vassals spawn (like stopping a vassal until a postgresql server has been spawned)
+你可以用它来同步vassal生成 (例如，停止一个vassal，直到已生成一个postgresql服务器)
 
 wait_for hooks
 ^^^^^^^^^^^^^^
 
-All of the wait-for-* functions can now be used as a hook:
+所有的wait-for-*函数现在可以当成钩子使用：
 
 .. code-block:: ini
 
@@ -81,6 +81,6 @@ All of the wait-for-* functions can now be used as a hook:
 可用性
 ************
 
-You can download uWSGI 2.0.11 from
+你可以从这里下载uWSGI 2.0.11：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.11.tar.gz

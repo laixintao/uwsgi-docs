@@ -1,72 +1,70 @@
 uWSGI 2.0.8
 ===========
 
-Note: this is the first version with disabled-by-default SSL3, if you need it, you can re-enable with ``--ssl-enable3`` option
+注意：这是第一个默认禁用SSL3的版本，如果你需要它，可以通过 ``--ssl-enable3`` 选项来重新启用
 
 错误修复
 --------
 
-* fixed PHP `SCRIPT_NAME` usage when ``--php-app`` is in place
-* allow "appendn" hook without second argument
-* fix heap corruption in the Carbon plugin (credits: Nigel Heron)
-* fix `getifaddrs()` memory management
-* fixed `tcsetattr()` usage
-* fixed kevent usage of return value (credits: Adriano Di Luzio)
-* ensure PSGI response headers are in the right format
-* fixed reloading of attached daemons
-* fixed SSL/TLS shutdown
-* fixed mountpoint logic for paths not ending with / (credits: Adriano Di Luzio)
-* fixed Python3 support in spooler decorators (credits: Adriano Di Luzio)
+* 修复当 ``--php-app`` 存在时的PHP `SCRIPT_NAME` 使用
+* 允许不带第二个参数的"appendn"钩子
+* 修复Carbon插件中的堆损坏 (关于作者：Nigel Heron)
+* 修复 `getifaddrs()` 内存管理
+* 修复 `tcsetattr()` 使用
+* 修复返回值的kevent使用 (关于作者：Adriano Di Luzio)
+* 确保PSGI响应头格式正确
+* 修复附加守护进程的重载
+* 修复SSL/TLS关闭
+* 修复不以/结尾的路径的挂载逻辑 (关于作者： Adriano Di Luzio)
+* 修复spooler装饰器的Python3支持 (关于作者：Adriano Di Luzio)
 
 新特性
 ********
 
-RTSP and chunked input backports from 2.1 for the HTTP router
+从2.1移植过来的RTSP和分块输入，用于HTTP路由器
 *************************************************************
 
-The ``--http-manage-rtsp`` and ``--http-chunked-input` have been backported from 2.1 allowing the HTTP router
-to detect RTSP and chunked requests automatically. This is useful for the upcoming https://github.com/unbit/uwsgi-realtime plugin.
+ ``--http-manage-rtsp`` 和 ``--http-chunked-input` 已从2.1移植过来，允许HTTP路由器自动检测RTSP和分块请求。这对于即将到来的https://github.com/unbit/uwsgi-realtime插件有用。
 
 --hook-post-fork
 ****************
 
-This custom hook allows you to call actions after each `fork()`.
+这个自定义钩子允许你在每次 `fork()` 之后调用动作。
 
-fallback to trollius for asyncio plugin
+对asyncio插件，回退到trollius
 ***************************************
 
-If you build the asyncio plugin for python2, a fallback to the `trollius <https://trollius.readthedocs.io/>`_ module will be tried.
+如果你对python2构建asyncio插件，那么将会尝试回退到 `trollius <https://trollius.readthedocs.io/>`_ 模块。
 
-This feature has gotten basically zero test coverage, so every report (bug or success alike) is welcome.
+这个特性基本零测试覆盖，因此欢迎每个报告 (错误或者成功都可以)。
 
-added sweep_on_full, clear_on_full and no_expire to ``--cache2``
+添加sweep_on_full, clear_on_full 和 no_expire 到 ``--cache2``
 ****************************************************************
 
-Three new options for ``--cache2`` have been added for improving the caching expire strategies:
+已添加3个用于 ``--cache2`` 的新选项，用来改进缓存过期策略：
 
-* ``sweep_on_full`` will call a sweep (delete all of the expired items) as soon as the cache became full
-* ``clear_on_full`` will completely clear the cache as soon as it is full
-* ``no_expire`` forces the cache to not generate a cache sweeper thread, delegating items removal to the two previous options
+* ``sweep_on_full`` 一旦缓存变满，就进行扫除 (删除所有过期项)
+* ``clear_on_full`` 一旦缓存满了，就完全清理缓存
+* ``no_expire`` 强制缓存不要生成缓存扫除线程，委托项移除给前两个选项
 
-backported wait-for-fs/mountpoints from 2.1
+从2.1移植wait-for-fs/mountpoints
 *******************************************
 
-* ``--wait-for-fs <path>`` suspend the uWSGI startup until a file/directory is available
-* ``--wait-for-file <path>`` suspend the uWSGI startup until a file is available
-* ``--wait-for-dir <path>`` suspend the uWSGI startup until a directory is available
-* ``--wait-for-mountpoint <path>`` suspend the uWSGI startup until a mountpoint is available
+* ``--wait-for-fs <path>`` 挂起uWSGI启动，直到文件/目录可用
+* ``--wait-for-file <path>`` 挂起uWSGI启动，直到文件可用
+* ``--wait-for-dir <path>`` 挂起uWSGI启动，直到目录可用
+* ``--wait-for-mountpoint <path>`` 挂起uWSGI启动，直到挂载点可用
 
 改进卸载api (backport from 2.1)
 ********************************************
 
-uWSGI 2.0.8 is compatible with the upcoming https://github.com/unbit/uwsgi-realtime plugin that allows the use of realtime features
-(like websockets or audio/video streaming) using the uWSGI offload engine + Redis publish/subscribe.
+uWSGI 2.0.8与即将到来的https://github.com/unbit/uwsgi-realtime插件兼容，该插件使用uWSGI卸载引擎 + Redis发布/订阅（publish/subscribe），允许实时特性
+(例如websockets或者音频/视频流)的使用。
 
-Allows building plugins from remote sources as embedded
+允许将来自远程源的插件作为嵌入插件构建
 *******************************************************
 
-The UWSGI_EMBED_PLUGINS environment variable has been extended to support remote plugins. As an example you can build a monolithic
-uwsgi binary with the Avahi and realtime plugins as:
+已扩展UWSGI_EMBED_PLUGINS环境变量，支持远程插件。例如，你可以使用Avahi和实时插件，这样构建一个单片uwsgi二进制文件：
 
 .. code-block:: sh
 
@@ -75,8 +73,7 @@ uwsgi binary with the Avahi and realtime plugins as:
 自动管理HTTP_X_FORWARDED_PROTO
 *******************************************
 
-Albeit a new standard is avavailble in the HTTP world for forwarded sessions (http://tools.ietf.org/html/rfc7239) this release
-adds support for the X-Forwarded-Proto header, automatically setting the request scheme accordingly.
+虽然在HTTP世界里，对于转发会话有了一个新的标准 (http://tools.ietf.org/html/rfc7239)，但是这个版本添加了对X-Forwarded-Proto头的支持，自动检测相应的请求模式(scheme)。
 
 可用性
 ------------

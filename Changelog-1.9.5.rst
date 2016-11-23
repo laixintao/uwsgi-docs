@@ -11,7 +11,7 @@ uWSGI 1.9.5
 * 修复cgi插件中的内存泄漏 (Riccardo Magliocchetti)
 * 修复旧式python动态应用
 * 强制emperor对vassal遵循--max-fd
-* 改进的使用post缓存的PSGI查找
+* 改进的使用post-buffering的PSGI查找
 * 修复kvlist转义
 
 

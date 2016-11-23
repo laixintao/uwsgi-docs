@@ -116,12 +116,12 @@ islowerequal 或者 '<='
 
 查看matheval文档，看看支持的运算：http://matheval.sourceforge.net/docs/index.htm
 
-新增非标准的seek()和tell()到wsgi.input (要求post缓存)
+新增非标准的seek()和tell()到wsgi.input (要求post-buffering)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 在测试'Klaus'项目 (https://github.com/jonashaag/klaus)的'smart模式'时，我们注意到当处于smart模式时，它违反了WSGI的标准调用seek()和tell()。
 
-当post缓存启用的时候，我们添加了对这两种方法的支持。
+当post-buffering启用的时候，我们添加了对这两种方法的支持。
 
 记住：它们违反了WSGI标准，因此，试着避免使用它们 (如果可以的话)。有更好的方式可以来完成相同的事。
 

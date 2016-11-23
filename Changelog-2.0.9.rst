@@ -6,21 +6,21 @@ uWSGI 2.0.9
 错误修复
 --------
 
-* fixed mod_proxy_uwsgi for non-blocking mode (many thanks to Joe cuchac)
-* fixed master-fifo + cheaper
-* fixed leak on error in bind_to_unix (Riccardo Magliocchetti)
-* atexit hooks works in cheaped workers too
-* atexit hooks works in gevent mode too during shutdown
-* fixed carbon command line option value after reload
-* do not honour Emperor throttling on the first run
-* fixed Mono plugin
-* fixed peer name in corerouters
-* fixed stop signal for daemons
-* varios ssl/tls fixes in https/spdy router
-* fixed python3 --py-auto-reload-ignore
-* fixed modifiers in corerouters
+* 修复非阻塞模式下的mod_proxy_uwsgi (非常感谢Joe cuchac)
+* 修复master-fifo + cheaper
+* 修复bind_to_unix上的错误时泄漏 (Riccardo Magliocchetti)
+* atexit钩子也可以工作在cheaped worker上
+* atexit钩子在关闭期间也可以工作在gevent模式上
+* 修复重载后的carbon命令行选项
+* 第一次运行时不遵循Emperor节流
+* 修复Mono插件
+* 修复corerouter中的对端名
+* 修复守护进程的停止信号
+* https/spdy路由器中的多个ssl/tls修复
+* 修复python3 --py-auto-reload-ignore
+* 修复corerouter中的modifier
 * support for yajl from homebrew (OSX)
-* psgi: Ensure that we call any DESTROY hooks on psgix.harakiri.commit (Ævar Arnfjörð Bjarmason)
+* psgi: 确保我们在psgix.harakiri.commit上调用任何DESTROY钩子 (Ævar Arnfjörð Bjarmason)
 * systemdlogger: fix compilation with -Werror=format-security (Riccardo Magliocchetti)
 * fixed unmasked websockets
 * perl fixed latent refcounting bug (Mattia Barbon)
@@ -28,10 +28,10 @@ uWSGI 2.0.9
 新特性
 ********
 
-Improved PyPy support for Linux
+改进Linux的PyPy支持
 *******************************
 
-The PyPy team have started building libpypy-c.so in their official releases. Now using pypy with uWSGI should be way easier:
+PyPy团队已开始在他们的官方版本中构建libpypy-c.so了。现在，通过uWSGI使用pypy应该更容易了：
 
 https://uwsgi-docs.readthedocs.io/en/latest/PyPy.html
 
@@ -45,28 +45,28 @@ https://uwsgi-docs.readthedocs.io/en/latest/Fastrouter.html#post-buffering-mode-
 Perl uwsgi::opt
 ***************
 
-The psgi/perl plugin exposes the uwsgi::opt hash, reporting the whole instance key-value configuration
+psgi/perl插件公开了uwsgi::opt哈希值，报告整个实例的键值配置
 
 --pull-header
 *************
 
-This is like --collect-header but the collected header is not returned to the client
+这像--collect-header，但并不返回已收集的头给客户端
 
-active-workers signal target
+active-workers信号目标
 ****************************
 
-This is like the 'workers' target, but forward the signal only to non-cheaper workers
+这就像'workers'目标，但是只将信号转发给非cheaper的worker
 
-httpdumb routing action
+httpdumb路由动作
 ***********************
 
-The http internal router exposes a new mode called 'httpdumb' that does not change  headers before forwarding the request
+http内部路由器公开了一个名为'httpdumb'的新模式，此模式下，在转发请求之前不修改请求头
 
 可用性
 ------------
 
-uWSGI 2.0.9 has been released on 20141230.
+uWSGI 2.0.9已于20141230发布。
 
-You can download it from:
+你可以从这里下载它：
 
 http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz
