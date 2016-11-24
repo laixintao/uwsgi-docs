@@ -1,17 +1,14 @@
-Auto-scaling with Broodlord mode
+利用Broodlord模式实现自动伸缩
 ================================
 
-Broodlord (来自于Starcraft，就像 :doc:`Zerg` 模式) is a way for a vassal to
-ask for "reinforcements" to the Emperor. "Reinforcements" are new vassals spawned on demand generally
-bound on the same socket. 单独的Broodlord模式并不是那么有用。但是，当与 :doc:`Zerg`, :doc:`Idle` 和 :doc:`Emperor` 组合在一起，它可以被用来实现你的应用的自动伸缩。
+Broodlord (来自于Starcraft，就像 :doc:`Zerg` 模式) 是vassal向Emperor请求“加固”的方式。“加固”是按需生成新的vassal，一般会绑定到同一个socket上。单独的Broodlord模式并不是那么有用。但是，当与 :doc:`Zerg`, :doc:`Idle` 和 :doc:`Emperor` 组合在一起，它可以被用来实现你的应用的自动伸缩。
 
 警告：如果你在寻找的是最红动态调整实例worker数的方式，那么看看 :doc:`Cheaper` 模式，Broodlord模式是用来生成完全新的实例。
 
 一个“简单的”例子
 ------------------
 
-我们将启动一个只有一个worker的应用，按需增加资源。Broodlord
-mode expects an additional stanza in your config file to be used for zergs.
+我们将启动一个只有一个worker的应用，按需增加资源。Broodlord模式要求你的配置文件中要有一个额外的节，用于zerg。
 
 .. code-block:: ini
 
@@ -33,52 +30,45 @@ mode expects an additional stanza in your config file to be used for zergs.
   idle = 30
   die-on-idle = true
 
-The ``vassal-sos-backlog`` option (supported only on Linux and TCP sockets)
-will ask the Emperor for zergs when the listen queue is higher than the given
-value. By default the value is 10. More "vassal-sos-" options will be added in
-the future to allow for more specific detect-overload systems.
+``vassal-sos-backlog`` 选项 (仅适用于Linux和TCP socket) 将在监听队列高过给定的值的时候向Emperor请求zerg。默认情况，这个值是10.未来将会添加更多的"vassal-sos-"选项，从而允许更具体的过载检测系统。
 
-The ``[zerg]`` stanza is the config the Emperor will run when a vassal requires
-resources.  The ``die-on-idle`` option will completely destroy the zerg when
-inactive for more than 30 seconds.  This configuration shows how to combine the
-various uWSGI features to implement different means of scaling.  To run the
-Emperor we need to specify how many zerg instances can be run:
+``[zerg]`` 节是当一个vassal需要资源的时候，Emperor将运行的配置。 ``die-on-idle`` 选项将在zerg超过30秒不活跃的时候销毁它。这个配置显示如何结合不同的uWSGI特性来实现不同缩放手段。要运行这个
+Emperor，我们需要指定可以运行多少个zerg实例：
 
 .. code-block:: sh
 
   uwsgi --emperor /etc/vassals --emperor-broodlord 40
 
-This will allow you to run up to 40 additional zerg workers for your apps.
+这将允许你为应用运行多达40个额外的zerg worker。
 
 `--vassal-sos`
 --------------
 
 .. note::
 
-   This flag has been added in 2.0.7.
+   这个标识已于2.0.7添加。
 
-`--vassal-sos` allows the vassal to ask for reinforcement as soon as all of its workers are busy.
+`--vassal-sos` 允许vassal一旦其所有的worker都处于忙碌状态，立即请求加固。
 
-The option takes an integer value, the number of seconds to wait between asking for a new reinforcements.
+这个选项接收一个整型值，请求一个新的加固之间等待的秒数。
 
 手动请求加固
 ---------------------------------
 
-You can use the master FIFO's "B" command to force an instance to ask for reinforcements from the Emperor.
+你可以使用master FIFO的"B"命令来强制一个实例请求来自Emperor的加固。
 
 .. code-block:: sh
 
    echo B > /var/run/master.fifo
 
-Under the hood (or: hacking broodlord mode)
+钩子之下 (或：黑入broodlord模式)
 --------------------------------------------
 
-Technically broodlord mode is a simple message sent by a vassal to "force" the Emperor to spawn another vassal with a ':zerg' suffix in the instance name.
+技术上，broodlord模式只是由vassal发送的一个简单的消息，用来“强制”Emperor生成另一个实例名中带':zerg'后缀的vassal。
 
-Even if the suffix is ':zerg' this does not mean you need to use Zerg mode. A 'zerg' instance could be a completely independent one that simply subscribes
-to a router, or binds to a SO_REUSEPORT socket.
+即使后缀是':zerg'，这也不意味着你需要使用Zerg模式。一个'zerg'实例可以是一个简单订阅到一个路由器，或者绑定到一个SO_REUSEPORT socket的完全独立的实例。
 
-This is an example with subscription system.
+这是一个使用订阅系统的例子。
 
 .. code-block:: ini
 

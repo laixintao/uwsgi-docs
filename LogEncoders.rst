@@ -21,20 +21,20 @@ uWSGI 1.9.16开始就有了“日志编码”功能。
 
    
    
-使用这个配置，日志服务器将会接收 "i am gzip encoded" string followed by the tru log message encoded in gzip
+使用这个配置，日志服务器将会接收 "i am gzip encoded"字符串，后面跟着以gzip编码的真正的日志消息
 
 日志编码器的语法如下：
 
 log-encoder = <encoder>[ args]
 
-so args (if any) are separated by a single space
+而args (如果有的话)由单个空格分隔
 
-Request logs VS stdout/stderr
+请求日志 VS 标准输出/标准错误
 *****************************
 
-The --log-encoder option encodes only the stdout/stderr logs.
+--log-encoder选项只编码标准输出/标准错误日志。
 
-If you want to encode request logs to use --log-req-encoder:
+如果你想要编码请求日志，则使用--log-req-encoder：
 
 .. code-block:: ini
 
@@ -50,7 +50,7 @@ If you want to encode request logs to use --log-req-encoder:
 路由编码器
 ****************
 
-Log routing allows sending each logline to a different log engine based on regexps. You can use the same system with encoders too:
+日志路由允许基于正则表达式发送每个日志行到不同的日志引擎。你也可以带编码器使用相同的系统：
 
 .. code-block:: ini
 
@@ -69,19 +69,19 @@ Log routing allows sending each logline to a different log engine based on regex
 ``Core`` 编码器
 *****************
 
-The following encoders are available in the uwsgi 'core':
+在uwsgi的'core'中，由以下可用的编码器：
 
-``prefix`` add a raw prefix to each log msg
+``prefix`` 添加一个原始前缀到每个日志消息
 
-``suffix`` add a raw suffix to each log msg
+``suffix`` 添加一个原始后缀到每个日志消息
 
-``nl`` add a newline char to each log msg
+``nl`` 添加一个换行符字符到每个日志消息
 
-``gzip`` compress each msg with gzip (requires zlib)
+``gzip`` 用gzip压缩每个消息 (需要zlib)
 
-``compress`` compress each msg with zlib compress (requires zlib)
+``compress`` 用zlib压缩每个消息 (需要zlib)
 
-``format`` apply the specified format to each log msg:
+``format`` 应用指定的格式到每个日志消息：
 
 .. code-block:: ini
 
@@ -90,7 +90,7 @@ The following encoders are available in the uwsgi 'core':
    log-encoder = format [FOO ${msg} BAR]
    ...
    
-``json`` like ``format`` but each variable is json escaped
+``json`` 像 ``format`` ，但是每个变量都是json转义的
 
 .. code-block:: ini
 
@@ -99,17 +99,17 @@ The following encoders are available in the uwsgi 'core':
    log-encoder = json {"unix":${unix}, "msg":"${msg}"}
    ...
    
-The following variables (for format and json) are available:
+可用以下变量 (用于format和json)：
 
-``${msg}`` the raw log message (newline stripped)
+``${msg}`` 原始日志消息 (移除换行符)
 
-``${msgnl}`` the raw log message (with newline)
+``${msgnl}`` 原始日志消息 (带换行符)
 
-``${unix}`` the current unix time
+``${unix}`` 当前unix时间
 
-``${micros}`` the current unix time in microseconds
+``${micros}`` 当前unix时间，以微秒为单位
 
-``${strftime:xxx}`` strftime using the xxx format:
+``${strftime:xxx}`` strftime，使用xxx格式：
 
 
 
@@ -125,74 +125,74 @@ The following variables (for format and json) are available:
  ``msgpack`` 编码器
 ***********************
 
-This is the first log-encoder plugin officially added to uWSGI sources. It allows encoding of loglines in msgpack (http://msgpack.org/) format.
+这是官方添加到uWSGI源的第一个日志编码器插件。它允许以msgpack格式来编码日志行 (http://msgpack.org/)。
 
-The syntax is pretty versatile as it has been developed for adding any information to a single packet
+其语法是相当多变的，因为它被开发来添加任何信息到单一的包中
 
 ``log-encoder = msgpack <format>``
 
-format is pretty complex as it is a list of the single items in the whole packet.
+格式相当复杂，因为它是整个包中的单个项列表。
 
-For example if you want to encode the {'foo':'bar', 'test':17} dictionary you need to read it as:
+例如，如果你想要编码 {'foo':'bar', 'test':17} 字典，那么需要这样读取它：
 
 a map of 2 items | the string foo | the string bar | the string test | the integer 17
 
-for a total of 5 items.
+总共5项。
 
-A more complex structure {'boo':30, 'foo':'bar', 'test': [1,3,3,17.30,nil,true,false]}
+一个更复杂的结构 {'boo':30, 'foo':'bar', 'test': [1,3,3,17.30,nil,true,false]}
 
-will be
+将是
 
 a map of 3 items | the string boo | the number 30| the string foo| the string bar | the string test | an array of 7 items | the integer 1 | the integer 3 | the integer 3 | the float 17.30 | a nil | a true | a false
 
-The <format> string is a representation of this way:
+<format>字符串是这种方式的一种表示：
 
 .. code-block:: sh
    
    map:2|str:foo|str:bar|str:test|int:17
 
-The pipe is the seprator of each item. The string before the colon is the type of item, followed by the optional argument
+|是每个项的分隔符。冒号前的字符串是项类型，后面跟着可选的参数
 
-The following item types are supported:
+支持以下项类型：
 
-``map`` a dictionary, the argument is the number of items
+``map`` 一个字典，参数是项个数
 
-``array`` an array, the argument is the number of items
+``array`` 一个数组，参数是项个数
 
-``str`` a string, the argument is the string itself
+``str`` 一个字符串，参数是字符串本身
 
-``bin`` a byte array, the argument is the binary stream itself
+``bin`` 一个字节数组，参数是二进制流本身
 
-``int`` an integer, the argument is the number
+``int`` 一个整型，参数是数字
 
-``float`` a float, the argument is the number
+``float`` 一个浮点数，参数是数字
 
 ``nil`` undefined/NULL
 
-``true`` boolean TRUE
+``true`` 布尔类型 TRUE
 
-``false`` boolean FALSE
+``false`` 布尔类型 FALSE
 
-in addition to msgpack types, a series of dynamic types are available:
+除了msgpack类型之外，可以用一系列的动态类型：
 
-``msg`` translate the logline to a msgpack string with newline chopped
+``msg`` 将日志行转换成移除换行符的msgpack字符串
 
-``msgbin`` translate the logline to a msgpack byte array with newline chopped
+``msgbin`` 将日志行转换成移除换行符的msgpack字节数组
 
-``msgnl`` translate the logline to a msgpack string (newline included)
+``msgnl`` 将日志行转换成msgpack字符串 (包含换行符)
 
-``msgbin`` translate the logline to a msgpack byte array (newline included)
+``msgbin`` 将日志行转换成msgpack字节数组 (包含换行符)
 
-``unix`` translate to an integer of the unix time
+``unix`` 转换成unix时间的整数格式
 
-``micros`` translate to an integer of the unix time in microseconds
+``micros`` 转换成unix时间的整数格式，以微秒为单位
 
-``strftime`` translate to a string using strftime syntax. The strftime format is the argument
+``strftime`` 使用strftime语法转换成一个字符串。strftime格式就是参数
 
-As an example you can send logline to a logstash server via udp:
+下面是一个通过udp发送日志行到logstash服务器的例子：
 
 
-(logstash debug configuration):
+(logstash调试配置):
 
 .. code-block:: c
 
@@ -215,7 +215,7 @@ As an example you can send logline to a logstash server via udp:
    log-encoder = msgpack map:4|str:message|msg|str:hostname|str:%h|str:version|str:%V|str:appname|str:myapp
    ...
    
-this will generate the following structure:
+这将生成以下结构：
 
 .. code-block:: js
 
@@ -226,10 +226,10 @@ this will generate the following structure:
       "appname": "myapp"
    }
    
-that will be stored in elasticsearch
+它将被存储到elasticsearch
 
-小抄
-*****
+注意事项
+*********
 
 编码器自动启用--log-master
 

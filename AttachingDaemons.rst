@@ -8,15 +8,13 @@ uWSGI可以轻松地监控外部进程，允许你提高你的多层应用的可
 
 目前，uWSGI支持三种类型的进程：
 
-* ``--attach-daemon`` -- directly attached non daemonized processes
+* ``--attach-daemon`` -- 直接附加到非守护式进程
 * ``--smart-attach-daemon`` -- pidfile governed (both foreground and daemonized)
 * ``--smart-attach-daemon2`` -- pidfile governed with daemonization management
 
-The first category allows you to directly attach processes to the uWSGI master.
-When the master dies or is reloaded these processes are destroyed. This is the
-best choice for services that must be flushed whenever the app is restarted.
+第一类允许你直接附加进程到uWSGI master。当master死掉或者重载时，会销毁这些进程。这对于那些每当重启应用时必须被清除的服务来说，是最好的选项。
 
-Pidfile governed processes can survive death or reload of the master so long as
+Pidfile governed进程可以 can survive death or reload of the master so long as
 their pidfiles are available and the pid contained therein matches a running
 pid. This is the best choice for processes requiring longer persistence, and
 for which a brutal kill could mean loss of data such as a database.

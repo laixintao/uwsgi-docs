@@ -10,7 +10,7 @@ uwsgiconfig.py
 
 这是一个旨在调用不同编译/链接阶段的python脚本。
 
-During 2009, when uWSGI guidelines (and mantra) started to be defined, people agreed that autotools, cmake and friends
+在2009年期间，当开始定义uWSGI指导方针 (以及准则) 时，人们一致认为，autotools, cmake and friends
 was not loved by a lot of sysadmins. Albeit they are pretty standardized, the amount of packages needed and the incompatibility
 between them (especially in the autotools world) was a problem for a project with fast development/evolution where "compile from sources" was, is and very probably will be the best way
 to get the best from the product. In addition to this the build procedure MUST BE fast (less than 1 minute on entry level x86 is the main rule)
