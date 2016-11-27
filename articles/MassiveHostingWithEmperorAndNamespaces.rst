@@ -1,132 +1,124 @@
-Massive "secure" Hosting with the Emperor and Linux Namespaces, AKA "Improving unbit.it and pythonanywhere.com"
+使用Emperor和Linux名字空间进行大规模“安全”托管，亦称"改进unbit.it和pythonanywhere.com"
 ===============================================================================================================
 
-Author: Roberto De Ioris
+作者：Roberto De Ioris
 
-*** WORK IN PROGRESS ***
+*** 正在进行中 ***
 
-Disclaimer
+免责声明
 **********
 
-In the following intro i will mention two companies: Unbit and pythonanywhere.com. I work with both (effectively i own the first one :P).
+在以下的介绍中，我会提到两家公司：Unbit和pythonanywhere.com。我在这两家工作 (实际上，我拥有第一家公司 :P)。
 
-If you think i am making advertising to both, well you are right.
+如果你觉得我是在为这两个公司打广告，好吧，你是对的。
 
-Intro
+简介
 *****
 
-Since 2005 i work as chief sysadmin in the italian ISP Unbit (http://unbit.it) and as a consultant for various hosting company worldwide.
+自2005年起，我就作为意大利ISP Unbit (http://unbit.it)的首席系统管理员，以及全球各种托管公司的顾问。
 
-Unbit is a developer-oriented service, we allow hosting basically anything you want without forcing you to a VPS, simply abusing Linux kernel facilities (it is very similar to what currently Heroku
-does but about 5 years before Heroku existed ;)
+Unbit是一个面向开发者的服务，我们允许托管基本任何你想要的东西，而不强制你使用VPS，只需滥用Linux内核设施 (它与眼下Heroku做的非常相似，但是早于Heroku 5年出现 ;)
 
-In 2009 we started the uWSGI project, initially as a WSGI server, then we slowly realized that its paradigms could be applied to all our infrastructure, so now it is becoming
-a sort of "hosting platform" for various languages. We plan to use only uWSGI for the whole Unbit hosting stack by 2014.
+在2009年，我们开始uWSGI项目，最初是作为一个WSGI服务器，然后，我们慢慢意识到，它的范式可以被应用到我们所有的基础设施上，因此，现在它正在成为各种语言的一种“托管平台”。我们计划到2014年，对于整个Unbit托管栈只使用uWSGI。
 
-Before you get excited, Unbit accepts only Italian customers (we are not racists, it is a policy for avoiding legal problems with the other hosting companies we work with) and our prices
-are quite high as we do not make any kind of over-selling (and more important we do not give free-accounts ;)
+在你激动之前，我想告诉你，Unbit只接受意大利客户 (我们不是种族主义者，这是避免与我们工作的其他托管公司发生法律问题的政策) ，并且我们的价格相当高，因为我们不作任何形式的过度抛售 (而更重要的是，我们不提供免费账户 ;)
 
-In more than 8 years me and my co-workers experienced thousands of problems (yes, if you want to enter the internet services market be prepared to invest the vast majority of your time
-solving problems created by users without the minimal respect for you as a person ;) so, what you see in the whole uWSGI project is the result of this years
-of headaches and non-sleeping nights (and insults by customers)
+在超过8年间，我和我的同事经历了数千个问题 (是哒，如果你想要进入互联网服务市场，那么准备好奉献你绝大多数的时间来解决用户产生的问题，并且别想获得作为人的最小尊重 ;) 因此，你在整个uWSGI项目所见的，就是这些年的头疼与未眠之夜 (以及来自客户的羞辱)
 
-During summer 2013 i worked a bit with the pythonanywhere.com guys (mainly with Harry Percival).
+在2013年的夏天，我跟pythonanywhere.com的小伙伴 (主要是和Harry Percival) 工作了一会。
 
-They heavily use uWSGI features for their service, so they helped popping-up new ideas and solutions in my mind.
+他们大量地将uWSGI特性用于他们的服务，因此他们帮助我激发我脑中的新想法和解决方法。
 
-In uWSGI 1.9.15 lot of new patches for advanced Linux namespaces usage have been merged, thanks to the collaboration with pythonanywhere.com guys.
+在uWSGI 1.9.15，已合并了大量用于高级Linux名字空间使用的新补丁，这多亏了与pythonanywhere.com伙伴们的合作。
 
-Based on the experiences of the two companies, this article will show one of the approaches you can follow to build your service for hosting unreliable webapps (yes, even if you have the largest collection of pacifist customers, they have to be considered 'unreliable' and 'evil', otherwise you are not a good sysadmin).
+基于这两个公司的经验，这篇文章将会展示其中一种你可以按着来构建用于托管不可靠的web应用的服务的方法 (是哒，即使你拥有和平用户的最大集合，他们也必须被视为“不可靠”和“邪恶的”，否则，你就不是一个好的系统管理员)。
 
-It is not a step-by-step tutorial, but some kind of cookbook to give you some basis for improving and adapting the concepts for your needs.
+它不是一步一步的教程，但是是为你提供对你的需要改进和调整概念的一些基础的某种类型的菜谱。
 
-What we want to allow to our users
+我们想要允许我们的用户做什么
 **********************************
 
-- deploy WSGI,PSGI and RACK applications (no CGI and php, albeit technically possible, if you think you can make any kind of money with php hosting you should start finding a second job)
-- run cron scripts
-- run private services (redis, beanstalkd, memcached...)
-- applications can connect to the internet
-- multiple domain names can map to the same instance
+- 部署WSGI,PSGI和RACK应用 (无CGI和php，虽然技术上可行，但是如果你想你可以通过php托管赚钱，那么你应该开始寻找第二份工作)
+- 运行cron脚本
+- 运行私有服务 (redis, beanstalkd, memcached...)
+- 应用可以连接到互联网
+- 多个域名可以映射到同一个实例
 
-...and what we want to forbid
+...以及，我们想要禁止什么
 *****************************
 
-- users cannot see the processes of the other accounts in the machine. Their init process has to be the uWSGI master
-- users cannot see the files of the other accounts in the machine
-- users cannot connect to private services (memcached, redis...) of the other accounts in the machine
-- users cannot read/write ipc semaphores, shared memory and message queues of the other accounts in the machine
-- users cannot allocate more memory than the amount they paid for
-- users cannot use more cpu power than the amount they paid for
+- 用户不能看到同个机器上的其他账户的进程。他们的初始进程必须是uWSGI master
+- 用户不能看到同个机器上的其他账户的文件
+- 用户不能连接到同个机器上的其他账户的私有服务 (memcached, redis...)
+- 用户不能读／写同个机器上的其他账户的ipc信号量，共享内存和消息队列
+- 用户不能分配比他们付费的量更多的内存
+- 用户不能使用比他们付费的量更多的CPU
 
-The Operating System
+操作系统
 ********************
 
-The Webserver
+web服务器
 *************
 
-As we do not need to worry about php and the abuse of .htaccess files, we can choose any server we want.
+由于我们无需担心php和.htaccess文件等滥用，因此可以选择我们想要的任何服务器。
 
-We prefer nginx (even if we [Unbit] are slowly moving to the uWSGI http/https/spdy router as we only need a minimal proxy with dynamic routing, but for anything more complex nginx is the way to go), but you can use whatever you like.
+我们更喜欢用nginx (即使我们 [Unbit] 正慢慢地移到uWSGI http/https/spdy 路由器，因为我们只需要一个带有动态路由的最小的代理，但是对于某些而言，更复杂的nginx就是正途)，但是你可以使用任何你喜欢的。
 
-The "control panel"
+“控制面板”
 *******************
 
-This is the thing you need to develop, the more your panel is usable and powerful the more your users will be happy.
+这是你需要开发的东东，你的面板越可用和强大，你的用户将会越开心。
 
-Your control panel is probably the thing will make your hosting company successful.
+你的控制面板可能就是那种会让你的托管公司成功的东西。
 
-The objective of your control panel is generating "vassal files" (see below). Vassal files can be .ini, xml, yaml and json (unless you have particular reasons to use other formats).
+你的控制面板的目标是生成"vassal文件" (见下)。vassal文件可以是.ini, xml, yaml和json (除非你又特别的理由要使用其他格式)。
 
-The vassal file contains the whole structure of a customer micro-system. As soon as a vassal file is created it will be deployed (and when it is changed it will be reloaded)
+vassal文件包含客户微系统的整个结构。一旦创建了一个vassal文件，就会部署它 (而当它被修改时，将会重载它)
 
-uWSGI 'language' plugins
+uWSGI '语言'插件
 ************************
 
-We want to support multiple kind of applications. The better approach will be having a single uWSGI binary and a series of 'language plugins' (one for each language you want to support).
+我们想要支持多种应用。较好的方法是有一个单一的uWSGI二进制文件，以及一系列的“语言插件” (一个用于一个你想要支持的语言)。
 
-You can support multiple versions of the same language. Just build the corresponding plugin.
+你可以支持同一个语言的多个版本。仅需构建对应的插件。
 
-In Unbit we make an extremely modular uWSGi distribution (basically all is a plugin). This is required as we account any MB of memory
-so we allow users to enable only the required features to gain much memory as possible.
+在Unbit，我们做了一个非常模块化的uWSGi发行版 (基本上所有都是插件)。这是必须的，因为我们考虑内存的任何MB，因此，我们允许用户只启用所需的特性，来尽可能的获得多内存。
 
-If you are still not a black-belt in uWSGI mastering, i suggest you to start with the included 'nolang' build profile.
+如果你尚未是uWSGI管理的黑带，那么我建议你从包含'nolang'构建配置文件开始。
 
-It will build a standard uwsgi binary without any language builtin.
+它将会构建一个不带任何内置语言的标准uwsgi二进制文件。
 
 ...
 
-Lazy apps VS prefork
+Lazy应用 VS prefork
 ********************
 
-One of the controversial design choices of uWSGI is "preforking by default".
+uWSGI的有争议的设计选择之一是“默认prefork”。
 
-It means your app is loaded on startup and then fork() is called for each worker.
+它意味着你的应用会在启动时加载，然后对每个worker调用fork()。
 
-While this is the common approach in the UNIX world and it is an expected behaviour for a Perl developer
-(that is historically more near to the UNIX world) it is totally unknown and unexpected by a Python (and maybe Ruby) one.
+虽然这是UNIX世界的常见方法，并且它对Perl开发者来说是期望的行为
+(历史上更接近UNIX世界)，但是对于Python（也许还有Ruby），它完全未知和未期望。
 
-So one of the choices you need to make when building a uWSGI-based service is how to manage the fork() behaviour.
+所以，当你在构建一个基于uWSGI的服务的时候，你需要做的选择之一就是如何管理fork()行为。
 
-If you are unsure let me tell you one thing: with preforking behaviour you will make some user very happy, and lot of users
-completely lost. With --lazy-apps you will have all of your users totally unconcerned. Trust me, few happy users cannot make you happy too when you have angry customers too.
+如果你不确定，那么让我告诉你一件事：使用prefork行为，你会让一些用户非常愉悦，以及完全丧失大量用户。使用--lazy-apps，你将让你所有的用户完全不在意。相信我，当你也有愤怒的用户的时候，几个愉悦的用户也不能让你开心。
 
-So, uWSGI default fork() behaviour is generally wrong for massive hosting, so add --lazy-apps and eventually give the advanced users the freedom to change it when needed.
+因此，uWSGI默认的fork()行为对于大规模托管而言一般是错误的，因此，添加--lazy-apps，并最终给予高级用户需要时改变它的自由。
 
 
-The filesystem layout
+文件系统布局
 *********************
 
-Distro upgrades are always a bloodbath. It is a pretty optimistic analysis. trust me.
+发行版的升级始终是一个大屠杀。这是一个非常乐观的分析。相信我。
 
-But "tempus fugit" so sooner or later one of your customer will start asking for a more recent packages set...
+但“光阴似箭”，因此，迟早会有客户开始要求更新的包……
 
-You can upgrade, but you will automatically place the vast majority of your customers in berserk mode, as very probably their apps
-will no more work.
+你可以更新，但是你会自动将你绝大多数的用户置于狂怒模式，因为非常有可能他们的应用将不再工作。
 
-A solution for making everyone happy is having different distribution in your system (yes, it sounds silly, but please continue reading).
+一个让所有人都开心的方法是在你的系统中拥有不同的发行版 (是哒，这听起来很傻，但是请继续阅读)。
 
-Debbotstrap is a great tool. Let's create under the /distros directory our set of distributions:
+Debbotstrap是个不错的工具。让我们在/distros文件夹下创建我们的发行版集合：
 
 .. code-block:: sh
 
@@ -136,65 +128,63 @@ Debbotstrap is a great tool. Let's create under the /distros directory our set o
    debootstrap saucy /distros/saucy
    ...
    
-Each user will be able to choose (and change) its distro, as thanks to our setup (see below) its root filesystem will be a readonly mount
-of one of the available distros.
+每个用户将能攻选择 (和变更) 它的发行版，因为多亏了我们的设置（见下），它的根文件系统将会是其中一个可用发行版的只读挂载。
 
-The final layout will be:
+最终的布局将是：
 
-* / (rootfs, mapped readonly to one of the dir in /distros)
-* /proc (needed for showing processes and getting system informations)
-* /tmp (each user should have a dedicated /tmp)
-* /dev (should contain at least zero and null, but can be a bind mount to the system /dev too)
-* /dev/pts (required for pseudoterminals, shared by all vassals [til linux pts namespace will be released])
-* /var/run (all of the sockets will be bound here, and symlinked by the main rootfs for nginx and ssh access)
-* /opt (this could be a bind mount shared by all of the users containing distribution independent files)
+* / (rootfs, 只读映射到/distros的目录之一)
+* /proc (展示进程和获取系统信息需要)
+* /tmp (每个用户应该拥有一个专门的/tmp)
+* /dev (应该至少包含zero和null，但是也可以绑定挂载到系统的/dev)
+* /dev/pts (伪终端所需，由所有的vassal共享 [直到将发布linux的pts名字空间])
+* /var/run (所有的socket都将绑定在这里，并且被主要的rootfs进行符号链接，以进行nginx和ssh访问)
+* /opt (这可能是一个绑定挂载，由所有包含发行版独立文件的用户共享)
 
 
-Linux namespaces
+Linux名字空间
 ****************
 
-This is the first step to limit users.
+这是限制用户的第一步。
 
-For this setup we will use 5 namespaces: filesystem, sysv ipc, uts, networking and pid
+对于这一步，我们将使用5个名字空间：文件系统，sysv ipc, uts, 网络和pid
 
-filesystem (fs)
+文件系统 (fs)
 ^^^^^^^^^^^^^^^
 
-this allows changing the filesystems layout (mountpoints).
+这允许改变文件系统布局 (挂载点)。
 
-Instead of chroot() in each vassal, we will use the --pivot-root option (it is linux specific) that combined with
-mount namespace allows fine-grained configuration of the filesystem layout
+我们将使用--pivot-root选项（Linux特有的）来代替在每个vassal中chroot()，它与挂载名字空间结合，允许文件系统布局的细粒度配置。
 
 sysv ipc (ipc)
 ^^^^^^^^^^^^^^
 
-sysv ipc exposes 3 primitives: semaphores, shared memory and message queues.
+sysv ipc公开了3个原语：信号量，共享内存和消息队列。
 
-unsharing it creates a dedicated set of this 3 features
+取消共享它会创建这3个特性的一个专用组
 
 uts (uts)
 ^^^^^^^^^
 
-this namespace allows you to have a dedicated hostname
+这个名字空间允许你有一个专用的主机名
 
-networking (net)
+网络 (net)
 ^^^^^^^^^^^^^^^^
 
-when you unshare for the main network namespace, you will lose access to interface addresses. A new loopback will be allocated.
+当你停止共享主要的网络名字空间，你将失去对接口地址的访问。将会分配一个新的回环。
 
-processes (pid)
+进程 (pid)
 ^^^^^^^^^^^^^^^
 
-this namespace allows you to hide the user the processes not being part of the user namspace itself.
+这个名字空间允许你对用户隐藏不是用户名字空间本身的部分的进程。
 
-The uWSGI master process will be the pid 1 for the user.
+uWSGI master进程将会是用户pid为1的进程。
 
-Namespacing the Emperor
+Emperor使用名字空间
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The --emperor-use-clone option allows the Emperor to directly spawn vassals in a new namespace.
+--emperor-use-clone选项允许Emperor在一个新的名字空间中直接生成vassal。
 
-Our config will be something like:
+我们的配置将如下：
 
 .. code-block:: ini
 
@@ -202,7 +192,7 @@ Our config will be something like:
    emperor = /etc/uwsgi/vassals
    emperor-user-clone = fs,ipc,uts,net,pid
   
-while each vassal will be
+而每个vassal将是
 
 .. code-block:: ini
 
@@ -215,30 +205,29 @@ while each vassal will be
 Linux cgroups
 *************
 
-uWSGI Emperor and vassals
+uWSGI Emperor 和 vassal
 *************************
 
-Networking
+网络
 **********
 
-This is probably the most complex part. The "ortodox" way to give networking to a jailed setup is using veth or macvlan.
+这可能是最复杂的部分。给予网络一个jail设置的“正统”方式是使用veth或者macvlan。
 
-The first one is a "network pipe" composed by two virtual interfaces. After the namespace is created you can move one of the end of the pipe to the namespace.
+第一个是由两个虚拟接口组成的“网络管道”。在创建名字空间后，你将其中一个管道的尾部移到名字空间中。
 
-Macvlan, instead works by assigning an additional mac address to the physical interface.
+相反，Macvlan通过将一个额外的mac地址赋给物理接口来工作。
 
-Both solutions are great for VPS-like setups, but here we need networking only to connect to external services (inbound connections are managed by the http proxy).
+这两种方法对于类VPS设置而言都不错，但是这里，我们需要网络只连接到外部服务 (入站连接是由http代理管理的)。
 
-Both veth and macvlan approaches are hard to manage correctly, and while in 1.9.15 we introduced lot of features to simplify the required steps, in 1.9.16 we decided
-to create an ad-hoc solution based on tuntap devices.
+veth和macvlan方法都难以正确管理，而在1.9.15中，我们引入了大量的特性来简化所需步骤，在1.9.16中，我们决定创建一个基于tuntap设备的ad-hoc解决方法。
 
-Basically for each vassal we create a tun device (it is a virtuale network interface manageable via user space) connected (via unix sockets) to another tun device in the main namespace.
+基本上，对于每个vassal，我们创建一个tun设备 (它是一个虚拟网络接口，可以通过用户空间来管理)，将其连接 (通过 unix socket) 到主名字空间中的另一个tun设备。
 
-The tuntap-router is a software-based ip router, it mainly get packets fro ma tuntap device and forward them to a unix socket (and the opposite).
+这个tuntap路由器是一个基于软件的ip路由器，它主要从tuntap设备获取包，然后将其转发给unix socket (反之亦然)。
 
-This approach simplify the whole setup extremely, and, as a killer feature an ultra simpel firewall is embedded in the process to configure internal rules.
+这个方法极度简化了整个设置，并且，作为一个杀手级特性，一个超级简单的防火墙被嵌入到进程中，用来配置外部规则。
 
-The tuntap router should run in the Emperor (it is a uWSGI gateway so this time we need the master process):
+这个tuntap路由器应运行在Emperor中 (它是一个uWSGI网关，因此这次我们需要master进程):
 
 .. code-block:: ini
 
@@ -267,7 +256,7 @@ The tuntap router should run in the Emperor (it is a uWSGI gateway so this time 
    ; we need this rule as default policy is 'allow'
    tuntap-router-firewall-in = deny
    
-and a vassal
+和一个vassal
 
 .. code-block:: ini
 
@@ -288,8 +277,8 @@ and a vassal
 Cron
 ****
 
-Cron tasks are added to the vassal file, the syntax is a bit different from classic crontabs as intead of * and the , we only use numbers
-(yes it is a bit less versatile than classic cron, but uWSGI config files allows for cycle and other constructs)
+Cron任务被添加到vassal文件中，语法与经典的crontab有点不同，我们不使用*和,，只使用数字
+(是哒，它比经典的cron功能较少，但是uWSGI配置文件允许循环和其他结构)
 
 .. code-block:: ini
 
@@ -299,48 +288,45 @@ Cron tasks are added to the vassal file, the syntax is a bit different from clas
    ; run every five minutes on saturday
    cron = -5 -1 -1 -1 6
 
-Static file serving
+静态文件服务
 *******************
 
-Additional daemons
+额外的守护进程
 ******************
 
 SSH
 ***
 
-Managing ssh could be really tricky with namespace setups. The Linux syscall "setns" allows "attaching" to an already running namespace.
+用名字空间设置来管理ssh可能确实棘手。Linux系统调用"setns"允许“附加”到一个已运行的名字空间上。
 
-It generally works, but i will now tell you a technical reason why i do not want to use it for my services: i do not like it. period.
+它一般能用，但现在我会告诉你为什么我不想将其用于我的服务的一个技术原因：我不喜欢它。就是这么一回事。
 
-We have already seen unix sockets works very well as a communication channel between namespaces, why not use them to "enter" an already running namespace ?
+我们已经看到，unix socket作为一个名字空间之间的通信渠道工作得非常好，那么，为什么不用它们来“进入”一个已经运行的名字空间呢？
 
-If you work as a unix sysadmin, you cannot ignore pseudoterminals (or terminals in general). It is one of the oldest (and rawest) api of the unix world, by the work by ages. And they works great.
+如果你作为unix系统管理员，那么你不能忽略伪终端 (或一般来说，终端)。它是unix世界中最古老的（以及最原始的）API之一，根据工作，根据年龄。并且它们工作得不错。
 
-The uWSGI distribution come with 2 pty-related plugin: pty and forkptyrouter.
+uWSGI发行版带了2个pty相关的插件：pty和forkptyrouter。
 
-The first one simply attach a single pseudoterminal to your workers and bind to a network address. Connecting to this address give access
-to the pseudoterminal. This trick allows for advanced techniques like shared debugging. The pty plugin exposes the client part too, so you can use the uwsgi binary itself to connect to this pty.
+第一个简单将单个伪终端附加到你的worker上，并且绑定到一个网络地址。连接到这个地址可以访问到这个伪终端。这个技巧使得诸如共享调试这样的技术成为可能。pty插件也公开了客户端部分，因此你可以使用uwsgi二进制文件自身来连接到这个pty。
 
-How this can be useful for our ssh access ? It is not.
+这对于我们的ssh访问可有用？不是这样的。
 
-What we need now is the forkptyrouter (or forkpty-router for better readability). It works very similar to the pty server with the difference
-it generate a new pty for each connection. Exacly like ssh does.
+我们现在需要的是forkptyrouter (或者是更具可读性的forkpty-router)。它跟pty服务器非常相似，不同在于，它为每个连接生成一个新的pty。正如ssh做的那样。
 
-The forkpty-router run into the namespace, so any process attached to it will effectively run in the namespace itself.
+forkpty-router运行到名字空间中，因此任何附加到它上面的进程将有效地运行在名字空间本身。
 
-You should now see the point: our customers login via ssh as non-namespaced account but instead giving them the default shell we force them to connect
-to the pty-router.
+你现在应该明白了这点：我们的客户通过ssh作为非名字空间账户登陆，但并不是给予他们默认的shell，而死强制他们连接到pty-router。
 
-The "downside" of this approach is that we need two pty for each ssh peer (one for client -> ssh and the other for ssh -> namespace).
+这种方法的“缺点”是，我们需要两个用于每个ssh对端的pty (一个用于client -> ssh，而另一个用于ssh -> namespace)。
 
-To force the ssh server to run a specific command, use the ForceCommand directive in the sshd_config
+要强制ssh服务器运行一个指定的命令，则在sshd_config中使用ForceCommand指令
 
 
-Bonus: KSM
+福利：KSM
 **********
 
-What is missing
+缺少什么
 ***************
 
-- Accounting network usage
-- Scaling to multiple machines
+- 计算网络使用
+- 扩展到多台机器

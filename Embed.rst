@@ -1,17 +1,14 @@
 在uWSGI中嵌入一个应用
 =================================
 
-Starting from uWSGI 0.9.8.2, you can embed files in the server binary. These
-can be any file type, including configuration files.  You can embed directories
-too, so by hooking the Python module loader you can transparently import
-packages, too.  In this example we'll be embedding a full Flask project.
+从uWSGI 0.9.8.2开始，你可以在服务器二进制中嵌入文件。这些可以是任何文件类型，包括配置文件。你也可以嵌入目录，因此，通过拦截Python模块加载器，你也可以明确导入包。在这个例子中，我们将嵌入一个完整的Flask项目。
 
-Step 1: creating the build profile
+第1步：创建构建配置文件
 ----------------------------------
 
-We're assuming you have your uWSGI source at the ready.
+我们假设你已经准备好了uWSGI源代码。
 
-In the ``buildconf`` directory, define your profile -- let's call it flask.ini:
+在 ``buildconf`` 目录下，定义你的配置文件 —— 让我们称之为flask.ini:
 
 .. code-block:: ini
 
@@ -21,7 +18,7 @@ In the ``buildconf`` directory, define your profile -- let's call it flask.ini:
     bin_name = myapp
     embed_files = bootstrap.py,myapp.py
 
-``myapp.py`` is a simple flask app.
+``myapp.py`` 是一个简单的flask应用。
 
 .. code-block:: py
 
@@ -33,32 +30,28 @@ In the ``buildconf`` directory, define your profile -- let's call it flask.ini:
     def index():
         return "Hello World"
 
-``bootstrap.py`` is included in the source distribution. It will extend the python import subsystem to use files embedded in uWSGI.
+``bootstrap.py`` 在源代码发布版中。它会扩展python的import子系统，来使用内嵌在uWSGI中的文件。
 
-Now compile your app-inclusive server. Files will be embedded as symbols in the
-executable. Dots and dashes, etc. in filenames are thus transformed to
-underscores.
+现在，编译你饱含应用的服务器。文件将会作为可执行符号潜入。文件中的点和连接号等会被转换成下划线。
 
 .. code-block:: xxx
 
     python uwsgiconfig.py --build flask
 
-As ``bin_name`` was ``myapp``, you can now run
+由于 ``bin_name`` 是 ``myapp`` ，现在你可以运行
 
 .. code-block:: sh
 
     ./myapp --socket :3031 --import sym://bootstrap_py --module myapp:app
 
-The ``sym://`` pseudoprotocol enables uWSGI to access the binary's embedded
-symbols and data, in this case importing bootstrap.py directly from the binary
-image.
+ ``sym://`` 伪协议让uWSGI能够访问二进制文件的嵌入符号和数据，在这种情况下，直接从二进制镜像中导入bootstrap.py。
 
-Step 2: embedding the config file
+第2步：嵌入配置文件
 ---------------------------------
 
-We want our binary to automatically load our Flask app without having to pass a long command line.
+我们想要让我们的二进制文件自动加载我们的Flask应用，而无需传递一个长长地命令行。
 
-Let's create the configuration -- flaskconfig.ini:
+让我们创建配置 -- flaskconfig.ini:
 
 .. code-block:: ini
 
@@ -67,7 +60,7 @@ Let's create the configuration -- flaskconfig.ini:
     import = sym://bootstrap_py
     module = myapp:app
 
-And add it to the build profile as a config file.
+然后将其作为一个配置文件添加到构建配置文件中。
 
 .. code-block:: ini
 
@@ -77,13 +70,13 @@ And add it to the build profile as a config file.
     embed_files = bootstrap.py,myapp.py
     embed_config = flaskconfig.ini
 
-Then, after you rebuild the server
+然后，在你重新构建服务器后
 
 .. code-block:: sh
 
     python uwsgiconfig.py --build flask
 
-you can now simply launch
+你现在可以简单加载
 
 .. code-block:: sh
 
@@ -91,7 +84,7 @@ you can now simply launch
     # Remember that this new binary continues to be able to take parameters and config files:
     ./myapp --master --processes 4
 
-Step 3: embedding flask itself
+第3步：嵌入flask自身
 ------------------------------
 
 Now, we are ready to kick asses with uWSGI ninja awesomeness.  We want a single
@@ -119,10 +112,10 @@ embedded modules are being loaded.
     python uwsgiconfig.py --build flask
     ./myapp --no-site --master --processes 4
 
-Step 4: adding templates
+第4步：添加模板
 ------------------------
 
-Still not satisfied? WELL YOU SHOULDN'T BE.
+仍然不满意？好吧，你也不应该满意。
 
 .. code-block:: ini
 
