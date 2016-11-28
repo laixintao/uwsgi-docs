@@ -1,49 +1,48 @@
-The SPDY router (uWSGI 1.9)
+SPDY路由器 (uWSGI 1.9)
 ===========================
 
-Starting from uWSGI 1.9 the HTTPS router has been extended to support version 3 of the SPDY protocol.
+自uWSGI 1.9起，HTTPS路由器已被扩展，支持SPDY协议的版本3。
 
-To run the HTTPS router with SPDY support, use the ``--https2`` option:
+要运行带SPDY支持的HTTPS路由器，则使用 ``--https2`` 选项：
 
 .. code-block:: sh
 
    uwsgi --https2 addr=0.0.0.0:8443,cert=foobart.crt,key=foobar.key,spdy=1 --module werkzeug.testapp:test_app
 
-This will start an HTTPS router on port 8443 with SPDY support, forwarding requests to the Werkzeug's test app the instance is running.
-If you'll go to https://address:8443/ with a SPDY-enabled browser, you will see additional WSGI variables reported by
-`Werkzeug <http://werkzeug.pocoo.org/>`_:
+这将会在端口8443上启动一个带有哦SPDY支持的HTTPS路由器，转发请求到实例正在运行的Werkzeug测试应用。如果你通过一个启用了SPDY的浏览器访问https://address:8443/，那么你会看到由
+`Werkzeug <http://werkzeug.pocoo.org/>`_ 报告的额外的WSGI变量：
 
 * ``SPDY`` -- ``on``
-* ``SPDY.version`` -- protocol version (generally ``3``)
-* ``SPDY.stream`` -- stream identifier (an odd number).
+* ``SPDY.version`` -- 协议版本 (一般是 ``3``)
+* ``SPDY.stream`` -- 流标识符 (一个奇数)。
 
-Opening privileged ports as a non-root user will require the use of the `shared-socket` option and a slightly different syntax:
+作为非root用户打开特权端口将需要使用 `shared-socket` 选项，以及一个稍微不同的语法：
 
 .. code-block:: sh
 
    uwsgi --shared-socket :443 --https2 addr==0,cert=foobart.crt,key=foobar.key,spdy=1 --module werkzeug.testapp:test_app --uid user
 
-Both HTTP and HTTPS can be used at the same time (`=0` and `=1` are references to the privileged ports opened by `shared-socket` commands):
+可以同时使用HTTP和HTTPS (`=0` 和 `=1` 是由 `shared-socket` 命令打开的特权端口的引用):
 
 .. code-block:: sh
 
    uwsgi --shared-socket :80 --shared-socket :443 --http =0 --https2 addr==1,cert=foobart.crt,key=foobar.key,spdy=1 --module werkzeug.testapp:test_app --uid user
 
 
-小抄
-*****
+注意事项
+********
 
-* You need at least OpenSSL 1.x to use SPDY (all modern Linux distributions should have it).
-* During uploads, the window size is constantly updated.
-* The ``--http-timeout`` directive is used to set the SPDY timeout. This is the maximum amount of inactivity after the SPDY connection is closed.
-* ``PING`` requests from the browsers are **all** acknowledged.
-* On connect, the SPDY router sends a settings packet to the client with optimal values.
-* If a stream fails in some catastrophic way, the whole connection is closed hard.
-* ``RST`` messages are always honoured.
+* 要使用SPDY，你需要至少OpenSSL 1.x (所有现代的Linux发行版都应该有它)。
+* 在上传期间，窗口大小会被不断更新。
+*  ``--http-timeout`` 指令被用来设置SPDY超时时间。这是在SPDY连接被关闭之后的最大数量的不活跃时间。
+* 来自浏览器的 ``PING`` 请求 **全都** 被确认。
+* 连接时，SPDY路由器发送一个带最优值的设置包给客户端。
+* 如果流以某种灾难性方式失败了，那么整个连接会被硬关闭。
+* 总是遵循 ``RST`` 消息。
 
-TODO
-****
+待办事项
+********
 
-* Add old SPDY v2 support (is it worth it?)
-* Allow PUSHing of resources from the uWSGI cache
-* Allow tuning internal buffers
+* 添加旧的SPDY v2支持 (值得吗？)
+* 允许推送来自uWSGI缓存的资源
+* 允许调整内部缓冲

@@ -1,27 +1,23 @@
-Configuring uWSGI with LDAP
+使用LDAP配置uWSGI
 ===========================
 
-uWSGI can be configured using LDAP. LDAP is a flexible way to centralize
-configuration of large clusters of uWSGI servers. 
+可以使用LDAP配置uWSGI。LDAP是一种集中uWSGI服务器的大型集群的配置的灵活方法。
 
 .. note::
 
-  LDAP support must be enabled while :doc:`building<Build>` uWSGI. The
-  `libldap` library is required.
+  必须在 :doc:`building<Build>` uWSGI时启用LDAP支持。要求
+  `libldap` 库。
 
 
-Importing the uWSGIConfig schema
+导入uWSGIConfig模式
 --------------------------------
 
-Running uWSGI with the `--ldap-schema` or `--ldap-schema-ldif` parameter will
-make it output a standard LDAP schema (or an LDIF file) that you can import
-into your server.
+带 `--ldap-schema` 或者 `--ldap-schema-ldif` 参数运行uWSGI会让它输出一个标准的LDAP模式 (或者一个LDIF文件)，你可以将其导入到你的服务器中。
 
-An example LDIF dump
+LDIF dump的一个例子
 --------------------
 
-This is an LDIF dump of an OpenLDAP server with a `uWSGIConfig` entry, running
-a Trac instance.
+This is an 这是带有 `uWSGIConfig` 项的一个OpenLDAP服务器的LDIF dump，运行着一个Trac实例。
 
 .. code-block:: ldif
 
@@ -36,19 +32,17 @@ a Trac instance.
   uWSGIprocesses: 4
   uWSGIenv: TRAC_ENV=/accounts/unbit/trac/uwsgi
 
-Usage
+使用
 -----
 
-You only need to pass a valid LDAP url to the `--ldap` option.  Only the first
-entry returned will be used as configuration.
+你仅需传递一个有效的LDAP url给 `--ldap` 选项。只有返回的第一个项才会被当成配置使用。
 
 ..
   
   uwsgi --ldap ldap://ldap.unbit.it/dc=projects,dc=unbit,dc=it
 
 
-If you want a filter with sub scope (this will return the first record under
-the tree `dc=projects,dc=unbit,dc=it` with `ou=Unbit`):
+如果你想要一个带有子范围的过滤器 (这将会返回树 `dc=projects,dc=unbit,dc=it` 下 `ou=Unbit` 的第一条记录):
 
 ..
 
@@ -57,4 +51,4 @@ the tree `dc=projects,dc=unbit,dc=it` with `ou=Unbit`):
 
 .. attention:
   
-  Authentication is currently unsupported.
+  目前不支持鉴权。

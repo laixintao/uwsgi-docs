@@ -7,19 +7,19 @@ wsgi_request结构
 uwsgi_server结构
 ***********************
 
-Headers and response
+header和响应
 ********************
 
-buffers
+缓冲
 *******
 
-strings
+字符串
 *******
 
-non-blocking I/O
+非阻塞I/O
 ****************
 
-Offloading
+卸载
 **********
 
 请求体
@@ -28,13 +28,13 @@ Offloading
 Cookies
 *******
 
-Caches
+缓存
 ******
 
-Signals
+信号
 *******
 
-Locking
+锁
 *******
 
 Zlib
@@ -46,6 +46,6 @@ Zlib
 Websockets
 **********
 
-Exec
+异常
 ****
 

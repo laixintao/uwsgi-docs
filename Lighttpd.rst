@@ -1,18 +1,16 @@
-Lighttpd support
+Lighttpd支持
 ================
 
-.. note:: Lighttpd support is experimental.
+.. note:: Lighttpd支持是实验性的。
 
-The uwsgi handler for Lighttpd lives in the ``/lighttpd`` directory of the
-uWSGI distribution.
+用于Lighttpd的uwsgi处理器位于uWSGI发行版的 ``/lighttpd`` 目录下。
 
-Building the module
+构建模块
 -------------------
 
-First download the source of lighttpd and uncompress it. Copy the
-``lighttpd/mod_uwsgi.c`` file from the uWSGI distribution into Lighttpd's
-``/src`` directory. Add the following to the lighttpd ``src/Makefile.am``
-file, after the accesslog block:
+首先下载lighttpd的源代码，然后解压缩它。然后拷贝uWSGI发行版中的
+``lighttpd/mod_uwsgi.c`` 文件到Lighttpd的
+``/src`` 目录下。添加以下内容到lighttpd ``src/Makefile.am`` 文件中的accesslog块之后：
 
 ::
 
@@ -21,22 +19,22 @@ file, after the accesslog block:
   mod_uwsgi_la_LDFLAGS = -module -export-dynamic -avoid-version -no-undefined
   mod_uwsgi_la_LIBADD = $(common_libadd)
 
-Then launch
+然后启动
 
 ::
 
   autoreconf -fi
 
-and as usual,
+接着和往常一样，
 
 ::
 
   ./configure && make && make install
 
-Configuring Lighttpd
+配置Lighttpd
 --------------------
 
-Modify your configuration file:
+修改你的配置文件：
 
 ::
   
@@ -53,5 +51,4 @@ Modify your configuration file:
     "/" => (( "host" => "127.0.0.1", "port" => 3031 )),
   )
 
-If you specify multiple hosts under the same virtual path/URI, load balancing
-will be activated with the "Fair" algorithm.
+如果你在相同的虚拟路径/URI之下指定多个主机，那么负载均衡将会被激活，并且使用"Fair"算法。

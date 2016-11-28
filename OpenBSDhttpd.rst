@@ -1,11 +1,11 @@
-Using OpenBSD httpd as proxy
+将OpenBSD httpd作为代理使用
 ============================
 
-Starting from version 5.7 OpenBSD includes a minimal (truly minimal) web server with FastCGI support
+从版本5.7起，OpenBSD就包含了一个带有FastCGI支持的最小化（真正最小化）的web服务器
 
 (http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man8/httpd.8?query=httpd&sec=8)
 
-The first step to enable it is writing its configuration file ```/etc/httpd.conf```
+启用它的第一步是编写它的配置文件 ```/etc/httpd.conf```
 
 .. code-block:: c
 
@@ -15,18 +15,17 @@ The first step to enable it is writing its configuration file ```/etc/httpd.conf
        fastcgi socket ":3031"
    }
 
-then enable and start it with the ```rcctl``` tool:
+然后通过 ```rcctl``` 工具来启用并启动它：
 
 .. code-block:: sh
 
    rcctl enable httpd
    rcctl start httpd
 
-this minimal configuration will spawn a chrooted webserver on port 80, running as user 'www' and forwarding every request
-to the address 127.0.0.1:3031 using the FastCGI protocol.
+这个最小化配置将会在端口80上生成一个chroot的web服务器，作为用户'www'运行，并且使用FastCGI协议将每个请求转发到地址127.0.0.1:3031上。
 
 
-Now you only need to spawn uWSGI on the FastCGI address:
+现在，你只需在FastCGI地址上生成uWSGI：
 
 .. code-block:: ini
 
@@ -36,8 +35,7 @@ Now you only need to spawn uWSGI on the FastCGI address:
    wsgi-file = app.py
 
 
-you can obviously use uWSGI as a full-featured CGI server (well, effectively it has way more features than every cgi server out there :P),
-just remember to force the modifier1 to the '9' one:
+显然，你可以将uWSGI作为一个全功能的CGI服务器使用 (当然，实际上，它比现有的任何一个cgi服务器都具有更多的特性 :P)，仅需记住强制modifier1为'9'：
 
 .. code-block:: ini
 
@@ -47,9 +45,9 @@ just remember to force the modifier1 to the '9' one:
    ; a simple cgi-bin directory (eventually remember to load the cgi plugin)
    cgi = /var/www/cgi-bin
 
-now you can place your cgi scripts in /var/www/cgi-bin (remember to give them the executable permission)
+现在，你可以将你的cgi脚本放到/var/www/cgi-bin下了 (记得给它们可执行权限)
 
-You can use UNIX domain sockets too, just remember the httpd servers runs chrooted in /var/www so you have to bind uWSGI sockets in a dir under it:
+你也可以使用UNIX域socket，仅需记住，httpd服务器运行的根目录是/var/www，因此你必须在其下的一个目录中绑定uWSGI socket：
 
 .. code-block:: ini
 
@@ -68,7 +66,7 @@ You can use UNIX domain sockets too, just remember the httpd servers runs chroot
    }
 
 
-If you want to forward only specific paths to uWSGI, you can use a location directive:
+如果你想只转发指定的路径到uWSGI，那么可以使用一个location指令：
 
 .. code-block:: c
 
@@ -84,7 +82,7 @@ If you want to forward only specific paths to uWSGI, you can use a location dire
        }
    }
    
-Notes
+注意
 =====
 
-Currently (may 2015) httpd can connect only to tcp fastcgi sockets bound on address 127.0.0.1 and to unix domain sockets
+目前 (2015年五月)，httpd仅能连接到unix域socket和绑定到地址127.0.0.1上的tcp fastcgi socket

@@ -1,32 +1,26 @@
 动态添加应用
 ===============================
 
-NOTE: this is not the best approach for hosting multiple applications. You'd better to run a uWSGI instance for each app.
+注意：这并不是托管多个应用的最好的方法。你最好为每个应用运行一个uWSGI实例。
 
-You can start the uWSGI server without configuring an application.
+你可以在没有配置应用的情况下启动uWSGI服务器。
 
-To load a new application you can use these variables in the uwsgi packet:
+要加载一个新的应用，可以使用uwsgi包中的这些变量：
 
-* ``UWSGI_SCRIPT`` -- pass the name of a WSGI script defining an ``application`` callable
-* or ``UWSGI_MODULE`` and ``UWSGI_CALLABLE`` -- the module name (importable path) and the name of the callable to invoke from that module
+* ``UWSGI_SCRIPT`` -- 传递定义了一个 ``application`` 可调用对象的WSGI脚本名
+* 或者 ``UWSGI_MODULE`` 和 ``UWSGI_CALLABLE`` -- 模块名 (可导入路径) 以及可调用对象的名字来从该模块调用
 
-Dynamic apps are officially supported on Cherokee, Nginx, Apache, cgi_dynamic.
-They are easily addable to the Tomcat and Twisted handlers.
+在Cherokee, Nginx, Apache, cgi_dynamic上有对动态应用的官方支持。可以很容易添加它们到Tomcat和Twisted处理器中。
 
-Defining VirtualEnv with dynamic apps
+定义带动态应用的VirtualEnv
 -------------------------------------
 
-Virtualenvs are based on the ``Py_SetPythonHome()`` function. This function has
-effect only if called before ``Py_Initialize()`` so it can't be used with
-dynamic apps.
+Virtualenvs是基于 ``Py_SetPythonHome()`` 函数的。只有在 ``Py_Initialize()`` 之前调用这个函数才有用，因此不能将其用于动态应用。
 
-To define a VirtualEnv with DynamicApps, a hack is the only solution.
+要定义一个带DynamicApps的VirtualEnv，hack是唯一的解决方法。
 
-First you have to tell python to not import the ``site`` module. This module
-adds all ``site-packages`` to ``sys.path``.  To emulate virtualenvs, we must
-load the site module only after subinterpreter initialization.  Skipping the
-first ``import site``, we can now simply set ``sys.prefix`` and
-``sys.exec_prefix`` on dynamic app loading and call
+首先，你必须告诉python不要导入 ``site`` 模块。这个模块添加所有的 ``site-packages`` 到 ``sys.path`` 中。要模拟virtualenvs，我们必须只在子解析器初始化后加载site模块。跳过第一次 ``import site`` ，我们现在可以在动态应用加载时简单设置 ``sys.prefix`` 和
+``sys.exec_prefix`` ，然后调用
 
 .. code-block:: c
 
@@ -34,7 +28,7 @@ first ``import site``, we can now simply set ``sys.prefix`` and
    // Some users would want to not disable initial site module loading, so the site module must be reloaded:
    PyImport_ReloadModule(site_module);
 
-Now we can set the VirtualEnv dynamically using the ``UWSGI_PYHOME`` var:
+现在，我们可以使用 ``UWSGI_PYHOME`` 变量动态设置VirtualEnv：
 
 
 .. code-block:: c

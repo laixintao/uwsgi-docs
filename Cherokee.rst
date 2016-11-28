@@ -3,24 +3,22 @@ Cherokee支持
 
 .. note::
 
-  Recent official versions of Cherokee have an uWSGI configuration wizard. If
-  you want to use it you have to install uWSGI in a directory included in your
-  system ``PATH``.
+  Cherokee的最新官方版本有一个uWSGI配置向导。如果你想要使用它，那么你必须在系统的 ``PATH`` 所包含的目录下安装uWSGI。
 
-* Set the UWSGI handler for your target.
-* 如果你使用的是默认的目标 (``/``)，那么记得uncheck the ``check_file`` property.
-* Configure an "information source" of type "Remote", specifying the socket name of uWSGI. If your uWSGI has TCP support, you can build a cluster by spawning the uWSGI server on a different machine.
+* 为你的目标设置UWSGI处理器。
+* 如果你使用的是默认的目标 (``/``)，那么记得取消检查 ``check_file`` 属性。
+* 配置类型"Remote"的“信息源”，指定uWSGI的socket名。如果你的uWSGI支持TCP，那么你可以通过在一个不同的机器上生成uWSGI服务器来构建集群。
 
 .. note::
 
-  Remember to add a target for all of your URI containing static files (ex.
-  /media /images ...) using an appropriate handler
+  记得用合适的处理器为你所有包含静态文件 (例如
+  /media /images ...) 的URI添加目标
 
 动态应用
 ------------
 
 如果你想要热添加应用，则在uWSGI的handler选项中指定 ``UWSGI_SCRIPT`` 变量：
 
-* In the section: `Add new custom environment variable` specify ``UWSGI_SCRIPT`` as name and the name of your WSGI script (without the .py extension) as the value.
+* 在 `Add new custom environment variable` 中指定 ``UWSGI_SCRIPT`` 名，并且将你的WSGI脚本名 (不带.py扩展) 作为值。
 
 你的应用将会在第一个请求中自动被加载。
