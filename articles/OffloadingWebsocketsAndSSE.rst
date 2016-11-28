@@ -1,36 +1,32 @@
 Offloading Websockets and Server-Sent Events AKA "Combine them with Django safely"
 ==================================================================================
 
-Author: Roberto De Ioris
+作者：Roberto De Ioris
 
-Date: 20140315
+日期：20140315
 
-Disclaimer
+免责声明
 ----------
 
-This article shows a pretty advanced way for combining websockets (or sse) apps with Django in a "safe way". It will not show you
-how cool websockets and sse are, or how to write better apps with them, it is an attempt to try to avoid bad practices with them.
+这篇文章显示了将websockets（或者sse）与Django以一种“安全的方式”结合起来的一种相当高级的方法。它不会向你展示websockets和sse有多酷，或者如何用它们写出更好的应用，而是试图让你避免使用它们的最差实践。
 
-In my opinion the Python web-oriented world is facing a communication/marketing problem: There is a huge number of people
-running heavily blocking apps (like Django) on non-blocking technologies (like gevent) only because someone told them it is cool and will solve all of their scaling issues.
+在我看来，Python面向web的世界正面临着一种通信/市场问题：大量的人在非阻塞技术（例如gevent）上运行大量阻塞应用（例如django）只是因为有人告诉他们这很酷并且会解决他们所有的扩展问题。
 
-This is completely WRONG, DANGEROUS and EVIL, you cannot mix blocking apps with non-blocking engines, even a single, ultra-tiny blocking part
-can potentially destroy your whole stack. As I have already said dozens of time, if your app is 99.9999999% non-blocking, it is still blocking.
+这是完全错误，危险和邪恶的，你不能将阻塞应用和非阻塞引擎混在一起，即使是一个单一、非常小的阻塞部分都能潜在摧毁你整个栈。正如我已经说了几十次一样，如果你的应用是99.9999999%非阻塞的，那么它仍然是阻塞的。
 
-And no, monkey-patching on your Django app is not magic. Unless you are using pretty-customized database adapters, tuned for working in a non-blocking way, you are doing it wrong.
+并且不是，你的Django应用上的猴子补丁并非魔法。除非你正使用高度自定义的数据库适配器，对工作在非阻塞模式进行了调整，否则你就是错的。
 
-At the cost of looking a huber-asshole, I strongly suggest you completely ignore people suggesting you move your Django app to gevent, eventlet, tornado or whatever, without warning you about
-the hundreds of problems you may encounter.
+以看起来就是个超级大混蛋的代价，我强烈建议你完全忽略人们让你将你的Django应用移到gevent, eventlet, tornado或者其他什么的，而不警告你你会遇到数百个问题的建议。
 
-Having said that, I love gevent, it is probably the best (with perl's Coro::AnyEvent) supported loop engine in the uWSGI project. So in this article I will use gevent for managing websocket/sse traffic and plain multiprocessing for the Django part.
+话虽如此，我爱gevent，它可能是uWSGI项目中支持得最好的（带perl的Coro::AnyEvent）循环引擎了。因此，在这篇文章中，我将使用gevent来为Django部分管理websocket/sse流量和纯多进程。
 
-If this last sentence looks like nonsense to you, you probably do not know what uWSGI offloading is...
+如果这最后一句对你来说像是废话，那么你可能不知道uWSGI的卸载是什么……
 
 
-uWSGI offloading
+uWSGI卸载
 ----------------
 
-The concept is not a new thing, or a uWSGI specific one. Projects like nodejs or twisted have used it for ages.
+这个概念并非是个新东西，或者是uWSGI特有的。诸如nodejs或者twisted这样的项目已经用它多年了。
 
 .. note:: an example of a webapp serving a static file is not very interesting, nor the best thing to show, but will be useful later, when presenting a real-world scenario with X-Sendfile
 
@@ -101,7 +97,7 @@ Now in our app we can X-Sendfile to send static files without blocking:
 
 A very similar concept will be used in this article: We will use a normal Django to setup our session, to authorize the user and whatever (that is fast) you want, then we will return a special header that will instruct uWSGI to offload the connection to another uWSGI instance (listening on a private socket) that will manage the websocket/sse transaction using gevent in a non-blocking way.
 
-Our SSE app
+我们的SSE应用
 -----------
 
 The SSE part will be very simple, a gevent-based WSGI app will send the current time every second:
@@ -137,7 +133,7 @@ Let's run it on /tmp/foo UNIX socket (save the app as sseapp.py)
    
 (monkey patching is required for time.sleep(), feel free to use gevent primitives for sleeping if you want/prefer)
 
-The (boring) HTML/Javascript
+（无趣的）HTML/Javascript
 ----------------------------
 
 .. code-block:: html
@@ -164,7 +160,7 @@ The (boring) HTML/Javascript
 
 It is very simple, it will connect to /subscribe and will start waiting for events.
 
-The Django view
+Django视图
 ---------------
 
 Our django view, will be very simple, it will simply generate a special response header (we will call it X-Offload-to-SSE) with the username of the logged user as its value:
@@ -278,7 +274,7 @@ Or (using goto for better readability):
    response-route-run = uwsgi:/tmp/foo,0,0
 
 
-Simplifying things using the uwsgi api (>= uWSGI 2.0.3)
+使用uwsgi api (>= uWSGI 2.0.3) 进行简化
 -------------------------------------------------------
 
 While dealing with headers is pretty HTTP friendly, uWSGI 2.0.3 added the possibility to define per-request variables
@@ -360,7 +356,7 @@ can change your gevent app:
            # send to the client
            uwsgi.websocket_send(str(time.time()))
            
-Using redis or uWSGI caching framework
+使用redis或者uWSGI缓存框架
 --------------------------------------
 
 Request vars are handy (and funny), but they are limited (see below). If you need to pass a big amount of data between Django and the sse/websocket app, Redis
@@ -368,7 +364,7 @@ is a great way (and works perfectly with gevent). Basically you store infos from
 
 The same can be accomplished with the uWSGI caching framework, but take into account redis has a lot of data primitives, while uWSGI only supports key->value items.
 
-Common pitfalls
+常见陷阱
 ---------------
 
 * The amount of variables you can add per-request is limited by the uwsgi packet buffer (default 4k). You can increase it up to 64k with the --buffer-size option.

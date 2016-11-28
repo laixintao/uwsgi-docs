@@ -4,14 +4,13 @@
 这些是uWSGI的当前版本。
 
 ========================  ==========  ===================================================
-Release                   Date        Link
+发布                       日期        链接
 ========================  ==========  ===================================================
-Unstable/Development      \-          https://github.com/unbit/uwsgi/
-Stable/LTS                2016-05-13  https://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz
-DOCS                      \-          https://github.com/unbit/uwsgi-docs/
+不稳定/开发                \-          https://github.com/unbit/uwsgi/
+稳定/LTS                  2016-05-13  https://projects.unbit.it/downloads/uwsgi-2.0.13.1.tar.gz
+文档                      \-          https://github.com/unbit/uwsgi-docs/
 ========================  ==========  ===================================================
 
-uWSGI is also available as a package in several OS/distributions.
+在一些OS/发行版中，uWSGI作为包可用
 
-uWSGI has a really fast development cycle, so packages may not be up to date. Building it requires less than 30 seconds
-and very few dependencies (only Python interpreter, a C compiler/linker and the libs/headers for your language of choice)
+uWSGI拥有一个非常快速的开发周期，因此包可能并不是最新的。构建它需要少于30秒，仅需非常少的依赖 (只有Python解析器，一个C编译器/链接器和你所选语言的库／头文件)
