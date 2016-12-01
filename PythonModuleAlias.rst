@@ -1,4 +1,4 @@
-Aliasing Python modules
+别名化Python模块
 =======================
 
 拥有一个Python包/模块/文件的多个版本是非常常见的。
@@ -13,14 +13,14 @@ Aliasing Python modules
 
 假设 ``swissknife.py`` 包含了许多有用的类和函数。
 
-It's imported in gazillions of places in your app. Now, we'll want to modify it, but keep the original file intact for whichever reason, and call it ``swissknife_mk2``.
+在你的应用中成千上万的地方都对其进行了导入。现在，我们想要修改它，但是出于任何原因，我们想要保留原文件完好，称其为 ``swissknife_mk2`` 。
 
 你的选择是：
 
-1) to modify all of your code to import and use swissknife_mk2 instead of swissknife. Yeah, no, not's going to happen.
-2) modify the first line of all your files to read ``import swissknife_mk2 as swissknife``. A lot better but you make software for money... and time is money, so why the fuck not use something more powerful?
+1) 修改你所有的代码来导入和使用swissknife_mk2，而不是swissknife。是啊，不，这不会发生。
+2) 修改你所有文件的第一行： ``import swissknife_mk2 as swissknife`` 。好多了，但是你写软件是为了赚钱的……而时间就是金钱，所以不特么用些更强大的东西呢？
 
-So don't touch your files -- just remap!
+所以，不要碰你的文件 —— 只需重新映射！
 
 .. code-block:: sh
 
@@ -31,7 +31,7 @@ So don't touch your files -- just remap!
     # Or hey, why not use HTTP?
     ./uwsgi -s :3031 -w myproject --pymodule-alias swissknife=http://uwsgi.it/modules/swissknife_extreme.py
 
-You can specify multiple ``pymodule-alias`` directives.
+你可以指定多个 ``pymodule-alias`` 指令。
 
 .. code-block:: yaml
 
@@ -45,7 +45,7 @@ You can specify multiple ``pymodule-alias`` directives.
 案例2 - 映射一个包到目录
 ------------------------------------------
 
-You have this shiny, beautiful Django project and something occurs to you: Would it work with Django trunk? On to set up a new virtualenv... nah. Let's just use ``pymodule-alias``!
+你拥有这个金光闪闪的漂亮的Django项目，但是有些事情发生在你身上：它能和Django主干完美配合吗？创建一个新的虚拟环境……还是别吧。让我们只使用 ``pymodule-alias``!
 
 .. code-block:: py
 
@@ -55,7 +55,7 @@ You have this shiny, beautiful Django project and something occurs to you: Would
 案例3 - 覆盖特定的子模块
 -------------------------------------
 
-你有一个Werkzeug项目，你想要覆盖它 - 出于随意什么理由 - ``werkzeug.test_app`` with one of your own devising. Easy, of course!
+你有一个Werkzeug项目，你想要覆盖它 - 出于随意什么理由 - 带你其中一个自己的设计的 ``werkzeug.test_app`` 。当然，这很容易！
 
 .. code-block:: python
 

@@ -18,7 +18,7 @@ For having it in one shot:
 The best way to use it is binding it to a unix socket, allowing processes in new namespaces to reach it (generally unix sockets are the best communication channel for linux namespaces).
 
 
-The first config
+第一个配置
 ****************
 
 We want our vassals to live in the 192.168.0.0/24 network, with 192.168.0.1 as default gateway.
@@ -67,7 +67,7 @@ instructing it to route traffic to the Emperor tuntap unix socket:
    psgi-file = foobar.pl
    ...
 
-The embedded firewall
+内嵌防火墙
 *********************
 
 The TunTap router includes a very simple firewall for governing vassal's traffic
@@ -105,7 +105,7 @@ the following rules allows access from vassals to the internet, but block vassal
    emperor-use-clone = net
    emperor = /etc/vassals
    
-Security
+安全性
 ********
 
 The "switching" part of the TunTap router (read: mapping ip addresses to vassals) is pretty simple: the first packet received from a vassal by the TunTap router
@@ -132,7 +132,7 @@ register the vassal for that ip address. A good approach (from a security point 
 after a vassal/ip pair is registered, only that combo will be valid (so other vassals will not be able to use that address until the one holding it dies)
    
    
-The Future
+未来
 **********
 
 This is becoming a very important part of the unbit.it networking stack. We are currently working on:
