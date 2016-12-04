@@ -1,4 +1,4 @@
-uWSGI Subscription Server
+uWSGI订阅服务器
 =========================
 
 Some components of the uWSGI stack require a key-value mapping system.

@@ -3,17 +3,17 @@ WebCaching框架
 
 .. note::
 
-    This is a port of the old caching subsystem to the new uWSGI caching API documented here :doc:`Caching`.
-    Using the options here will create a new-style cache named "default".
+    这是旧的缓存子系统到记录在这里 :doc:`Caching` 的新的uWSGI缓存API的移植。
+    使用这里的选项将会创建一个名为“default”的新型缓存。
 
 
-To enable web caching, allocate slots for your items using the ``cache`` option. The following command line would create a cache that can contain at most 1000 items.
+要启用web缓存，使用 ``cache`` 选项为你的项分配槽。以下的命令行将会创建一个包含至少1000个项的缓存。
 
 .. code-block:: sh
 
    ./uwsgi --socket 127.0.0.1:3031 --module mysimpleapp --master --processes 4 --cache 1000
 
-To use the cache in your application, 
+要在应用中使用这个缓存，
 
 .. code-block:: python
 
@@ -21,20 +21,19 @@ To use the cache in your application,
    value = uwsgi.cache_get("foo_key") # get a key.
 
 
-Persistent storage
+持久化存储
 ------------------
 
-You can store cache data in a backing store file to implement persistence. Simply add the ``cache-store <filename>`` option.
-Every kernel will commit data to the disk at a different rate. You can set if/when to force this with ``cache-store-sync <n>``, where ``n`` is the number of master cycles to wait before each disk sync.
+你可以把缓存数据存储在一个后备存储文件来实现持久化。简单添加 ``cache-store <filename>`` 选项。每个内核都会以一个不同的速率提交数据到磁盘。你可以使用 ``cache-store-sync <n>`` 设置是否/何时强制，其中， ``n`` 是每次磁盘同步之前等待的master周期数。
 
-Cache sweeper
+缓存清道夫
 -------------
 
-Since uWSGI 1.2, cache item expiration is managed by a thread in the :term:`master` process, to reduce the risk of deadlock. This thread can be disabled (making item expiry a no-op) with the ``cache-no-expire`` option.
+自uWSGI 1.2起，缓存项过期是由 :term:`master` 进程中的一个线程进行管理的，以减少死锁的风险。这个线程可以通过 ``cache-no-expire`` 选项禁用 (让缓存项过期成为空操作)。
 
-The frequency of the cache sweeper thread can be set with ``cache-expire-freq <seconds>``. You can make the sweeper log the number of freed items with ``cache-report-freed-items``.
+可以用 ``cache-expire-freq <seconds>`` 设置缓存清道夫线程的频率。你可以通过使用 ``cache-report-freed-items`` 来让清道夫记录可用项数目。
 
-Directly accessing the cache from your web server
+直接从你的web服务器访问缓存
 -------------------------------------------------
 
 .. code-block:: nginx
@@ -46,9 +45,9 @@ Directly accessing the cache from your web server
     uwsgi_param key $request_uri;
    }
 
-That's it! Nginx would now get HTTP responses from a remote uwsgi protocol compliant server. Although honestly this is not very useful, as if you get a cache miss, you will see a blank page.
+就这样啦！Nginx现在会从一个远程uwsgi协议兼容的服务器获取HTTP响应。虽然老实说，它并不非常有用，因为如果缓存未命中，那么你将会看到你一个空白页。
 
-A better system, that will fallback to a real uwsgi request would be
+一个会回退到真正的uwsgi请求的更好的系统是
 
 .. code-block:: nginx
 
@@ -68,10 +67,9 @@ A better system, that will fallback to a real uwsgi request would be
      include uwsgi_params;
    }
    
-Django cache backend
+Django缓存后端
 --------------------
 
-If you are running Django, there's a ready-to-use application called ``django-uwsgi-cache``. It is maintained by Ionel Cristian Mărieș at https://github.com/ionelmc/django-uwsgi-cache and available on pypi.
-
+如果你运行着Django，那么有一个已经可以使用的名为 ``django-uwsgi-cache`` 的应用。它由Ionel Cristian Mărieș维护，位于https://github.com/ionelmc/django-uwsgi-cache，并且在pypi上。
 
 .. _caching configuration: https://docs.djangoproject.com/en/dev/topics/cache/?from=olddocs#the-per-site-cache
