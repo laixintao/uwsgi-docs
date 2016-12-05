@@ -1,18 +1,18 @@
-SSI (Server Side Includes) plugin
+SSI (服务器端包含，Server Side Includes) 插件
 =================================
 
-Server Side Includes are an "old-fashioned" way to write dynamic web pages.
+服务器端包含是一种编写动态web页面的“老式”方法。
 
-It is generally recognized as a templating system instead of a full featured language.
+通常把它当成一个模板系统，而不是一个全功能语言。
 
-The main purpose of the uWSGI SSI plugin is to have a fast templating system that has access to the uWSGI API.
+uWSGI SSI插件的主要目的是拥有一个可以访问uWSGI API的快速的模板系统。
 
-At the time of writing, March 2013, the plugin is beta quality and implements less than 30% of the SSI standard, the focus being in exposing uWSGI API as SSI commands.
+在写这篇文章的时候，即2013年3月，这个插件还处于测试版本，实现了少于30%的SSI标准，关注点在于把uWSGI API当成SSI命令公开。
 
-Using it as a request handler
+把它当成一个请求处理器使用
 *****************************
 
-The plugin has an official modifier1, number 19.
+这个插件有一个官方的modifier1，数字19。
 
 .. code-block:: ini
 
@@ -22,11 +22,11 @@ The plugin has an official modifier1, number 19.
    http-modifier1 = 19
    http-var = DOCUMENT_ROOT=/var/www
 
-The plugin builds the filename as ``DOCUMENT_ROOT``+``PATH_INFO``. This file is then parsed as a server side include document.
+该插件把文件名作为 ``DOCUMENT_ROOT``+``PATH_INFO`` 构建。然后，将这个文件作为服务器端包含文档解析。
 
-Both ``DOCUMENT_ROOT`` and ``PATH_INFO`` are required, otherwise a 500 error will be returned.
+ ``DOCUMENT_ROOT`` 和 ``PATH_INFO`` 都是必须的，否则将会返回一个500错误。
 
-An example configuration for Nginx would be:
+Nginx的一个样例配置如下：
 
 .. code-block:: c
 
@@ -37,7 +37,7 @@ An example configuration for Nginx would be:
        uwsgi_modifier1 19;
    }
 
-with something like this for uWSGI...
+而对于uWSGI大概像这样……
 
 .. code-block:: ini
 
@@ -45,10 +45,10 @@ with something like this for uWSGI...
    plugin = ssi
    socket = 127.0.0.1:3031
 
-Using SSI as a routing action
+把SSI作为一个路由动作使用
 *****************************
 
-A more versatile approach is using the SSI parser as a routing action.
+更通用的方式是把SSI解析器作为一个路由动作使用。
 
 .. code-block:: ini
 
@@ -57,45 +57,45 @@ A more versatile approach is using the SSI parser as a routing action.
    http-socket = :9090
    route = ^/(.*) ssi:/var/www/$1.shtml
 
-.. warning:: As with all of the routing actions, no check on file paths is made to allow a higher level of customization. If you pass untrusted paths to the SSI action, you should sanitize them (you can use routing again, checking for the presence of .. or other dangerous symbols).
+.. warning:: 对于所有的路由动作，文件路径上并没有运行更高层次自定义的检查。如果你传递不信任路径给SSI动作，那么你应该清理它们 (你可以再次使用路由，检查..的存在，或者其他危险符号)。
 
-And with the above admonition in mind, when used as a routing action, ``DOCUMENT_ROOT`` or ``PATH_INFO`` are not required, as the parameter passed contains the full filesystem path.
+并且考虑到上述告诫，当作为路由动作使用时， ``DOCUMENT_ROOT`` 或者 ``PATH_INFO`` 并不是必须的，因为传递的参数包含了完整的文件系统路径。
 
-Supported SSI commands
+支持的SSI命令
 **********************
 
-This is the list of supported commands (and their arguments). If a command is not part of the SSI standard (that is, it's uWSGI specific) it will be reported.
+这是支持的命令列表 (及其参数)。如果一个命令并非SSI标准的一部分 (也就是说，它是uWSGI特有的)，那么将会报告它。
 
 echo
 ^^^^
 
-Arguments: ``var``
+参数： ``var``
 
-Print the content of the specified request variable.
+打印指定请求变量的内容。
 
 printenv
 ^^^^^^^^
 
-Print a list of all request variables.
+打印所有请求变量的列表。
 
 include
 ^^^^^^^
 
-Arguments: ``file``
+参数： ``file``
 
-Include the specified file (relative to the current directory).
+包含指定文件 (相对于当前目录)。
 
 cache
 ^^^^^
 
-.. note:: This is uWSGI specific/non-standard.
+.. note:: 这是uWSGI特有的/非标准的。
 
-Arguments: ``key`` ``name``
+参数： ``key`` ``name``
 
-Print the value of the specified cache key in the named cache.
+打印命名缓存中指定缓存键的值。
 
-Status
+状态
 ******
 
-* The plugin is fully thread safe and very fast.
-* Very few commands are available, more will be added soon.
+* 这个插件是完全线程安全的，并且非常快。
+* 非常少的命令可用，不久会添加更多命令。

@@ -1,4 +1,4 @@
-The Fork Server (sponsored by Intellisurvey)
+The Fork Server (由Intellisurvey赞助)
 ============================================
 
 This is a really advanced (and complex) feature developed with sponsorship from Intellisurvey.com.
@@ -8,7 +8,7 @@ from an already running one (with the application core loaded).
 
 Currently the feature is supported only in the PSGI plugin, and requires Linux kernel >= 3.4.
 
-How it works
+它如何工作
 ------------
 
 When in `fork-server` mode, the Emperor differentiates between two kind of vassals: base vassals and adopted vassals.

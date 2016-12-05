@@ -1,13 +1,13 @@
 TunTap路由器
 =================
 
-The TunTap router is an ad-hoc solution for giving network connectivity to Linux processes running in a dedicated network namespace. Well obviously it has other uses, but very probably this is the most interesting one, and the one for which it was developed. Currently it builds only on Linux platforms.
+TunTap路由器是为运行在一个专用网络名字空间中的linux进程提供网络连接的ad-hoc方案。好吧，显然它有其他用途，但是非常有可能这是最有趣的，也是为什么会开发它的原因。目前，它只构建在Linux平台上。
 
 
-The TunTap router is not compiled in by default.
+TunTap路由器默认不编译。
 
 
-For having it in one shot:
+要一次性拥有它：
 
 .. code-block:: sh
 

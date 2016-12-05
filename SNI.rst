@@ -1,66 +1,64 @@
-SNI - Server Name Identification (virtual hosting for SSL nodes)
+SNI - 服务器名称识别 (SSL节点的虚拟主机)
 ================================================================
 
-uWSGI 1.9 (codenamed "ssl as p0rn") added support for SNI (Server Name Identification) throughout the whole
-SSL subsystem. The HTTPS router, the SPDY router and the SSL router can all use it transparently.
+uWSGI 1.9 (代号为"ssl as p0rn") 添加了对SNI (服务器名称识别，Server Name Identification) 的支持，贯穿整个SSL子系统。HTTPS路由器，SPDY路由器和SSL路由器都可以透明使用它。
 
-SNI is an extension to the SSL standard which allows a client to specify a "name" for the resource
-it wants. That name is generally the requested hostname, so you can implement virtual hosting-like behavior like you do using the HTTP ``Host:`` header without requiring extra IP addresses etc.
+SNI是SSL标准的一个扩展，它允许客户端为它想要的资源指定一个“名字”。名字通常是请求主机名，因此你可以像使用HTTP ``Host:`` 头部那样实现类虚拟主机行为，而无需而外的IP地址等。
 
-In uWSGI an SNI object is composed of a name and a value. The name is the servername/hostname while the value is the "SSL context" (you can think of it as the sum of certificates, key and ciphers for a particular domain).
+在uWSGI中，一个SNI对象是由名字和值组成的。名字是服务器名/主机名，而值是“SSL上下文” (你可以把它想成特定领域的证书、密钥和密码的总和)。
 
-Adding SNI objects
+添加SNI对象
 ******************
 
-To add an SNI object just use the ``--sni`` option:
+要添加一个SNI对象，只需使用 ``--sni`` 选项：
 
 .. code-block:: sh
 
    --sni <name> crt,key[,ciphers,client_ca]
 
-For example:
+例如：
 
 .. code-block:: sh
 
    --sni "unbit.com unbit.crt,unbit.key"
 
-or for client-based SSL authentication and OpenSSL HIGH cipher levels
+或者对于基于客户端的SSL鉴权和OpenSSL HIGH加密级别
 
 .. code-block:: sh
 
    --sni "secure.unbit.com unbit.crt,unbit.key,HIGH,unbit.ca"
 
-Adding complex SNI objects
+添加复杂SNI对象
 **************************
 
-Sometimes you need more complex keys for your SNI objects (like when using wildcard certificates)
+有时，对于你的SNI对象，你需要更复杂的密钥 (例如当使用通配符证书时)
 
-If you have built uWSGI with PCRE/regexp support (as you should) you can use the ``--sni-regexp`` option.
+如果你构建了带PCRE/正则表达式支持的uWSGI (你应该会)，那么你可以使用 ``--sni-regexp`` 选项。
 
 .. code-block:: sh
 
    --sni-regexp "*.unbit.com unbit.crt,unbit.key,HIGH,unbit.ca"
 
-Massive SNI hosting
+海量SNI托管
 *******************
 
-One of uWSGI's main purposes is massive hosting, so SSL without support for that would be pretty annoying.
+uWSGI的主要目的之一是海量托管，因此，不支持这样的SSL将会让人相当郁闷。
 
-If you have dozens (or hundreds, for that matter) of certificates mapped to the same IP address you can simply put them in a directory (following a simple convention we'll elaborate in a bit) and let uWSGI scan it whenever it needs to find a context for a domain.
+如果你有映射到相同的IP地址的几十个 (或者对于这个问题，几百个) 证书，那么你可以简单将它们放在一个目录中 (遵循一个简单的约定，我们将复杂一点) ，然后每当需要为一个域名查找环境的时候，让uWSGI扫描它。
 
-To add a directory just use
+要添加一个目录，仅需使用
 
 .. code-block:: sh
 
    --sni-dir <path>
 
-like
+例如
 
 .. code-block:: sh
 
    --sni-dir /etc/customers/certificates
 
-Now, if you have ``unbit.com`` and ``example.com`` certificates (.crt) and keys (.key) just drop them in there following these naming rules:
+现在，如果你有 ``unbit.com`` 和 ``example.com`` 证书= (.crt) ，以及密钥 (.key)，那么仅需把它们放在那里，遵循以下命名规则：
 
 * ``/etc/customers/certificates/unbit.com.crt``
 * ``/etc/customers/certificates/unbit.com.key``
@@ -68,36 +66,34 @@ Now, if you have ``unbit.com`` and ``example.com`` certificates (.crt) and keys 
 * ``/etc/customers/certificates/example.com.crt``
 * ``/etc/customers/certificates/example.com.key``
 
-As you can see, ``example.com`` has no .ca file, so client authentication will be disabled for it.
+正如你所看到的， ``example.com`` 没有.ca文件，因此将会对其禁用客户端鉴权。
 
-If you want to force a default cipher set to the SNI contexts, use
+如果你想要强制设置一个默认的密码到SNI上下文中，那么使用
 
 .. code-block:: sh
 
    --sni-dir-ciphers HIGH
 
-(or whatever other value you need)
+(或者任何其他你需要的值)
 
-Note: Unloading SNI objects is not supported. Once they are loaded into memory they will be held onto until reload.
+注：不支持卸载SNI对象。一旦将其加载到内存，就会一直持有它们，直到重载。
 
-Subscription system and SNI
+订阅系统和SNI
 ***************************
 
-uWSGI 2.0 added support for SNI in the subscription system.
+uWSGI 2.0在订阅系统中添加了对SNI的支持。
 
-The https/spdy router and the sslrouter can dinamically load certificates and keys from the paths specified in a subscription packet:
+https/spdy路由器和sslrouter可以动态加载来自一个订阅包指定的路径的证书和密钥：
 
 .. code-block:: sh
 
    uwsgi --subscribe2 key=mydomain.it,socket=0,sni_key=/foo/bar.key,sni_crt=/foo/bar.crt
    
    
-the router will create a new SSL context based on the specified files (be sure the router can reach them) and will destroy it when the last node
-disconnect.
+这个路由器将会基于指定的文件（确保路由器可以访问它们）创建一个新的SSL上下文，并将当最后一个节点断开连接的时候会销毁它。
 
-This is useful for massive hosting where customers have their certificates in the home and you want them the change/update those files without bothering you.
+这对于海量托管有用，其中，客户的证书位于家目录下，并且你想要他们不用找你就可以修改/更新那些文件。
 
 .. note::
 
-   We understand that directly encapsulating keys and cert in the subscription packets will be much more useful, but network transfer of keys is something
-   really foolish from a security point of view. We are investigating if combining it with the secured subscription system (where each packet is encrypted) could be a solution.
+   我们明白，直接在订阅包中封装密钥和证书会更有用得多，但是从安全的角度来看，密钥的网络传输真的有点蠢。我们正在研究将它与安全订阅系统（其中，每个包都被加密）结合起来是否是一个解决方法。

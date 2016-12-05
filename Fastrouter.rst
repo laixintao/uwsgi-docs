@@ -7,7 +7,7 @@ default.  You can put it between your webserver and real uWSGI instances to
 have more control over the routing of HTTP requests to your application
 servers.
 
-Getting started
+开始
 ---------------
 
 First of all you have to run the fastrouter, binding it to a specific address.
@@ -24,7 +24,7 @@ world. Simply binding the fastrouter to a couple of addresses will not instruct
 it on how to route requests. To give it intelligence you have to tell it how to
 route requests.
 
-Way 1: --fastrouter-use-base
+方法1：--fastrouter-use-base
 ----------------------------
 
 This option will tell the fastrouter to connect to a UNIX socket with the same
@@ -37,7 +37,7 @@ name of the requested host in a specified directory.
 If you receive a request for ``example.com`` the fastrouter will forward the
 request to ``/tmp/sockets/example.com``.
 
-Way 2: --fastrouter-use-pattern
+方法2：--fastrouter-use-pattern
 -------------------------------
 
 Same as the previous setup but you will be able to use a pattern, with ``%s``
@@ -50,7 +50,7 @@ mapping to the requested key/hostname.
 Requests for ``example.com`` will be mapped to
 ``/tmp/sockets/example.com/uwsgi.sock``.
 
-Way 3: --fastrouter-use-cache
+方法3：--fastrouter-use-cache
 -----------------------------
 
 You can store the key/value mappings in the :doc:`uWSGI cache <Caching>`.
@@ -70,7 +70,7 @@ Then run your Fastrouter-enabled server, telling it to run the script first.
 
     uwsgi --fastrouter 127.0.0.1:3017 --fastrouter-use-cache --cache 100 --file foobar.py
 
-Way 4: --fastrouter-subscription-server
+方法4：--fastrouter-subscription-server
 ---------------------------------------
 
 This is probably one of the best way for massive auto-scaling hosting. It uses
@@ -103,7 +103,7 @@ real value to the subscription server.
     uwsgi --socket 192.168.0.100:0 -M --subscribe-to 192.168.0.100:7000:example.com
 
 
-Mapping files
+映射文件
 ^^^^^^^^^^^^^
 
 If you need to specify a massive amount of keys, you can use a mapping file
@@ -121,7 +121,7 @@ instead.
 
     uwsgi --socket :3031 -M --subscribe-to 192.168.0.100:7000:@mappings.txt
 
-Way 5: --fastrouter-use-code-string
+方法5：--fastrouter-use-code-string
 -----------------------------------
 
 If Darth Vader wears a t-shirt with your face (and in some other corner cases
@@ -180,7 +180,7 @@ docs!)
 .. attention:: Remember to not put blocking code in your functions. The
    fastrouter is totally non-blocking, do not ruin it!
 
-Cheap mode and shared sockets
+Cheap模式和共享socket
 -----------------------------
 
 A common setup is having a webserver/proxy connected to a fastrouter and a
@@ -221,7 +221,7 @@ respond.  When all of the nodes go down, the fastrouter will return in cheap
 mode. Seeing a pattern? Another step to awesome autoscaling.
 
 
-Post-buffering mode (uWSGI >= 2.0.9)
+Post-buffering模式 (uWSGI >= 2.0.9)
 ------------------------------------
 
 The fastrouter is (by default) a streaming proxy. This means that as soon as the uwsgi packet (read: the request headers) is parsed, it is forwarded to the backend/backends.
@@ -252,7 +252,7 @@ will put the fastrouter in buffered mode, storing on a temp file every body bigg
 
 Remember that post-buffering, is not a good-for-all solution (otherwise it would be the default), enabling it breaks websockets, chunked input, upload progress, iceast streaming and so on. Enable it only when needed.
 
-Notes
+注意
 -----
 
 * The fastrouter uses the following vars (in order of precedence) to choose a key to use:
