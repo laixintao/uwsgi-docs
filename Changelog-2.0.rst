@@ -71,14 +71,14 @@ uWSGI实例可以通过unix socket公开它们的名字空间文件描述符 (�
 yajl库 (JSON解析器) 支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Til now uWSGI only supported jansson as the json parser required for managing .js config files.
+直到现在，uWSGI只支持把jansson作为managing .js配置文件所需的json解析器。
 
-You can now use the yajl library (available in centos) as alternative JSON parser (will be automatically detected)
+你现在可以使用yajl库 (centos中可用) 来作为替代的JSON解析器 (将会自动检测)
 
 Perl spooler支持
 ^^^^^^^^^^^^^^^^^^^^
 
-The perl/PSGI plugin can now be used as a spooler server:
+perl/PSGI插件现在可以被用作一个spooler服务器：
 
 .. code-block:: pl
 
@@ -89,21 +89,21 @@ The perl/PSGI plugin can now be used as a spooler server:
    });
 
 
-The client part is still missing as we need to fix some internal api problem.
+客户端部分仍旧缺失，因为我们需要修复一些内部API问题。
 
-Expect it in 2.0.1 ;)
+预期在2.0.1完成 ;)
 
 网关可以移除特权
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Gateways (like http router, sslrouter, rawrouter, forkptyrouter ...) can now drop privileges independently by the master.
+网关 (例如http router, sslrouter, rawrouter, forkptyrouter ...)现在可以由master独立移除特权。
 
-Currently only the http/https/spdy router exposes the new option (``--http-uid/--http-gid``)
+目前，只有http/https/spdy路由器公开了新的选项 (``--http-uid/--http-gid``)
 
-Subscriptions-governed SNI contexts
+Subscriptions-governed SNI上下文
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The subscription subsystem now supports 3 additional keys (you can set them with the --subscribe2 option):
+订阅系统现在支持3个额外的键 (你可以用--subscribe2选项来设置它们):
 
 ``sni_key``
 
@@ -111,7 +111,7 @@ The subscription subsystem now supports 3 additional keys (you can set them with
 
 ``sni_ca``
 
-all of the takes a path to the relevant ssl files.
+它们所有都接收一个到相关ssl文件的路径。
 
 看看： :doc:`SNI`
 

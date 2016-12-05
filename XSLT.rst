@@ -1,60 +1,60 @@
 XSLT插件
 ===============
 
-自uWSGI 1.9.1起，有了一个新的名为"xslt"的插件，implementing XML Stylesheet Transformation both as request handler and routing instruction.
+自uWSGI 1.9.1起，有了一个新的名为"xslt"的插件，它同时作为请求处理器和路由指令实现了XML样式表。
 
-To successfully apply a transformation you need a 'doc' (an XML document) and a stylesheet (the XSLT file).
+想成功应用转换，你需要一个“文档” (一个XML文档) 和一个样式表 (XSLT文件)。
 
 此外，你可以应用全局参数，并设置一个指定的内容类型 (默认情况下，生成的输出被设置为text/html)。
 
-The request handler
+请求处理器
 *******************
 
-Modifier1 23 has been assigned to the XSLT request handler.
+Modifier1 23已被赋给XSLT请求处理器。
 
-The document path is created appending the ``PATH_INFO`` to the ``DOCUMENT_ROOT``.
+文档路径是通过将 ``PATH_INFO`` 附加到 ``DOCUMENT_ROOT`` 来创建的。
 
-The stylesheet path is created following these steps:
+样式表路径根据以下步骤创建：
 
-* If a specific CGI variable is set (via ``--xslt-var``) it will be used as the stylesheet path.
-* If a file named like the document plus a specific extension (by default ``.xsl`` and ``.xslt`` are searched) exists it will be used as the stylesheet path.
-* Finally a series of static XSLT files (specified with ``--xslt-stylesheet``) is tried.
+* 如果设置了一个指定的CGI变量 (通过 ``--xslt-var``)，那么将把它当成样式表路径使用。
+* 如果命名像文档加上指定的扩展名 (默认情况下，搜索 ``.xsl`` 和 ``.xslt``) 的文件存在，那么将会把它当成样式表路径使用。
+* 最后，尝试一系列静态XSLT文件 (由 ``--xslt-stylesheet`` 指定)。
 
-Examples:
+例如：
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --http-socket-modifier1 23 --xslt-ext .bar
 
-If /foo.xml is requested (and the file exists) ``DOCUMENT_ROOT``+``foo.xml.bar`` will be searched as the xslt file.
+如果请求/foo.xml (并且文件存在)，那么 ``DOCUMENT_ROOT``+``foo.xml.bar`` 将会作为xslt文件被搜索。
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --http-socket-modifier1 23 --xslt-stylesheet /var/www/myfile1.xslt --xslt-stylesheet /var/www/myfile2.xslt
 
-If /foo.xml is requested (and the file exists) ``/var/www/myfile1.xslt`` will be tried. If it does not exist, ``/var/www/myfile2.xslt`` will be tried instead.
+如果请求/foo.xml (并且文件存在)，那么将会试着用 ``/var/www/myfile1.xslt`` 。如果它不存在，那么将会用 ``/var/www/myfile2.xslt`` 来替代。
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --http-socket-modifier1 23 --xslt-var UWSGI_XSLT
 
-If /foo.xml is requested (and the file exists), the content of the ``UWSGI_XSLT`` variable (you can set it from your webserver) is used as the stylesheet path.
+如果请求/foo.xml (并且文件存在)，那么 ``UWSGI_XSLT`` 变量 (你可以从web服务器对其进行设置) 的内容就会被当成样式表路径使用。
 
-If a ``QUERY_STRING`` is available, its items will be passed as global parameters to the stylesheet.
+如果 ``QUERY_STRING`` 可用，那么它的项将会作为全局参数传递给样式表。
 
-As an example if you request ``/foo.xml?foo=bar&test=uwsgi``, "foo" (as "bar" and "test" (as "uwsgi") will be passed as global variables:
+例如，如果你请求 ``/foo.xml?foo=bar&test=uwsgi`` ，那么"foo" (值为"bar"）和 "test" (值为"uwsgi")将会作为全局变量被传递：
 
 .. code-block:: xml
 
    <xsl:value-of select="$foo"/>
    <xsl:value-of select="$test"/>
 
-The routing instruction
+路由指令
 ***********************
 
-The plugin registers itself as internal routing instruction named "xslt". It is probably a lot more versatile then the request plugin.
+该插件将自身注册为名为"xslt"的内部路由指令。它或许比请求插件更通用得多。
 
-Its syntax is pretty simple:
+它的语法相当简单：
 
 .. code-block:: ini
 
@@ -62,6 +62,6 @@ Its syntax is pretty simple:
    plugin = xslt
    route = ^/foo xslt:doc=${DOCUMENT_ROOT}/${PATH_INFO}.xml,stylesheet=/var/www/myfunction.xslt,content_type=text/html,params=foo=bar&test=unbit
 
-This will apply the ``/var/www/myfunction.xslt`` transformation to ``foo.xml`` and will return it as ``text/html``.
+这将会应用 ``/var/www/myfunction.xslt`` 转换到 ``foo.xml`` ，并将其作为 ``text/html`` 返回。
 
-The only required parameters for the routing instruction are ``doc`` and ``stylesheet``.
+该路由指令唯一需要的参数是 ``doc`` 和 ``stylesheet`` 。

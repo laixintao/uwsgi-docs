@@ -10,61 +10,60 @@
 简介
 *****
 
-This article is the result of various experiments aimed at improving uWSGI performance and usability in various areas before the 2.0 release.
+这篇文章是在2.0版本发布之前，旨在提高uWSGI在各种领域的性能和可用性的各种实验的产物。
 
-To follow the article you need:
+要跟着这篇文章，你需要：
 
-* a Raspberry Pi (any model) with a Linux distribution installed (I used standard Raspbian)
-* a PS3 Eyetoy webcam
-* a websocket-enabled browser (basically any serious browser)
-* a bit of Perl knowledge (really only a bit, there's less than 10 lines of Perl ;)
-* Patience (building uWSGI + PSGI + coroae on the RPI requires 13 minutes)
+* 一个树莓派 (任何model)，上面安装了Linux发行版 (我使用的是标准的Raspbian)
+* 一个PS3 Eyetoy网络摄像头
+* 一个可用websocket的浏览器 (基本上任何正经的浏览器都可以)
+* 一点点Perl知识 (真的只要一点点，少于10行Perl代码 ;)
+* 耐心 (在RPI上构建uWSGI + PSGI + coroae需要13分钟)
 
 uWSGI子系统和插件
 ****************************
 
-The project makes use of the following uWSGI subsystems and plugins:
+这个项目利用以下uWSGI子系统和插件：
 
 * :doc:`../WebSockets`
-* :doc:`../SharedArea` (for storing frames)
-* :doc:`../Mules` (for gathering frames)
+* :doc:`../SharedArea` (用来存储帧)
+* :doc:`../Mules` (用来收集帧)
 * :doc:`../Symcall`
 * :doc:`../Perl`
-* :doc:`../Async` (optional, we use ``Coro::Anyevent`` but you can rely on standard processes, though you'll need way more memory)
+* :doc:`../Async` (可选，我们使用 ``Coro::Anyevent`` ，但是你可以依靠标准进程，虽然这将需要更多内存)
 
-What we want to accomplish
+我们想要完成什么呢
 **************************
 
-We want our RPI to gather frames from the Eyetoy and stream them to various connected clients using websockets, using a HTML5 canvas element to show them.
+我们想要我们的RPI收集来自Eyetoy的帧，然后使用wesockets将其流化至各种已连接的客户端，使用一个HTML5 canvas元素来展示它们。
 
-The whole system must use as little memory as possible, as few CPU cycles as possible, and it should support a large number of clients (... though well, even 10 clients will be a success for the Raspberry Pi hardware ;)
+整个系统必须尽可能使用少的内存，尽可能少的CPU周期，并且它应该支持大量的客户端 (... 好吧，即使是10个客户端对树莓派硬件而言也是个胜利 ;)
 
 技术背景
 ********************
 
-The Eyetoy captures frames in YUYV format (known as YUV 4:2:2). This means we need 4 bytes for 2 pixels.
+Eyetoy以YUYV格式 (称为YUV 4:2:2) 捕获帧。这意味着，对于2个像素，我们需要4个字节。
 
-By default the resolution is set to 640x480, so each frame will need 614,400 bytes.
+默认情况下，分辨率被设置为640x480，因此每个帧将需要614,400字节。
 
-Once we have a frame we need to decode it to RGBA to allow the HTML5 canvas to show it.
+一旦我们有了帧，我们就需要将其解码为RGBA，以允许HTML5 canvas展示它。
 
-The translation between YUYV and RGBA is pretty heavy for the RPI (especially if you need to do it for every connected client) so we will do it
-in the browser using Javascript. (There are other approaches we could follow, just check the end of the article for them.)
+YUYV和RGBA之间的转换对RPI来说是重量的 (特别是若你需要为每个已连接客户端进行转换的时候)，因此我们会在浏览器中使用Javascript来进行转换。(我们可以使用其他的方式，看看文章末尾以获取相关信息。)
 
-The uWSGI stack is composed by a mule gathering frames from the Eyetoy and writing them to the uWSGI SharedArea.
+uWSGI栈是由一个从Eyetoy收集帧，并将这些帧写到uWSGI的共享区域的mule组成的。
 
-Workers constantly read from that SharedArea and send frames as binary websocket messages.
+worker不断地从那个共享区域读取帧，并将它们作为websockets消息发送出去。
 
 让我们开始吧：uwsgi-capture插件
 *************************************
 
-uWSGI 1.9.21 introduced a simplified (and safe) procedure to build uWSGI plugins. (Expect more third party plugins soon!)
+uWSGI 1.9.21引入了一个构建uWSGI插件的简化（并且安全）的过程。(期待稍后会有更多的第三方插件！)
 
-The project at: https://github.com/unbit/uwsgi-capture shows a very simple plugin using the Video4Linux 2 API to gather frames.
+位于 https://github.com/unbit/uwsgi-capture 的项目展示了一个使用Video4Linux 2 API来收集帧的非常简单的插件。
 
-Each frame is written in a shared area initialized by the plugin itself.
+每一帧都会被写入到由插件自身初始化的共享区域中。
 
-The first step is getting uWSGI and building it with the 'coroae' profile:
+第一步是获取uWSGI，然后用'coroae'配置文件来构建它：
 
 .. code-block:: sh
 
@@ -73,24 +72,24 @@ The first step is getting uWSGI and building it with the 'coroae' profile:
    cd uwsgi
    make coroae
    
-The procedure requires about 13 minutes. If all goes well you can clone the uwsgi-capture plugin and build it.
+这个过程需要大约13分钟。如果一切顺利，那么你可以克隆uwsgi-capture插件，然后构建它。
 
 .. code-block:: sh
 
    git clone https://github.com/unbit/uwsgi-capture
    ./uwsgi --build-plugin uwsgi-capture
    
-You now have the capture_plugin.so file in your uwsgi directory.
+现在，在你的uwsgi目录中就有了capture_plugin.so文件。
 
-Plug your Eyetoy into an USB port on your RPI and check if it works:
+把你的Eyetoy插入到RPI上的USB口中，然后看看它是否工作：
 
 .. code-block:: sh
 
    ./uwsgi --plugin capture --v4l-capture /dev/video0
    
-(the ``--v4l-capture`` option is exposed by the capture plugin)
+( ``--v4l-capture`` 选项是由capture插件公开的)
 
-If all goes well you should see the following lines in uWSGI startup logs:
+如果一切顺利，那么你应该在uWSGI启动日志中看到以下行：
 
 .. code-block:: sh
 
@@ -100,32 +99,31 @@ If all goes well you should see the following lines in uWSGI startup logs:
    sharedarea 0 created at 0xb6935000 (150 pages, area at 0xb6936000)
    /dev/video0 started streaming frames to sharedarea 0
    
-(the sharedarea memory pointers will obviously probably be different)
+(这个共享区域内存指针显然将会不一样)
 
-The uWSGI process will exit soon after this as we did not tell it what to do. :)
+uWSGI进程将会在此之后立即退出，因为我们并没有告诉它要做什么。 :)
 
-The ``uwsgi-capture`` plugin exposes 2 functions:
+ ``uwsgi-capture`` 插件公开了2个函数：
 
-* ``captureinit()``, mapped as the init() hook of the plugin, will be called automatically by uWSGI. If the --v4l-capture option is specified, this function will initialize the specified device and will map it to a uWSGI sharedarea.
-* ``captureloop()`` is the function gathering frames and writing them to the sharedarea. This function should constantly run (even if there are no clients reading frames)
+* ``captureinit()``, 作为插件的init()钩子的映射，将会由uWSGI自动调用。如果指定了--v4l-capture选项，那么这个函数将会初始化指定设备，并且将其映射到一个uWSGI共享区域。
+* ``captureloop()`` 是收集帧，并将它们写入到共享区域的函数。这个函数应该不断运行 (即使没有客户端读取帧)
 
-We want a mule to run the ``captureloop()`` function.
+我们想要一个mule来运行 ``captureloop()`` 函数。
 
 .. code-block:: sh
 
    ./uwsgi --plugin capture --v4l-capture /dev/video0 --mule="captureloop()" --http-socket :9090
    
-This time we have bound uWSGI to HTTP port 9090 with a mule mapped to the "captureloop()" function. This mule syntax is
-exposed by the symcall plugin that takes control of every mule argument ending with "()" (the quoting is required to avoid the shell making a mess of the parentheses).
+这次，我们绑定uWSGI到HTTP端口9090，并且带有一个映射到"captureloop()"函数的mule。这个mule语法是由symcall插件公开的，这个插件控制每一个由"()"结尾的mule参数 (引号是必须的，用来避免shell搞乱括号)。
 
-If all goes well you should see your uWSGI server spawning a master, a mule and a worker.
+如果一切顺利，那么你应该看到你的uWSGI服务器生成一个master，一个mule和一个worker。
 
 第二步：PSGI应用
 ********************
 
-Time to write our websocket server sending Eyetoy frames (you can find sources for the example here: https://github.com/unbit/uwsgi-capture/tree/master/rpi-examples).
+是时候来写我们发送Eyetoy帧的websocket服务器了 (你可以在这里找到这个例子的源代码：https://github.com/unbit/uwsgi-capture/tree/master/rpi-examples)。
 
-The PSGI app will be very simple:
+这个PSGI应用将会非常简单：
 
 .. code-block:: pl
 
@@ -152,13 +150,13 @@ The PSGI app will be very simple:
         }
    }
 
-The only interesting parts are:
+唯一有趣的部分是：
 
 .. code-block:: pl
 
    uwsgi::sharedarea_wait(0, 50);
    
-This function suspends the current request until the specified shared area (the 'zero' one) gets an update. As this function is basically a busy-loop poll, the second argument specifies the polling frequency in milliseconds. 50 milliseconds gave us good results (feel free to try with other values).
+这个函数This function suspends the current request until the specified shared area (the 'zero' one) gets an update. As this function is basically a busy-loop poll, the second argument specifies the polling frequency in milliseconds. 50 milliseconds gave us good results (feel free to try with other values).
 
 .. code-block:: pl
 

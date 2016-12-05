@@ -1,33 +1,33 @@
 Symcall插件
 ==================
 
-The symcall plugin (modifier 18) is a convenience plugin allowing you to write native uWSGI request handlers without the need of developing a full uWSGI plugin.
+symcall插件 (modifier 18) 是一个便利的插件，允许你在不需要开发一个完整的uWSGI插件的情况下编写原生uWSGI请求处理器。
 
-You tell it which symbol to load on startup and then it will run it at every request.
+你告诉它在启动时加载那个时候符号，然后它就会在每个请求上运行它。
 
 .. note::
 
-   The "symcall" plugin is built-in by default in standard build profiles.
+   在标准的构建配置文件中，默认内建"symcall"插件。
 
 第一步：准备环境
 *********************************
 
-The uWSGI binary by itself allows you to develop plugins and libraries without the need of external development packages or headers.
+uWSGI二进制自身允许你在无需外部开发包或者头文件的情况下开发插件和库。
 
-The first step is getting the ``uwsgi.h`` C/C++ header:
+第一步是获取 ``uwsgi.h`` C/C++头文件：
 
 .. code-block:: sh
 
    uwsgi --dot-h > uwsgi.h
    
-Now, in the current directory, we have a fresh uwsgi.h ready to be included.
+现在，在当前目录下，我们有了一个准备被包含的新鲜的uwsgi.h。
 
 第二步：第一个请求处理器：
 **********************************
 
-Our C handler will print the REMOTE_ADDR value with a couple of HTTP headers.
+我们的C处理器将会打印REMOTE_ADDR值以及一对HTTP头。
 
-(call it mysym.c or whatever you want/need)
+(称其为mysym.c或者随便你)
 
 .. code-block:: c
 
@@ -60,17 +60,17 @@ Our C handler will print the REMOTE_ADDR value with a couple of HTTP headers.
 第三步：将我们的代码作为共享库进行构建
 *********************************************
 
-The uwsgi.h file is an ifdef hell (so it's probably better not to look at it too closely).
+uwsgi.h文件是一个ifdef地狱 (所以可能最好不要看得太深入)。
 
-Fortunately the uwsgi binary exposes all of the required CFLAGS via the --cflags option.
+幸运的是，uwsgi二进制通过--cflags选项公开了所有所需的CFLAGS。
 
-We can build our library in one shot:
+我们可以一次到位构建我们的库：
 
 .. code-block:: c
 
    gcc -fPIC -shared -o mysym.so `uwsgi --cflags` mysym.c
 
-you now have the mysym.so library ready to be loaded in uWSGI
+现在，你准备好了在uWSGI中加载的mysym.so库了
 
 最后一步：映射symcall插件到 ``mysym_function`` 符号
 *******************************************************************
@@ -79,17 +79,17 @@ you now have the mysym.so library ready to be loaded in uWSGI
 
    uwsgi --dlopen ./mysym.so --symcall mysym_function --http-socket :9090 --http-socket-modifier1 18
    
-With ``--dlopen`` we load a shared library in the uWSGI process address space.
+通过 ``--dlopen`` ，我们在uWSGI进程地址空间中加载了一个共享库。
 
-The ``--symcall`` option allows us to specify which symbol to call when modifier1 18 is in place
+ ``--symcall`` 选项允许我们当有modifier1 18的时候，指定调用哪个符号
 
-We bind the instance to HTTP socket 9090 forcing modifier1 18.
+我们绑定实例到HTTP socket 9090，强制modifier1 18。
 
 
-Hooks and symcall unleashed: a TCL handler
+钩子和symcall释放：一个TCL处理器
 ******************************************
 
-We want to write a request handler running the following TCL script (foo.tcl) every time:
+我们想要编写一个每次运行以下TCL脚本 (foo.tcl) 的请求处理器：
 
 .. code-block:: tcl
 
@@ -100,9 +100,9 @@ We want to write a request handler running the following TCL script (foo.tcl) ev
    }
    
    
-We will define a function for initializing the TCL interpreter and parsing the script. This function will be called on startup soon after privileges drop.
+我们将定义一个初始化TCL解析器和传递脚本的函数。将会在启动时，于移除权限之后立即调用这个函数。
 
-Finally we define the request handler invoking the TCL proc and passign args to it
+最后，我们定义引用这个TCL过程并传递参数的请求处理器
 
 .. code-block:: c
 
@@ -174,33 +174,32 @@ Finally we define the request handler invoking the TCL proc and passign args to 
    }
 
    
-You can build it with:
+你可以这样构建它：
 
 .. code-block:: sh
 
    gcc -fPIC -shared -o ourtcl.so `./uwsgi/uwsgi --cflags` -I/usr/include/tcl ourtcl.c -ltcl
    
-The only differences from the previous example are the -I and -l for adding the TCL headers and library.
+与前一个例子唯一的差异在于，-I和-l用于添加TCL头文件和库。
 
-So, let's run it with:
+所以，让我们允许它：
 
 .. code-block:: sh
 
    uwsgi --dlopen ./ourtcl.so --hook-as-user call:ourtcl_init --http-socket :9090 --symcall ourtcl_handler --http-socket-modifier1 18
    
-Here the only new player is ``--hook-as-user call:ourtcl_init`` invoking the specified function after privileges drop.
+这里，唯一新的用户是 ``--hook-as-user call:ourtcl_init`` ，它在移除特权后引用指定的函数。
 
 
 .. note::
 
-   This code is not thread safe! If you want to improve this tcl library to support multithreading, best approach will be having a TCL interpreter
-   for each pthread instead of a global one.
+   代码非线程安全的！如果你想改进这个tcl库来支持多线程，那么最好的方法将是对每个pthread而非对全局使用一个TCL解析器。
    
-Considerations
+注意事项
 **************
 
-Since uWSGI 1.9.21, thanks to the ``--build-plugin`` option, developing uWSGI plugins has become really easy.
+自uWSGI 1.9.21起，多亏了 ``--build-plugin`` 选项，开发uWSGI插件变得相当简单。
 
-The symcall plugin is for tiny libraries/pieces of code, for bigger needs consider developing a full plugin.
+symcall插件是用于小的代码库／片段，对于更大的需求，考虑开发一个完整的插件。
 
-The tcl example we have seen before is maybe the right example of "wrong" usage ;)
+我们前面已经看到的tcl例子或许是“错误”使用的正确例子 ;)
