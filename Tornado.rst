@@ -1,42 +1,40 @@
 Tornado循环引擎
 =======================
 
-Available from: ```uWSGI 1.9.19-dev```
+可用版本自 ```uWSGI 1.9.19-dev``` 起
 
-Supported suspend engines: ```greenlet```
+支持挂起引擎： ```greenlet```
 
-Supported CPython versions: ```all of tornado supported versions```
+支持CPython版本： ```所有支持tornado的版本```
 
 
-The tornado loop engine allows you to integrate your uWSGI stack with the Tornado IOLoop class.
+tornado循环引擎允许你将你的uWSGI栈与Tornado IOLoop类集成。
 
-Basically every I/O operation of the server is mapped to a tornado IOLoop callback. Making RPC, remote caching, or simply writing responses
-is managed by the Tornado engine.
+基本上，服务器的每一个I/O操作会被映射到一个tornado IOLoop回调。进行RPC、远程缓存或者简单的写入响应则由Tornado引擎管理。
 
-As uWSGI is not written with a callback-based programming approach, integrating with those kind of libraries requires some form of "suspend" engine (green threads/coroutines)
+由于uWSGI不是用一个基于回调的编程方法写的，因此与那种类型的库集成需要某些类型“挂起”引擎 (绿色线程/协程)
 
-Currently the only supported suspend engine is the "greenlet" one. Stackless python could work too (needs testing).
+目前唯一支持的挂起引擎是"greenlet"。Stackless python也能用 (需要测试)。
 
-PyPy is currently not supported (albeit technically possible thanks to continulets). Drop a mail to Unbit staff if you are interested.
+当前并不支持PyPy (尽管因为continulet，技术上是可行的)。如果你感兴趣的话，给Unbit员工发邮件吧。
 
 为什么？
 *******
-The Tornado project includes a simple WSGI server by itself. In the same spirit of the Gevent plugin, the purpose of Loop engines is allowing external prejects
-to use (and abuse) the uWSGI api, for better performance, versatility and (maybe the most important thing) resource usage.
+Tornado项目自己包含了一个简单的WSGI服务器。在于Gevent插件相同的思想下，Loop引擎的目的是允许外部项目使用（尽情使用）uWSGI api，从而获得更好的性能、多功能性和 (也许是最重要的) 资源使用。
 
-All of the uWSGI subsystems are available (from caching, to websockets, to metrics) in your tornado apps, and the WSGI engine is the battle-tested uWSGI one.
+在你的tornado应用中，可以使用所有的uWSGI子系统 (从缓存，到websockets，到度量)，而WSGI引擎则是其中一个久经考验的uWSGI。
 
 
 安装
 ************
 
-The tornado plugin is currently not built-in by default. To have both tornado and greenlet in a single binary you can do
+当前默认不内置tornado插件。要在单个二进制文件中同时拥有tornado和greenlet，你可以这样
 
 .. code-block:: sh
 
    UWSGI_EMBED_PLUGINS=tornado,greenlet pip install tornado greenlet uwsgi
    
-or (from uWSGI sources, if you already have tornado and greenlet installed)
+或者 (来自uWSGI源代码，如果你已经安装了tornado和greenlet的话)
 
 .. code-block:: sh
 
@@ -45,22 +43,22 @@ or (from uWSGI sources, if you already have tornado and greenlet installed)
 运行之
 **********
 
-The ``--tornado`` option is exposed by the tornado plugin, allowing you to set optimal parameters:
+``--tornado`` 选项是由tornado插件公开的，允许你设置最佳参数：
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --wsgi-file myapp.py --tornado 100 --greenlet
    
-this will run a uWSGI instance on http port 9090 using tornado as I/O (and time) management and greenlet as suspend engine
+这将会在http端口9090上运行一个uWSGI实例，使用tornado作为I/O（和时间）管理，greenlet作为挂起引擎
 
-100 async cores are allocated, allowing you to manage up to 100 concurrent requests
+会分配100个异步核心，允许你管理多达100个并发请求
 
-Integrating WSGI with the tornado api
+集成WSGI和tornado api
 *************************************
 
-For the way WSGI works, dealing with callback based programming is pretty hard (if not impossible).
+出于WSGI的工作方式，处理基于回调的编程是相当难的 (如果有可能的话)。
 
-Thanks to greenlet we can suspend the execution of our WSGI callable until a tornado IOLoop event is available:
+有了greenlet，我们可以挂起我们的WSGI可调用的执行，直到一个tornado IOLoop事件可用：
 
 .. code-block:: py
 
@@ -90,14 +88,14 @@ Thanks to greenlet we can suspend the execution of our WSGI callable until a tor
         sr('200 OK', [('Content-Type','text/plain')])
         return me.result
 
-欢迎来到Callback-Hell
+欢迎来到回调地狱
 ************************
 
-As always, it is not the job of uWSGI to judge programming approaches. It is a tool for sysadmins, and sysadmins should be tolerant with developers choices.
+一如既往，判断编程方法并非uWSGI的工作。它是为系统管理员提供的工具，而系统管理员应该宽容开发者的选择。
 
-One of the things you will pretty soon experiment with this approach to programming is the callback-hell.
+使用这个方法，你将很快体验到的事情之一是回调地狱。
 
-Let's extend the previous example to wait 10 seconds before sending back the response to the client
+让我们扩展前面的例子，在发送响应回客户端之前等待10秒
 
 .. code-block:: py
 
@@ -135,17 +133,15 @@ Let's extend the previous example to wait 10 seconds before sending back the res
         return me.result
 
 
-here we have chained two callbacks, with the last one being responsable for giving back control to the WSGI callable
+这里，我们链接了两个回调，最后一个负责将控制权交还WSGI可调用
 
-The code could looks ugly or overcomplex (compared to other approaches like gevent) but this is basically the most efficient way to
-increase concurrency (both in terms of memory usage and performance). Technologies like node.js are becoming popular thanks to the results they allow
-to accomplish.
+代码可能看起来丑或者过于复杂 (与其他诸如gevent的方法相比)，但是，这基本上是提高并发性最有效的方法 (同时在内存使用和性能方面)。诸如node.js这样的技术由于它们允许完成的结果，它们正变得流行起来。
 
 
 WSGI生成器 (aka yield all over the place)
 **********************************************
 
-Take the following WSGI app:
+以下面的WSGI应用为例：
 
 .. code-block:: py
 
@@ -155,28 +151,27 @@ Take the following WSGI app:
        yield "two"
        yield "three"
 
-if you have already played with uWSGI async mode, you knows that every yield internally calls the used suspend engine (greenlet.switch() in our case).
+如果你已经使用uWSGI异步模式，那么你就会知道每次yield内部调用使用的挂起引擎 (在我们的例子中，是greenlet.switch())。
 
-That means we will enter the tornado IOLoop engine soon after having called "application()". How we can give the control back to our callable if we are not waiting for events ?
+那意味着，我们在调用"application()"后会立即进入tornado IOLoop引擎。如果我们不在等待事件，那么能如何将控制权交还给我们的可回调对象？
 
-The uWSGI async api has been extended to support the "schedule_fix" hook. It allows you to call a hook soon after the suspend engine has been called.
+已扩展uWSGI异步API来支持"schedule_fix"钩子。它允许你在调用挂起引擎后立即调用一个钩子。
 
-In the tornado's case this hook is mapped to something like:
+在tornado这种情况下，这个钩子会被映射到某些像这样的东东：
 
 .. code-block:: py
 
    io_loop.add_callback(me.switch)
    
-in this way after every yield a me.switch() function is called allowing the resume of the callable.
+通过这种方式，在每次yield之后，一个me.switch()函数就会被调用，从而让可回调对象恢复。
 
-Thanks to this hook you can transparently host standard WSGI applications without changing them.
+有了这个钩子，你可以透明地托管标准的WSGI应用，而无需更改它们。
 
 
-Binding and listening with Tornado
+绑定和监听Tornado
 **********************************
 
-The Tornado IOLoop is executed after fork() in every worker. If you want to bind to network addresses with Tornado, remember
-to use different ports for each workers:
+在每一个worker中，在fork()之后会执行Tornado IOLoop。如果你想把Tornado绑定到网络地址上，那么记得为每个worker使用不同的端口：
 
 .. code-block:: py
 

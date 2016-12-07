@@ -9,11 +9,11 @@ uWSGI选项
 
 每一个选项都有以下属性:
 
-* 参数: it is the struct option (used by getopt()/getopt_long()) has_arg element. Can be 'required', 'no_argument' or 'optional_argument'
-* 快捷方式: some option can be specified with the short form (a dash followed by a single letter)
-* 解析器: this is how uWSGI parses the parameter. There are dozens of way, the most common are 'uwsgi_opt_set_str' when it takes a simple string, 'uwsgi_opt_set_int' when it takes a 32bit number, 'uwsgi_opt_add_string_list' when the parameter can be specified multiple times to build a list.
-* 帮助: the help message, the same you get from ``uwsgi --help``
-* 参考: a link to a documentation page that gives better understanding and context of an option
+* argument: it is the struct option (used by getopt()/getopt_long()) has_arg element. Can be 'required', 'no_argument' or 'optional_argument'
+* shortcut: some option can be specified with the short form (a dash followed by a single letter)
+* parser: 这是uWSGI如何解析参数。有几十种方式，最常见的方式是'uwsgi_opt_set_str' 何时接收简单的字符串，'uwsgi_opt_set_int' 何时接收32位数字，'uwsgi_opt_add_string_list' 何时可以指定该参数多次来构建一个列表。
+* help: 帮助消息，与你从 ``uwsgi --help`` 获得的相同
+* reference: 一个到让你更好理解并且提供选项上下文的文档页面
 
 You can add more detailed infos to this page, editing https://github.com/unbit/uwsgi-docs/blob/master/optdefs.pl (please, double check it before sending a pull request)
 

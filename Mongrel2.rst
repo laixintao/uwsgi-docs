@@ -1,29 +1,28 @@
-Attaching uWSGI to Mongrel2
+附加uWSGI到Mongrel2
 ===========================
 
-Mongrel2_ is a next-next-generation webserver that focuses on modern webapps.
+Mongrel2_ 是下下一代的web服务器，关注于现代web应用。
 
-Just like uWSGI, it is fully language agnostic, cluster-friendly and delightfully controversial :)
+就像uWSGI，它完全语言无关，集群友好，并且富有争议 :)
 
-It uses the amazing ZeroMQ_ library for communication, allowing reliable, easy message queueing and configuration-free scalability.
+它使用令人惊奇的 ZeroMQ_ 库来通信，允许可靠容易的消息队列，以及免配置的可扩展性。
 
-Starting from version 0.9.8-dev, uWSGI can be used as a Mongrel2 handler.
+从版本0.9.8-dev起，uWSGI可以被用作Mongrel2处理器。
 
 .. _Mongrel2: http://mongrel2.org/
 .. _ZeroMQ: http://www.zeromq.org/
 
-Requirements
+要求
 ------------
 
-To enable ZeroMQ/Mongrel2 support in uWSGI you need the zeromq library (2.1+) and the uuid library.
+要在uWSGI中启用对ZeroMQ/Mongrel2的支持，你需要zeromq库 library (2.1+)和uuid库。
 
-Mongrel2 can use JSON or tnetstring to pass data (such as headers and various other information) to handlers. uWSGI supports tnetstring out of the box but requires the `Jansson <http://www.digip.org/jansson/>`_ library to parse JSON data.
-If you don't install jansson or do not want to use JSON, make sure you specify ``protocol='tnetstring'`` in the Handler in the Mongrel2 configuration, as the default is to use JSON. This would result in a rather obscure "JSON support not enabled. Skip request" message in the uWSGI log.
+Mongrel2可以使用JSON或者tnetstring来将数据 (例如头部和各种其他信息) 传递给处理器。uWSGI默认支持tnetstring，但需要 `Jansson <http://www.digip.org/jansson/>`_ 库来解析JSON数据。如果你没安装jansson，或者不想使用JSON，那么确保你在Mongrel2中的Handler部分指定了 ``protocol='tnetstring'`` ，因为默认是使用JSON的。这会导致uWSGI日志中一条相当模糊的“JSON支持未启用。跳过请求”。
 
-Configuring Mongrel2
+配置Mongrel2
 --------------------
 
-You can find ``mongrel2-uwsgi.conf`` shipped with the uWSGI source. You can use this file as a base to configure Mongrel2.
+find你可以发现uWSGI源代码配备了 ``mongrel2-uwsgi.conf`` 。你可以以这个文件为基础来配置Mongrel2。
 
 
 .. code-block:: python
@@ -50,83 +49,82 @@ You can find ``mongrel2-uwsgi.conf`` shipped with the uWSGI source. You can use 
   settings = {'upload.temp_store':'tmp/mongrel2.upload.XXXXXX'}
   servers = [main]
 
-It is a pretty standard Mongrel2 configuration with upload streaming enabled.
+这是一个相当标准的Mongrel2配置，启动了上传流。
 
-Configuring uWSGI for Mongrel2
+为Mongrel2配置uWSGI
 ------------------------------
 
-To attach uWSGI to Mongrel2, simply use the :ref:`OptionZeromq` option:
+要将uWSGI附加到Mongrel2，只需简单实用 :ref:`OptionZeromq` 选项：
 
 .. code-block:: sh
 
   uwsgi --zeromq tcp://192.168.173.11:9999,tcp://192.168.173.11:9998
 
-You can spawn multiple processes (each one will subscribe to Mongrel2 with a different uuid)
+你可以生成多个进程 (每个都会订阅到Mongrel2，并使用一个不同的uuid)
 
 .. code-block:: sh
  
   uwsgi --zeromq tcp://192.168.173.11:9999,tcp://192.168.173.11:9998 -p 4
 
-You can use threads too. Each thread will subscribe to the Mongrel2 queue but the responder socket will be shared by all the threads and protected by a mutex.
+你也可以使用线程。每个线程将订阅Mongrel2队列，但是响应者socket将会由所有线程共享，并由互斥锁包含。
 
 .. code-block:: sh
 
   uwsgi --zeromq tcp://192.168.173.11:9999,tcp://192.168.173.11:9998 -p 4 --threads 8
   # This will spawn 4 processes with 8 threads each, totaling 32 threads.
 
-Test them all
+一起测试
 -------------
 
-Add an application to uWSGI (we will use the werkzeug.testapp as always)
+添加一个应用到uWSGI (一如既往，我们将使用werkzeug.testapp)
 
 .. code-block:: sh
 
   uwsgi --zeromq tcp://192.168.173.11:9999,tcp://192.168.173.11:9998 -p 4 --threads 8 --module werkzeug.testapp:test_app
 
-Now launch the command on all the servers you want, Mongrel2 will distribute requests to them automagically.
+现在，在所有你想要的服务器上启动命令，Mongrel2将会自动分发请求给它们。
 
-Async mode
+异步模式
 ----------
 
 .. warning::
 
-  Async support for ZeroMQ is still under development, as ZeroMQ uses edge triggered events that complicate things in the uWSGI async architecture.
+  对ZeroMQ的异步支持仍然在开发中，因为ZeroMQ使用边沿触发事件，这些事件会复杂化uWSGI异步架构中的东东。
 
 Chroot
 ------
 
-By default Mongrel2 will ``chroot()``. This is a good thing for security, but can cause headaches regarding file upload streaming. Remember that Mongrel2 will save the uploaded file
-in its own chroot jail, so if your uWSGI instance does not live in the same chroot jail, you'll have to choose the paths carefully. In the example Mongrel2 configuration file we have used a relative path to easily allow uWSGI to reach the file.
+默认情况下，Mongrel2会 ``chroot()`` 。这对于安全是件好事，但是对于文上传流会让人头疼。记住，Mongrel2将会在它自己的chroot jail中上传文件，因此，如果你的uWSGI实例并不处于同一个chroot jail中，那么你将必须小心选择路径。在这个例子中，我们的Mongrel2配置文件使用了一个相对路径来轻松让uWSGI访问文件。
 
-Performance
+性能
 -----------
 
-Mongrel2 is extremely fast and reliable even under huge loads. tnetstring and JSON are text-based (so they are a little less effective than the binary :doc:`uwsgi protocol <Protocol>`. However, as Mongrel2 does not require the expensive one-connection-for-request method, you should get pretty much the same (if not higher) results compared to a (for example) :doc:`Nginx<Nginx>` + uWSGI approach.
+Mongrel2即使是在巨大负载的情况下也是非常快且可靠的。tnetstring和JSON是基于文本的 (因此，它们比二进制 :doc:`uwsgi protocol <Protocol>` 稍微低效率点。然而，因为Mongrel2不需要昂贵的一请求一连接方法，因此与(例如) :doc:`Nginx<Nginx>` + uWSGI 方法相比，你应该会得到几乎相同的（如果不是更高的）的结果。
 
-uWSGI clustering + ZeroMQ
+uWSGI集群 + ZeroMQ
 -------------------------
 
-You can easily mix uWSGI :doc:`clustering<Clustering>` with ZeroMQ.
+你可以轻松地将uWSGI :doc:`clustering<Clustering>` 和ZeroMQ混在一起。
 
-Choose the main node and run
+选择主节点，然后运行
 
 .. code-block:: sh
 
   uwsgi --zeromq tcp://192.168.173.11:9999,tcp://192.168.173.11:9998 -p 4 --threads 8 --module werkzeug.testapp:test_app --cluster 225.1.1.1:1717
 
-And on all the other nodes simply run
+然后在所有其他节点上，简单运行
 
 
 .. code-block:: sh
   
   uwsgi --cluster 225.1.1.1:1717
 
-Mixing standard sockets with ZeroMQ
+用ZeroMQ混合标准socket
 -----------------------------------
 
-You can add uwsgi/:doc:`HTTP<HTTP>`/FastCGI/... sockets to your uWSGI server in addition to ZeroMQ, but if you do, remember to disable threads! This limitation will probably be fixed in the future.
+除了ZeroMQ，你还可以添加uwsgi/:doc:`HTTP<HTTP>`/FastCGI/... socket到你的uWSGI服务器中，但如果你这样做，记得禁用线程！这个限制未来可能会被修复。
 
-Logging via ZeroMQ
+通过ZeroMQ进行日志记录
 ------------------
 
 .. seealso:: :doc:`ZeroMQLogging`

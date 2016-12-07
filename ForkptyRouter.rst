@@ -1,4 +1,4 @@
-The Forkpty Router
+Forkpty路由器
 ==================
 
 Dealing with containers is now a common deployment pattern. One of the most annoying tasks when dealing with jails/namespaces
@@ -8,7 +8,7 @@ The forkpty router aims at simplifyng the process giving a pseudoterminal server
 
 A client connect to the socket exposed by the forkpty router and get a new pseudoterminal connected to a process (generally a shell, but can be whatever you want)
 
-uwsgi mode VS raw mode
+uwsgi模式 VS 原始模式
 **********************
 
 Clients connecting to the forkpty router can use two protocols for data exchange: uwsgi and raw mode.
@@ -21,7 +21,7 @@ plan to use the forkpty router for shell sessions the uwsgi mode is the best cho
 
 The overhead of the uwsgi protocol (worst case) is 5 bytes for each stdin event (single char)
 
-Running the forkpty router
+运行forkpty路由器
 **************************
 
 The plugin is not builtin by default, so you have to compile it:
@@ -151,12 +151,12 @@ a single instance can expose both protocols on different sockets
    forkpty-router = /tmp/raw.socket
    forkpty-urouter = /tmp/uwsgi.socket
 
-Changing the default command
+修改默认命令
 ****************************
 
-By default the forkpty router run /bin/sh on new connections.
+默认情况下，forkpty路由器在新的连接上运行/bin/sh。
 
-You can change the command using the --forkptyrouter-command
+你可以使用--forkptyrouter-command修改命令
 
 .. code-block:: ini
 

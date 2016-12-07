@@ -5,7 +5,7 @@ You can safely run PHP scripts using uWSGI's :doc:`CGI<CGI>` support. The downsi
 
 To get far superior performance you will want to embed the PHP interpreter in the uWSGI core and use the PHP plugin.
 
-Building
+构建
 --------
 
 A bunch of distros (such as Fedora, Red Hat and CentOS) include a ``php-embedded`` package.
@@ -42,7 +42,7 @@ Ubuntu 10.04 (newer versions include official libphp-embed sapi)
     # Compile uWSGI PHP plugin
     python uwsgiconfig --plugin plugins/php
 
-Multiple PHP versions
+多个PHP版本
 ^^^^^^^^^^^^^^^^^^^^^
 
 Sometimes (always, if you are an ISP) you might have multiple versions of PHP installed in the system. In such a case, you will need one uWSGI plugin for each version of PHP:

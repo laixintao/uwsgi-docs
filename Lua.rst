@@ -1,64 +1,64 @@
-Using Lua/WSAPI with uWSGI
+联合uWSGI使用Lua/WSAPI
 ==========================
 
-Updated for uWSGI 2.0
+为uWSGI 2.0进行了更新
 
 构建插件
 -------------------
 
-The lua plugin is part of the official uWSGI distribution (official modifier 6) and it is availale in the plugins/lua directory.
+lua插件是官方的uWSGI发行版的一部分 (官方的modifier 6)，你可以在plugins/lua目录下找到它。
 
-The plugin support lua 5.1, lua 5.2 and luajit.
+该插件支持lua 5.1, lua 5.2和luajit。
 
-By default lua 5.1 is assumed
+默认情况下，假设使用lua 5.1
 
-As always there are various ways to build and install Lua support:
+如往常一样，有多种方法来构建和安装Lua支持：
 
-from sources directory:
+从源代码目录：
 
 .. code-block:: sh
 
    make lua
    
-with the installer (the resulting binary will be in /tmp/uwsgi)
+通过安装程序 (结果二进制文件将会出现在/tmp/uwsgi)
 
 .. code-block:: sh
 
    curl http://uwsgi.it/install | bash -s lua /tmp/uwsgi
    
-or you can build it as a plugin
+或者你可以把它当成一个插件进行构建
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/lua
    
-or (if you already have a uwsgi binary)
+或者 (如果你已经有了一个uwsgi二进制文件)
 
 .. code-block:: sh
 
    uwsgi --build-plugin plugins/lua
    
-The build system (check uwsgiplugin.py in plugins/lua directory for more details) uses pkg-config to find headers and libraries.
+构建系统 (查看plugins/lua目录中的uwsgiplugin.py以获取更多信息) 使用pkg-config来查找头文件和库。
 
-You can specify the pkg-config module to use with the UWSGICONFIG_LUAPC environment variable.
+你可以指定pkg-config模块来使用UWSGICONFIG_LUAPC环境变量。
 
-As an example
+例如
 
 .. code-block:: sh
 
    UWSGICONFIG_LUAPC=lua5.2 make lua
    
-will build a uwsgi binary for lua 5.2
+将会为lua 5.2构建一个uwsgi二进制文件
 
-as well as
+以及
 
 .. code-block:: sh
 
    UWSGICONFIG_LUAPC=luajit make lua
    
-will build a binary with luajit
+将会为luajit构建一个uwsgi二进制文件
 
-If you do not want to rely on the pkg-config tool you can manually specify the includes and library directories as well as the lib name with the following environment vars:
+如果你不想依赖于pkg-config工具，那么你可以通过以下环境变量手动指定包含和库目录，以及lib名字：
 
 .. code-block:: sh
 
@@ -71,18 +71,16 @@ If you do not want to rely on the pkg-config tool you can manually specify the i
 
 如果你是从其他面向对象的语言来的，那么你可能会发现对于web开发来说，lua是一个奇怪的选择。
 
-Well, you have to consider one thing when exploring Lua: it is fast, really fast and consume very few resources.
+那么，在探索Lua的时候，你必须考虑一件事：它很快，真的很快，并且消耗非常少的资源。
 
-The uWSGI plugin allows you to write web applications in lua, but another purpose (if not the main one) is using Lua to
-extend the uWSGI server (and your application) using the signals framework, the rpc subsystem or the simple hooks engine.
+uWSGI插件允许你用lua编写web应用，但是另一个目的（如果不是主要目的）是使用Lua来扩展使用信号框架、rpc子系统或者简单的钩子引擎的uWSGI服务器 (和你的应用)。
 
-If you have slow-area in your code (independently by the language used) consider rewriting them in Lua (before dealing with C)
-and use uWSGI to safely call them.
+如果你的代码中存在慢区域（独立于语言使用），那么考虑用Lua (在用C处理之前) 重写它们，并且使用uWSGI来安全调用它们。
 
 你的第一个WSAPI应用
 ----------------------------
 
-We will use the official WSAPI example, let's call it :file:`pippo.lua`:
+我们将使用官方的WSAPI例子，让我们称之为 :file:`pippo.lua` ：
 
 .. code-block:: lua
 
@@ -100,64 +98,60 @@ We will use the official WSAPI example, let's call it :file:`pippo.lua`:
   
   return hello
 
-Now run uWSGI with the ``lua`` option (remember to add ``--plugins lua`` as the
-first command line option if you are using it as a plugin)
+现在用 ``lua`` 选项来运行uWSGI (如果你将其当做插件使用，那么记得添加 ``--plugins lua`` 作为第一个命令行选项)
 
 .. code-block:: sh
 
   ./uwsgi --http :8080 --http-modifier1 6 --lua pippo.lua
 
-This command line starts an http router that forward requests to a single worker in which pippo.lua is loaded.
+这个命令行启动了一个http路由器，它转发请求到单个加载了pippo.lua的worker。
 
-As you can see the modifier 6 is enforced.
+正如你可以见到的那样，强制使用modifier 6。
 
-Obviously you can directly attach uWSGI to your frontline webserver (like nginx) and bind it to a uwsgi socket:
+显然，你可以直接附加uWSGI到你的前线web服务器（例如nginx）上，并将其绑定到一个uwsgi socket：
 
 .. code-block:: sh
 
   ./uwsgi --socket 127.0.0.1:3031 --lua pippo.lua
 
-(remember to set modifier1 to 6 in your webserver of choice)
+(记得在你选择的web服务器中设置modifier1为6)
 
 并发
 -----------
 
-Basically Lua is available in all of the supported uWSGI concurrency models
+基本上，在所有支持的uWSGI并发模型中，都能用Lua
 
-you can go multiprocess:
+你可以用多进程：
 
 .. code-block:: sh
 
   ./uwsgi --socket 127.0.0.1:3031 --lua pippo.lua --processes 8 --master
   
   
-or multithread:
+或者多线程：
 
 .. code-block:: sh
 
   ./uwsgi --socket 127.0.0.1:3031 --lua pippo.lua --threads 8 --master
   
-or both
+或者同时使用
 
 .. code-block:: sh
 
   ./uwsgi --socket 127.0.0.1:3031 --lua pippo.lua --processes 4 --threads 8 --master
   
-you can run it in coroutine mode (see below) using :doc:`uGreen` as the suspend engine
+你可以以协程模式 (见下) 运行它，使用 :doc:`uGreen` 作为挂起引擎
 
 .. code-block:: sh
 
   ./uwsgi --socket 127.0.0.1:3031 --lua pippo.lua --async 1000 --ugreen
   
-Both threading and async modes will initialize a lua state each (you can see it as a whole independent lua VM)
+线程和异步模式每个都将初始化lua状态 (你可以将其视为一个完整的独立lua VM)
 
-Abusing coroutines
+尽情使用协程
 ------------------
 
-One of the most exciting feature of Lua are coroutines (cooperative
-multithreading) support. uWSGI can benefit from this using its async engine. The
-Lua plugin will initialize a ``lua_State`` for every async core. We will use a
-CPU-bound version of our pippo.lua to test it:
+Lua最让人兴奋的特性之一是协程（协作多线程）支持。uWSGI使用它的异步引擎，可以从中受益。Lua插件将会为每个异步核心初始化一个 ``lua_State`` 。我们将使用我们的pippo.lua的CPU密集型版本来测试它：
 
 .. code-block:: lua
 
@@ -180,18 +174,17 @@ CPU-bound version of our pippo.lua to test it:
 
   return hello
 
-and run uWSGI with 8 async cores...
+并且运行带有8个异步核心的uWSGI……
 
 .. code-block:: sh
 
   ./uwsgi --socket :3031 --lua pippo.lua --async 8
 
-And just like that, you can manage 8 concurrent requests within a single worker!
+就这样，你可以在单个worker中管理8个并发请求！
 
-Lua coroutines do not work over C stacks (meaning you cannot manage them with your C code), but thanks to :doc:`uGreen` (the uWSGI official coroutine/greenthread engine)
-you can bypass this limit.
+Lua协程并非在C栈之上运行的 (意味着你不能用你的C代码来管理它们)，但多亏了 :doc:`uGreen` (uWSGI官方协程/绿色线程引擎)，你可以绕过这个限制。
 
-Thanks to uGreen you can use the uWSGI async API in your Lua apps and gain a very high level of concurrency.
+多亏了uGreen，你可以在你的Lua应用中使用uWSGI异步API，获得一个非常高层次的并发。
 
 
 .. code-block:: lua
@@ -208,11 +201,8 @@ Thanks to uGreen you can use the uWSGI async API in your Lua apps and gain a ver
 线程例子
 -----------------
 
-The Lua plugin is "thread-safe" as uWSGI maps a lua_State to each internal
-pthread.  For example you can run the Sputnik_ wiki engine very easily.  Use
-LuaRocks_ to install Sputnik and ``versium-sqlite3``. A database-backed storage
-is required as the default filesystem storage does not support being accessed
-by multiple interpreters concurrently.  Create a wsapi compliant file:
+Lua插件是“线程安全的”，因为uWSGI因为一个lua_State到每个内部pthread。例如，你可以非常容易地运行Sputnik_ wiki引擎。使用
+LuaRocks_ 来安装Sputnik和 ``versium-sqlite3`` 。要求有一个数据库备份存储，因为默认的文件系统存储并不支持多个解释器并发访问。创建一个wsapi兼容文件：
 
 .. code-block:: lua
 
@@ -225,7 +215,7 @@ by multiple interpreters concurrently.  Create a wsapi compliant file:
       BASE_URL       = '/',
     }
 
-And run your threaded uWSGI server
+并运行你的线程化uWSGI服务器
 
 .. code-block:: sh
 
@@ -234,15 +224,12 @@ And run your threaded uWSGI server
 .. _Sputnik: http://sputnik.freewisdom.org/
 .. _LuaRocks: http://www.luarocks.org/
 
-A note on memory
+内存的注意事项
 ----------------
 
-As we all know, uWSGI is parsimonious with memory. Memory is a precious
-resource. Do not trust software that does not care for your memory!  The Lua
-garbage collector is automatically called (by default) after each request.
+我们都知道，uWSGI对内存的吝啬。内存是一种珍贵的字眼。不要信任那些不关心你的内存的软件！在每个请求之后，（默认）会自动调用Lua垃圾收集器。
 
-You can tune the frequency of the GC call with the ``--lua-gc-freq <n>`` option, where n
-is the number of requests after the GC will be called:
+你可以使用 ``--lua-gc-freq <n>`` 选项来调整GC调用的频率，其中，n是将会调用GC之后的请求数目：
 
 .. code-block:: ini
 

@@ -1,18 +1,17 @@
 uWSGI Perl支持 (PSGI)
 =========================
 
-:term:`PSGI` is the equivalent of :term:`WSGI` in the Perl world.
+在Perl世界中， :term:`PSGI` 等价于 :term:`WSGI` 。
 
 * http://plackperl.org/
 * https://github.com/plack/psgi-specs/blob/master/PSGI.pod
 
-The PSGI plugin is officially supported and has an officially assigned uwsgi modifier, ``5``. So as usual, when you're in the business of dispatching requests to Perl apps, set the ``modifier1`` value to 5 in your web server configuration.
+官方支持PSGI插件，并且官方分配给它一个uwsgi modifier, ``5`` 。因此，照例，如果你要将请求派发给Perl应用，那么在你的web服务器配置中设置 ``modifier1`` 值为5。
 
-Compiling the PSGI plugin
+编译PSGI插件
 -------------------------
 
-You can build a PSGI-only uWSGI server using the supplied :file:`buildconf/psgi.ini` file. Make sure that 
-the ``ExtUtils::Embed`` module and its prerequisites are installed before building the PSGI plugin.
+你可以使用提供的 :file:`buildconf/psgi.ini` 文件来构建一个仅PSGI的uWSGI服务器。在构建PSGI插件之前，确保安装了 ``ExtUtils::Embed`` 模块和它的先决条件。
 
 .. code-block:: sh
 
@@ -24,20 +23,20 @@ the ``ExtUtils::Embed`` module and its prerequisites are installed before buildi
     # the configuration name you used while doing that:
     python uwsgiconfig.py --plugin plugins/psgi core
     
-or (as always) you can use the network installer:
+或者 (如常)，你可以使用网络安装程序：
 
 .. code-block:: sh
 
     curl http://uwsgi.it/install | bash -s psgi /tmp/uwsgi
     
-to have a single-file uwsgi binary with perl support in /tmp/uwsgi
+这样，在/tmp/uwsgi中，你就有了一个带有perl支持的单个uwsgi二进制文件。
 
-Usage
+使用
 -----
 
-There is only one option exported by the plugin: ``psgi <app>``
+这个插件只导出了一个选项： ``psgi <app>``
 
-You can simply load applications using
+你可以这样简单加载应用
 
 .. code-block:: sh
 
@@ -46,23 +45,23 @@ You can simply load applications using
     ./uwsgi --plugins psgi -s :3031 -M -p 4 --psgi myapp.psgi -m
 
 
-Tested PSGI frameworks/applications
+测试PSGI框架/应用
 -----------------------------------
 
-The following frameworks/apps have been tested with uWSGI:
+以下框架/应用已经用uWSGI测试过了：
 
 * MojoMojo_
 * Mojolicious_
-* Mojolicious+perlbrew+uWSGI+nginx_ install bundle
+* Mojolicious+perlbrew+uWSGI+nginx_ 安装包
 
 .. _MojoMojo: http://mojomojo.org/
 .. _Mojolicious: http://mojolicio.us/
 .. _Mojolicious+perlbrew+uWSGI+nginx: https://github.com/kraih/mojo/wiki/nginx-&-uwsgi(psgi)-&-perlbrew-&-mojolicious
 
-Multi-app support
+多应用支持
 -----------------
 
-You can load multiple almost-isolated apps in the same uWSGI process using the ``mount`` option or using the ``UWSGI_SCRIPT``/``UWSGI_FILE`` request variables.
+你可以使用 ``mount`` 选项或者使用 ``UWSGI_SCRIPT``/``UWSGI_FILE`` 请求变量在同一个uWSGI进程中加载多个几乎相互隔离的应用。
 
 .. code-block:: ini
 
@@ -107,40 +106,40 @@ You can load multiple almost-isolated apps in the same uWSGI process using the `
       }
     }
 
-The auto reloader (from uWSGI 1.9.18)
+自动重载器 (自uWSGI 1.9.18起)
 -------------------------------------
 
-The option --perl-auto-reload <n> allows you to instruct uWSGI to monitor every single module imported by the perl vm.
+选项 --perl-auto-reload <n> 允许你指示uWSGI监控由perl vm导入的每一个单一的模块。
 
-Whenever one of the module changes, the whole instance will be (gracefully) reloaded.
+每当其中一个模块改变，整个实例将会被（优雅）加载。
 
-The monitor works by iterating over %INC after a request is served and the specified number of seconds (from the last run) is elapsed (this number of seconds is the value of the option)
+监控器通过在处理一个请求并且经过指定的秒数（自最后一次运行起）（这个秒数是选项的值）之后，迭代%INC工作的。
 
-This could look sub-optimal (you wil get the new content starting from from the following request) but it is the more solid (and safe) approach for the way perl works.
+这可能看起来是次优的 (你会获得从以下请求起的新内容)，但对于perl的工作方式而言，它是一种更稳定（安全）的方式。
 
-If you want to skip specific files from the monitoring, just add them with --perl-auto-reload-ignore
+如果你想从监控跳过指定文件，只需使用--perl-auto-reload-ignore来添加它们。
 
-Remember that always modules in %INC are scanned, if you want to monitor your .psgi files, you need to specify them using the classic --touch-reload option
+记住，总会扫描%INC中的模块，如果你想要监控你的.psgi文件，那么你需要使用经典的--touch-reload选项来指定它们。
 
-Notes
------
+注意事项
+---------
 
-* Async support should work out-of-the-box.
-* Threads are supported on ithreads-enabled perl builds. For each app, a new interpreter will be created for each thread. This shouldn't be too different from a simple multi-process fork()-based subsystem. 
-* There are currently no known memory leaks.
+* 应该默认支持异步。
+* 在启用了ithreads的perl构建中，支持线程。对于每个应用，会为每个线程创建一个新的解释器。这应该不会与一个简单的多进程基于fork()的子系统有太大的不同。
+* 存在目前未知的内存泄漏。
 
 
-Real world example, `HTML::Mason`
+真实世界例子： `HTML::Mason`
 ---------------------------------
 
-1. Install the HTML::Mason PSGI handler from CPAN and create a directory for your site.
+1. 安装来自CPAN的HTML::Mason PSGI处理器，并为你的站点创建一个目录。
    
    .. code-block:: sh
       
       cpan install HTML::Mason::PSGIHandler
       mkdir mason
 
-2. Create ``mason/index.html``:
+2. 创建 ``mason/index.html``:
 
    .. code-block:: html
    
@@ -153,7 +152,7 @@ Real world example, `HTML::Mason`
        How are ya?<br/>
        Request <% $r->method %> <% $r->uri %><br/>
 
-3. Create the PSGI file (``mason.psgi``):
+3. 创建PSGI文件 (``mason.psgi``):
 
    .. code-block:: perl
    
@@ -168,12 +167,12 @@ Real world example, `HTML::Mason`
     	      $h->handle_psgi($env);
        };
     
-   Pay attention to ``comp_root``, it must be an absolute path!
+   注意 ``comp_root`` ，它必须是一个绝对路径！
 
-4. Now run uWSGI:
+4. 现在运行uWSGI:
 
    .. code-block:: sh
 
     ./uwsgi -s :3031 -M -p 8 --psgi mason.psgi -m
 
-5. Then go to ``/index.html`` with your browser.
+5. 然后在你的浏览器中访问 ``/index.html`` 。

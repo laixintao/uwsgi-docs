@@ -1,9 +1,9 @@
 uWSGI RPC Stack
 ===============
 
-uWSGI contains a fast, simple, pan-and-cross-language RPC stack.
+uWSGI包含了一个快速、简单、平稳跨平台的RPC栈。
 
-Although you may fall in love with this subsystem, try to use it only when you need it. There are plenty of higher-level RPC technologies better suited for the vast majority of situations.
+虽然，你或许会爱上这个子系统，try to use it only when you need it. There are plenty of higher-level RPC technologies better suited for the vast majority of situations.
 
 That said, the uWSGI RPC subsystem shines with its performance and memory usage. As an example, if you need to split the load of a request to multiple servers, the uWSGI RPC is a great choice, as it allows you to offload tasks with very little effort.
 
@@ -17,14 +17,14 @@ RPC functions can take up to 254 args. Each argument has to be a string with a 1
 
 So, if you need "elegance" or strong typing, just look in another place (or roll your own typing on top of uWSGI RPC, maybe...).
 
-Since 1.9 the RPC subsystem is fully async-friendly, so you can use it with gevent and Coro::AnyEvent etc.
+从1.9起，RPC子系统就是完全异步友好型的，因此，你可以把它跟gevent和Coro::AnyEvent等一起使用。
 
-Learning by example
+通过实例学习
 -------------------
 
-Let's start with a simple RPC call from ``10.0.0.1:3031`` to ``10.0.0.2:3031``.
+让我们从一个简单的RPC调用开始，这个调用从 ``10.0.0.1:3031`` 到 ``10.0.0.2:3031`` 。
 
-So let's export a "hello" function on ``.2``.
+所以，让我们导出 ``.2`` 上的一个"hello"函数
 
 .. code-block:: py
 
@@ -47,9 +47,9 @@ On the caller's side, on ``10.0.0.1``, let's declare the world's (second) simple
         start_response('200 Ok', [('Content-Type', 'text/html')])
         return uwsgi.rpc('10.0.0.2:3031', 'hello')
 
-That's it!
+就这样！
 
-You need Perl?
+你需要Perl？
 ^^^^^^^^^^^^^^
 
 .. code-block:: perl
@@ -69,7 +69,7 @@ Or perhaps you want to call an RPC function from a standalone perl script?
     print Dumper(Net::uwsgi::uwsgi_rpc('127.0.0.1:3031','hello'));
 
 
-What about, let's say, Lua?
+那么，比方说，Lua呢？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Glad you asked. If you want to export functions in Lua, simply do:
@@ -82,7 +82,7 @@ Glad you asked. If you want to export functions in Lua, simply do:
 
     uwsgi.register_rpc('hellolua', hello_with_args)
 
-And in your Python WSGI app:
+而在你的Python WSGI应用中：
 
 .. code-block:: py
 
@@ -92,7 +92,7 @@ And in your Python WSGI app:
         start_response('200 Ok', [('Content-Type', 'text/html')]
         return uwsgi.rpc('10.0.0.2:3031', 'hellolua', 'foo', 'bar')
 
-And other languages/platforms?
+其他语言/平台？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Check the language specific docs, basically all of them should support registering and calling RPC functions.
@@ -100,21 +100,21 @@ Check the language specific docs, basically all of them should support registeri
 You can build multi-languages app with really no effort at all and will be happily surprised about how easy it is to call :doc:`Java<JVM>` functions from Perl, JavaScript from Python and so on.
 
 
-Doing RPC locally
+本地进行RPC
 -----------------
 
-Doing RPC locally may sound a little silly, but if you need to call a Lua function from Python with the absolute least possible overhead, uWSGI RPC is your man.
+本地进行RPC听起来可能有点蠢，但如果you need to call a Lua function from Python with the absolute least possible overhead, uWSGI RPC is your man.
 
 If you want to call a RPC defined in the same server (governed by the same master, etc.), simply set the first parameter of ``uwsgi.rpc`` to None or nil, or use the convenience function :py:meth:`uwsgi.call`.
 
-Doing RPC from the internal routing subsystem
+从内部路由子系统进行RPC
 ---------------------------------------------
 
-The RPC plugin exports a bunch of internal routing actions:
+RPC插件导出了一堆内部路由动作：
 
-* `rpc` call the specified rpc function and send the response to the client
-* `rpcnext/rpcblob` call the specified rpc function, send the response to the client and continue to the next rule
-* `rpcret` calls the specified rpc function and uses its return value as the action return code (next, continue, goto ...)
+* `rpc` 调用指定的rpc函数，并将响应发送给客户端
+* `rpcnext/rpcblob` 调用指定的rpc函数，发送响应给客户端，并继续执行下一条规则
+* `rpcret` 调用指定的rpc函数，并将其返回值当成动作返回码 (next, continue, goto ...)
 
 .. code-block:: ini
 
@@ -126,7 +126,7 @@ The RPC plugin exports a bunch of internal routing actions:
    route = ^/multi rpcnext:part3@192.168.173.100:3031
 
 
-Doing RPC from nginx
+从nginx进行RPC
 --------------------
 
 As Nginx supports low-level manipulation of the uwsgi packets sent to upstream uWSGI servers, you can do RPC directly through it. Madness!

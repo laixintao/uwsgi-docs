@@ -93,7 +93,7 @@ Callable VS. 协程
        myself.parent.switch()
        return [b"Hello World"]
        
-我们可以更进一步，为WSGI生成器滥用uWSGI支持：
+我们可以更进一步，为WSGI生成器尽情使用uWSGI支持：
 
 .. code-block:: python
 

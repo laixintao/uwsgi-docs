@@ -135,7 +135,7 @@ uwsgidecorators API参考
 
 .. function:: postfork(func)
 
-   uWSGI是一个预启动 (或者说是"滥用fork")的服务器，因此，你可能需要在每次 ``fork()`` 之后执行一个修正任务。这就是 ``postfork`` 装饰器的用武之处。你可以声明多个 ``postfork`` 任务。每个被装饰器装饰的函数将在每个 ``fork()`` 之后依次执行。
+   uWSGI是一个预启动 (或者说是"尽情使用fork")的服务器，因此，你可能需要在每次 ``fork()`` 之后执行一个修正任务。这就是 ``postfork`` 装饰器的用武之处。你可以声明多个 ``postfork`` 任务。每个被装饰器装饰的函数将在每个 ``fork()`` 之后依次执行。
 
    .. code-block:: py
 
