@@ -10,17 +10,11 @@ uwsgiconfig.py
 
 这是一个旨在调用不同编译/链接阶段的python脚本。
 
-在2009年期间，当开始定义uWSGI指导方针 (以及准则) 时，人们一致认为，autotools, cmake and friends
-was not loved by a lot of sysadmins. Albeit they are pretty standardized, the amount of packages needed and the incompatibility
-between them (especially in the autotools world) was a problem for a project with fast development/evolution where "compile from sources" was, is and very probably will be the best way
-to get the best from the product. In addition to this the build procedure MUST BE fast (less than 1 minute on entry level x86 is the main rule)
+在2009年期间，当开始定义uWSGI指导方针 (以及准则) 时，人们一致认为，autotools, cmake和它们的小伙伴们不受许多系统管理员喜爱。尽管它们相当标准，但是需要包数量，以及它们之前的不兼容（特别是在autotools的世界中）对于一个具有快速开发/演进的项目来说，是个问题，其中“从源代码编译”曾经，现在是，并且可能将是从产品获得最好的最好的方式。除此之外，构建过程一定要快 (在入门级的x86上少于1分钟是主要规则)
 
-For such a reason, to compile uWSGI you only need to have a c compiler suite (gcc, clang...) and a python interpreter. Someone could argue that perl
-could have been a better choice, and maybe it is the truth (it is generally installed by default in lot of operating systems), but we decided to stay with python mainly
-because when uWSGI started it was a python-only application. (Obviously if you want to develop an alternative build system you are free to do it)
+出于这样的原因，要编译uWSGI，你只需要有一个c编译套件 (gcc, clang...) 和一个python解释器。有人可能会说，perl可能是一个更好的选择，也许这是事实 (默认情况下，许多操作系统一般都会安装它)，但是我们还是决定主要用python，因为，在uWSGI项目启动的时候，它是一个仅支持python的应用。(显然，如果你想要开发一个可替换的构建系统，请随意)
 
-The uwsgiconfig.py basically detects the available features in the system and builds a uwsgi binary (and eventually its plugins) using the
-so called 'build profile'
+基本上，uwsgiconfig.py检测系统中的可用特性，并使用所谓的“构建配置文件”构建一个uwsgi二进制（及其插件）
 
 构建配置文件
 **************
@@ -31,16 +25,16 @@ so called 'build profile'
 CC和CPP
 **********
 
-These 2 environment variables tell uwsgiconfig.py to use an alternative C compiler and C preprocessor.
+这2个环境变量告诉uwsgiconfig.py使用一个替换的C编译器和C预处理器。
 
-If they are not defined the procedure is the following:
+如果不定义它们，那么过程如下：
 
-For CC -> try to get the CC config_var from the python binary running uwsgiconfig.py, fallback to 'gcc'
+对于CC -> 尝试从运行uwsgiconfig.py的python二进制中获得CC config_var，回退到'gcc'
 
-For CPP -> fallback to 'cpp'
+对于CPP -> 回退到'cpp'
 
 
-As an example, on a system with both gcc and clang you will end with
+例如，在一个同时拥有gcc和clang的系统上，你会得到
 
 .. code-block:: sh
 
@@ -49,10 +43,9 @@ As an example, on a system with both gcc and clang you will end with
 CPUCOUNT
 ********
 
-In the spirit of "easy and fast build even on production systems", uwsgiconfig.py tries to use all of your cpu cores spawning multiple
-instances of the c compiler (one per-core).
+在“即使在生产系统上，也要轻松快速构建”的精神下，uwsgiconfig.py试着使用你所有的cpu核来生成c编译器的多个实例 (每个核一个)。
 
-You can override this system using the CPUCOUNT environment variable, forcing the number of detected cpu cores (setting to 1 will disable parallel build).
+你可以使用CPUCOUNT环境变量来覆盖这个系统，强制已检测的CPU核数目 (设为1将会禁用并行构建)。
 
 .. code-block:: sh
 
@@ -65,30 +58,29 @@ UWSGI_FORCE_REBUILD
 **************************
 
 
-A uWSGI plugin is a shared library exporting the <name>_plugin symbol. Where <name> is the name of the plugin.
+一个uWSGI插件是一个导出<name>_plugin符号的共享库。其中，<name>是插件名。
 
-As an example the psgi plugin will export the psgi_plugin symbol as well as pypy will export he pypy_plugin symbol and so on.
+例如，psgi插件将会导出psgi_plugin符号，而pypy将会导出pypy_plugin符号，以此类推。
 
-This symbol is a uwsgi_plugin C struct defining the hooks of the plugin.
+这个符号是一个uwsgi_plugin C结构，定义插件的钩子。
 
-When you ask uWSGI to load a plugin it simply calls dlopen() and get the uwsgi_plugin struct via dlsym().
+当你让uWSGI加载一个插件的时候，它简单调用dlopen()，并通过dlsym()获得uwsgi_plugin结构。
 
-The vast majority of the uWSGI project is developed as a plugin, this ensure a modular approach to configuration and an obviously saner development style.
+uWSGI项目的绝大部分是作为插件开发的，这保证了配置的模块化，以及明显理智的发展方式。
 
-The sysadmin is free to embed each plugin in the server binary or to build each plugin as an external shared library.
+系统管理员可以随意嵌入每个插件在服务器二进制文件中，或将每个插件当成一个外部共享库构建。
 
-Embedded plugins are defined in the 'embedded_plugins' directive of the build profile. You can add more embedded plugins
-from command line using the UWSGI_EMBED_PLUGINS environment variable (see below).
+已嵌入的插件在构建配置文件的'embedded_plugins'指令中定义。你可以使用UWSGI_EMBED_PLUGINS环境变量，从命令行添加更多嵌入插件（见下）。
 
-Instead, if you want to build a plugin as a shared library just run uwsgiconfig.py with the --plugin option
+事实上，如果你想要把一个插件作为共享库构建，那么只需带--plugin选项运行uwsgiconfig.py
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/psgi
    
-this will build the plugin in plugins/psgi to the psgi_plugin.so file
+这将会构建plugins/psgi中的插件为psgi_plugin.so文件
 
-To specify a build profile when you build a plugin, you can pass the profile as an additional argument
+要在构建插件的时候，指定一个构建配置文件，你可以把这个配置文件当成一个额外的参数传递
 
 .. code-block:: sh
 
@@ -97,9 +89,9 @@ To specify a build profile when you build a plugin, you can pass the profile as 
 UWSGI_INCLUDES
 **************
 
-- this has been added in 1.9.13
+- 这个已在1.9.13添加
 
-On startup, the CPP binary is run to detect default include paths. You can add more paths using the UWSGI_INCLUDES environment variable
+在启动时，运行CPP二进制文件来检测默认的包含路径。你可以使用UWSGI_INCLUDES环境变量来添加更多路径
 
 .. code-block:: sh
 
@@ -111,19 +103,19 @@ UWSGI_EMBED_PLUGINS
 UWSGI_EMBED_CONFIG
 ******************
 
-Allows embedding the specified .ini file in the server binary (currently Linux only)
+允许嵌入指定的.ini文件到服务器二进制文件中 (目前仅支持Linux)
 
-On startup the server parses the embedded file as soon as possible.
+在启动的时候，服务器立即解析嵌入的文件。
 
-Custom options defined in the embedded config will be available as standard ones.
+嵌入的配置中自定义的选项将如标准选项一般可用。
 
 UWSGI_BIN_NAME
 **************
 
-CFLAGS and LDFLAGS
+CFLAGS和LDFLAGS
 ******************
 
-UWSGICONFIG_* for plugins
+用于插件的 UWSGICONFIG_* 
 *************************
 
 libuwsgi.so
@@ -138,8 +130,8 @@ uwsgibuild.lastcflags
 cflags和uwsgi.h magic
 ************************
 
-embedding files
+嵌入文件
 ***************
 
-The fake make
+fake make
 *************

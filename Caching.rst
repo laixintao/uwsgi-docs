@@ -6,205 +6,153 @@ uWSGI缓存框架
   本页面是关于“新一代”的缓存，它由uWSGI 1.9引入。
   对于旧式缓存 (现在简单称其为“web缓存”)，可以看看 :doc:`WebCaching`
 
-uWSGI包含了一个非常快速、全内存访问、零IPC、SMP安全、不断优化、高度可调、key-value store simply called "the
-caching framework".  A single uWSGI instance can create an unlimited number of
-"caches" each one with different setup and purpose.
+uWSGI包含了一个非常快速、全内存访问、零IPC、SMP安全、不断优化、高度可调的、键值存储的简单的“缓存框架”。单个uWSGI实例可以使用不同的设置，出于不同的目的，创建无限个不同的“缓存”。
 
 创建一个“缓存”
 ******************
 
-To create a cache you use the ``--cache2`` option. It takes a dictionary of
-arguments specifying the cache configuration.  To have a valid cache you need
-to specify its name and the maximum number of items it can contains.
+要创建一个缓存，你可以使用 ``--cache2`` 选项。它接收指定缓存选项的参数字典。要有一个有效的缓存，你需要指定它的名字，以及它可以包含的项的最大数目。
 
 .. code-block:: sh
 
    uwsgi --cache2 name=mycache,items=100 --socket :3031
 
-this will create a cache named "mycache" with a maximum of 100 items. Each item can be at most 64k.
+这将会创建一个名为"mycache"的缓存，它最多拥有100个项。每个项最大可以是64k。
 
 
 关于“项的最大数”的一个忧伤/奇怪/灵异/糟糕的注意
 ****************************************************************
 
-If you start with a 100 item cache you will suddenly note that the true maximum number of items you can use is indeed 99.
+如果你开始使用的是100个项的缓存，那么你会突然注意到，你可以使用的项的实际最大数其实是99。
 
-This is because the first item of the cache is always internally used as "NULL/None/undef" item.
+这是因为，缓存的第一个项总是被内部用于"NULL/None/undef"项。
 
-Remember this when you start planning your cache configuration.
+当你开始计划你的缓存配置的时候，记住这点。
 
 
 配置缓存（它是如何工作的）
 ************************************
 
-The uWSGI cache works like a file system. You have an area for storing keys
-(metadata) followed by a series of fixed size blocks in which to store the
-content of each key.  Another memory area, the hash table is allocated for fast
-search of keys.  When you request a key, it is first hashed over the hash
-table. Each hash points to a key in the metadata area.  Keys can be linked to
-manage hash collisions. Each key has a reference to the block containing its
-value.
+uWSGI缓存的工作方式像一个文件系统。你有一个用于存储键（元数据）的区域，后面跟着一系列固定大小的块，其中保存每个键的内容。另一个内存区域，会分配哈希表，用于对键的快速搜索。当你请求一个键的时候，首先会在哈希表上对其进行散列。每一个哈希指向元数据区域中的一个艰难。可以链接键来管理哈希冲突。每一个键都有一个到包含其值的块的引用。
 
-简单的阻塞（更快）VS. bitmaps (更慢)
+简单的阻塞（更快）VS. bitmap (更慢)
 ******************************************
 
-.. warning:: Bitmap mode is considered production ready only from uWSGI 2.0.2! (That is, it was buggy before that.)
+.. warning:: Bitmap模式只从uWSGI 2.0.2开始才被认为是可用于生产的！(也就是说，在那之前，它有问题。)
 
-In the standard ("single block") configuration a key can only map to a single
-block. Thus if you have a cache block size of 64k your items can be at most
-65,535 bytes long. Conversely items smaller than that will still consume 64k of
-memory.  The advantage of this approach is its simplicity and speed. The system
-does not need to scan the memory for free blocks every time you insert an
-object in the cache.
+在标准的 ("单个块") 配置中，一个键可以只映射到单个块中。因此，如果你有一个大小为64k的缓存块，那么你的项可以至多为65,535字节长。相反，小于它的项仍将消耗64k内存。这个方法的优势是它的简单性和速度。系统不需要在每次你插入一个对象到缓存中的时候都扫描内存以查找可用块。
 
-If you need a more versatile (but relatively slower) approach, you can enable
-the "bitmap" mode. Another memory area will be created containing a map of all
-of the used and free blocks of the cache. When you insert an item the bitmap is
-scanned for contiguous free blocks.  Blocks must be contiguous, this could lead
-to a bit of fragmentation but it is not as big a problem as with disk storage,
-and you can always tune the block size to reduce fragmentation.
+如果你需要一个更加灵活 (但相对较慢) 的方法，那么你可启用"bitmap"模式。将会创建另一个包含所有缓存已用和可用块的映射的内存区域。当你插入一个项的时候，会扫描bitmap，查找连续的可用块。块必须是连续的，这可能导致一些碎片，但是这并非和磁盘存储一样是个大问题，并且你可以总是调整块大小来减少碎片。
 
 永久存储
 ******************
 
-You can store cache data in a backing store file to implement persistence.  As
-this is managed by ``mmap()`` it is almost transparent to the user.  You should
-not rely on this for data safety (disk syncing is managed asynchronously); use
-it only for performance purposes.
+你可以将缓存数据存储在后备文件中来实现持久化。由于这是由 ``mmap()`` 管理的，因此对于用户来说基本是透明的。你不应该依赖此来获得数据安全 (磁盘同步是异步管理的); 只为性能要求使用它。
 
 网络访问
 **************
 
-All of your caches can be accessed over the network. A request plugin named
-"cache" (modifier1 111) manages requests from external nodes. On a standard
-monolithic build of uWSGI the cache plugin is always enabled.  The cache plugin
-works in a fully non-blocking way, and it is greenthreads/coroutine friendly so
-you can use technologies like gevent or Coro::AnyEvent with it safely.
+你所有的缓存都能通过网络来访问。一个名为"cache"的请求插件 (modifier1 111) 管理来自外部节点的请求。在一个标准的uWSGI单片构建中，缓存插件总是启用的。这个缓存插件以一种全非阻塞的方式工作，并且它是绿色线程/协程友好的，因此你可以安全地使用诸如gevent或者Coro::AnyEvent这样的技术。
 
 UDP同步
 ********
 
-This technique has been inspired by the STUD project, which uses something like
-this for SSL session scaling (and coincidentally the same approach can be used
-with uWSGI SSL/HTTPS routers).  Basically whenever you set/update/delete an
-item from the cache, the operation is propagated to remote nodes via simple UDP
-packets.  There are no built-in guarantees with UDP syncing so use it only for
-very specific purposes, like :doc:`SSLScaling`.
+这个技术的灵感来自于STUD项目，它使用了诸如此类的东东来进行SSL会话缩放 (巧的是，同样的方法也可被用于uWSGI SSL/HTTPS路由器)。基本上，每当你设置/更新/删除一个缓存中的项的时候，该操作就会通过简单的UDP包传送到远程节点。对于UDP同步，并无内置的保证，因此只为特定目的，例如 :doc:`SSLScaling` ，才使用它。
 
 --cache2选项
 ****************
 
-This is the list of all of the options (and their aliases) of ``--cache2``.
+这是 ``--cache2`` 的所有选项（以及它们的别名）列表
 
 name
 ^^^^
 
-Set the name of the cache. Must be unique in an instance.
+设置缓存名。必须是实例中唯一的。
 
 max-items || maxitems || items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Set the maximum number of cache items.
+设置缓存项的最大数。
 
 blocksize
 ^^^^^^^^^
 
-Set the size (in bytes) of a single block.
+设置单个块的大小（以字节为单位）。
 
 blocks
 ^^^^^^
 
-Set the number of blocks in the cache. Useful only in bitmap mode, otherwise
-the number of blocks is equal to the maximum number of items.
+设置缓存中的块数目。只有在bitmap模式下才有用，否则块的数目等于项的最大数。
 
 hash
 ^^^^
 
-Set the hash algorithm used in the hash table. Currentl options are "djb33x"
-(default) and "murmur2".
+设置哈希表中使用的哈希算法。当前可选值为"djb33x"（默认）和"murmur2"。
 
 hashsize || hash_size
 ^^^^^^^^^^^^^^^^^^^^^
 
-this is the size of the hash table in bytes. Generally 65536 (the default) is a
-good value. Change it only if you know what you are doing or if you have a lot
-of collisions in your cache.
+这是哈希表的大小，以字节为单位。一般来说，65536 (默认值) 是个不错的值。只有在你知道你在做什么的时候，或者你的缓存中存在大量冲突的情况下才修改它。
 
 keysize || key_size
 ^^^^^^^^^^^^^^^^^^^
 
-Set the maximum size of a key, in bytes (default 2048)
+设置一个键的大小，以字节为单位 (默认是2048)
 
 store
 ^^^^^
 
-Set the filename for the persistent storage. If it doesn't exist, the system
-assumes an empty cache and the file will be created.
+为持久化存储设置文件名。如果它不存在，那么系统假设一个空的存储，并且会创建该文件。
 
 store_sync || storesync
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Set the number of seconds after which msync() is called to flush memory cache
-on disk when in persistent mode.  By default it is disabled leaving the
-decision-making to the kernel.
+设置在持久化模式下，调用msync()来将内存缓存刷新到磁盘上之后的秒数。默认情况下，禁用它，将决定权交给内核。
 
 store_delete || storedelete
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-uWSGI, by default, will not start if a cache file exists and the store file does not match the configured items/blocksize.
-Setting this option will make uWSGI delete the existing file upon mismatch and create a new one.
+默认情况下，如果一个缓存文件不存在，并且缓存文件并不匹配配置项/块大小，那么uWSGI将不会启动。设置这个选项将会让uWSGI在不匹配的时候删除存在的文件，然后创建一个新的。
 
 node || nodes
 ^^^^^^^^^^^^^
 
-A semicolon separated list of UDP servers which will receive UDP cache updates.
+以分号分隔的UDP服务器列表，它们将会接收UDP缓存更新。
 
 sync
 ^^^^
 
-A semicolon separated list of uwsgi addresses which the cache subsystem will
-connect to for getting a full dump of the cache. It can be used for initial
-cache synchronization. The first node sending a valid dump will stop the
-procedure.
+以分号分隔的uwsgi地址列表，缓存子系统将会连接到它们上面，来获取缓存的完整dump。它可以被用来初始化缓存同步。发送一个有效的dump的第一个节点将会停止这个过程。
 
 udp || udp_servers || udp_server || udpserver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A semicolon separated list of UDP addresses on which to bind the cache to wait for UDP updates.
+以分号分隔的UDP地址列表，会将缓存绑定在上面，以等待UDP更新。
 
 bitmap
 ^^^^^^
 
-Set to 1 to enable bitmap mode.
+设为1来启用bitmap模式。
 
 lastmod
 ^^^^^^^
 
-Setting lastmod to 1 will update last_modified_at timestamp of each cache on
-every cache item modification.  Enable it if you want to track this value or if
-other features depend on it. This value will then be accessible via the stats
-socket.
+设置lastmod为1将会在每次缓存项修改的时候更新每个缓存的last_modified_at时间戳。如果你想要跟踪这个值，或者如果其他特性依赖于它，那么启用它。稍后，可以通过统计数据socket来访问这个值。
 
 ignore_full
 ^^^^^^^^^^^
 
-By default uWSGI will print warning message on every cache set operation if the cache is full. To disable this warning set this option. Available since 2.0.4
+默认情况下，如果缓存满了，那么uWSGI会在每一次缓存设置操作的时候打印告警消息。要禁用这个告警，则设置这个选项。自2.0.4起可用。
 
 purge_lru
 ^^^^^^^^^
 
-This option allows the caching framework to evict Least Recently Used (LRU)
-item when you try to add new item to cache storage that is full. The ``expires``
-argument described below will be ignored. An item is considered used when
-it's accessed, added and updated by cache_get(), cache_set() and
-cache_update(); whereas the existence check by cache_exists() is not.
+这个选项允许你在缓存存储满的时，试图添加新的项的时候，让缓存框架移除最近最少使用 (LRU) 项。将会忽略下面描述的 ``expires`` 参数。当一个项被cache_get(), cache_set() 和cache_update() 访问、添加和更新的时候，会被认为使用了这个项；而由cache_exists()进行的存在性检查则不是。
 
 使用缓存API，在应用中访问缓存
 **************************************************************
 
-You can access the various cache in your instance or on remote instances by
-using the cache API.  Currently the following functions are exposed (each
-language might name them a bit differently from the standard):
+你可以通过使用缓存API，访问你的实例或者远程实例中的各种缓存。目前，公开了以下函数 (每个语言对其的命名可能与标准有点不同):
 
  * cache_get(key[,cache])
  * cache_set(key,value[,expires,cache])
@@ -213,47 +161,32 @@ language might name them a bit differently from the standard):
  * cache_del(key[,cache])
  * cache_clear([cache])
 
-If the language/platform calling the cache API differentiates between strings
-and bytes (like Python 3 and Java) you have to assume that keys are strings and
-values are bytes (or bytearray in the java way). Otherwise keys and values are
-both strings in no specific encoding, as internally the cache values and keys
-are simple binary blobs.
+如果调用该缓存API的语言/平台区分了字符串和字节 (例如Python 3和Java)，那么你必须假设键是字符串，而值是字节 (或者在java之下，是字节数组)。否则，键和值都是无特定编码的字符串，因为在内部，缓存值和缓存键都是简单的二进制blob。
 
-The ``expires`` argument (default to 0 for disabled) is the number of seconds
-after the object is no more valid (and will be removed by the cache sweeper
-when ``purge_lru`` is not set, see below)
+ ``expires`` 参数 (默认为0，表示禁用) 是对象失效的秒数 (并当未设置 ``purge_lru`` 的时候，由缓存清道夫移除，见下)
 
-The ``cache`` argument is the so called "magic identifier". Its syntax is
+ ``cache`` 参数是所谓的“魔法标识符”，它的语法是
 ``cache[@node]``. 
 
-To operate on the local cache "mycache" you set it as "mycache", while to
-operate on "yourcache" on the uWSGI server at 192.168.173.22 port 4040 the
-value will be ``yourcache@192.168.173.22:4040``.
+要操作本地缓存"mycache"，将其设为"mycache"，而要操作位于192.168.173.22，端口为4040上的uWSGI服务器中的"yourcache"，则将其设为 ``yourcache@192.168.173.22:4040`` 。
 
-An empty cache value means the default cache which is generally the first
-initialized. The default value is empty.
+一个空的缓存值表示默认缓存，它一般是第一个初始化的缓存。默认值为空。
 
-All of the network operations are transparent, fully non-blocking, and
-threads/greenthreads friendly.
+所有的网络操作都是透明的、全非阻塞的、并且线程/绿色线程安全。
 
 缓存清道夫线程
 ************************
 
-When at least one cache is configured without ``purge_lru`` and the master
-is enabled a thread named "the cache sweeper" is started.  Its main purpose
-is deleting expired keys from the cache. So, if you want auto-expiring you
-need to enable the master.
+当至少一个缓存不配置 ``purge_lru`` ，并且启用master的时候，就会启动一个名为"the cache sweeper"的线程。它的主要目的是将过期键从缓存中删除。异常，如果你想要自动过期的话，那么你需要启用master。
 
 
 Web缓存
 ***********
 
-In its first incarnation the uWSGI caching framework was meant only for caching
-of web pages. The old system has been rebuilt. It is now named
-:doc:`WebCaching`. Enabling the old-style ``--cache`` option will create a
-cache named "default".
+在其第一次成型的时候，uWSGI缓存框架仅仅是用于缓存web页面。老系统已经被重新构建。它现在名为
+:doc:`WebCaching` 。启用旧式的 ``--cache`` 选项将会创建一个名为"default"的缓存。
 
 监控缓存
 *****************
 
-The stats server exposes cache information. An ncurses based tool (https://pypi.python.org/pypi/uwsgicachetop) exists that uses that information for real-time monitoring.
+统计信息服务器公开了缓存信息。存在一个基于ncurses的工具 (https://pypi.python.org/pypi/uwsgicachetop) ，它使用该信息来进行实时监控。

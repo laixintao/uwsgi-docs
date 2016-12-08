@@ -1,24 +1,15 @@
-Using Linux KSM in uWSGI
+在uWSGI中使用Linux KSM
 ========================
 
-`Kernel Samepage Merging <http://www.linux-kvm.org/page/KSM>`_ is a feature of
-Linux kernels >= 2.6.32 which allows processes to share pages of memory with
-the same content. This is accomplished by a kernel daemon that periodically
-performs scans, comparisons, and, if possible, merges of specific memory areas.
-Born as an enhancement for KVM it can be used for processes that use common data
-(such as uWSGI processes with language interpreters and standard libraries).
+`Kernel Samepage Merging <http://www.linux-kvm.org/page/KSM>`_ 是Linux 内核 >= 2.6.32 的一个特性，允许进程共享具有相同内容的内存页。这是由一个内核守护进程周期性执行扫描，对比，以及在可能的情况下，对特定内存区域进行合并来完成的。KVM生而为增强，它可以被用于使用公共数据的进程 (例如，带有语言解释器和标准库的uWSGI进程)。
 
-If you are lucky, using KSM may exponentially reduce the memory usage of your
-uWSGI instances. Especially in massive :doc:`Emperor<Emperor>` deployments:
-enabling KSM for each vassal may result in massive memory savings.
-KSM in uWSGI was the idea of Giacomo Bagnoli of `Asidev s.r.l.
-<http://www.asidev.com/en/company.html>`_. Many thanks to him.
+如果你幸运的话，使用KSM可能会成倍减少你的uWSGI实例的内存使用。特别是在大量的 :doc:`Emperor<Emperor>` 部署中：为每个vassal启用KSM可能会节省大量的内存。uWSGI中的KSM是 `Asidev s.r.l.
+<http://www.asidev.com/en/company.html>`_ 的Giacomo Bagnoli的想法。非常感谢他。
 
-Enabling the KSM daemon
+启用KSM守护进程
 -----------------------
 
-To enable the KSM daemon (``ksmd``), simply set ``/sys/kernel/mm/ksm/run`` to 1,
-like so:
+要启用KSM守护进程 (``ksmd``)，只需设置 ``/sys/kernel/mm/ksm/run`` 为1，如下所示：
 
 .. code-block:: sh
 
@@ -26,47 +17,36 @@ like so:
 
 .. note::
 
-    Remember to do this on machine startup, as the KSM daemon does not run by
-    default.
+    记得在机器启动的时候做这个，因为KSM守护进程并不是默认运行的。
 
 .. note::
 
-    KSM is an opt-in feature that has to be explicitly requested by processes,
-    so just enabling KSM will not be a savior for everything on your machine.
+    KSM是一个可选功能，必须由进程明确要求，因此只是启用KSM将不会拯救你的机器上的一切东西。
 
-Enabling KSM support in uWSGI
+在uWSGI中启用KSM支持
 -----------------------------
 
-If you have compiled uWSGI on a kernel with KSM support, you will be able to
-use the ``ksm`` option. This option will instruct uWSGI to register process
-memory mappings (via ``madvise`` syscall) after each request or master cycle.
-If no page mapping has changed from the last scan, no expensive syscalls are
-used.
+如果你已经在一个内核中编译了带KSM支持的uWSGI了，那么你将能够使用 ``ksm`` 选项。这个选项将会指示uWSGI在每个请求或者master周期后注册经常内存映射 (通过 ``madvise`` 系统调用)。如果自上一次扫描后，并没有页面映射发生改变，那么就不会使用昂贵的系统调用。
 
-Performance impact
+性能影响
 ------------------
 
-Checking for process mappings requires parsing the ``/proc/self/maps`` file
-after each request. In some setups this may hurt performance. You can tune the
-frequency of the uWSGI page scanner by passing an argument to the ``ksm``
-option.
+检查进程映射要求在每次请求之后解析 ``/proc/self/maps`` 文件。在一些设置中，这将降低性能。你可以通过传递一个参数给 ``ksm`` 选项来调整uWSGI页面扫描的频率。
 
 .. code-block:: sh
 
     # Scan for process mappings every 10 requests (or 10 master cycles)
     ./uwsgi -s :3031 -M -p 8 -w myapp --ksm=10
 
-Check if KSM is working well
+检查KSM是否工作良好
 ----------------------------
 
-The ``/sys/kernel/mm/ksm/pages_shared`` and ``/sys/kernel/mm/ksm/pages_sharing``
-files contain statistics regarding KSM's efficiency. The higher values, the
-less memory consumption for your uWSGI instances.
+``/sys/kernel/mm/ksm/pages_shared`` 和 ``/sys/kernel/mm/ksm/pages_sharing`` 文件包含了关于KSM效率的统计信息。值越高，你的uWSGI实例消耗的内存越少。
 
-KSM statistics with collectd
+使用collectd的KSM统计
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A simple Bash script like this is useful for keeping an eye on KSM's efficiency:
+一个像这样的简单的Bash脚本可以用来密切关注KSM的效率：
 
 .. code-block:: sh
 
@@ -81,8 +61,7 @@ A simple Bash script like this is useful for keeping an eye on KSM's efficiency:
         echo "PUTVAL <%= cn %>/ksm/gauge-saved interval=60 N:$saved"
     fi
 
-In your `collectd <http://collectd.org/>`_ configuration, add something like
-this:
+在你的 `collectd <http://collectd.org/>`_ 配置中，添加诸如以下的东西：
 
 .. code-block:: ini
 
