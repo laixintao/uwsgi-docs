@@ -3,30 +3,30 @@ GCCGO插件
 
 uWSGI 1.9.20官方使用一个基于GCCGO的新插件替换了老的 :doc:`Go` 插件。
 
-The usage of GCCGO allows more features and better integration with the uWSGI deployment styles.
+GCCGO的使用允许更多的特性，并且与uWSGI部署方式更好地集成起来。
 
 GCC 套件 >= 4.8 is expected (强烈建议)。
 
 它是如何工作的
 ************
 
-When the plugin is enabled, a new go runtime is initialized after each ``fork()``.
+当启用插件的时候，会在每次 ``fork()`` 之后初始化一个新的go运行时(runtime)。
 
-If a ``main`` Go function is available in the process address space it will be executed in the Go runtime, otherwise the control goes back to the uWSGI loop engine.
+如果一个 ``main`` Go函数在进程地址空间内可用，那么它将会在Go运行时中执行，否则，控制权会回到uWSGI循环引擎。
 
 为什么不使用纯Go？
 *********************
 
-Unfortunately the standard Go runtime is currently not embeddable and does not support compiling code as shared libraries.
+不幸的是，标准的Go运行时当前是不可嵌入的，并且不支持作为共享库编译代码。
 
-Both are requisite for meaningful uWSGI integration.
+而这两个都是有意义的uWSGI集成所需的。
 
-Starting from GCC 4.8.2, its ``libgo`` has been improved a lot and building shared libraries as well as initializing the Go runtime works like a charm (even if it required a bit of... not very elegant hacks).
+从GCC 4.8.2起，大大改进了它的 ``libgo`` ，并且构建共享库以及初始化Go运行时工作得异常成功 (即使它需要一点……不非常优雅的hack)。
 
 构建插件
 *******************
 
-A build profile is available allowing you to build a uWSGI+gccgo binary ready to load Go shared libraries:
+有一个构建配置文件可用，允许你构建一个uWSGI+gccgo二进制文件，准备好加载Go共享库：
 
 .. code-block:: sh
 
@@ -35,7 +35,7 @@ A build profile is available allowing you to build a uWSGI+gccgo binary ready to
 第一个应用
 *************
 
-You do not need to change the way you write webapps in Go. The ``net/http`` package can be used flawlessly:
+你不需要改变你在Go中编写web应用的方式。可以无缝使用 ``net/http`` 包：
 
 .. code-block:: go
 
@@ -56,47 +56,45 @@ You do not need to change the way you write webapps in Go. The ``net/http`` pack
         uwsgi.Run()
    }
 
-The only difference is in calling ``uwsgi.Run()`` instead of initializing the Go HTTP server.
+唯一不同之处在于调用 ``uwsgi.Run()`` ，而不是初始化Go HTTP服务器。
 
-To build the code as shared library simply run:
+要把代码作为共享库进行构建，只要简单运行：
 
 .. code-block:: sh
 
    gcc -fPIC -shared -o myapp.so myapp.go
    
-If you get an error about gcc not able to resolve uWSGI symbols, just add ``-I<path_to_uwsgi_binary>`` to the command line (see below):
+如果你得到一个关于gcc不能够解析uWSGI符号的错误，那么只需添加 ``-I<path_to_uwsgi_binary>`` 到命令行 (见下):
 
 .. code-block:: sh
 
    gcc -fPIC -shared -I/usr/bin -o myapp.so myapp.go
    
-Now let's run it under uWSGI:
+现在，在uWSGI之下运行它：
 
 .. code-block:: sh
 
    uwsgi --http-socket :9090 --http-socket-modifier1 11 --go-load ./myapp.so
    
-The gccgo plugin registers itself as ``modifier1`` 11, so remember to set it to run Go code.
+gccgo插件将其自身注册为 ``modifier1`` 11，所以，记得设置它来运行Go代码。
 
 uwsgi.gox
 *********
 
-By default when building the gccgo profile, a uwsgi.gox file is created. This can be used when building
-go apps using the uWSGI API, to resolve symbols.
+默认情况下，当构建gccgo配置文件的时候，会创建一个uwsgi.gox文件。在使用uWSGI API构建go应用的时候，可以使用它，来解析符号。
 
-Remember that if you add the directory containing the uwsgi binary (as seen before) to
-the includes (``-I path``) path of gcc, the binary itself will be used for resolving symbols.
+记住，如果你添加包含uwsgi二进制（如前所示）的目录到gcc的包含 (``-I path``) 路径，那么二进制文件本身将会被用于解析符号。
 
 共享库 VS 单片二进制文件
 ***************************************
 
-One of the main selling points for Go for many developers is the "static-all-in-one" binary approach.
+对于许多开发者来说，Go的主要卖点在于“静态多合一”的二进制方法。
 
-A Go app basically does not have dependencies, so half of the common deployment problems just automagically disappear.
+基本上，一个Go应用并没有依赖，因此，一半的常见部署文件就这样自动消失了。
 
-The uWSGI-friendly way for hosting Go apps is having a uWSGI binary loading a specific Go app in the form of a library.
+托管Go应用的uWSGI友好方式是让一个uWSGI二进制文件以库的形式加载一个指定的Go应用。
 
-If this is not acceptable, you can build a single binary with both uWSGI and the Go app:
+如果这不可接受，那么你可以同时用uWSGI和该Go应用构建单个二进制文件：
 
 .. code-block:: sh
 
@@ -106,39 +104,39 @@ If this is not acceptable, you can build a single binary with both uWSGI and the
 协程
 **********
 
-Thanks to the new GCC split stack feature, goroutines are sanely (i.e. they do not require a full pthread) implemented in gccgo.
+多亏了新的GCC split stack特性，在gccgo中，goroutine被健全 (例如，不需要一个完整的pthread) 实现。
 
-A loop engine mapping every uWSGI core to a goroutine is available in the plugin itself.
+在插件自身中，有一个将每个uWSGI核心映射到一个goroutine上的循环引擎可用。
 
-To start uWSGI in goroutine mode just add ``--goroutines <n>`` where <n> is the maximum number of concurrent goroutines to spawn.
+要以goroutine模式启动uWSGI，仅需添加 ``--goroutines <n>`` ，其中，<n>是要生成的并发goroutine的最大数。
 
-Like :doc:`Gevent`, uWSGI signal handlers are executed in a dedicated goroutine.
+就像 :doc:`Gevent` ，uWSGI信号处理器是在一个专用的goroutine中执行的。
 
-In addition to this, all blocking calls make use of the ``netpoll`` Go api. This means you can run internal routing actions, rpc included, in a goroutine.
+除此之外，所有的阻塞调用利用 ``netpoll`` Go api。这意味着，你可以在一个goroutine中运行内部路由动作，包括rpc。
 
 选项
 *******
 
-* ``--go-load <path>`` load the specified go shared library in the process address space
-* ``--gccgo-load <path>`` alias for go-load
-* ``--go-args <arg1> <arg2> <argN>`` set arguments passed to the virtual go command line
-* ``--gccgo-args <arg1> <arg2> <argN>`` alias for go-args
-* ``--goroutines <n>`` enable goroutines loop engine with the specified number of async cores
+* ``--go-load <path>`` 在进程地址空间中加载指定的go共享库
+* ``--gccgo-load <path>`` go-load的别名
+* ``--go-args <arg1> <arg2> <argN>`` 设置传递给虚拟go命令行的参数
+* ``--gccgo-args <arg1> <arg2> <argN>`` go-args的别名
+* ``--goroutines <n>`` 启用goroutine循环引擎，并指定异步核数目
 
 uWSGI API
 *********
 
-.. note:: This section may, or may not, be out of date. Who knows!
+.. note:: 这部分可能，或者可能不过时。谁知道呢！
 
-Unfortunately only few pieces of the uWSGI API have been ported to the gccgo plugin. More features will be added in time for uWSGI 2.0.
+不幸的是，只有一点点uWSGI API被移植到了gccgo插件中。对于uWSGI 2.0，会及时添加更多的特性。
 
-Currently exposed API functions:
+当前公开的API函数：
 
 * ``uwsgi.CacheGet(key string, cache string) string``
 * ``uwsgi.RegisterSignal(signum uint8, receiver string, handler func(uint8)) bool``
 
-小抄
-*****
+注意事项
+*********
 
-* Please, please do not enable multithreading, it will not work and probably will never work.
-* All uWSGI native features (like internal routing) work in goroutines mode. However do not expect languages like Python or Perl to work over them anytime soon.
+* 拜托拜托，不要启用多线程，它将不能用，并且可能永远不能用。
+* 所有的uWSGI原生特性 (像内部路由) 是工作在goroutine模式下的。然而，别指望近期诸如Python或者Perl这样的语言会在其上工作。

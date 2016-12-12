@@ -1,20 +1,19 @@
-The GlusterFS plugin
+GlusterFS插件
 ====================
 
-Available from uWSGI 1.9.15
+自uWSGI 1.9.15起可用
 
-official modifier1: 27
+官方modifier1: 27
 
-The 'glusterfs' plugin allows you to serve files stored in glusterfs filesystems directly using the glusterfs api
-available starting from GlusterFS 3.4
+'glusterfs'插件允许你使用自GlusterFS 3.4起可用的glusterfs api，直接提供存储在glusterfs文件系统中的文件
 
-This approach (compared to serving via fuse or nfs) has various advantages in terms of performances and ease of deployment.
+这个方法 (与通过fuse或者nfs提供相比) 在性能和易于部署方面有许多优势。
 
 
-Step1: glusterfs installation
+第1步：安装glusterfs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-we build glusterfs from official sources, installing it in /opt/glusterfs on 3 nodes (192.168.173.1, 192.168.173.2, 192.168.173.3).
+我们从官方渠道构建glusterfs，在3个节点上(192.168.173.1, 192.168.173.2, 192.168.173.3)，把它安装在/opt/glusterfs。
 
 .. code-block:: sh
 
@@ -22,24 +21,24 @@ we build glusterfs from official sources, installing it in /opt/glusterfs on 3 n
    make
    make install
    
-now start the configuration/control daemon with:
+现在，这样启动配置/控制守护进程：
 
 .. code-block:: sh
 
    /opt/glusterfs/sbin/glusterd
    
-from now on we can start configuring our cluster
+从现在起，我们可以配置我们的集群
 
-Step2: the first cluster
+第2步：第一个集群
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-run the control client to access the glusterfs shell:
+运行控制客户端来访问glusterfs shell:
 
 .. code-block:: sh
 
    /opt/glusterfs/sbin/gluster
    
-the first step is "discovering" the other nodes:
+第一步是“发现”其他节点：
 
 .. code-block:: sh
 
@@ -50,36 +49,35 @@ the first step is "discovering" the other nodes:
    # do not run on node3 !!!
    peer probe 192.168.173.3
 
-remember, you do not need to run "peer probe" for the same address of the machine on which you are running
-the glusterfs console. You have to repeat the procedure on each node of the cluser.
+记住，你无需对运行着glusterfs控制台的机器的相同的地址运行"peer probe"。你必须在集群的每个节点上重复这个过程。
 
-Now we can create a replica volume (/exports/brick001 dir has to exist in every node):
+现在，我们可以创建一个副本卷 (每个节点上都必须存在/exports/brick001目录):
 
 .. code-block:: sh
 
    volume create unbit001 replica 3 192.168.173.1:/exports/brick001 192.168.173.2:/exports/brick001 192.168.173.3:/exports/brick001
    
-and start it:
+并启动它：
 
 .. code-block:: sh
 
    volume start unbit001
    
-Now you should be able to mount your glusterfs filesystem and start writing files in it (you can use nfs or fuse)
+现在，你应该可以挂载你的glusterfs文件系统，并开始在其中写文件了 (你可以使用nfs或者fuse)
 
-Step3: uWSGI
+第3步：uWSGI
 ^^^^^^^^^^^^
 
-a build profile, named 'glusterfs' is already available, so you can simply do:
+一个名为'glusterfs'的构建配置文件已经可以用了，所以你可以简单这样做：
 
 .. code-block:: sh
 
    PKG_CONFIG_PATH=/opt/glusterfs/lib/pkgconfig/ UWSGI_PROFILE=glusterfs make
    
-The profile currently disable 'matheval' support as the glusterfs libraries use bison/yacc with the same function prefixes (causing nameclash).
+这个配置文件目前禁用了'matheval'支持，因为glusterfs库使用带相同函数前缀的bison/yacc (引发命名冲突)。
 
 
-You can now start your HTTP serving fastly serving glusterfs files (remember no nfs or fuse are involved):
+现在，你可以启动你的HTTP服务来快速提供glusterfs文件 (记住，不涉及任何nfs或者fuse):
 
 .. code-block:: ini
 
@@ -94,12 +92,12 @@ You can now start your HTTP serving fastly serving glusterfs files (remember no 
    threads = 30
    
 
-High availability
+高可用性
 ^^^^^^^^^^^^^^^^^
 
-The main GlusterFS selling point is high availability. With the prevopus setup we introduced a SPOF with the control daemon.
+主要的GlusterFS卖点是高可用性。使用前面的设置，我们引入了一个带控制守护进程的SPOF。
 
-The 'server' option allows you to specify multiple control daemons (they are tried until one responds)
+'server'选项允许你指定多个控制守护进程 (尝试它们直到有一个响应)
 
 .. code-block:: ini
 
@@ -113,13 +111,12 @@ The 'server' option allows you to specify multiple control daemons (they are tri
    ; spawn 30 threads
    threads = 30
    
-The '0' port is a glusterfs convention, it means 'the default port' (generally 24007). You can specify whatever port you need/want
+'0'端口是glusterfs惯例，它意味着“默认端口” (一般是24007)。你可以指定任何你需要/想要的端口。
 
-Multiple mountpoints
+多个挂载点
 ^^^^^^^^^^^^^^^^^^^^
 
-If your webserver (like nginx or the uWSGI http router) is capable of setting protocol vars (like SCRIPT_NAME or UWSGI_APPID) you can mount multiple
-glusterfs filesystems in the same instance:
+如果你的web服务器 (像nginx或者uWSGI http路由器) 能够设置协议变量 (像SCRIPT_NAME或者UWSGI_APPID)，那么你可以在同一个实例中挂载多个glusterfs文件系统：
 
 .. code-block:: ini
 
@@ -135,37 +132,35 @@ glusterfs filesystems in the same instance:
    ; spawn 30 threads
    threads = 30
    
-Multiprocess VS multithread
+多进程 VS 多线程
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Currently a mix of the both will offers you best performance and availability.
+目前，混合两者将会提供最佳性能和可用性。
 
-Async support is on work
+异步支持还在进行中
 
-Internal routing
+内部路由
 ^^^^^^^^^^^^^^^^
 
-The :doc:`InternalRouting` allows you to rewrite requests to change the requested files. Currently the glusterfs plugin only uses the PATH_INFO, so you can change it
-via the 'setpathinfo' directive
+ :doc:`InternalRouting` 让你可以重写请求来改变请求文件。目前，glusterfs插件只使用PATH_INFO，因此，你可以通过'setpathinfo'指令来改变它
 
-Caching is supported too. Check the tutorial (linked in the homepage) for some cool idea
+也支持缓存。看看教程 (链接在主页上) ，获得一些很酷的点子吧
 
 
-Using capabilities (on Linux)
+使用capabilities (在Linux上)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If your cluster requires clients to bind on privileged ports (<1024) and you do not want to change that thing (and obviously you do not want to run uWSGI as root)
-you may want to give your uWSGI instance the NET_BIND_SERVICE capability. Just ensure you have a capabilities-enabled uWSGI and add
+如果你的集群要求客户端绑定到特权端口 (<1024) ，而你不想要改动它 (而显然，你不想要作为root运行uWSGI)，那么你或许想要给予你的uWSGI实例NET_BIND_SERVICE capability。只需确保你有一个启用了capabilities的uWSGI，然后添加
 
 .. code-block:: sh
 
    ... --cap net_bind_service ...
    
-to all of the instances you want to connect to glusterfs
+到所有你想要连接到glusterfs的实例
 
-Notes:
+注意:
 ^^^^^^
 
-The plugin automatically enables the mime type engine.
+该插件自动启用了mime type引擎。
 
-There is no directory index support
+无目录索引支持

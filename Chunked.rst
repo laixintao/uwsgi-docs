@@ -1,9 +1,9 @@
-The Chunked input API
+块输入API
 =====================
 
-An API for managing HTTP chunked input requests has been added in uWSGI 1.9.13.
+已在uWSGI 1.9.13中添加了一个用于管理HTTP块输入请求的API。
 
-The API is very low-level to allow easy integration with standard apps.
+这个API是非常低层次的，允许与标准的应用进行集成。
 
 只公开了两个函数：
 
@@ -11,18 +11,18 @@ The API is very low-level to allow easy integration with standard apps.
 
 * ``chunked_read_nb()``
 
-This API is supported (从uWSGI 1.9.20起) on CPython, PyPy and Perl.
+(从uWSGI 1.9.20起) 在CPython, PyPy和Perl上都支持这个API
 
-Reading chunks
+读取块
 **************
 
-To read a chunk (blocking) just run
+要读取一个块（阻塞），只需运行
 
 .. code-block:: perl
 
    my $msg = uwsgi::chunked_read
    
-如果未指定超时时间，则会使用默认值。If you do not get a chunk in time, the function will croak (or raise an exception when under Python).
+如果未指定超时时间，则会使用默认值。如果你没有及时获得一个块，那么这个函数将会嚷嚷 (或者在Python下，引发一个异常)。
 
 在非阻塞/异步引擎下，你或许想要使用
 
