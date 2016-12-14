@@ -1,32 +1,31 @@
-The Clojure/Ring JVM request handler
+Clojure/Ring JVM请求处理器
 ====================================
 
-Thanks to the :doc:`JVM` plugin available from 1.9, Clojure web apps can be run on uWSGI.
+幸好自1.9起， :doc:`JVM` 插件就能用了，可以在uWSGI上运行Clojure web应用。
 
-The supported gateway standard is Ring, https://github.com/ring-clojure/ring . Its full specification is available here: https://github.com/ring-clojure/ring/blob/master/SPEC
+支持的网关标准是Ring, https://github.com/ring-clojure/ring。它完整的详细说明在这里： https://github.com/ring-clojure/ring/blob/master/SPEC
 
-A uWSGI build profile named "ring" is available for generating a monolithic build with both the JVM and Ring plugins.
+有一个名为"ring"的uWSGI构建配置文件可以用来生成同时带有JVM和Ring插件的单片构建。
 
-From the uWSGI sources:
+从uWSGI源代码：
 
 .. code-block:: sh
 
    UWSGI_PROFILE=ring make
 
-The build system will try to detect your JDK installation based on various presets (for example on CentOS you can ``yum install 
-java-1.6.0-openjdk.x86_64-devel`` or ``java-1.7.0-openjdk-devel.x86_64`` or on Debian/Ubuntu ``openjdk-6-jdk`` and so on...).
+构建系统将会试着根据不同预设检测你的JDK安装 (例如，在CentOS上，你可以 ``yum install 
+java-1.6.0-openjdk.x86_64-devel`` 或者 ``java-1.7.0-openjdk-devel.x86_64`` ，或者在Debian/Ubuntu上 ``openjdk-6-jdk`` 等等……)。
 
-OSX/Xcode default paths are searched too.
+也会搜索OSX/Xcode默认路径。
 
-After a successful build you will have the uwsgi binary and a uwsgi.jar file that you should copy in your CLASSPATH (or just remember
-to set it in the uwsgi configuration every time).
+成功构建之后，你将会得到uwsgi二进制文件和一个uwsgi.jar文件，你应该拷贝到你的CLASSPATH中 (或者每次记住在uwsgi配置中设置它)。
 
-.. seealso:: For more information on the JVM plugin check :doc:`JVM`
+.. seealso:: 对于更多关于JVM插件的信息，看看 :doc:`JVM`
 
-Our first Ring app
+我们第一个Ring应用
 ******************
 
-A basic Clojure/Ring app could be the following (save it as myapp.clj):
+一个基本的Clojure/Ring应用可能如下 (将其保持为myapp.clj)：
 
 .. code-block:: Clojure
 
@@ -39,9 +38,9 @@ A basic Clojure/Ring app could be the following (save it as myapp.clj):
         }
    )
 
-The code defines a new namespace called 'myapp', in which the 'handler' function is the Ring entry point (the function called at each web request)
+该代码定义了一个名为'myapp'的新的名字空间，其中，'handler'函数是Ring的入口点 (每个web请求都会调用的函数)
 
-We can now build a configuration serving that app on the HTTP router on port 9090 (call it config.ini):
+现在，我们可以构建一个配置，在HTTP路由器上提供该应用，端口为9090 (称之为config.ini)：
 
 .. code-block:: ini
 
@@ -56,41 +55,40 @@ We can now build a configuration serving that app on the HTTP router on port 909
    clojure-load = myapp.clj
    ring-app = myapp:handler
 
-Run uWSGI:
+运行uWSGI:
 
 .. code-block:: sh
 
    ./uwsgi config.ini
 
-Now connect to port 9090 and you should see the app response.
+现在，连接到端口9090，你应该看到该应用响应。
 
-As you can note we have manually added uwsgi.jar and the Leiningen standalone jar (it includes the whole Clojure distribution) to our classpath.
+你可以注意到，我们手工添加了uwsgi.jar和Leiningen的standalone.jar (它包括整个Clojure发行版) 到我们的classpath中。
 
-Obviously if you do not want to use Leiningen, just add the Clojure jar to your classpath.
+显然，如果你不想要使用Leiningen，那么只需添加Clojure jar到你的classpath。
 
-The ``clojure-load`` option loads a Clojure script in the JVM (very similar to what ``jvm-class`` do with the basic jvm plugin).
+``clojure-load`` 选项在JVM中加载了一个Clojure对象 (非常类似于 ``jvm-class`` 和基本的jvm插件做的事)。
 
-The ``ring-app`` option specify the class/namespace in which to search for the ring function entry point.
+ ``ring-app`` 指定了搜索ring函数入口点的类/名字空间。
 
-In our case the function is in the 'myapp' namespace and it is called 'handler' (you can understand that the syntax is namespace:function)
+在我们的例子中，该函数位于'myapp'名字空间，叫做'handler' (你可以理解语法为namespace:function)
 
-Pay attention to the modifier configuration. The JVM plugin registers itself as 8, while Ring registers itself as modifier 2 #1, yielding an effective configuration of "modifier1 8, modifier2 1".
+注意modifier配置。JVM插件将自己注册为8，而Ring则将自己注册为modifier 2 #1，产生有效配置"modifier1 8, modifier2 1"。
 
-Using Leiningen
+使用Leiningen
 ***************
 
-Leiningen is a great tool for managing Clojure projects. If you use Clojure, you are very probably a Leiningen user.
+Leiningen是一个用来管理Clojure项目的很不错的工具。如果你使用Clojure，那么你非常有可能是一个Leiningen用户。
 
-One of the great advantages of Leiningen is the easy generation of a single JAR distribution. That means you can deploy a whole app
-with a single file.
+Leiningen的一个巨大的优势在于轻松生成单个JAR发行版。这意味着，你可以用单个文件部署整个应用。
 
-Let's create a new "helloworld" Ring application with the ``lein`` command.
+让我们用 ``lein`` 命令创建一个新的"helloworld" Ring应用。
 
 .. code-block:: sh
 
    lein new helloworld
 
-Move it to the just created 'helloworld' directory and edit the project.clj file
+把它移到刚刚创建的'helloworld'目录，然后编辑project.clj文件
 
 .. code-block:: Clojure
 
@@ -101,7 +99,7 @@ Move it to the just created 'helloworld' directory and edit the project.clj file
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.Clojure/Clojure "1.4.0"]])
 
-We want to add the ``ring-core`` package to our dependencies (it contains a set of classes/modules to simplify the writing of ring apps) and obviously we need to change the description and URL:
+我们想要添加 ``ring-core`` 包到我们的依赖中 (它包含了一组类/模块来简化ring应用的编写) ，而显然，我们需要修改描述和URL：
 
 .. code-block:: Clojure
 
@@ -112,15 +110,15 @@ We want to add the ``ring-core`` package to our dependencies (it contains a set 
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.Clojure/Clojure "1.4.0"] [ring/ring-core "1.2.0-beta1"]])
 
-Now save it and run...
+现在，保存并运行……
 
 .. code-block:: sh
 
    lein repl
 
-This will install all of the jars we need and move us to the Clojure console (just exit from it for now).
+这将会安装所有我们需要的jar，并且带我们到Clojure控制台 (目前从中退出即可)。
 
-Now we want to write our Ring app, just edit the file src/helloworld/core.clj and place the following content in it:
+现在，我们想要写我们的Ring应用，只需编辑文件src/helloworld/core.clj，将以下内容放到它里面：
 
 .. code-block:: Clojure
 
@@ -132,7 +130,7 @@ Now we want to write our Ring app, just edit the file src/helloworld/core.clj an
     (content-type "text/plain")))
 
 
-Then re-edit project.clj to instruct Leiningen on which namespaces to build:
+然后重新编辑project.clj，来指示Leiningen在哪个名字空间之上构建：
 
 .. code-block:: Clojure
 
@@ -146,27 +144,27 @@ Then re-edit project.clj to instruct Leiningen on which namespaces to build:
 
   :dependencies [[org.Clojure/Clojure "1.4.0"] [ring/ring-core "1.2.0-beta1"]])
 
-As you can see we have added helloworld.core in the ``:aot`` keyword.
+正如你所见，我们在 ``:aot`` 关键字中添加了helloworld.core。
 
-Now let's compile our code:
+现在，让我们编译我们的代码：
 
 .. code-block:: sh
 
    lein compile
 
-And build the full jar (the uberjar):
+然后构建完整的jar (uberjar):
 
 .. code-block:: sh
 
    lein uberjar
 
-If all goes well you should see a message like this at the end of the procedure:
+如果一切顺利，你应该会在这个过程的最后看到像这样的消息：
 
 .. code-block:: sh
 
    Created /home/unbit/helloworld/target/helloworld-0.1.0-SNAPSHOT-standalone.jar
 
-Take a note of the path so we can configure uWSGI to run our application.
+记下这个地址，接着我们可以配置uWSGI来运行我们的应用。
 
 .. code-block:: ini
 
@@ -182,22 +180,22 @@ Take a note of the path so we can configure uWSGI to run our application.
 
    ring-app = helloworld.core:handler
 
-This time we do not load Clojure code, but directly a JVM class.
+这次，我们不加载Clojure代码，而是直接加载一个JVM类。
 
-Pay attention: when you specify a JVM class you have to use the '/' form, not the usual dotted form.
+注意：当你指定过一个JVM类的时候，你必须使用'/'形式，而不是常见的点形式。
 
-The __init suffix is automatically added by the Clojure system when your app is compiled.
+当编译你的应用的时候，Clojure系统会自动添加__init后缀。
 
-The ``ring-app`` set the entry point to the helloworld.core namespace and the function 'handler'.
+``ring-app`` 设置helloworld.core名字空间的入口点和函数'handler'。
 
-We can access that namespace as we have loaded it with ``jvm-class``
+当我们用 ``jvm-class`` 加载它的时候，我们可以访问那个名字空间。
 
-Concurrency
+并发
 ***********
 
-As all of the JVM plugin request handlers, multi-threading is the best way to achieve concurrency.
+和所有JVM插件请求处理器一样，多线程是达到并发的最好的方式。
 
-Threads in the JVM are really solid, do not be afraid to use them (even if you can spawn multiple processes too)
+JVM中的线程时相当稳定的，不要怕使用它们 (即使你也可以生成多个进程)
 
 .. code-block:: ini
 
@@ -217,14 +215,14 @@ Threads in the JVM are really solid, do not be afraid to use them (even if you c
    processes = 4
    threads = 8
 
-This setup will spawn 4 uWSGI processes (workers) with 8 threads each (for a total of 32 threads).
+这个设置会生成4个uWSGI进程 (worker) ，每个进程有8个线程 (总共32个线程)。
 
-Accessing the uWSGI api
+访问uWSGI api
 ***********************
 
-Clojure can call native Java classes too, so it is able to access the uWSGI API exposed by the JVM plugin.
+Clojure也可以调用原生的Java类，因此它可以访问由JVM插件公开的uWSGI API。
 
-The following example shows how to call a function (written in python) via Clojure:
+下面的例子展示了如何通过Clojure调用一个函数 (用python写的)：
 
 .. code-block:: Clojure
 
@@ -239,7 +237,7 @@ The following example shows how to call a function (written in python) via Cloju
      }
    )
 
-The "reverse" function has been registered from a Python module:
+从一个Python模块注册了"reverse"函数：
 
 .. code-block:: python
  
@@ -249,7 +247,7 @@ The "reverse" function has been registered from a Python module:
    def contrario(arg):
        return arg[::-1]
 
-This is the used configuration:
+这是使用的配置：
 
 .. code-block:: ini
 
@@ -265,14 +263,13 @@ This is the used configuration:
    ring-app = myapp:handler
    master = true
 
-Another useful feature is accessing the uwsgi cache. Remember that cache keys are string while values are bytes.
+另一个有用的特性是访问uwsgi换成。记住，缓存键是字符串，而值是字节。
 
-The uWSGI Ring implementation supports byte array in addition to string for the response. This is obviously a violation of the standard
-but avoids you to re-encode bytes every time (but obviously you are free to do it if you like).
+uWSGI实现对于响应，除了字符串，还支持字节数组。这显然违反了标准，但是避免了每次都要重新编码字节 (但显然，如果你喜欢的话，你可以随意每次重新编码)。
 
-Notes and status
+注意事项和状态
 ****************
 
-* A shortcut option allowing to load compiled code and specifying the ring app would be cool.
-* As with the :doc:`JWSGI` handler, all of the uWSGI performance features are automatically used (like when sending static files or buffering input)
-* The plugin has been developed with the cooperation and ideas of Mingli Yuan. Thanks!
+* 有一个允许加载已编译代码和指定ring应用的快捷选项将会很酷。
+* 正如 :doc:`JWSGI` 处理器，自动使用所有的uWSGI性能特性 (就像当发送静态文件或者缓存输入的时候)
+* 这个插件是在Mingli Yuan的合作和贡献想法之下开发出来的。灰常感谢！

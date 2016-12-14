@@ -9,19 +9,19 @@ uWSGI选项
 
 每一个选项都有以下属性:
 
-* argument: it is the struct option (used by getopt()/getopt_long()) has_arg element. Can be 'required', 'no_argument' or 'optional_argument'
-* shortcut: some option can be specified with the short form (a dash followed by a single letter)
+* argument: 它是结构选项 (由getopt()/getopt_long()使用) has_arg元素。可以是'必须的', '无参数'或者'可选参数'
+* shortcut: 有些选项可以用短形式指定 (一个破折号，后面跟着单个字母)
 * parser: 这是uWSGI如何解析参数。有几十种方式，最常见的方式是'uwsgi_opt_set_str' 何时接收简单的字符串，'uwsgi_opt_set_int' 何时接收32位数字，'uwsgi_opt_add_string_list' 何时可以指定该参数多次来构建一个列表。
 * help: 帮助消息，与你从 ``uwsgi --help`` 获得的相同
 * reference: 一个到让你更好理解并且提供选项上下文的文档页面
 
-You can add more detailed infos to this page, editing https://github.com/unbit/uwsgi-docs/blob/master/optdefs.pl (please, double check it before sending a pull request)
+你可以添加更多详细信息到这个页面上，编辑https://github.com/unbit/uwsgi-docs/blob/master/optdefs.pl (拜托，在发送一个pull请求之前，再三检查)
 
-uWSGI core
+uWSGI核心
 ==========
 socket
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -s
 
@@ -33,7 +33,7 @@ socket
 
 uwsgi-socket
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -s
 
@@ -45,7 +45,7 @@ uwsgi-socket
 
 suwsgi-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_ssl_socket
 
@@ -55,17 +55,17 @@ suwsgi-socket
 
 ssl-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_ssl_socket
 
-``help``: bind to the specified UNIX/TCP socket using uwsgi protocol over SSL
+``help``: 使用SSL之上的uwsgi协议绑定到指定的UNIX/TCP socket
 
 
 
 http-socket
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -75,27 +75,27 @@ http-socket
 
 http-socket-modifier1
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier1 when using HTTP protocol
+``help``: 当使用HTTP协议时，强制指定的modifier1
 
 
 
 http-socket-modifier2
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier2 when using HTTP protocol
+``help``: 当使用HTTP协议时，强制指定的modifier2
 
 
 
 http11-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -105,7 +105,7 @@ http11-socket
 
 https-socket
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_ssl_socket
 
@@ -115,27 +115,27 @@ https-socket
 
 https-socket-modifier1
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier1 when using HTTPS protocol
+``help``: 当使用HTTPS协议时，强制指定的modifier1
 
 
 
 https-socket-modifier2
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier2 when using HTTPS protocol
+``help``: 当使用HTTPS协议时，强制指定的modifier2
 
 
 
 fastcgi-socket
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -145,7 +145,7 @@ fastcgi-socket
 
 fastcgi-nph-socket
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -155,37 +155,37 @@ fastcgi-nph-socket
 
 fastcgi-modifier1
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier1 when using FastCGI protocol
+``help``: 当使用FastCGI协议时，强制指定的modifier1
 
 
 
 fastcgi-modifier2
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier2 when using FastCGI protocol
+``help``: 当使用FastCGI协议时，强制指定的modifier2
 
 
 
 scgi-socket
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using SCGI protocol
+``help``: 使用SCGI协议绑定到指定的UNIX/TCP socket
 
 
 
 scgi-nph-socket
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -195,27 +195,27 @@ scgi-nph-socket
 
 scgi-modifier1
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier1 when using SCGI protocol
+``help``: 当使用SCGI协议时，强制指定的modifier1
 
 
 
 scgi-modifier2
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier2 when using SCGI protocol
+``help``: 当使用SCGI协议时，强制指定的modifier2
 
 
 
 raw-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket_no_defer
 
@@ -225,27 +225,27 @@ raw-socket
 
 raw-modifier1
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier1 when using RAW protocol
+``help``: 当使用RAW协议时，强制指定的modifier1
 
 
 
 raw-modifier2
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: force the specified modifier2 when using RAW protocol
+``help``: 当使用RAW协议时，强制指定的modifier2
 
 
 
 puwsgi-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_socket
 
@@ -255,75 +255,75 @@ puwsgi-socket
 
 protocol
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force the specified protocol for default sockets
+``help``: 对默认socket强制使用指定的协议
 
 
 
 socket-protocol
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force the specified protocol for default sockets
+``help``: 对默认socket强制使用指定的协议
 
 
 
 shared-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_shared_socket
 
-``help``: create a shared socket for advanced jailing or ipc
+``help``: 为高级jailing或者ipc创建一个共享socket
 
 
 
 undeferred-shared-socket
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_shared_socket
 
-``help``: create a shared socket for advanced jailing or ipc (undeferred mode)
+``help``: 为高级jailing或者ipc创建一个共享socket (undeferred模式)
 
 
 
 processes
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -p
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: spawn the specified number of workers/processes
+``help``: 生成指定数目的worker/进程
 
 
 
 workers
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -p
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: spawn the specified number of workers/processes
+``help``: 生成指定数目的worker/进程
 
 
 
 thunder-lock
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: serialize accept() usage (if possible)
+``help``: 序列化accept()使用 (如果可能的话)
 
 ``reference``: :doc:`articles/SerializingAccept`
 
@@ -331,79 +331,79 @@ thunder-lock
 
 harakiri
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -t
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set harakiri timeout
+``help``: 设置harakiri超时
 
 
 
 harakiri-verbose
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable verbose mode for harakiri
+``help``: 对harakiri启用verbose模式
 
 
 
 harakiri-no-arh
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not enable harakiri during after-request-hook
+``help``: 在after-request-hook期间不启用harakiri
 
 
 
 no-harakiri-arh
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not enable harakiri during after-request-hook
+``help``: 在after-request-hook期间不启用harakiri
 
 
 
 no-harakiri-after-req-hook
 **************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not enable harakiri during after-request-hook
+``help``: 在after-request-hook期间不启用harakiri
 
 
 
 backtrace-depth
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set backtrace depth
+``help``: 设置回溯深度
 
 
 
 mule-harakiri
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set harakiri timeout for mule tasks
+``help``: 为mule任务设置harakiri超时时间
 
 
 
 xmlconfig
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -x
 
@@ -411,13 +411,13 @@ xmlconfig
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load config from xml file
+``help``: 从xml文件加载配置
 
 
 
 xml
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -x
 
@@ -425,69 +425,69 @@ xml
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load config from xml file
+``help``: 从xml文件加载配置
 
 
 
 config
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_config
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load configuration using the pluggable system
+``help``: 使用可插拔系统加载配置
 
 
 
 fallback-config
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: re-exec uwsgi with the specified config when exit code is 1
+``help``: 当退出码为1的时候，使用指定的配置重新执行uwsgi
 
 
 
 strict
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: enable strict mode (placeholder cannot be used)
+``help``: 启用strict模式 (不能使用占位符)
 
 
 
 skip-zero
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: skip check of file descriptor 0
+``help``: 跳过对文件描述符0的检查
 
 
 
 skip-atexit
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: skip atexit hooks (ignored by the master)
+``help``: 跳过atexit钩子 (由master忽略)
 
 
 
 set
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -S
 
@@ -495,55 +495,55 @@ set
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set a placeholder or an option
+``help``: 设置一个占位符或者选项
 
 
 
 set-placeholder
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_placeholder
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set a placeholder
+``help``: 设置一个占位符
 
 
 
 set-ph
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_placeholder
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set a placeholder
+``help``: 设置一个占位符
 
 
 
 get
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
 ``flags``: UWSGI_OPT_NO_INITIAL
 
-``help``: print the specified option value and exit
+``help``: 打印指定的选项值并退出
 
 
 
 declare-option
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_custom_option
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: declare a new uWSGI custom option
+``help``: 声明一个新的uWSGI自定义选项
 
 ``reference``: :doc:`CustomOptions`
 
@@ -551,745 +551,745 @@ declare-option
 
 declare-option2
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_custom_option
 
-``help``: declare a new uWSGI custom option (non-immediate)
+``help``: 声明一个新的uWSGI自定义选项 (非立即)
 
 
 
 resolve
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_resolve
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: place the result of a dns query in the specified placeholder, sytax: placeholder=name (immediate option)
+``help``: 把dns查询的结果放到指定的占位符上，语法：placeholder=name (立即选项)
 
 
 
 for
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) for cycle
+``help``: (选择逻辑) for循环
 
 
 
 for-glob
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) for cycle (expand glob)
+``help``: (选择逻辑) for循环 (扩展glob)
 
 
 
 for-times
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) for cycle (expand the specified num to a list starting from 1)
+``help``: (选择逻辑) for循环 (扩展指定的数字到一个从1开始的列表)
 
 
 
 for-readline
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) for cycle (expand the specified file to a list of lines)
+``help``: (选择逻辑) for循环 (扩展指定文件到一个行列表)
 
 
 
 endfor
 ******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_noop
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) end for cycle
+``help``: (选择逻辑) end for循环
 
 
 
 end-for
 *******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_noop
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) end for cycle
+``help``: (选择逻辑) end for循环
 
 
 
 if-opt
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for option
+``help``: (选择逻辑) 检查选项
 
 
 
 if-not-opt
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for option
+``help``: (选择逻辑) 检查选项
 
 
 
 if-env
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for environment variable
+``help``: (选择逻辑) 检查环境变量
 
 
 
 if-not-env
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for environment variable
+``help``: (选择逻辑) 检查环境变量
 
 
 
 ifenv
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for environment variable
+``help``: (选择逻辑) 检查环境变量
 
 
 
 if-reload
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for reload
+``help``: (选择逻辑) 检查重载
 
 
 
 if-not-reload
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for reload
+``help``: (选择逻辑) 检查重载
 
 
 
 if-hostname
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for hostname
+``help``: (选择逻辑) 检查主机名
 
 
 
 if-not-hostname
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for hostname
+``help``: (选择逻辑) 检查主机名
 
 
 
 if-hostname-match
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) try to match hostname against a regular expression
+``help``: (选择逻辑) 尝试匹配主机名到一个正则表达式
 
 
 
 if-not-hostname-match
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) try to match hostname against a regular expression
+``help``: (选择逻辑) 尝试匹配主机名到一个正则表达式
 
 
 
 if-exists
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for file/directory existance
+``help``: (选择逻辑) 检查文件/目录存在性
 
 
 
 if-not-exists
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for file/directory existance
+``help``: (选择逻辑) 检查文件/目录存在性
 
 
 
 ifexists
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for file/directory existance
+``help``: (选择逻辑) 检查文件/目录存在性
 
 
 
 if-plugin
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for plugin
+``help``: (选择逻辑) 检查插件
 
 
 
 if-not-plugin
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for plugin
+``help``: (选择逻辑) 检查插件
 
 
 
 ifplugin
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for plugin
+``help``: (选择逻辑) 检查插件
 
 
 
 if-file
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for file existance
+``help``: (选择逻辑) 检查文件存在性
 
 
 
 if-not-file
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for file existance
+``help``: (选择逻辑) 检查文件存在性
 
 
 
 if-dir
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for directory existance
+``help``: (选择逻辑) 检查目录存在性
 
 
 
 if-not-dir
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for directory existance
+``help``: (选择逻辑) 检查目录存在性
 
 
 
 ifdir
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for directory existance
+``help``: (选择逻辑) 检查目录存在性
 
 
 
 if-directory
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logic
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) check for directory existance
+``help``: (选择逻辑) 检查目录存在性
 
 
 
 endif
 *****
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_noop
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) end if
+``help``: (选择逻辑) end if
 
 
 
 end-if
 ******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_noop
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: (opt logic) end if
+``help``: (选择逻辑) end if
 
 
 
 blacklist
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set options blacklist context
+``help``: 设置选项黑名单上下文
 
 
 
 end-blacklist
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_null
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: clear options blacklist context
+``help``: 清除选项黑名单上下文
 
 
 
 whitelist
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set options whitelist context
+``help``: 设置选项白名单上下文
 
 
 
 end-whitelist
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_null
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: clear options whitelist context
+``help``: 清除选项白名单上下文
 
 
 
 ignore-sigpipe
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report (annoying) SIGPIPE
+``help``: 不报告 (烦人的) SIGPIPE
 
 
 
 ignore-write-errors
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report (annoying) write()/writev() errors
+``help``: 不报告 (烦人的) write()/writev()错误
 
 
 
 write-errors-tolerance
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: set the maximum number of allowed write errors (default: no tolerance)
+``help``: 设置允许写错误的最大数 (默认：不容忍)
 
 
 
 write-errors-exception-only
 ***************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: only raise an exception on write errors giving control to the app itself
+``help``: 写错误时只引发一个异常，把控制权交给应用自身
 
 
 
 disable-write-exception
 ***********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable exception generation on write()/writev()
+``help``: 禁用write()/writev()上的异常生成
 
 
 
 inherit
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load
 
-``help``: use the specified file as config template
+``help``: 使用指定文件作为配置模板
 
 
 
 include
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: include the specified file as immediate configuration
+``help``: 包含指定的文件作为立即配置
 
 
 
 inject-before
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: inject a text file before the config file (advanced templating)
+``help``: 在配置文件之前注入一个文本文件 (高级模板)
 
 
 
 inject-after
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: inject a text file after the config file (advanced templating)
+``help``: 在配置文件之后注入一个文本文件 (高级模板)
 
 
 
 daemonize
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -d
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: daemonize uWSGI
+``help``: 守护uWSGI
 
 
 
 daemonize2
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: daemonize uWSGI after app loading
+``help``: 应用加载后守护uWSGI
 
 
 
 stop
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pidfile_signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: stop an instance
+``help``: 停止一个实例
 
 
 
 reload
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pidfile_signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: reload an instance
+``help``: 重载一个实例
 
 
 
 pause
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pidfile_signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: pause an instance
+``help``: 暂停一个实例
 
 
 
 suspend
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pidfile_signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: suspend an instance
+``help``: 挂起一个实例
 
 
 
 resume
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pidfile_signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: resume an instance
+``help``: 恢复一个实例
 
 
 
 connect-and-read
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_connect_and_read
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: connect to a socket and wait for data from it
+``help``: 连接到一个socket，并且等待来自它的数据
 
 
 
 extract
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_extract
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: fetch/dump any supported address to stdout
+``help``: 抽取/转储任何支持的地址到标准输出
 
 
 
 listen
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -l
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the socket listen queue size
+``help``: 设置socket监听队列大小
 
 
 
 max-vars
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -v
 
 ``parser``: uwsgi_opt_max_vars
 
-``help``: set the amount of internal iovec/vars structures
+``help``: 设置内部iovec/vars结构的数量
 
 
 
 max-apps
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the maximum number of per-worker applications
+``help``: 设置per-worker应用的最大数目
 
 
 
 buffer-size
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -b
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: set internal buffer size
+``help``: 设置内部缓冲大小
 
 
 
-Set the max size of a request (request-body excluded), this generally maps to the size of request headers. By default it is 4k. If you receive a bigger request (for example with big cookies or query string) you may need to increase it. It is a security measure too, so adapt to your app needs instead of maxing it out.
+设置请求的最大大小 (排除request-body)，这一般映射到请求头的大小。默认情况下，它是4k。如果你接收到了一个更大的请求 (例如，带有大cookies或者查询字符串)，那么你也许需要增加它。它也是一个安全度量，所以调整为你的应用需要，而不是最大输出。
 
 memory-report
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -m
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable memory report
+``help``: 启用内存报告
 
 
 
 profiler
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: enable the specified profiler
+``help``: 启用指定的profiler
 
 
 
 cgi-mode
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -c
 
 ``parser``: uwsgi_opt_true
 
-``help``: force CGI-mode for plugins supporting it
+``help``: 对支持CGI模式的插件，强制使用CGI模式
 
 
 
 abstract-socket
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -a
 
 ``parser``: uwsgi_opt_true
 
-``help``: force UNIX socket in abstract mode (Linux only)
+``help``: 强制在abstract中使用UNIX socket (仅Linux)
 
 
 
 chmod-socket
 ************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``shortcut``: -C
 
@@ -1301,7 +1301,7 @@ chmod-socket
 
 chmod
 *****
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``shortcut``: -C
 
@@ -1313,381 +1313,381 @@ chmod
 
 chown-socket
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: chown unix sockets
+``help``: 修改unix socket的所有者
 
 
 
 umask
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_umask
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set umask
+``help``: 设置umask
 
 
 
 freebind
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: put socket in freebind mode
+``help``: 把socket置于freebind模式
 
 
 
-set the IP_FREEBIND flag to every socket created by uWSGI. This kind of socket can bind to non-existent ip addresses. Its main purpose is for high availability (this is Linux only)
+为每个由uWSGI创建的socket设置IP_FREEBIND标识。这类socket可以绑定到不存在的ip地址上。它的主要目的是为了高可用性 (仅Linux)
 
 map-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: map sockets to specific workers
+``help``: 映射socket到指定的worker
 
 
 
 enable-threads
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -T
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable threads
+``help``: 启用线程
 
 
 
 no-threads-wait
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not wait for threads cancellation on quit/reload
+``help``: 在退出/重载的时候，不等待线程取消
 
 
 
 auto-procname
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: automatically set processes name to something meaningful
+``help``: 自动设置进程名到某些有意义的名字
 
 
 
 procname-prefix
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_PROCNAME
 
-``help``: add a prefix to the process names
+``help``: 添加一个前缀到进程名
 
 
 
 procname-prefix-spaced
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str_spaced
 
 ``flags``: UWSGI_OPT_PROCNAME
 
-``help``: add a spaced prefix to the process names
+``help``: 添加一个空间前缀到进程名
 
 
 
 procname-append
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_PROCNAME
 
-``help``: append a string to process names
+``help``: 附加一个字符串到进程名
 
 
 
 procname
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_PROCNAME
 
-``help``: set process names
+``help``: 设置进程名
 
 
 
 procname-master
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
 ``flags``: UWSGI_OPT_PROCNAME
 
-``help``: set master process name
+``help``: 设置master进程名
 
 
 
 single-interpreter
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -i
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not use multiple interpreters (where available)
+``help``: 不要使用多个解释器 (如果可用)
 
 
 
 need-app
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: exit if no app can be loaded
+``help``: 如果没有可以加载的应用，则退出
 
 
 
 master
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -M
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable master process
+``help``: 启用master进程
 
 
 
 honour-stdin
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not remap stdin to /dev/null
+``help``: 不要重新映射标准输入到/dev/null
 
 
 
 emperor
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run the Emperor
+``help``: 运行Emperor
 
 ``reference``: :doc:`Emperor`
 
 
 
-The Emperor is a special uWSGI instance aimed at governing other uWSGI instances (named: vassals). By default it is configured to monitor a directory containing valid uWSGI config files, whenever a file is created a new instance is spawned, when the file is touched the instance is reloaded, when the file is removed the instance is destroyed. It can be extended to support more paradigms
+Emperor是一个特殊的uWSGI实例，旨在管理其他uWSGI进程 (即：vassal)。默认情况下，配置它来监控一个包含有效uWSGI配置文件的目录，每当创建了一个文件，就会生成一个新的实例，当动了这个文件，相应的实例就会被重载，当这个文件被移除，相应的实例就会被销毁。可以扩展以支持更多的范例
 
 emperor-proxy-socket
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force the vassal to became an Emperor proxy
+``help``: 强制vassal成为一个Emperor代理
 
 
 
 emperor-wrapper
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set a binary wrapper for vassals
+``help``: 为vassal设置一个二进制封装器
 
 
 
 emperor-nofollow
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not follow symlinks when checking for mtime
+``help``: 当检查mtime的时候，不遵循符号链接
 
 
 
 emperor-procname
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the Emperor process name
+``help``: 设置Emperor进程名
 
 
 
 emperor-freq
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the Emperor scan frequency (default 3 seconds)
+``help``: 设置Emperor扫描频率 (默认是3秒)
 
 
 
 emperor-required-heartbeat
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the Emperor tolerance about heartbeats
+``help``: 设置Emperor对心跳的容忍度
 
 
 
 emperor-curse-tolerance
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the Emperor tolerance about cursed vassals
+``help``: 设置Emperor对于被诅咒的vassal的容忍
 
 
 
 emperor-pidfile
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: write the Emperor pid in the specified file
+``help``: 将Emperor pid写入到指定文件中
 
 
 
 emperor-tyrant
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: put the Emperor in Tyrant mode
+``help``: 将Emperor置于Tyrant模式
 
 
 
 emperor-tyrant-nofollow
 ***********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not follow symlinks when checking for uid/gid in Tyrant mode
+``help``: 当在Tyrant模式中检查uid/gid时不要遵循符号链接
 
 
 
 emperor-tyrant-initgroups
 *************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: add additional groups set via initgroups() in Tyrant mode
+``help``: 在Tyrant模式下，通过initgroups()添加而外的组设置
 
 
 
 emperor-stats
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the Emperor stats server
+``help``: 运行Emperor统计信息服务器
 
 
 
 emperor-stats-server
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the Emperor stats server
+``help``: 运行Emperor统计信息服务器
 
 
 
 early-emperor
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: spawn the emperor as soon as possibile
+``help``: 尽快生成emperor
 
 
 
 emperor-broodlord
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: run the emperor in BroodLord mode
+``help``: 在BroodLord模式下运行emperor
 
 
 
 emperor-throttle
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set throttling level (in milliseconds) for bad behaving vassals (default 1000)
+``help``: 为糟糕的vassal设置节流层次 (以毫秒为单位)  (默认是1000)
 
 
 
 emperor-max-throttle
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set max throttling level (in milliseconds) for bad behaving vassals (default 3 minutes)
+``help``: 为糟糕的vassal设置最大节流层次 (以毫秒为单位)  (默认是3分钟)
 
 
 
 emperor-magic-exec
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
-``help``: prefix vassals config files with exec:// if they have the executable bit
+``help``: 如果vassal配置文件有可执行位，则为它们添加exec://前缀
 
 
 
 emperor-on-demand-extension
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1697,17 +1697,17 @@ emperor-on-demand-extension
 
 emperor-on-demand-ext
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: search for text file (vassal name + extension) containing the on demand socket name
+``help``: 搜索包含即需socket名的文本文件 (vassal名 + 扩展)
 
 
 
 emperor-on-demand-directory
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1717,7 +1717,7 @@ emperor-on-demand-directory
 
 emperor-on-demand-dir
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1727,7 +1727,7 @@ emperor-on-demand-dir
 
 emperor-on-demand-exec
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1737,7 +1737,7 @@ emperor-on-demand-exec
 
 emperor-extra-extension
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1747,7 +1747,7 @@ emperor-extra-extension
 
 emperor-extra-ext
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1757,7 +1757,7 @@ emperor-extra-ext
 
 emperor-no-blacklist
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -1767,7 +1767,7 @@ emperor-no-blacklist
 
 emperor-use-clone
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_unshare
 
@@ -1777,7 +1777,7 @@ emperor-use-clone
 
 emperor-use-fork-server
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1787,7 +1787,7 @@ emperor-use-fork-server
 
 vassal-fork-base
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1797,7 +1797,7 @@ vassal-fork-base
 
 emperor-subreaper
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -1807,7 +1807,7 @@ emperor-subreaper
 
 emperor-cap
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
@@ -1817,7 +1817,7 @@ emperor-cap
 
 vassals-cap
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
@@ -1827,7 +1827,7 @@ vassals-cap
 
 vassal-cap
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
@@ -1837,7 +1837,7 @@ vassal-cap
 
 emperor-collect-attribute
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1847,7 +1847,7 @@ emperor-collect-attribute
 
 emperor-collect-attr
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1857,7 +1857,7 @@ emperor-collect-attr
 
 emperor-fork-server-attr
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1867,7 +1867,7 @@ emperor-fork-server-attr
 
 emperor-wrapper-attr
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1877,7 +1877,7 @@ emperor-wrapper-attr
 
 emperor-chdir-attr
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1887,7 +1887,7 @@ emperor-chdir-attr
 
 imperial-monitor-list
 *********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -1897,7 +1897,7 @@ imperial-monitor-list
 
 imperial-monitors-list
 **********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -1907,7 +1907,7 @@ imperial-monitors-list
 
 vassals-inherit
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1917,7 +1917,7 @@ vassals-inherit
 
 vassals-include
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1927,7 +1927,7 @@ vassals-include
 
 vassals-inherit-before
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1937,7 +1937,7 @@ vassals-inherit-before
 
 vassals-include-before
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1947,7 +1947,7 @@ vassals-include-before
 
 vassals-start-hook
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1957,7 +1957,7 @@ vassals-start-hook
 
 vassals-stop-hook
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -1967,7 +1967,7 @@ vassals-stop-hook
 
 vassal-sos
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -1977,7 +1977,7 @@ vassal-sos
 
 vassal-sos-backlog
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -1987,7 +1987,7 @@ vassal-sos-backlog
 
 vassals-set
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -1997,7 +1997,7 @@ vassals-set
 
 vassal-set
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2007,7 +2007,7 @@ vassal-set
 
 heartbeat
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2017,7 +2017,7 @@ heartbeat
 
 zeus
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2027,7 +2027,7 @@ zeus
 
 reload-mercy
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2037,7 +2037,7 @@ reload-mercy
 
 worker-reload-mercy
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2047,7 +2047,7 @@ worker-reload-mercy
 
 mule-reload-mercy
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2057,7 +2057,7 @@ mule-reload-mercy
 
 exit-on-reload
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2067,7 +2067,7 @@ exit-on-reload
 
 die-on-term
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_deprecated
 
@@ -2077,7 +2077,7 @@ die-on-term
 
 force-gateway
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2087,7 +2087,7 @@ force-gateway
 
 help
 ****
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -h
 
@@ -2101,7 +2101,7 @@ help
 
 usage
 *****
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -h
 
@@ -2115,7 +2115,7 @@ usage
 
 print-sym
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_print_sym
 
@@ -2127,7 +2127,7 @@ print-sym
 
 print-symbol
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_print_sym
 
@@ -2139,7 +2139,7 @@ print-symbol
 
 reaper
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -r
 
@@ -2151,7 +2151,7 @@ reaper
 
 max-requests
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -R
 
@@ -2163,7 +2163,7 @@ max-requests
 
 max-requests-delta
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2173,7 +2173,7 @@ max-requests-delta
 
 min-worker-lifetime
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2183,7 +2183,7 @@ min-worker-lifetime
 
 max-worker-lifetime
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2193,7 +2193,7 @@ max-worker-lifetime
 
 socket-timeout
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -z
 
@@ -2205,7 +2205,7 @@ socket-timeout
 
 no-fd-passing
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2215,7 +2215,7 @@ no-fd-passing
 
 locks
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2225,7 +2225,7 @@ locks
 
 lock-engine
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2235,7 +2235,7 @@ lock-engine
 
 ftok
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2245,7 +2245,7 @@ ftok
 
 persistent-ipcsem
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2255,7 +2255,7 @@ persistent-ipcsem
 
 sharedarea
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -A
 
@@ -2269,7 +2269,7 @@ sharedarea
 
 safe-fd
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_safe_fd
 
@@ -2279,7 +2279,7 @@ safe-fd
 
 fd-safe
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_safe_fd
 
@@ -2289,7 +2289,7 @@ fd-safe
 
 cache
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2299,7 +2299,7 @@ cache
 
 cache-blocksize
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2309,7 +2309,7 @@ cache-blocksize
 
 cache-store
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2321,7 +2321,7 @@ cache-store
 
 cache-store-sync
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2331,7 +2331,7 @@ cache-store-sync
 
 cache-no-expire
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2341,7 +2341,7 @@ cache-no-expire
 
 cache-expire-freq
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2351,7 +2351,7 @@ cache-expire-freq
 
 cache-report-freed-items
 ************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2361,7 +2361,7 @@ cache-report-freed-items
 
 cache-udp-server
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2373,7 +2373,7 @@ cache-udp-server
 
 cache-udp-node
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2385,7 +2385,7 @@ cache-udp-node
 
 cache-sync
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2395,7 +2395,7 @@ cache-sync
 
 cache-use-last-modified
 ***********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2405,7 +2405,7 @@ cache-use-last-modified
 
 add-cache-item
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2415,7 +2415,7 @@ add-cache-item
 
 load-file-in-cache
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2425,7 +2425,7 @@ load-file-in-cache
 
 load-file-in-cache-gzip
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2435,7 +2435,7 @@ load-file-in-cache-gzip
 
 cache2
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2445,7 +2445,7 @@ cache2
 
 queue
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2455,7 +2455,7 @@ queue
 
 queue-blocksize
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2465,7 +2465,7 @@ queue-blocksize
 
 queue-store
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2477,7 +2477,7 @@ queue-store
 
 queue-store-sync
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2487,7 +2487,7 @@ queue-store-sync
 
 spooler
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -Q
 
@@ -2501,7 +2501,7 @@ spooler
 
 spooler-external
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_spooler
 
@@ -2513,7 +2513,7 @@ spooler-external
 
 spooler-ordered
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2523,7 +2523,7 @@ spooler-ordered
 
 spooler-chdir
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2533,7 +2533,7 @@ spooler-chdir
 
 spooler-processes
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2545,7 +2545,7 @@ spooler-processes
 
 spooler-quiet
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2555,7 +2555,7 @@ spooler-quiet
 
 spooler-max-tasks
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2565,7 +2565,7 @@ spooler-max-tasks
 
 spooler-harakiri
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2575,7 +2575,7 @@ spooler-harakiri
 
 spooler-frequency
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2585,7 +2585,7 @@ spooler-frequency
 
 spooler-freq
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2595,7 +2595,7 @@ spooler-freq
 
 mule
 ****
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_add_mule
 
@@ -2607,7 +2607,7 @@ mule
 
 mules
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_mules
 
@@ -2619,7 +2619,7 @@ mules
 
 farm
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_farm
 
@@ -2631,7 +2631,7 @@ farm
 
 mule-msg-size
 *************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2643,7 +2643,7 @@ mule-msg-size
 
 signal
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_signal
 
@@ -2655,7 +2655,7 @@ signal
 
 signal-bufsize
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2665,7 +2665,7 @@ signal-bufsize
 
 signals-bufsize
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -2675,7 +2675,7 @@ signals-bufsize
 
 signal-timer
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2687,7 +2687,7 @@ signal-timer
 
 timer
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2699,7 +2699,7 @@ timer
 
 signal-rbtimer
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2711,7 +2711,7 @@ signal-rbtimer
 
 rbtimer
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2723,7 +2723,7 @@ rbtimer
 
 rpc-max
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -2733,7 +2733,7 @@ rpc-max
 
 disable-logging
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``shortcut``: -L
 
@@ -2745,7 +2745,7 @@ disable-logging
 
 flock
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_flock
 
@@ -2757,7 +2757,7 @@ flock
 
 flock-wait
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_flock_wait
 
@@ -2769,7 +2769,7 @@ flock-wait
 
 flock2
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2781,7 +2781,7 @@ flock2
 
 flock-wait2
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2793,7 +2793,7 @@ flock-wait2
 
 pidfile
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2803,7 +2803,7 @@ pidfile
 
 pidfile2
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2813,7 +2813,7 @@ pidfile2
 
 safe-pidfile
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2823,7 +2823,7 @@ safe-pidfile
 
 safe-pidfile2
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2833,7 +2833,7 @@ safe-pidfile2
 
 chroot
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2843,7 +2843,7 @@ chroot
 
 pivot-root
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2853,7 +2853,7 @@ pivot-root
 
 pivot_root
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2863,7 +2863,7 @@ pivot_root
 
 uid
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_uid
 
@@ -2873,7 +2873,7 @@ uid
 
 gid
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_gid
 
@@ -2883,7 +2883,7 @@ gid
 
 add-gid
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2893,7 +2893,7 @@ add-gid
 
 immediate-uid
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_immediate_uid
 
@@ -2905,7 +2905,7 @@ immediate-uid
 
 immediate-gid
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_immediate_gid
 
@@ -2917,7 +2917,7 @@ immediate-gid
 
 no-initgroups
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -2927,7 +2927,7 @@ no-initgroups
 
 cap
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_cap
 
@@ -2937,7 +2937,7 @@ cap
 
 unshare
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_unshare
 
@@ -2947,7 +2947,7 @@ unshare
 
 unshare2
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_unshare
 
@@ -2957,7 +2957,7 @@ unshare2
 
 setns-socket
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2969,7 +2969,7 @@ setns-socket
 
 setns-socket-skip
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2979,7 +2979,7 @@ setns-socket-skip
 
 setns-skip
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -2989,7 +2989,7 @@ setns-skip
 
 setns
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -2999,7 +2999,7 @@ setns
 
 setns-preopen
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3009,7 +3009,7 @@ setns-preopen
 
 fork-socket
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3019,7 +3019,7 @@ fork-socket
 
 fork-server
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3029,7 +3029,7 @@ fork-server
 
 jailed
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3039,7 +3039,7 @@ jailed
 
 jail
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3049,7 +3049,7 @@ jail
 
 jail-ip4
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3059,7 +3059,7 @@ jail-ip4
 
 jail-ip6
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3069,7 +3069,7 @@ jail-ip6
 
 jidfile
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3079,7 +3079,7 @@ jidfile
 
 jid-file
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3089,7 +3089,7 @@ jid-file
 
 jail2
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3099,7 +3099,7 @@ jail2
 
 libjail
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3109,7 +3109,7 @@ libjail
 
 jail-attach
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -3119,7 +3119,7 @@ jail-attach
 
 refork
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3129,7 +3129,7 @@ refork
 
 re-fork
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3139,7 +3139,7 @@ re-fork
 
 refork-as-root
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3149,7 +3149,7 @@ refork-as-root
 
 re-fork-as-root
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3159,7 +3159,7 @@ re-fork-as-root
 
 refork-post-jail
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3169,7 +3169,7 @@ refork-post-jail
 
 re-fork-post-jail
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -3179,7 +3179,7 @@ re-fork-post-jail
 
 hook-asap
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3189,7 +3189,7 @@ hook-asap
 
 hook-pre-jail
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3199,7 +3199,7 @@ hook-pre-jail
 
 hook-post-jail
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3209,7 +3209,7 @@ hook-post-jail
 
 hook-in-jail
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3219,7 +3219,7 @@ hook-in-jail
 
 hook-as-root
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3229,7 +3229,7 @@ hook-as-root
 
 hook-as-user
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3239,7 +3239,7 @@ hook-as-user
 
 hook-as-user-atexit
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3249,7 +3249,7 @@ hook-as-user-atexit
 
 hook-pre-app
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3259,7 +3259,7 @@ hook-pre-app
 
 hook-post-app
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3269,7 +3269,7 @@ hook-post-app
 
 hook-post-fork
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3279,7 +3279,7 @@ hook-post-fork
 
 hook-accepting
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3289,7 +3289,7 @@ hook-accepting
 
 hook-accepting1
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3299,7 +3299,7 @@ hook-accepting1
 
 hook-accepting-once
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3309,7 +3309,7 @@ hook-accepting-once
 
 hook-accepting1-once
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3319,7 +3319,7 @@ hook-accepting1-once
 
 hook-master-start
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3329,7 +3329,7 @@ hook-master-start
 
 hook-touch
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3339,7 +3339,7 @@ hook-touch
 
 hook-emperor-start
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3349,7 +3349,7 @@ hook-emperor-start
 
 hook-emperor-stop
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3359,7 +3359,7 @@ hook-emperor-stop
 
 hook-emperor-reload
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3369,7 +3369,7 @@ hook-emperor-reload
 
 hook-emperor-lost
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3379,7 +3379,7 @@ hook-emperor-lost
 
 hook-as-vassal
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3389,7 +3389,7 @@ hook-as-vassal
 
 hook-as-emperor
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3399,7 +3399,7 @@ hook-as-emperor
 
 hook-as-on-demand-vassal
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3409,7 +3409,7 @@ hook-as-on-demand-vassal
 
 hook-as-on-config-vassal
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3419,7 +3419,7 @@ hook-as-on-config-vassal
 
 hook-as-emperor-before-vassal
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3429,7 +3429,7 @@ hook-as-emperor-before-vassal
 
 hook-as-vassal-before-drop
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3439,7 +3439,7 @@ hook-as-vassal-before-drop
 
 hook-as-emperor-setns
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3449,7 +3449,7 @@ hook-as-emperor-setns
 
 hook-as-mule
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3459,7 +3459,7 @@ hook-as-mule
 
 hook-as-gateway
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3469,7 +3469,7 @@ hook-as-gateway
 
 after-request-hook
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3479,7 +3479,7 @@ after-request-hook
 
 after-request-call
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3489,7 +3489,7 @@ after-request-call
 
 exec-asap
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3499,7 +3499,7 @@ exec-asap
 
 exec-pre-jail
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3509,7 +3509,7 @@ exec-pre-jail
 
 exec-post-jail
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3519,7 +3519,7 @@ exec-post-jail
 
 exec-in-jail
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3529,7 +3529,7 @@ exec-in-jail
 
 exec-as-root
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3539,7 +3539,7 @@ exec-as-root
 
 exec-as-user
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3549,7 +3549,7 @@ exec-as-user
 
 exec-as-user-atexit
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3559,7 +3559,7 @@ exec-as-user-atexit
 
 exec-pre-app
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3569,7 +3569,7 @@ exec-pre-app
 
 exec-post-app
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3579,7 +3579,7 @@ exec-post-app
 
 exec-as-vassal
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3589,7 +3589,7 @@ exec-as-vassal
 
 exec-as-emperor
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3599,7 +3599,7 @@ exec-as-emperor
 
 mount-asap
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3609,7 +3609,7 @@ mount-asap
 
 mount-pre-jail
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3619,7 +3619,7 @@ mount-pre-jail
 
 mount-post-jail
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3629,7 +3629,7 @@ mount-post-jail
 
 mount-in-jail
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3639,7 +3639,7 @@ mount-in-jail
 
 mount-as-root
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3649,7 +3649,7 @@ mount-as-root
 
 mount-as-vassal
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3659,7 +3659,7 @@ mount-as-vassal
 
 mount-as-emperor
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3669,7 +3669,7 @@ mount-as-emperor
 
 umount-asap
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3679,7 +3679,7 @@ umount-asap
 
 umount-pre-jail
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3689,7 +3689,7 @@ umount-pre-jail
 
 umount-post-jail
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3699,7 +3699,7 @@ umount-post-jail
 
 umount-in-jail
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3709,7 +3709,7 @@ umount-in-jail
 
 umount-as-root
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3719,7 +3719,7 @@ umount-as-root
 
 umount-as-vassal
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3729,7 +3729,7 @@ umount-as-vassal
 
 umount-as-emperor
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3739,7 +3739,7 @@ umount-as-emperor
 
 wait-for-interface
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3749,7 +3749,7 @@ wait-for-interface
 
 wait-for-interface-timeout
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -3759,7 +3759,7 @@ wait-for-interface-timeout
 
 wait-interface
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3769,7 +3769,7 @@ wait-interface
 
 wait-interface-timeout
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -3779,7 +3779,7 @@ wait-interface-timeout
 
 wait-for-iface
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3789,7 +3789,7 @@ wait-for-iface
 
 wait-for-iface-timeout
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -3799,7 +3799,7 @@ wait-for-iface-timeout
 
 wait-iface
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3809,7 +3809,7 @@ wait-iface
 
 wait-iface-timeout
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -3819,7 +3819,7 @@ wait-iface-timeout
 
 wait-for-fs
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3829,7 +3829,7 @@ wait-for-fs
 
 wait-for-file
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3839,7 +3839,7 @@ wait-for-file
 
 wait-for-dir
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3849,7 +3849,7 @@ wait-for-dir
 
 wait-for-mountpoint
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3859,7 +3859,7 @@ wait-for-mountpoint
 
 wait-for-fs-timeout
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -3869,7 +3869,7 @@ wait-for-fs-timeout
 
 call-asap
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3879,7 +3879,7 @@ call-asap
 
 call-pre-jail
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3889,7 +3889,7 @@ call-pre-jail
 
 call-post-jail
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3899,7 +3899,7 @@ call-post-jail
 
 call-in-jail
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3909,7 +3909,7 @@ call-in-jail
 
 call-as-root
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3919,7 +3919,7 @@ call-as-root
 
 call-as-user
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3929,7 +3929,7 @@ call-as-user
 
 call-as-user-atexit
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3939,7 +3939,7 @@ call-as-user-atexit
 
 call-pre-app
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3949,7 +3949,7 @@ call-pre-app
 
 call-post-app
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3959,7 +3959,7 @@ call-post-app
 
 call-as-vassal
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3969,7 +3969,7 @@ call-as-vassal
 
 call-as-vassal1
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3979,7 +3979,7 @@ call-as-vassal1
 
 call-as-vassal3
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3989,7 +3989,7 @@ call-as-vassal3
 
 call-as-emperor
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -3999,7 +3999,7 @@ call-as-emperor
 
 call-as-emperor1
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4009,7 +4009,7 @@ call-as-emperor1
 
 call-as-emperor2
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4019,7 +4019,7 @@ call-as-emperor2
 
 call-as-emperor4
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4029,7 +4029,7 @@ call-as-emperor4
 
 ini
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_ini
 
@@ -4041,7 +4041,7 @@ ini
 
 yaml
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -y
 
@@ -4055,7 +4055,7 @@ yaml
 
 yml
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -y
 
@@ -4069,7 +4069,7 @@ yml
 
 json
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -j
 
@@ -4083,7 +4083,7 @@ json
 
 js
 **
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -j
 
@@ -4097,7 +4097,7 @@ js
 
 weight
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4107,7 +4107,7 @@ weight
 
 auto-weight
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4117,7 +4117,7 @@ auto-weight
 
 no-server
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4127,7 +4127,7 @@ no-server
 
 command-mode
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4139,7 +4139,7 @@ command-mode
 
 no-defer-accept
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4149,7 +4149,7 @@ no-defer-accept
 
 tcp-nodelay
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4159,7 +4159,7 @@ tcp-nodelay
 
 so-keepalive
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4169,7 +4169,7 @@ so-keepalive
 
 so-send-timeout
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4179,7 +4179,7 @@ so-send-timeout
 
 socket-send-timeout
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4189,7 +4189,7 @@ socket-send-timeout
 
 so-write-timeout
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4199,7 +4199,7 @@ so-write-timeout
 
 socket-write-timeout
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4209,7 +4209,7 @@ socket-write-timeout
 
 socket-sndbuf
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4219,7 +4219,7 @@ socket-sndbuf
 
 socket-rcvbuf
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4229,7 +4229,7 @@ socket-rcvbuf
 
 limit-as
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_megabytes
 
@@ -4239,7 +4239,7 @@ limit-as
 
 limit-nproc
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4249,7 +4249,7 @@ limit-nproc
 
 reload-on-as
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_megabytes
 
@@ -4261,7 +4261,7 @@ reload-on-as
 
 reload-on-rss
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_megabytes
 
@@ -4273,7 +4273,7 @@ reload-on-rss
 
 evil-reload-on-as
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_megabytes
 
@@ -4285,7 +4285,7 @@ evil-reload-on-as
 
 evil-reload-on-rss
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_megabytes
 
@@ -4297,7 +4297,7 @@ evil-reload-on-rss
 
 reload-on-fd
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4309,7 +4309,7 @@ reload-on-fd
 
 brutal-reload-on-fd
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4321,7 +4321,7 @@ brutal-reload-on-fd
 
 ksm
 ***
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4331,7 +4331,7 @@ ksm
 
 pcre-jit
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_pcre_jit
 
@@ -4343,7 +4343,7 @@ pcre-jit
 
 never-swap
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4353,7 +4353,7 @@ never-swap
 
 touch-reload
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4365,7 +4365,7 @@ touch-reload
 
 touch-workers-reload
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4377,7 +4377,7 @@ touch-workers-reload
 
 touch-chain-reload
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4389,7 +4389,7 @@ touch-chain-reload
 
 touch-logrotate
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4401,7 +4401,7 @@ touch-logrotate
 
 touch-logreopen
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4413,7 +4413,7 @@ touch-logreopen
 
 touch-exec
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4425,7 +4425,7 @@ touch-exec
 
 touch-signal
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4437,7 +4437,7 @@ touch-signal
 
 fs-reload
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4449,7 +4449,7 @@ fs-reload
 
 fs-brutal-reload
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4461,7 +4461,7 @@ fs-brutal-reload
 
 fs-signal
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4473,7 +4473,7 @@ fs-signal
 
 check-mountpoint
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4485,7 +4485,7 @@ check-mountpoint
 
 mountpoint-check
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4497,7 +4497,7 @@ mountpoint-check
 
 check-mount
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4509,7 +4509,7 @@ check-mount
 
 mount-check
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4521,7 +4521,7 @@ mount-check
 
 propagate-touch
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4531,7 +4531,7 @@ propagate-touch
 
 limit-post
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4541,7 +4541,7 @@ limit-post
 
 no-orphans
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4551,7 +4551,7 @@ no-orphans
 
 prio
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_rawint
 
@@ -4561,7 +4561,7 @@ prio
 
 cpu-affinity
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4571,7 +4571,7 @@ cpu-affinity
 
 post-buffering
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4581,7 +4581,7 @@ post-buffering
 
 post-buffering-bufsize
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4591,7 +4591,7 @@ post-buffering-bufsize
 
 body-read-warning
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -4601,7 +4601,7 @@ body-read-warning
 
 upload-progress
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4611,7 +4611,7 @@ upload-progress
 
 no-default-app
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4621,7 +4621,7 @@ no-default-app
 
 manage-script-name
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4631,7 +4631,7 @@ manage-script-name
 
 ignore-script-name
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4641,7 +4641,7 @@ ignore-script-name
 
 catch-exceptions
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4651,7 +4651,7 @@ catch-exceptions
 
 reload-on-exception
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4661,7 +4661,7 @@ reload-on-exception
 
 reload-on-exception-type
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4671,7 +4671,7 @@ reload-on-exception-type
 
 reload-on-exception-value
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4681,7 +4681,7 @@ reload-on-exception-value
 
 reload-on-exception-repr
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4691,7 +4691,7 @@ reload-on-exception-repr
 
 exception-handler
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4703,7 +4703,7 @@ exception-handler
 
 enable-metrics
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4715,7 +4715,7 @@ enable-metrics
 
 metric
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4727,7 +4727,7 @@ metric
 
 metric-threshold
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4739,7 +4739,7 @@ metric-threshold
 
 metric-alarm
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4751,7 +4751,7 @@ metric-alarm
 
 alarm-metric
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4763,7 +4763,7 @@ alarm-metric
 
 metrics-dir
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4775,7 +4775,7 @@ metrics-dir
 
 metrics-dir-restore
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4787,7 +4787,7 @@ metrics-dir-restore
 
 metric-dir
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4799,7 +4799,7 @@ metric-dir
 
 metric-dir-restore
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4811,7 +4811,7 @@ metric-dir-restore
 
 metrics-no-cores
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4827,7 +4827,7 @@ Do not expose metrics of async cores.
 
 udp
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4839,7 +4839,7 @@ udp
 
 stats
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4851,7 +4851,7 @@ stats
 
 stats-server
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4863,7 +4863,7 @@ stats-server
 
 stats-http
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4875,7 +4875,7 @@ stats-http
 
 stats-minified
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4887,7 +4887,7 @@ stats-minified
 
 stats-min
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4899,7 +4899,7 @@ stats-min
 
 stats-push
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -4911,7 +4911,7 @@ stats-push
 
 stats-pusher-default-freq
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4923,7 +4923,7 @@ stats-pusher-default-freq
 
 stats-pushers-default-freq
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4935,7 +4935,7 @@ stats-pushers-default-freq
 
 stats-no-cores
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4951,7 +4951,7 @@ Do not expose the information about cores in the stats server.
 
 stats-no-metrics
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -4967,7 +4967,7 @@ Do not expose the metrics at all in the stats server.
 
 multicast
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -4979,7 +4979,7 @@ multicast
 
 multicast-ttl
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4989,7 +4989,7 @@ multicast-ttl
 
 multicast-loop
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -4999,7 +4999,7 @@ multicast-loop
 
 master-fifo
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5011,7 +5011,7 @@ master-fifo
 
 notify-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5023,7 +5023,7 @@ notify-socket
 
 subscription-notify-socket
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5035,7 +5035,7 @@ subscription-notify-socket
 
 subscription-mountpoints
 ************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5047,7 +5047,7 @@ subscription-mountpoints
 
 subscription-mountpoint
 ***********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5059,7 +5059,7 @@ subscription-mountpoint
 
 legion
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion
 
@@ -5071,7 +5071,7 @@ legion
 
 legion-mcast
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_mcast
 
@@ -5083,7 +5083,7 @@ legion-mcast
 
 legion-node
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_node
 
@@ -5095,7 +5095,7 @@ legion-node
 
 legion-freq
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5107,7 +5107,7 @@ legion-freq
 
 legion-tolerance
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5119,7 +5119,7 @@ legion-tolerance
 
 legion-death-on-lord-error
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5131,7 +5131,7 @@ legion-death-on-lord-error
 
 legion-skew-tolerance
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5143,7 +5143,7 @@ legion-skew-tolerance
 
 legion-lord
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5155,7 +5155,7 @@ legion-lord
 
 legion-unlord
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5167,7 +5167,7 @@ legion-unlord
 
 legion-setup
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5179,7 +5179,7 @@ legion-setup
 
 legion-death
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5191,7 +5191,7 @@ legion-death
 
 legion-join
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5203,7 +5203,7 @@ legion-join
 
 legion-node-joined
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5215,7 +5215,7 @@ legion-node-joined
 
 legion-node-left
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_hook
 
@@ -5227,7 +5227,7 @@ legion-node-left
 
 legion-quorum
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_quorum
 
@@ -5239,7 +5239,7 @@ legion-quorum
 
 legion-scroll
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_legion_scroll
 
@@ -5251,7 +5251,7 @@ legion-scroll
 
 legion-scroll-max-size
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_16bit
 
@@ -5261,7 +5261,7 @@ legion-scroll-max-size
 
 legion-scroll-list-max-size
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -5271,7 +5271,7 @@ legion-scroll-list-max-size
 
 subscriptions-sign-check
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_scd
 
@@ -5283,7 +5283,7 @@ subscriptions-sign-check
 
 subscriptions-sign-check-tolerance
 **********************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5295,7 +5295,7 @@ subscriptions-sign-check-tolerance
 
 subscriptions-sign-skip-uid
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5307,7 +5307,7 @@ subscriptions-sign-skip-uid
 
 subscriptions-credentials-check
 *******************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5319,7 +5319,7 @@ subscriptions-credentials-check
 
 subscriptions-use-credentials
 *****************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5329,7 +5329,7 @@ subscriptions-use-credentials
 
 subscription-algo
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_ssa
 
@@ -5339,7 +5339,7 @@ subscription-algo
 
 subscription-dotsplit
 *********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5349,7 +5349,7 @@ subscription-dotsplit
 
 subscribe-to
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5361,7 +5361,7 @@ subscribe-to
 
 st
 **
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5373,7 +5373,7 @@ st
 
 subscribe
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5385,7 +5385,7 @@ subscribe
 
 subscribe2
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5397,7 +5397,7 @@ subscribe2
 
 subscribe-freq
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5407,7 +5407,7 @@ subscribe-freq
 
 subscription-tolerance
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5417,7 +5417,7 @@ subscription-tolerance
 
 unsubscribe-on-graceful-reload
 ******************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5427,7 +5427,7 @@ unsubscribe-on-graceful-reload
 
 start-unsubscribed
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5437,7 +5437,7 @@ start-unsubscribed
 
 subscribe-with-modifier1
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5449,7 +5449,7 @@ subscribe-with-modifier1
 
 snmp
 ****
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_snmp
 
@@ -5459,7 +5459,7 @@ snmp
 
 snmp-community
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_snmp_community
 
@@ -5469,7 +5469,7 @@ snmp-community
 
 ssl-verbose
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5479,7 +5479,7 @@ ssl-verbose
 
 ssl-sessions-use-cache
 **********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5491,7 +5491,7 @@ ssl-sessions-use-cache
 
 ssl-session-use-cache
 *********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5503,7 +5503,7 @@ ssl-session-use-cache
 
 ssl-sessions-timeout
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5513,7 +5513,7 @@ ssl-sessions-timeout
 
 ssl-session-timeout
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5523,7 +5523,7 @@ ssl-session-timeout
 
 sni
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_sni
 
@@ -5533,7 +5533,7 @@ sni
 
 sni-dir
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5543,7 +5543,7 @@ sni-dir
 
 sni-dir-ciphers
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5553,7 +5553,7 @@ sni-dir-ciphers
 
 ssl-enable3
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5563,7 +5563,7 @@ ssl-enable3
 
 ssl-option
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5573,7 +5573,7 @@ ssl-option
 
 sni-regexp
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_sni
 
@@ -5583,7 +5583,7 @@ sni-regexp
 
 ssl-tmp-dir
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5593,7 +5593,7 @@ ssl-tmp-dir
 
 check-interval
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5605,7 +5605,7 @@ check-interval
 
 forkbomb-delay
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5617,7 +5617,7 @@ forkbomb-delay
 
 binary-path
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5627,7 +5627,7 @@ binary-path
 
 privileged-binary-patch
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5637,7 +5637,7 @@ privileged-binary-patch
 
 unprivileged-binary-patch
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5647,7 +5647,7 @@ unprivileged-binary-patch
 
 privileged-binary-patch-arg
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5657,7 +5657,7 @@ privileged-binary-patch-arg
 
 unprivileged-binary-patch-arg
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5667,7 +5667,7 @@ unprivileged-binary-patch-arg
 
 async
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5677,7 +5677,7 @@ async
 
 disable-async-warn-on-queue-full
 ********************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_false
 
@@ -5687,7 +5687,7 @@ disable-async-warn-on-queue-full
 
 max-fd
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5697,7 +5697,7 @@ max-fd
 
 logto
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5707,7 +5707,7 @@ logto
 
 logto2
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5717,7 +5717,7 @@ logto2
 
 log-format
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5727,7 +5727,7 @@ log-format
 
 logformat
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -5737,7 +5737,7 @@ logformat
 
 logformat-strftime
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5747,7 +5747,7 @@ logformat-strftime
 
 log-format-strftime
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5757,7 +5757,7 @@ log-format-strftime
 
 logfile-chown
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5767,7 +5767,7 @@ logfile-chown
 
 logfile-chmod
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_logfile_chmod
 
@@ -5777,7 +5777,7 @@ logfile-chmod
 
 log-syslog
 **********
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_logger
 
@@ -5789,7 +5789,7 @@ log-syslog
 
 log-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_logger
 
@@ -5801,7 +5801,7 @@ log-socket
 
 req-logger
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_req_logger
 
@@ -5813,7 +5813,7 @@ req-logger
 
 logger-req
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_req_logger
 
@@ -5825,7 +5825,7 @@ logger-req
 
 logger
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_logger
 
@@ -5837,7 +5837,7 @@ logger
 
 logger-list
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5847,7 +5847,7 @@ logger-list
 
 loggers-list
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5857,7 +5857,7 @@ loggers-list
 
 threaded-logger
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5869,7 +5869,7 @@ threaded-logger
 
 log-encoder
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5881,7 +5881,7 @@ log-encoder
 
 log-req-encoder
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5893,7 +5893,7 @@ log-req-encoder
 
 log-drain
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_list
 
@@ -5905,7 +5905,7 @@ log-drain
 
 log-filter
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_list
 
@@ -5917,7 +5917,7 @@ log-filter
 
 log-route
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_custom_list
 
@@ -5929,7 +5929,7 @@ log-route
 
 log-req-route
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_custom_list
 
@@ -5941,7 +5941,7 @@ log-req-route
 
 use-abort
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5951,7 +5951,7 @@ use-abort
 
 alarm
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5963,7 +5963,7 @@ alarm
 
 alarm-cheap
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -5973,7 +5973,7 @@ alarm-cheap
 
 alarm-freq
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -5983,7 +5983,7 @@ alarm-freq
 
 alarm-fd
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -5995,7 +5995,7 @@ alarm-fd
 
 alarm-segfault
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6007,7 +6007,7 @@ alarm-segfault
 
 segfault-alarm
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6019,7 +6019,7 @@ segfault-alarm
 
 alarm-backlog
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6031,7 +6031,7 @@ alarm-backlog
 
 backlog-alarm
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6043,7 +6043,7 @@ backlog-alarm
 
 lq-alarm
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6055,7 +6055,7 @@ lq-alarm
 
 alarm-lq
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6067,7 +6067,7 @@ alarm-lq
 
 alarm-listen-queue
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6079,7 +6079,7 @@ alarm-listen-queue
 
 listen-queue-alarm
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6091,7 +6091,7 @@ listen-queue-alarm
 
 log-alarm
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6103,7 +6103,7 @@ log-alarm
 
 alarm-log
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6115,7 +6115,7 @@ alarm-log
 
 not-log-alarm
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list_custom
 
@@ -6127,7 +6127,7 @@ not-log-alarm
 
 not-alarm-log
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list_custom
 
@@ -6139,7 +6139,7 @@ not-alarm-log
 
 alarm-list
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6149,7 +6149,7 @@ alarm-list
 
 alarms-list
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6159,7 +6159,7 @@ alarms-list
 
 alarm-msg-size
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6169,7 +6169,7 @@ alarm-msg-size
 
 log-master
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6181,7 +6181,7 @@ log-master
 
 log-master-bufsize
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6191,7 +6191,7 @@ log-master-bufsize
 
 log-master-stream
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6201,7 +6201,7 @@ log-master-stream
 
 log-master-req-stream
 *********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6211,7 +6211,7 @@ log-master-req-stream
 
 log-reopen
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6221,7 +6221,7 @@ log-reopen
 
 log-truncate
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6231,7 +6231,7 @@ log-truncate
 
 log-maxsize
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6243,7 +6243,7 @@ log-maxsize
 
 log-backupname
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -6253,7 +6253,7 @@ log-backupname
 
 logdate
 *******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_log_date
 
@@ -6263,7 +6263,7 @@ logdate
 
 log-date
 ********
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_log_date
 
@@ -6273,7 +6273,7 @@ log-date
 
 log-prefix
 **********
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_log_date
 
@@ -6283,7 +6283,7 @@ log-prefix
 
 log-zero
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6293,7 +6293,7 @@ log-zero
 
 log-slow
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6303,7 +6303,7 @@ log-slow
 
 log-4xx
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6313,7 +6313,7 @@ log-4xx
 
 log-5xx
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6323,7 +6323,7 @@ log-5xx
 
 log-big
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6333,7 +6333,7 @@ log-big
 
 log-sendfile
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6343,7 +6343,7 @@ log-sendfile
 
 log-ioerror
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6353,7 +6353,7 @@ log-ioerror
 
 log-micros
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6363,7 +6363,7 @@ log-micros
 
 log-x-forwarded-for
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6373,7 +6373,7 @@ log-x-forwarded-for
 
 master-as-root
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6383,7 +6383,7 @@ master-as-root
 
 drop-after-init
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6393,7 +6393,7 @@ drop-after-init
 
 drop-after-apps
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6403,7 +6403,7 @@ drop-after-apps
 
 force-cwd
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -6413,7 +6413,7 @@ force-cwd
 
 binsh
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6423,7 +6423,7 @@ binsh
 
 chdir
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -6433,7 +6433,7 @@ chdir
 
 chdir2
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -6443,7 +6443,7 @@ chdir2
 
 lazy
 ****
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6453,7 +6453,7 @@ lazy
 
 lazy-apps
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6463,7 +6463,7 @@ lazy-apps
 
 cheap
 *****
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6475,7 +6475,7 @@ cheap
 
 cheaper
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6487,7 +6487,7 @@ cheaper
 
 cheaper-initial
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6499,7 +6499,7 @@ cheaper-initial
 
 cheaper-algo
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -6511,7 +6511,7 @@ cheaper-algo
 
 cheaper-step
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6523,7 +6523,7 @@ cheaper-step
 
 cheaper-overload
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6534,7 +6534,7 @@ cheaper-overload
 
 cheaper-idle
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6545,7 +6545,7 @@ cheaper-idle
 
 cheaper-algo-list
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6555,7 +6555,7 @@ cheaper-algo-list
 
 cheaper-algos-list
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6565,7 +6565,7 @@ cheaper-algos-list
 
 cheaper-list
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6575,7 +6575,7 @@ cheaper-list
 
 cheaper-rss-limit-soft
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6587,7 +6587,7 @@ cheaper-rss-limit-soft
 
 cheaper-rss-limit-hard
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -6599,7 +6599,7 @@ cheaper-rss-limit-hard
 
 idle
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6611,7 +6611,7 @@ idle
 
 die-on-idle
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6621,7 +6621,7 @@ die-on-idle
 
 mount
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6631,7 +6631,7 @@ mount
 
 worker-mount
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -6641,7 +6641,7 @@ worker-mount
 
 threads
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6653,7 +6653,7 @@ threads
 
 thread-stacksize
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6665,7 +6665,7 @@ thread-stacksize
 
 threads-stacksize
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6677,7 +6677,7 @@ threads-stacksize
 
 thread-stack-size
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6689,7 +6689,7 @@ thread-stack-size
 
 threads-stack-size
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -6701,7 +6701,7 @@ threads-stack-size
 
 vhost
 *****
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6711,7 +6711,7 @@ vhost
 
 vhost-host
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -6723,7 +6723,7 @@ vhost-host
 
 route
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6733,7 +6733,7 @@ route
 
 route-host
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6743,7 +6743,7 @@ route-host
 
 route-uri
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6753,7 +6753,7 @@ route-uri
 
 route-qs
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6763,7 +6763,7 @@ route-qs
 
 route-remote-addr
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6773,7 +6773,7 @@ route-remote-addr
 
 route-user-agent
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6783,7 +6783,7 @@ route-user-agent
 
 route-remote-user
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6793,7 +6793,7 @@ route-remote-user
 
 route-referer
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6803,7 +6803,7 @@ route-referer
 
 route-label
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6813,7 +6813,7 @@ route-label
 
 route-if
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6823,7 +6823,7 @@ route-if
 
 route-if-not
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6833,7 +6833,7 @@ route-if-not
 
 route-run
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6843,7 +6843,7 @@ route-run
 
 final-route
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6853,7 +6853,7 @@ final-route
 
 final-route-status
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6863,7 +6863,7 @@ final-route-status
 
 final-route-host
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6873,7 +6873,7 @@ final-route-host
 
 final-route-uri
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6883,7 +6883,7 @@ final-route-uri
 
 final-route-qs
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6893,7 +6893,7 @@ final-route-qs
 
 final-route-remote-addr
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6903,7 +6903,7 @@ final-route-remote-addr
 
 final-route-user-agent
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6913,7 +6913,7 @@ final-route-user-agent
 
 final-route-remote-user
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6923,7 +6923,7 @@ final-route-remote-user
 
 final-route-referer
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6933,7 +6933,7 @@ final-route-referer
 
 final-route-label
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6943,7 +6943,7 @@ final-route-label
 
 final-route-if
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6953,7 +6953,7 @@ final-route-if
 
 final-route-if-not
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6963,7 +6963,7 @@ final-route-if-not
 
 final-route-run
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6973,7 +6973,7 @@ final-route-run
 
 error-route
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6983,7 +6983,7 @@ error-route
 
 error-route-status
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -6993,7 +6993,7 @@ error-route-status
 
 error-route-host
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7003,7 +7003,7 @@ error-route-host
 
 error-route-uri
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7013,7 +7013,7 @@ error-route-uri
 
 error-route-qs
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7023,7 +7023,7 @@ error-route-qs
 
 error-route-remote-addr
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7033,7 +7033,7 @@ error-route-remote-addr
 
 error-route-user-agent
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7043,7 +7043,7 @@ error-route-user-agent
 
 error-route-remote-user
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7053,7 +7053,7 @@ error-route-remote-user
 
 error-route-referer
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7063,7 +7063,7 @@ error-route-referer
 
 error-route-label
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7073,7 +7073,7 @@ error-route-label
 
 error-route-if
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7083,7 +7083,7 @@ error-route-if
 
 error-route-if-not
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7093,7 +7093,7 @@ error-route-if-not
 
 error-route-run
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7103,7 +7103,7 @@ error-route-run
 
 response-route
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7113,7 +7113,7 @@ response-route
 
 response-route-status
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7123,7 +7123,7 @@ response-route-status
 
 response-route-host
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7133,7 +7133,7 @@ response-route-host
 
 response-route-uri
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7143,7 +7143,7 @@ response-route-uri
 
 response-route-qs
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7153,7 +7153,7 @@ response-route-qs
 
 response-route-remote-addr
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7163,7 +7163,7 @@ response-route-remote-addr
 
 response-route-user-agent
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7173,7 +7173,7 @@ response-route-user-agent
 
 response-route-remote-user
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7183,7 +7183,7 @@ response-route-remote-user
 
 response-route-referer
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7193,7 +7193,7 @@ response-route-referer
 
 response-route-label
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7203,7 +7203,7 @@ response-route-label
 
 response-route-if
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7213,7 +7213,7 @@ response-route-if
 
 response-route-if-not
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7223,7 +7223,7 @@ response-route-if-not
 
 response-route-run
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_route
 
@@ -7233,7 +7233,7 @@ response-route-run
 
 router-list
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7243,7 +7243,7 @@ router-list
 
 routers-list
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7253,7 +7253,7 @@ routers-list
 
 error-page-403
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7263,7 +7263,7 @@ error-page-403
 
 error-page-404
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7273,7 +7273,7 @@ error-page-404
 
 error-page-500
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7283,7 +7283,7 @@ error-page-500
 
 websockets-ping-freq
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7293,7 +7293,7 @@ websockets-ping-freq
 
 websocket-ping-freq
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7303,7 +7303,7 @@ websocket-ping-freq
 
 websockets-pong-tolerance
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7313,7 +7313,7 @@ websockets-pong-tolerance
 
 websocket-pong-tolerance
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7323,7 +7323,7 @@ websocket-pong-tolerance
 
 websockets-max-size
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -7333,7 +7333,7 @@ websockets-max-size
 
 websocket-max-size
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -7343,7 +7343,7 @@ websocket-max-size
 
 chunked-input-limit
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -7353,7 +7353,7 @@ chunked-input-limit
 
 chunked-input-timeout
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7363,7 +7363,7 @@ chunked-input-timeout
 
 clock
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -7373,7 +7373,7 @@ clock
 
 clock-list
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7383,7 +7383,7 @@ clock-list
 
 clocks-list
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7393,7 +7393,7 @@ clocks-list
 
 add-header
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7403,7 +7403,7 @@ add-header
 
 rem-header
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7413,7 +7413,7 @@ rem-header
 
 del-header
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7423,7 +7423,7 @@ del-header
 
 collect-header
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7433,7 +7433,7 @@ collect-header
 
 response-header-collect
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7443,7 +7443,7 @@ response-header-collect
 
 pull-header
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7453,7 +7453,7 @@ pull-header
 
 check-static
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_check_static
 
@@ -7465,7 +7465,7 @@ check-static
 
 check-static-docroot
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7477,7 +7477,7 @@ check-static-docroot
 
 static-check
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_check_static
 
@@ -7489,7 +7489,7 @@ static-check
 
 static-map
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_static_map
 
@@ -7501,7 +7501,7 @@ static-map
 
 static-map2
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_static_map
 
@@ -7513,7 +7513,7 @@ static-map2
 
 static-skip-ext
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7525,7 +7525,7 @@ static-skip-ext
 
 static-index
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7537,7 +7537,7 @@ static-index
 
 static-safe
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7549,7 +7549,7 @@ static-safe
 
 static-cache-paths
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7561,7 +7561,7 @@ static-cache-paths
 
 static-cache-paths-name
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -7573,7 +7573,7 @@ static-cache-paths-name
 
 mimefile
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7585,7 +7585,7 @@ mimefile
 
 mime-file
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7597,7 +7597,7 @@ mime-file
 
 mimefile
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7609,7 +7609,7 @@ mimefile
 
 mime-file
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7621,7 +7621,7 @@ mime-file
 
 static-expires-type
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_dyn_dict
 
@@ -7633,7 +7633,7 @@ static-expires-type
 
 static-expires-type-mtime
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_dyn_dict
 
@@ -7645,7 +7645,7 @@ static-expires-type-mtime
 
 static-expires
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7657,7 +7657,7 @@ static-expires
 
 static-expires-mtime
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7669,7 +7669,7 @@ static-expires-mtime
 
 static-expires-uri
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7681,7 +7681,7 @@ static-expires-uri
 
 static-expires-uri-mtime
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7693,7 +7693,7 @@ static-expires-uri-mtime
 
 static-expires-path-info
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7705,7 +7705,7 @@ static-expires-path-info
 
 static-expires-path-info-mtime
 ******************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_dyn_dict
 
@@ -7717,7 +7717,7 @@ static-expires-path-info-mtime
 
 static-gzip
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_list
 
@@ -7729,7 +7729,7 @@ static-gzip
 
 static-gzip-all
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7741,7 +7741,7 @@ static-gzip-all
 
 static-gzip-dir
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7753,7 +7753,7 @@ static-gzip-dir
 
 static-gzip-prefix
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7765,7 +7765,7 @@ static-gzip-prefix
 
 static-gzip-ext
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7777,7 +7777,7 @@ static-gzip-ext
 
 static-gzip-suffix
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7789,7 +7789,7 @@ static-gzip-suffix
 
 honour-range
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7799,7 +7799,7 @@ honour-range
 
 offload-threads
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7809,7 +7809,7 @@ offload-threads
 
 offload-thread
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -7819,7 +7819,7 @@ offload-thread
 
 file-serve-mode
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_fileserve_mode
 
@@ -7831,7 +7831,7 @@ file-serve-mode
 
 fileserve-mode
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_fileserve_mode
 
@@ -7843,7 +7843,7 @@ fileserve-mode
 
 disable-sendfile
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7853,7 +7853,7 @@ disable-sendfile
 
 check-cache
 ***********
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -7863,7 +7863,7 @@ check-cache
 
 close-on-exec
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7873,7 +7873,7 @@ close-on-exec
 
 close-on-exec2
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7883,7 +7883,7 @@ close-on-exec2
 
 mode
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -7893,7 +7893,7 @@ mode
 
 env
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_env
 
@@ -7903,7 +7903,7 @@ env
 
 ienv
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_env
 
@@ -7915,7 +7915,7 @@ ienv
 
 envdir
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7925,7 +7925,7 @@ envdir
 
 early-envdir
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_envdir
 
@@ -7937,7 +7937,7 @@ early-envdir
 
 unenv
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_unset_env
 
@@ -7947,7 +7947,7 @@ unenv
 
 vacuum
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -7957,7 +7957,7 @@ vacuum
 
 file-write
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7967,7 +7967,7 @@ file-write
 
 cgroup
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7977,7 +7977,7 @@ cgroup
 
 cgroup-opt
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -7987,7 +7987,7 @@ cgroup-opt
 
 cgroup-dir-mode
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -7997,7 +7997,7 @@ cgroup-dir-mode
 
 namespace
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8007,7 +8007,7 @@ namespace
 
 namespace-keep-mount
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8017,7 +8017,7 @@ namespace-keep-mount
 
 ns
 **
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8027,7 +8027,7 @@ ns
 
 namespace-net
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8037,7 +8037,7 @@ namespace-net
 
 ns-net
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8047,7 +8047,7 @@ ns-net
 
 enable-proxy-protocol
 *********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8057,7 +8057,7 @@ enable-proxy-protocol
 
 reuse-port
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8067,7 +8067,7 @@ reuse-port
 
 tcp-fast-open
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8077,7 +8077,7 @@ tcp-fast-open
 
 tcp-fastopen
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8087,7 +8087,7 @@ tcp-fastopen
 
 tcp-fast-open-client
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8097,7 +8097,7 @@ tcp-fast-open-client
 
 tcp-fastopen-client
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8107,7 +8107,7 @@ tcp-fastopen-client
 
 zerg
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8117,7 +8117,7 @@ zerg
 
 zerg-fallback
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8127,7 +8127,7 @@ zerg-fallback
 
 zerg-server
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8139,7 +8139,7 @@ zerg-server
 
 cron
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cron
 
@@ -8151,7 +8151,7 @@ cron
 
 cron2
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cron2
 
@@ -8163,7 +8163,7 @@ cron2
 
 unique-cron
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_unique_cron
 
@@ -8175,7 +8175,7 @@ unique-cron
 
 cron-harakiri
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8185,7 +8185,7 @@ cron-harakiri
 
 legion-cron
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron
 
@@ -8197,7 +8197,7 @@ legion-cron
 
 cron-legion
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron
 
@@ -8209,7 +8209,7 @@ cron-legion
 
 unique-legion-cron
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_unique_legion_cron
 
@@ -8221,7 +8221,7 @@ unique-legion-cron
 
 unique-cron-legion
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_unique_legion_cron
 
@@ -8233,7 +8233,7 @@ unique-cron-legion
 
 loop
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8243,7 +8243,7 @@ loop
 
 loop-list
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8253,7 +8253,7 @@ loop-list
 
 loops-list
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8263,7 +8263,7 @@ loops-list
 
 worker-exec
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8273,7 +8273,7 @@ worker-exec
 
 worker-exec2
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8283,7 +8283,7 @@ worker-exec2
 
 attach-daemon
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8295,7 +8295,7 @@ attach-daemon
 
 attach-control-daemon
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8307,7 +8307,7 @@ attach-control-daemon
 
 smart-attach-daemon
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8319,7 +8319,7 @@ smart-attach-daemon
 
 smart-attach-daemon2
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8331,7 +8331,7 @@ smart-attach-daemon2
 
 legion-attach-daemon
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8343,7 +8343,7 @@ legion-attach-daemon
 
 legion-smart-attach-daemon
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8355,7 +8355,7 @@ legion-smart-attach-daemon
 
 legion-smart-attach-daemon2
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon
 
@@ -8367,7 +8367,7 @@ legion-smart-attach-daemon2
 
 daemons-honour-stdin
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8379,7 +8379,7 @@ daemons-honour-stdin
 
 attach-daemon2
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_daemon2
 
@@ -8391,7 +8391,7 @@ attach-daemon2
 
 plugins
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_plugin
 
@@ -8403,7 +8403,7 @@ plugins
 
 plugin
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_plugin
 
@@ -8415,7 +8415,7 @@ plugin
 
 need-plugins
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_plugin
 
@@ -8427,7 +8427,7 @@ need-plugins
 
 need-plugin
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_plugin
 
@@ -8439,7 +8439,7 @@ need-plugin
 
 plugins-dir
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8451,7 +8451,7 @@ plugins-dir
 
 plugin-dir
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8463,7 +8463,7 @@ plugin-dir
 
 plugins-list
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8473,7 +8473,7 @@ plugins-list
 
 plugin-list
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8483,7 +8483,7 @@ plugin-list
 
 autoload
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8495,7 +8495,7 @@ autoload
 
 dlopen
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_dl
 
@@ -8507,7 +8507,7 @@ dlopen
 
 allowed-modifiers
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8517,7 +8517,7 @@ allowed-modifiers
 
 remap-modifier
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8527,7 +8527,7 @@ remap-modifier
 
 dump-options
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8537,7 +8537,7 @@ dump-options
 
 show-config
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8547,7 +8547,7 @@ show-config
 
 binary-append-data
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_binary_append_data
 
@@ -8559,7 +8559,7 @@ binary-append-data
 
 print
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_print
 
@@ -8569,7 +8569,7 @@ print
 
 iprint
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_print
 
@@ -8581,7 +8581,7 @@ iprint
 
 exit
 ****
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_exit
 
@@ -8593,7 +8593,7 @@ exit
 
 cflags
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_cflags
 
@@ -8605,7 +8605,7 @@ cflags
 
 dot-h
 *****
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_dot_h
 
@@ -8617,7 +8617,7 @@ dot-h
 
 config-py
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_config_py
 
@@ -8629,7 +8629,7 @@ config-py
 
 build-plugin
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_build_plugin
 
@@ -8641,7 +8641,7 @@ build-plugin
 
 version
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_print
 
@@ -8666,7 +8666,7 @@ plugin: asyncio
 ===============
 asyncio
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_setup_asyncio
 
@@ -8684,7 +8684,7 @@ plugin: carbon
 ==============
 carbon
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8696,7 +8696,7 @@ carbon
 
 carbon-timeout
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8706,7 +8706,7 @@ carbon-timeout
 
 carbon-freq
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8716,7 +8716,7 @@ carbon-freq
 
 carbon-id
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8726,7 +8726,7 @@ carbon-id
 
 carbon-no-workers
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8736,7 +8736,7 @@ carbon-no-workers
 
 carbon-max-retry
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8746,7 +8746,7 @@ carbon-max-retry
 
 carbon-retry-delay
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8756,7 +8756,7 @@ carbon-retry-delay
 
 carbon-root
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8766,7 +8766,7 @@ carbon-root
 
 carbon-hostname-dots
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8776,7 +8776,7 @@ carbon-hostname-dots
 
 carbon-name-resolve
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8786,7 +8786,7 @@ carbon-name-resolve
 
 carbon-resolve-names
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8796,7 +8796,7 @@ carbon-resolve-names
 
 carbon-idle-avg
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -8806,7 +8806,7 @@ carbon-idle-avg
 
 carbon-use-metrics
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8819,7 +8819,7 @@ plugin: cgi
 ===========
 cgi
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cgi
 
@@ -8829,7 +8829,7 @@ cgi
 
 cgi-map-helper
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cgi_maphelper
 
@@ -8839,7 +8839,7 @@ cgi-map-helper
 
 cgi-helper
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cgi_maphelper
 
@@ -8849,7 +8849,7 @@ cgi-helper
 
 cgi-from-docroot
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8859,7 +8859,7 @@ cgi-from-docroot
 
 cgi-buffer-size
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -8869,7 +8869,7 @@ cgi-buffer-size
 
 cgi-timeout
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8879,7 +8879,7 @@ cgi-timeout
 
 cgi-index
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8889,7 +8889,7 @@ cgi-index
 
 cgi-allowed-ext
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8899,7 +8899,7 @@ cgi-allowed-ext
 
 cgi-unset
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8909,7 +8909,7 @@ cgi-unset
 
 cgi-loadlib
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -8919,7 +8919,7 @@ cgi-loadlib
 
 cgi-optimize
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8929,7 +8929,7 @@ cgi-optimize
 
 cgi-optimized
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8939,7 +8939,7 @@ cgi-optimized
 
 cgi-path-info
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8949,7 +8949,7 @@ cgi-path-info
 
 cgi-do-not-kill-on-error
 ************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -8959,7 +8959,7 @@ cgi-do-not-kill-on-error
 
 cgi-async-max-attempts
 **********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -8987,7 +8987,7 @@ plugin: coroae
 ==============
 coroae
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_setup_coroae
 
@@ -9003,7 +9003,7 @@ plugin: curl_cron
 =================
 curl-cron
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cron_curl
 
@@ -9015,7 +9015,7 @@ curl-cron
 
 cron-curl
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_cron_curl
 
@@ -9027,7 +9027,7 @@ cron-curl
 
 legion-curl-cron
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron_curl
 
@@ -9039,7 +9039,7 @@ legion-curl-cron
 
 legion-cron-curl
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron_curl
 
@@ -9051,7 +9051,7 @@ legion-cron-curl
 
 curl-cron-legion
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron_curl
 
@@ -9063,7 +9063,7 @@ curl-cron-legion
 
 cron-curl-legion
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_legion_cron_curl
 
@@ -9078,7 +9078,7 @@ plugin: dumbloop
 ================
 dumbloop-modifier1
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9088,7 +9088,7 @@ dumbloop-modifier1
 
 dumbloop-code
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9098,7 +9098,7 @@ dumbloop-code
 
 dumbloop-function
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9135,7 +9135,7 @@ plugin: fastrouter
 ==================
 fastrouter
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter
 
@@ -9147,7 +9147,7 @@ fastrouter
 
 fastrouter-processes
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9157,7 +9157,7 @@ fastrouter-processes
 
 fastrouter-workers
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9167,7 +9167,7 @@ fastrouter-workers
 
 fastrouter-zerg
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
@@ -9177,7 +9177,7 @@ fastrouter-zerg
 
 fastrouter-use-cache
 ********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9187,7 +9187,7 @@ fastrouter-use-cache
 
 fastrouter-use-pattern
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
@@ -9197,7 +9197,7 @@ fastrouter-use-pattern
 
 fastrouter-use-base
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
@@ -9207,7 +9207,7 @@ fastrouter-use-base
 
 fastrouter-fallback
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9217,7 +9217,7 @@ fastrouter-fallback
 
 fastrouter-use-code-string
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_cs
 
@@ -9227,7 +9227,7 @@ fastrouter-use-code-string
 
 fastrouter-use-socket
 *********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
@@ -9237,7 +9237,7 @@ fastrouter-use-socket
 
 fastrouter-to
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9247,7 +9247,7 @@ fastrouter-to
 
 fastrouter-gracetime
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9257,7 +9257,7 @@ fastrouter-gracetime
 
 fastrouter-events
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9267,7 +9267,7 @@ fastrouter-events
 
 fastrouter-quiet
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9277,7 +9277,7 @@ fastrouter-quiet
 
 fastrouter-cheap
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9287,7 +9287,7 @@ fastrouter-cheap
 
 fastrouter-subscription-server
 ******************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_ss
 
@@ -9297,7 +9297,7 @@ fastrouter-subscription-server
 
 fastrouter-subscription-slot
 ****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_deprecated
 
@@ -9307,7 +9307,7 @@ fastrouter-subscription-slot
 
 fastrouter-timeout
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9317,7 +9317,7 @@ fastrouter-timeout
 
 fastrouter-post-buffering
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -9327,7 +9327,7 @@ fastrouter-post-buffering
 
 fastrouter-post-buffering-dir
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9337,7 +9337,7 @@ fastrouter-post-buffering-dir
 
 fastrouter-stats
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9347,7 +9347,7 @@ fastrouter-stats
 
 fastrouter-stats-server
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9357,7 +9357,7 @@ fastrouter-stats-server
 
 fastrouter-ss
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9367,7 +9367,7 @@ fastrouter-ss
 
 fastrouter-harakiri
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9377,7 +9377,7 @@ fastrouter-harakiri
 
 fastrouter-uid
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_uid
 
@@ -9387,7 +9387,7 @@ fastrouter-uid
 
 fastrouter-gid
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_gid
 
@@ -9397,7 +9397,7 @@ fastrouter-gid
 
 fastrouter-resubscribe
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9407,7 +9407,7 @@ fastrouter-resubscribe
 
 fastrouter-resubscribe-bind
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9417,7 +9417,7 @@ fastrouter-resubscribe-bind
 
 fastrouter-buffer-size
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -9427,7 +9427,7 @@ fastrouter-buffer-size
 
 fastrouter-fallback-on-no-key
 *****************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9437,7 +9437,7 @@ fastrouter-fallback-on-no-key
 
 fastrouter-force-key
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9450,7 +9450,7 @@ plugin: fiber
 =============
 fiber
 *****
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9463,7 +9463,7 @@ plugin: forkptyrouter
 =====================
 forkptyrouter
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
@@ -9473,7 +9473,7 @@ forkptyrouter
 
 forkpty-router
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
@@ -9483,7 +9483,7 @@ forkpty-router
 
 forkptyurouter
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_forkpty_urouter
 
@@ -9493,7 +9493,7 @@ forkptyurouter
 
 forkpty-urouter
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_forkpty_urouter
 
@@ -9503,7 +9503,7 @@ forkpty-urouter
 
 forkptyrouter-command
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9513,7 +9513,7 @@ forkptyrouter-command
 
 forkpty-router-command
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9523,7 +9523,7 @@ forkpty-router-command
 
 forkptyrouter-cmd
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9533,7 +9533,7 @@ forkptyrouter-cmd
 
 forkpty-router-cmd
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9543,7 +9543,7 @@ forkpty-router-cmd
 
 forkptyrouter-rows
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_16bit
 
@@ -9553,7 +9553,7 @@ forkptyrouter-rows
 
 forkptyrouter-cols
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_16bit
 
@@ -9563,7 +9563,7 @@ forkptyrouter-cols
 
 forkptyrouter-processes
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9573,7 +9573,7 @@ forkptyrouter-processes
 
 forkptyrouter-workers
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9583,7 +9583,7 @@ forkptyrouter-workers
 
 forkptyrouter-zerg
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
@@ -9593,7 +9593,7 @@ forkptyrouter-zerg
 
 forkptyrouter-fallback
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9603,7 +9603,7 @@ forkptyrouter-fallback
 
 forkptyrouter-events
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9613,7 +9613,7 @@ forkptyrouter-events
 
 forkptyrouter-cheap
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9623,7 +9623,7 @@ forkptyrouter-cheap
 
 forkptyrouter-timeout
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9633,7 +9633,7 @@ forkptyrouter-timeout
 
 forkptyrouter-stats
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9643,7 +9643,7 @@ forkptyrouter-stats
 
 forkptyrouter-stats-server
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9653,7 +9653,7 @@ forkptyrouter-stats-server
 
 forkptyrouter-ss
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9663,7 +9663,7 @@ forkptyrouter-ss
 
 forkptyrouter-harakiri
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9676,7 +9676,7 @@ plugin: gccgo
 =============
 go-load
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9686,7 +9686,7 @@ go-load
 
 gccgo-load
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9696,7 +9696,7 @@ gccgo-load
 
 go-args
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9706,7 +9706,7 @@ go-args
 
 gccgo-args
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9716,7 +9716,7 @@ gccgo-args
 
 goroutines
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_setup_goroutines
 
@@ -9731,7 +9731,7 @@ plugin: geoip
 =============
 geoip-country
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9741,7 +9741,7 @@ geoip-country
 
 geoip-city
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9751,7 +9751,7 @@ geoip-city
 
 geoip-use-disk
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9764,7 +9764,7 @@ plugin: gevent
 ==============
 gevent
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_setup_gevent
 
@@ -9776,7 +9776,7 @@ gevent
 
 gevent-monkey-patch
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9786,7 +9786,7 @@ gevent-monkey-patch
 
 gevent-early-monkey-patch
 *************************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9796,7 +9796,7 @@ gevent-early-monkey-patch
 
 gevent-wait-for-hub
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9809,7 +9809,7 @@ plugin: glusterfs
 =================
 glusterfs-mount
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9821,7 +9821,7 @@ glusterfs-mount
 
 glusterfs-timeout
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9837,7 +9837,7 @@ plugin: greenlet
 ================
 greenlet
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9850,7 +9850,7 @@ plugin: gridfs
 ==============
 gridfs-mount
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9862,7 +9862,7 @@ gridfs-mount
 
 gridfs-debug
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9877,7 +9877,7 @@ plugin: http
 ============
 http
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter
 
@@ -9887,7 +9887,7 @@ http
 
 httprouter
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter
 
@@ -9897,7 +9897,7 @@ httprouter
 
 https
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_https
 
@@ -9907,7 +9907,7 @@ https
 
 https2
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_https2
 
@@ -9917,7 +9917,7 @@ https2
 
 https-export-cert
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -9927,7 +9927,7 @@ https-export-cert
 
 https-session-context
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -9937,7 +9937,7 @@ https-session-context
 
 http-to-https
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_http_to_https
 
@@ -9947,7 +9947,7 @@ http-to-https
 
 http-processes
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9957,7 +9957,7 @@ http-processes
 
 http-workers
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -9967,7 +9967,7 @@ http-workers
 
 http-var
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9977,7 +9977,7 @@ http-var
 
 http-to
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -9987,7 +9987,7 @@ http-to
 
 http-zerg
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
@@ -9997,7 +9997,7 @@ http-zerg
 
 http-fallback
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10007,7 +10007,7 @@ http-fallback
 
 http-modifier1
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10017,7 +10017,7 @@ http-modifier1
 
 http-modifier2
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10027,7 +10027,7 @@ http-modifier2
 
 http-use-cache
 **************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10037,7 +10037,7 @@ http-use-cache
 
 http-use-pattern
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
@@ -10047,7 +10047,7 @@ http-use-pattern
 
 http-use-base
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
@@ -10057,7 +10057,7 @@ http-use-base
 
 http-events
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10067,7 +10067,7 @@ http-events
 
 http-subscription-server
 ************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_ss
 
@@ -10077,7 +10077,7 @@ http-subscription-server
 
 http-timeout
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10087,7 +10087,7 @@ http-timeout
 
 http-manage-expect
 ******************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -10097,7 +10097,7 @@ http-manage-expect
 
 http-keepalive
 **************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10107,7 +10107,7 @@ http-keepalive
 
 http-auto-chunked
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10117,7 +10117,7 @@ http-auto-chunked
 
 http-auto-gzip
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10127,7 +10127,7 @@ http-auto-gzip
 
 http-raw-body
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10137,7 +10137,7 @@ http-raw-body
 
 http-websockets
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10147,7 +10147,7 @@ http-websockets
 
 http-chunked-input
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10157,7 +10157,7 @@ http-chunked-input
 
 http-use-code-string
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_cs
 
@@ -10167,7 +10167,7 @@ http-use-code-string
 
 http-use-socket
 ***************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
@@ -10177,7 +10177,7 @@ http-use-socket
 
 http-gracetime
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10187,7 +10187,7 @@ http-gracetime
 
 http-quiet
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10197,7 +10197,7 @@ http-quiet
 
 http-cheap
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10207,7 +10207,7 @@ http-cheap
 
 http-stats
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10217,7 +10217,7 @@ http-stats
 
 http-stats-server
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10227,7 +10227,7 @@ http-stats-server
 
 http-ss
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10237,7 +10237,7 @@ http-ss
 
 http-harakiri
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10247,7 +10247,7 @@ http-harakiri
 
 http-stud-prefix
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_addr_list
 
@@ -10257,7 +10257,7 @@ http-stud-prefix
 
 http-uid
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_uid
 
@@ -10267,7 +10267,7 @@ http-uid
 
 http-gid
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_gid
 
@@ -10277,7 +10277,7 @@ http-gid
 
 http-resubscribe
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10287,7 +10287,7 @@ http-resubscribe
 
 http-buffer-size
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -10297,7 +10297,7 @@ http-buffer-size
 
 http-server-name-as-http-host
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10307,7 +10307,7 @@ http-server-name-as-http-host
 
 http-headers-timeout
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10317,7 +10317,7 @@ http-headers-timeout
 
 http-connect-timeout
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10327,7 +10327,7 @@ http-connect-timeout
 
 http-manage-source
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10337,7 +10337,7 @@ http-manage-source
 
 http-enable-proxy-protocol
 **************************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10347,7 +10347,7 @@ http-enable-proxy-protocol
 
 http-backend-http
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10357,7 +10357,7 @@ http-backend-http
 
 http-manage-rtsp
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10380,7 +10380,7 @@ plugin: jvm
 ===========
 jvm-main-class
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10390,7 +10390,7 @@ jvm-main-class
 
 jvm-opt
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10400,7 +10400,7 @@ jvm-opt
 
 jvm-class
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10410,7 +10410,7 @@ jvm-class
 
 jvm-classpath
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10423,7 +10423,7 @@ plugin: jwsgi
 =============
 jwsgi
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10436,7 +10436,7 @@ plugin: ldap
 ============
 ldap
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_ldap
 
@@ -10448,7 +10448,7 @@ ldap
 
 ldap-schema
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_ldap_dump
 
@@ -10460,7 +10460,7 @@ ldap-schema
 
 ldap-schema-ldif
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_ldap_dump_ldif
 
@@ -10496,7 +10496,7 @@ plugin: logzmq
 ==============
 log-zeromq
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_logger
 
@@ -10511,7 +10511,7 @@ plugin: lua
 ===========
 lua
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10521,7 +10521,7 @@ lua
 
 lua-load
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10531,7 +10531,7 @@ lua-load
 
 lua-shell
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_luashell
 
@@ -10541,7 +10541,7 @@ lua-shell
 
 luashell
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_luashell
 
@@ -10551,7 +10551,7 @@ luashell
 
 lua-gc-freq
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -10573,7 +10573,7 @@ plugin: mongrel2
 ================
 zeromq
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
@@ -10583,7 +10583,7 @@ zeromq
 
 zmq
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
@@ -10593,7 +10593,7 @@ zmq
 
 zeromq-socket
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
@@ -10603,7 +10603,7 @@ zeromq-socket
 
 zmq-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
@@ -10613,7 +10613,7 @@ zmq-socket
 
 mongrel2
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
@@ -10626,7 +10626,7 @@ plugin: mono
 ============
 mono-app
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10636,7 +10636,7 @@ mono-app
 
 mono-gc-freq
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -10646,7 +10646,7 @@ mono-gc-freq
 
 mono-key
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10656,7 +10656,7 @@ mono-key
 
 mono-version
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10666,7 +10666,7 @@ mono-version
 
 mono-config
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10676,7 +10676,7 @@ mono-config
 
 mono-assembly
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10686,7 +10686,7 @@ mono-assembly
 
 mono-exec
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10696,7 +10696,7 @@ mono-exec
 
 mono-index
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10712,7 +10712,7 @@ plugin: nagios
 ==============
 nagios
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10727,7 +10727,7 @@ plugin: notfound
 ================
 notfound-log
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10743,7 +10743,7 @@ plugin: pam
 ===========
 pam
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10753,7 +10753,7 @@ pam
 
 pam-user
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10766,7 +10766,7 @@ plugin: php
 ===========
 php-ini
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_php_ini
 
@@ -10776,7 +10776,7 @@ php-ini
 
 php-config
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_php_ini
 
@@ -10786,7 +10786,7 @@ php-config
 
 php-ini-append
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10796,7 +10796,7 @@ php-ini-append
 
 php-config-append
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10806,7 +10806,7 @@ php-config-append
 
 php-set
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10816,7 +10816,7 @@ php-set
 
 php-index
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10826,7 +10826,7 @@ php-index
 
 php-docroot
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10836,7 +10836,7 @@ php-docroot
 
 php-allowed-docroot
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10846,7 +10846,7 @@ php-allowed-docroot
 
 php-allowed-ext
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10856,7 +10856,7 @@ php-allowed-ext
 
 php-allowed-script
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10866,7 +10866,7 @@ php-allowed-script
 
 php-server-software
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10876,7 +10876,7 @@ php-server-software
 
 php-app
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10886,7 +10886,7 @@ php-app
 
 php-app-qs
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10896,7 +10896,7 @@ php-app-qs
 
 php-fallback
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10906,7 +10906,7 @@ php-fallback
 
 php-app-bypass
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_regexp_list
 
@@ -10916,7 +10916,7 @@ php-app-bypass
 
 php-var
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10926,7 +10926,7 @@ php-var
 
 php-dump-config
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -10936,7 +10936,7 @@ php-dump-config
 
 php-exec-before
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10946,7 +10946,7 @@ php-exec-before
 
 php-exec-begin
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10956,7 +10956,7 @@ php-exec-begin
 
 php-exec-after
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10966,7 +10966,7 @@ php-exec-after
 
 php-exec-end
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -10976,7 +10976,7 @@ php-exec-end
 
 php-sapi-name
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -10986,7 +10986,7 @@ php-sapi-name
 
 early-php
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_early_php
 
@@ -10998,7 +10998,7 @@ early-php
 
 early-php-sapi-name
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11013,7 +11013,7 @@ plugin: ping
 ============
 ping
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11025,7 +11025,7 @@ ping
 
 ping-timeout
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11038,7 +11038,7 @@ plugin: psgi
 ============
 psgi
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11048,7 +11048,7 @@ psgi
 
 psgi-enable-psgix-io
 ********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11058,7 +11058,7 @@ psgi-enable-psgix-io
 
 perl-no-die-catch
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11068,7 +11068,7 @@ perl-no-die-catch
 
 perl-local-lib
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11078,7 +11078,7 @@ perl-local-lib
 
 perl-version
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_print
 
@@ -11090,7 +11090,7 @@ perl-version
 
 perl-args
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11100,7 +11100,7 @@ perl-args
 
 perl-arg
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11110,7 +11110,7 @@ perl-arg
 
 perl-exec
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11120,7 +11120,7 @@ perl-exec
 
 perl-exec-post-fork
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11130,7 +11130,7 @@ perl-exec-post-fork
 
 perl-auto-reload
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11142,7 +11142,7 @@ perl-auto-reload
 
 perl-auto-reload-ignore
 ***********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11154,7 +11154,7 @@ perl-auto-reload-ignore
 
 plshell
 *******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_plshell
 
@@ -11164,7 +11164,7 @@ plshell
 
 plshell-oneshot
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_plshell
 
@@ -11174,7 +11174,7 @@ plshell-oneshot
 
 perl-no-plack
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11184,7 +11184,7 @@ perl-no-plack
 
 early-perl
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_early_perl
 
@@ -11196,7 +11196,7 @@ early-perl
 
 early-psgi
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_early_psgi
 
@@ -11208,7 +11208,7 @@ early-psgi
 
 early-perl-exec
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_early_exec
 
@@ -11223,7 +11223,7 @@ plugin: pty
 ===========
 pty-socket
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11233,7 +11233,7 @@ pty-socket
 
 pty-log
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11243,7 +11243,7 @@ pty-log
 
 pty-input
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11253,7 +11253,7 @@ pty-input
 
 pty-connect
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11265,7 +11265,7 @@ pty-connect
 
 pty-uconnect
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11277,7 +11277,7 @@ pty-uconnect
 
 pty-no-isig
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11287,7 +11287,7 @@ pty-no-isig
 
 pty-exec
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11300,7 +11300,7 @@ plugin: pypy
 ============
 pypy-lib
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11310,7 +11310,7 @@ pypy-lib
 
 pypy-setup
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11320,7 +11320,7 @@ pypy-setup
 
 pypy-home
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11330,7 +11330,7 @@ pypy-home
 
 pypy-wsgi
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11340,7 +11340,7 @@ pypy-wsgi
 
 pypy-wsgi-file
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11350,7 +11350,7 @@ pypy-wsgi-file
 
 pypy-ini-paste
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pypy_ini_paste
 
@@ -11362,7 +11362,7 @@ pypy-ini-paste
 
 pypy-paste
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11372,7 +11372,7 @@ pypy-paste
 
 pypy-eval
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11382,7 +11382,7 @@ pypy-eval
 
 pypy-eval-post-fork
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11392,7 +11392,7 @@ pypy-eval-post-fork
 
 pypy-exec
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11402,7 +11402,7 @@ pypy-exec
 
 pypy-exec-post-fork
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11412,7 +11412,7 @@ pypy-exec-post-fork
 
 pypy-pp
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11422,7 +11422,7 @@ pypy-pp
 
 pypy-python-path
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11432,7 +11432,7 @@ pypy-python-path
 
 pypy-pythonpath
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11445,7 +11445,7 @@ plugin: python
 ==============
 wsgi-file
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11455,7 +11455,7 @@ wsgi-file
 
 file
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11465,7 +11465,7 @@ file
 
 eval
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11475,7 +11475,7 @@ eval
 
 module
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -w
 
@@ -11487,7 +11487,7 @@ module
 
 wsgi
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -w
 
@@ -11499,7 +11499,7 @@ wsgi
 
 callable
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11509,7 +11509,7 @@ callable
 
 test
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -J
 
@@ -11521,7 +11521,7 @@ test
 
 home
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -H
 
@@ -11533,7 +11533,7 @@ home
 
 virtualenv
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -H
 
@@ -11545,7 +11545,7 @@ virtualenv
 
 venv
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -H
 
@@ -11557,7 +11557,7 @@ venv
 
 pyhome
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -H
 
@@ -11569,7 +11569,7 @@ pyhome
 
 py-programname
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11579,7 +11579,7 @@ py-programname
 
 py-program-name
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11589,7 +11589,7 @@ py-program-name
 
 pythonpath
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pythonpath
 
@@ -11599,7 +11599,7 @@ pythonpath
 
 python-path
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pythonpath
 
@@ -11609,7 +11609,7 @@ python-path
 
 pp
 **
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pythonpath
 
@@ -11619,7 +11619,7 @@ pp
 
 pymodule-alias
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11629,7 +11629,7 @@ pymodule-alias
 
 post-pymodule-alias
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11639,7 +11639,7 @@ post-pymodule-alias
 
 import
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11649,7 +11649,7 @@ import
 
 pyimport
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11659,7 +11659,7 @@ pyimport
 
 py-import
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11669,7 +11669,7 @@ py-import
 
 python-import
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11679,7 +11679,7 @@ python-import
 
 shared-import
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11689,7 +11689,7 @@ shared-import
 
 shared-pyimport
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11699,7 +11699,7 @@ shared-pyimport
 
 shared-py-import
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11709,7 +11709,7 @@ shared-py-import
 
 shared-python-import
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11719,7 +11719,7 @@ shared-python-import
 
 pyargv
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11729,7 +11729,7 @@ pyargv
 
 optimize
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``shortcut``: -O
 
@@ -11741,7 +11741,7 @@ optimize
 
 pecan
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11751,7 +11751,7 @@ pecan
 
 paste
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11761,7 +11761,7 @@ paste
 
 paste-logger
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11771,7 +11771,7 @@ paste-logger
 
 web3
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11781,7 +11781,7 @@ web3
 
 pump
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11791,7 +11791,7 @@ pump
 
 wsgi-lite
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11801,7 +11801,7 @@ wsgi-lite
 
 ini-paste
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_ini_paste
 
@@ -11813,7 +11813,7 @@ ini-paste
 
 ini-paste-logged
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_ini_paste
 
@@ -11825,7 +11825,7 @@ ini-paste-logged
 
 reload-os-env
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11835,7 +11835,7 @@ reload-os-env
 
 no-site
 *******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11845,7 +11845,7 @@ no-site
 
 pyshell
 *******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_pyshell
 
@@ -11855,7 +11855,7 @@ pyshell
 
 pyshell-oneshot
 ***************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_pyshell
 
@@ -11865,7 +11865,7 @@ pyshell-oneshot
 
 python
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pyrun
 
@@ -11875,7 +11875,7 @@ python
 
 py
 **
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pyrun
 
@@ -11885,7 +11885,7 @@ py
 
 pyrun
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pyrun
 
@@ -11895,7 +11895,7 @@ pyrun
 
 py-tracebacker
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11907,7 +11907,7 @@ py-tracebacker
 
 py-auto-reload
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11919,7 +11919,7 @@ py-auto-reload
 
 py-autoreload
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11931,7 +11931,7 @@ py-autoreload
 
 python-auto-reload
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11943,7 +11943,7 @@ python-auto-reload
 
 python-autoreload
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -11955,7 +11955,7 @@ python-autoreload
 
 py-auto-reload-ignore
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -11967,7 +11967,7 @@ py-auto-reload-ignore
 
 wsgi-env-behaviour
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11977,7 +11977,7 @@ wsgi-env-behaviour
 
 wsgi-env-behavior
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -11987,7 +11987,7 @@ wsgi-env-behavior
 
 start_response-nodelay
 **********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -11997,7 +11997,7 @@ start_response-nodelay
 
 wsgi-strict
 ***********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12007,7 +12007,7 @@ wsgi-strict
 
 wsgi-accept-buffer
 ******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12017,7 +12017,7 @@ wsgi-accept-buffer
 
 wsgi-accept-buffers
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12027,7 +12027,7 @@ wsgi-accept-buffers
 
 python-version
 **************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_pyver
 
@@ -12039,7 +12039,7 @@ python-version
 
 python-raw
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12049,7 +12049,7 @@ python-raw
 
 py-sharedarea
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12059,7 +12059,7 @@ py-sharedarea
 
 py-call-osafterfork
 *******************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12069,7 +12069,7 @@ py-call-osafterfork
 
 early-python
 ************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_early_python
 
@@ -12081,7 +12081,7 @@ early-python
 
 early-pyimport
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_early_python_import
 
@@ -12093,7 +12093,7 @@ early-pyimport
 
 early-python-import
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_early_python_import
 
@@ -12105,7 +12105,7 @@ early-python-import
 
 early-pythonpath
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pythonpath
 
@@ -12117,7 +12117,7 @@ early-pythonpath
 
 early-python-path
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_pythonpath
 
@@ -12135,7 +12135,7 @@ plugin: rack
 ============
 rails
 *****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12147,7 +12147,7 @@ rails
 
 rack
 ****
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12159,7 +12159,7 @@ rack
 
 ruby-gc-freq
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12169,7 +12169,7 @@ ruby-gc-freq
 
 rb-gc-freq
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12179,7 +12179,7 @@ rb-gc-freq
 
 rb-lib
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12189,7 +12189,7 @@ rb-lib
 
 ruby-lib
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12199,7 +12199,7 @@ ruby-lib
 
 rb-require
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12209,7 +12209,7 @@ rb-require
 
 ruby-require
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12219,7 +12219,7 @@ ruby-require
 
 rbrequire
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12229,7 +12229,7 @@ rbrequire
 
 rubyrequire
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12239,7 +12239,7 @@ rubyrequire
 
 require
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12249,7 +12249,7 @@ require
 
 shared-rb-require
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12259,7 +12259,7 @@ shared-rb-require
 
 shared-ruby-require
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12269,7 +12269,7 @@ shared-ruby-require
 
 shared-rbrequire
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12279,7 +12279,7 @@ shared-rbrequire
 
 shared-rubyrequire
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12289,7 +12289,7 @@ shared-rubyrequire
 
 shared-require
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12299,7 +12299,7 @@ shared-require
 
 gemset
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12309,7 +12309,7 @@ gemset
 
 rvm
 ***
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12319,7 +12319,7 @@ rvm
 
 rvm-path
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12329,7 +12329,7 @@ rvm-path
 
 rbshell
 *******
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_rbshell
 
@@ -12339,7 +12339,7 @@ rbshell
 
 rbshell-oneshot
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_rbshell
 
@@ -12352,7 +12352,7 @@ plugin: rados
 =============
 rados-mount
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12364,7 +12364,7 @@ rados-mount
 
 rados-timeout
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12377,7 +12377,7 @@ plugin: rawrouter
 =================
 rawrouter
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
@@ -12387,7 +12387,7 @@ rawrouter
 
 rawrouter-processes
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12397,7 +12397,7 @@ rawrouter-processes
 
 rawrouter-workers
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12407,7 +12407,7 @@ rawrouter-workers
 
 rawrouter-zerg
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
@@ -12417,7 +12417,7 @@ rawrouter-zerg
 
 rawrouter-use-cache
 *******************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12427,7 +12427,7 @@ rawrouter-use-cache
 
 rawrouter-use-pattern
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
@@ -12437,7 +12437,7 @@ rawrouter-use-pattern
 
 rawrouter-use-base
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
@@ -12447,7 +12447,7 @@ rawrouter-use-base
 
 rawrouter-fallback
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12457,7 +12457,7 @@ rawrouter-fallback
 
 rawrouter-use-code-string
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_cs
 
@@ -12467,7 +12467,7 @@ rawrouter-use-code-string
 
 rawrouter-use-socket
 ********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
@@ -12477,7 +12477,7 @@ rawrouter-use-socket
 
 rawrouter-to
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12487,7 +12487,7 @@ rawrouter-to
 
 rawrouter-gracetime
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12497,7 +12497,7 @@ rawrouter-gracetime
 
 rawrouter-events
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12507,7 +12507,7 @@ rawrouter-events
 
 rawrouter-max-retries
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12517,7 +12517,7 @@ rawrouter-max-retries
 
 rawrouter-quiet
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12527,7 +12527,7 @@ rawrouter-quiet
 
 rawrouter-cheap
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12537,7 +12537,7 @@ rawrouter-cheap
 
 rawrouter-subscription-server
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_ss
 
@@ -12547,7 +12547,7 @@ rawrouter-subscription-server
 
 rawrouter-subscription-slot
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_deprecated
 
@@ -12557,7 +12557,7 @@ rawrouter-subscription-slot
 
 rawrouter-timeout
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12567,7 +12567,7 @@ rawrouter-timeout
 
 rawrouter-stats
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12577,7 +12577,7 @@ rawrouter-stats
 
 rawrouter-stats-server
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12587,7 +12587,7 @@ rawrouter-stats-server
 
 rawrouter-ss
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12597,7 +12597,7 @@ rawrouter-ss
 
 rawrouter-harakiri
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12607,7 +12607,7 @@ rawrouter-harakiri
 
 rawrouter-xclient
 *****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12617,7 +12617,7 @@ rawrouter-xclient
 
 rawrouter-buffer-size
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -12630,7 +12630,7 @@ plugin: rbthreads
 =================
 rbthreads
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12640,7 +12640,7 @@ rbthreads
 
 rb-threads
 **********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12650,7 +12650,7 @@ rb-threads
 
 rbthread
 ********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12660,7 +12660,7 @@ rbthread
 
 rb-thread
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12676,7 +12676,7 @@ plugin: ring
 ============
 ring-load
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12686,7 +12686,7 @@ ring-load
 
 clojure-load
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12696,7 +12696,7 @@ clojure-load
 
 ring-app
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12760,7 +12760,7 @@ plugin: rrdtool
 ===============
 rrdtool
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12772,7 +12772,7 @@ rrdtool
 
 rrdtool-freq
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12782,7 +12782,7 @@ rrdtool-freq
 
 rrdtool-lib
 ***********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12795,7 +12795,7 @@ plugin: rsyslog
 ===============
 rsyslog-packet-size
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12805,7 +12805,7 @@ rsyslog-packet-size
 
 rsyslog-split-messages
 **********************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -12830,7 +12830,7 @@ plugin: sqlite3
 ===============
 sqlite3
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_sqlite3
 
@@ -12842,7 +12842,7 @@ sqlite3
 
 sqlite
 ******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_load_sqlite3
 
@@ -12860,7 +12860,7 @@ plugin: sslrouter
 =================
 sslrouter
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_sslrouter
 
@@ -12870,7 +12870,7 @@ sslrouter
 
 sslrouter2
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_sslrouter2
 
@@ -12880,7 +12880,7 @@ sslrouter2
 
 sslrouter-session-context
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12890,7 +12890,7 @@ sslrouter-session-context
 
 sslrouter-processes
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12900,7 +12900,7 @@ sslrouter-processes
 
 sslrouter-workers
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -12910,7 +12910,7 @@ sslrouter-workers
 
 sslrouter-zerg
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
@@ -12920,7 +12920,7 @@ sslrouter-zerg
 
 sslrouter-use-cache
 *******************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -12930,7 +12930,7 @@ sslrouter-use-cache
 
 sslrouter-use-pattern
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
@@ -12940,7 +12940,7 @@ sslrouter-use-pattern
 
 sslrouter-use-base
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
@@ -12950,7 +12950,7 @@ sslrouter-use-base
 
 sslrouter-fallback
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12960,7 +12960,7 @@ sslrouter-fallback
 
 sslrouter-use-code-string
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_cs
 
@@ -12970,7 +12970,7 @@ sslrouter-use-code-string
 
 sslrouter-use-socket
 ********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
@@ -12980,7 +12980,7 @@ sslrouter-use-socket
 
 sslrouter-to
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -12990,7 +12990,7 @@ sslrouter-to
 
 sslrouter-gracetime
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13000,7 +13000,7 @@ sslrouter-gracetime
 
 sslrouter-events
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13010,7 +13010,7 @@ sslrouter-events
 
 sslrouter-max-retries
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13020,7 +13020,7 @@ sslrouter-max-retries
 
 sslrouter-quiet
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13030,7 +13030,7 @@ sslrouter-quiet
 
 sslrouter-cheap
 ***************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13040,7 +13040,7 @@ sslrouter-cheap
 
 sslrouter-subscription-server
 *****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_corerouter_ss
 
@@ -13050,7 +13050,7 @@ sslrouter-subscription-server
 
 sslrouter-timeout
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13060,7 +13060,7 @@ sslrouter-timeout
 
 sslrouter-stats
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13070,7 +13070,7 @@ sslrouter-stats
 
 sslrouter-stats-server
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13080,7 +13080,7 @@ sslrouter-stats-server
 
 sslrouter-ss
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13090,7 +13090,7 @@ sslrouter-ss
 
 sslrouter-harakiri
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13100,7 +13100,7 @@ sslrouter-harakiri
 
 sslrouter-sni
 *************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13110,7 +13110,7 @@ sslrouter-sni
 
 sslrouter-buffer-size
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -13123,7 +13123,7 @@ plugin: stackless
 =================
 stackless
 *********
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13148,7 +13148,7 @@ plugin: symcall
 ===============
 symcall
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13158,7 +13158,7 @@ symcall
 
 symcall-use-next
 ****************
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13168,7 +13168,7 @@ symcall-use-next
 
 symcall-register-rpc
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13178,7 +13178,7 @@ symcall-register-rpc
 
 symcall-post-fork
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13197,7 +13197,7 @@ plugin: tornado
 ===============
 tornado
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_setup_tornado
 
@@ -13230,7 +13230,7 @@ plugin: tuntap
 ==============
 tuntap-router
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13240,7 +13240,7 @@ tuntap-router
 
 tuntap-device
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13250,7 +13250,7 @@ tuntap-device
 
 tuntap-use-credentials
 **********************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13260,7 +13260,7 @@ tuntap-use-credentials
 
 tuntap-router-firewall-in
 *************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_tuntap_opt_firewall
 
@@ -13270,7 +13270,7 @@ tuntap-router-firewall-in
 
 tuntap-router-firewall-out
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_tuntap_opt_firewall
 
@@ -13280,7 +13280,7 @@ tuntap-router-firewall-out
 
 tuntap-router-route
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_tuntap_opt_route
 
@@ -13290,7 +13290,7 @@ tuntap-router-route
 
 tuntap-router-stats
 *******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13300,7 +13300,7 @@ tuntap-router-stats
 
 tuntap-device-rule
 ******************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13313,7 +13313,7 @@ plugin: ugreen
 ==============
 ugreen
 ******
-``argument``: no_argument
+``argument``: 无参数
 
 ``parser``: uwsgi_opt_true
 
@@ -13323,7 +13323,7 @@ ugreen
 
 ugreen-stacksize
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13336,7 +13336,7 @@ plugin: v8
 ==========
 v8-load
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13346,7 +13346,7 @@ v8-load
 
 v8-preemptive
 *************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_int
 
@@ -13356,7 +13356,7 @@ v8-preemptive
 
 v8-gc-freq
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_64bit
 
@@ -13366,7 +13366,7 @@ v8-gc-freq
 
 v8-module-path
 **************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13376,7 +13376,7 @@ v8-module-path
 
 v8-jsgi
 *******
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13389,7 +13389,7 @@ plugin: webdav
 ==============
 webdav-mount
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13401,7 +13401,7 @@ webdav-mount
 
 webdav-css
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13413,7 +13413,7 @@ webdav-css
 
 webdav-javascript
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13425,7 +13425,7 @@ webdav-javascript
 
 webdav-js
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13437,7 +13437,7 @@ webdav-js
 
 webdav-class-directory
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13449,7 +13449,7 @@ webdav-class-directory
 
 webdav-div
 **********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13461,7 +13461,7 @@ webdav-div
 
 webdav-lock-cache
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13473,7 +13473,7 @@ webdav-lock-cache
 
 webdav-principal-base
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13485,7 +13485,7 @@ webdav-principal-base
 
 webdav-add-option
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13497,7 +13497,7 @@ webdav-add-option
 
 webdav-add-prop
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13509,7 +13509,7 @@ webdav-add-prop
 
 webdav-add-collection-prop
 **************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13521,7 +13521,7 @@ webdav-add-collection-prop
 
 webdav-add-object-prop
 **********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13533,7 +13533,7 @@ webdav-add-object-prop
 
 webdav-add-prop-href
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13545,7 +13545,7 @@ webdav-add-prop-href
 
 webdav-add-collection-prop-href
 *******************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13557,7 +13557,7 @@ webdav-add-collection-prop-href
 
 webdav-add-object-prop-href
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13569,7 +13569,7 @@ webdav-add-object-prop-href
 
 webdav-add-prop-comp
 ********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13581,7 +13581,7 @@ webdav-add-prop-comp
 
 webdav-add-collection-prop-comp
 *******************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13593,7 +13593,7 @@ webdav-add-collection-prop-comp
 
 webdav-add-object-prop-comp
 ***************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13605,7 +13605,7 @@ webdav-add-object-prop-comp
 
 webdav-add-rtype-prop
 *********************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13617,7 +13617,7 @@ webdav-add-rtype-prop
 
 webdav-add-rtype-collection-prop
 ********************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13629,7 +13629,7 @@ webdav-add-rtype-collection-prop
 
 webdav-add-rtype-object-prop
 ****************************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13641,7 +13641,7 @@ webdav-add-rtype-object-prop
 
 webdav-skip-prop
 ****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13659,7 +13659,7 @@ plugin: xslt
 ============
 xslt-docroot
 ************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13669,7 +13669,7 @@ xslt-docroot
 
 xslt-ext
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13679,7 +13679,7 @@ xslt-ext
 
 xslt-var
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13689,7 +13689,7 @@ xslt-var
 
 xslt-stylesheet
 ***************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13699,7 +13699,7 @@ xslt-stylesheet
 
 xslt-content-type
 *****************
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_set_str
 
@@ -13712,7 +13712,7 @@ plugin: zabbix
 ==============
 zabbix-template
 ***************
-``argument``: optional_argument
+``argument``: 可选参数
 
 ``parser``: uwsgi_opt_zabbix_template
 
@@ -13727,7 +13727,7 @@ plugin: zergpool
 ================
 zergpool
 ********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 
@@ -13737,7 +13737,7 @@ zergpool
 
 zerg-pool
 *********
-``argument``: required_argument
+``argument``: 必需参数
 
 ``parser``: uwsgi_opt_add_string_list
 

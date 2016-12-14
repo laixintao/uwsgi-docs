@@ -1,31 +1,29 @@
 RADOS插件
 ====================
 
-Available from uWSGI 1.9.16, stable from uWSGI 2.0.6
+自uWSGI 1.9.16起可用，自uWSGI 2.0.6起稳定
 
-official modifier1: 28
+官方modifier1: 28
 
-Authors: Javier Guerra, Marcin Deranek, Roberto De Ioris, Sokolov Yura aka funny_falcon
+作者：Javier Guerra, Marcin Deranek, Roberto De Ioris, Sokolov Yura 又名funny_falcon
 
-The 'rados' plugin allows you to serve objects stored in a Ceph cluster directly using the librados API.
+'rados'插件让你可以使用librados API，直接提供存储在一个Ceph集群中的对象。
 
-Note that it's not the CephFS filesystem, nor the 'radosgw' S3/Swift-compatible layer; RADOS is the bare object-storage layer.
+注意，不是CephFS文件系统，也不是'radosgw' S3/Swift兼容层；RADOS是裸对象存储层。
 
 
-Step1: Ceph cluster and content
+第1步：Ceph集群和内容
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to try a minimal Ceph instalation, you can follow this guide: http://ceph.com/docs/master/start/. note that
-you only need the OSD and MON daemons, the MDS are needed only for CephFS filesystems.
+如果你想尝试最小Ceph安装，那么你可以遵循这个指导：http://ceph.com/docs/master/start/。注意，你只需要OSD和MON守护进程，MDS只在CephFS文件系统的时候是必须的。
 
-Once you get it running, you should have a configuration file (by default on /etc/ceph/ceph.con), and should be able to use the `rados` utility.
+一旦运行了它，你应该有一个配置文件 (默认在/etc/ceph/ceph.con上)，并且应该能够使用 `rados` 功能。
 
 .. code-block:: sh
 
    rados lspools
 
-by default, you should have at least the 'data', 'metadata' and 'rbd' pools.  Now add some content to the 'data' pool.
-For example, if you have a 'list.html' file and images 'first.jpeg', 'second.jpeg' on a subdirectory 'imgs/':
+默认情况下，你应该至少拥有'data', 'metadata'和'rbd'池。现在添加一些内容到'data'池。例如，如果你有一个'list.html'文件和子目录'imgs/'下的图片'first.jpeg', 'second.jpeg'：
 
 .. code-block:: sh
 
@@ -34,44 +32,44 @@ For example, if you have a 'list.html' file and images 'first.jpeg', 'second.jpe
    rados -p data put imgs/second.jpeg imgs/second.jpeg
    rados -p data ls -
 
-note that RADOS doesn't have a concept of directories, but the object names can contain slashes.
+注意，RADOS没有目录的概念，但是对象名可以包含斜线。
 
 
-Step2: uWSGI
+第2步：uWSGI
 ^^^^^^^^^^^^
 
-A build profile, named 'rados' is already available, so you can simply do:
+有一个名为'rados'的构建配置文件可以用，因此你可以简单这样做：
 
 .. code-block:: sh
 
    make PROFILE=rados
    
-or
+或者
 
 .. code-block:: sh
 
    python uwsgiconfig.py --build rados
    
-or use the installer
+或者使用安装程序
 
 .. code-block:: sh
 
    # this will create a binary called /tmp/radosuwsgi that you will use instead of 'uwsgi'
    curl http://uwsgi.it/install | bash -s rados /tmp/radosuwsgi
 
-Obviously you can build rados support as plugin
+显然，你可以将rados支持当成插件构建
 
 .. code-block:: sh
 
    uwsgi --build-plugin plugins/rados/
 
-or the old style:
+或者旧式的：
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/rados/
 
-You can now start an HTTP server to serve RADOS objects:
+现在，你可以启动一个HTTP服务器来提供RADOS对象服务了：
 
 .. code-block:: ini
 
@@ -85,55 +83,51 @@ You can now start an HTTP server to serve RADOS objects:
    ; spawn 30 threads
    threads = 30
 
-the 'rados-mount' parameter takes various subparameters:
+'rados-mount'参数接收多个子参数：
 
- - mountpoint: required, the URL prefix on which the RADOS objects will appear.
- - pool: required, the RADOS pool to serve.
- - config: optional, the path to the ceph config file.
- - timeout: optional, set the timeout for operations, in seconds
- - allow_put: allow calling the ``PUT`` HTTP method to store new objects
- - allow_delete: allow calling the ``DELETE`` HTTP method to remove objects
- - allow_mkcol: allow calling ``MKCOL`` HTTP method to create new pools
- - allow_propfind: (requires uWSGI 2.1) allow calling the WebDAV ``PROPFIND`` method
- - buffer_size: maximum buffer size for ``GET`` requests in bytes (min 8192, max 16777216, default to 131072)
- - put_buffer_size: maximum buffer size for ``PUT`` requests (default to buffer_size)
+ - mountpoint: 必需，RADOS对象将会出现的URL前缀。
+ - pool: 必需，提供服务的RADOS池。
+ - config: 可选，ceph配置文件的路径。
+ - timeout: 可选，设置操作的超时时间，以秒为单位
+ - allow_put: 允许调用 ``PUT`` HTTP方法来存储新的对象
+ - allow_delete: 允许调用 ``DELETE`` HTTP方法来移除对象
+ - allow_mkcol: 允许调用 ``MKCOL`` HTTP方法来创建新的池
+ - allow_propfind: (要求版本uWSGI 2.1) 允许调用WebDAV ``PROPFIND`` 方法
+ - buffer_size:  ``GET`` 请求的最大缓冲大小，以字节为单位 (最小8192，最大的16777216，默认是131072)
+ - put_buffer_size:  ``PUT`` 请求的最大缓冲大小 (默认为buffer_size)
 
-In this example, your content will be served at http://localhost:9090/rad/list.html, http://localhost:9090/rad/imgs/first.jpeg
-and http://localhost:9090/rad/imgs/second.jpeg.
+在这个例子中，你的内容地址将会是http://localhost:9090/rad/list.html, http://localhost:9090/rad/imgs/first.jpeg和http://localhost:9090/rad/imgs/second.jpeg。
 
 
-High availability
+高可用性
 ^^^^^^^^^^^^^^^^^
 
-The RADOS storage system is fully distributed, just starting several uWSGI workers on several machines with the same
-'ceph.conf', all will see the same pools.  If they all serve on the same mountpoint, you get a failure-resistant
-RADOS-HTTP gateway.
+RADOS存储系统是全分布的，只要使用相同的'ceph.conf'，在多个机器上启动几个uWSGI worker，那么所有的worker都能看到同一个池。如果它们都在相同的挂载点上提供服务，那么你会得到一个抗故障的RADOS-HTTP网关。
 
 
-Multiple mountpoints
+多挂载点
 ^^^^^^^^^^^^^^^^^^^^
 
-You can issue several 'rados-mount' entries, each one will define a new mountpoint.  This way you can expose different
-RADOS pools at different URLs.
+你可以声明多个'rados-mount'项，每一个会定义一个新的挂载点。通过这种方式，你可以在不同的URL上公开不同的RADOS池。
 
-HTTP methods
+HTTP方法
 ^^^^^^^^^^^^
 
-The following methods are supported:
+支持以下方法：
 
-* GET -> retrieve a resource
-* HEAD -> like GET but without body
-* OPTIONS -> (requires uWSGI 2.1) returns the list of allowed HTTP methods and WebDAV support
-* PUT -> requires allow_put in mountpoint options, store a resource in ceph: curl -T /etc/services http://localhost:8080/services
-* MKCOL -> requires allow_mkcol in mountpoint options, creates a new pool: curl -X MKCOL http://localhost:8080/anewpool (the pool 'anewpool' will be created)
-* DELETE -> requires allow_delete in mountpoint options, removes an object
-* PROPFIND -> requires allow_propfind in mountpoint options (uWSGI 2.1+), implements WebDAV PROPFIND method
+* GET -> 检索资源
+* HEAD -> 和GET一样，但是没有请求体
+* OPTIONS -> (要求版本uWSGI 2.1) 返回允许的HTTP方法和WebDAV支持的列表
+* PUT -> 要求mountpoint选项中有allow_put，存储资源到ceph：curl -T /etc/services http://localhost:8080/services
+* MKCOL -> 要求mountpoint选项中有allow_mkcol，创建一个新的池：curl -X MKCOL http://localhost:8080/anewpool (将会创建池'anewpool')
+* DELETE -> 要求mountpoint选项中有allow_delete，移除一个对象
+* PROPFIND -> 要求mountpoint选项中有allow_propfind (uWSGI 2.1+)，实现WebDAV PROPFIND方法
 
-Features
+特性
 ^^^^^^^^
 
-* multiprocessing is supported
-* async support is fully functional, the ugreen suspend engine is the only supported one:
+* 支持多进程
+* 异步支持功能齐全，ugreen挂起引擎是唯一支持的引擎：
 
 
 .. code-block:: ini
@@ -150,10 +144,10 @@ Features
    ; required !!!
    ugreen = true
 
-Caching example
+缓存样例
 ^^^^^^^^^^^^^^^
 
-Caching is highly recommended to improve performance and reduce the load on the Ceph cluster. This is a good example:
+强烈建议使用缓存来改进性能和减少Ceph集群上的负载。这是一个好例子：
 
 .. code-block:: ini
 
@@ -181,16 +175,16 @@ Caching is highly recommended to improve performance and reduce the load on the 
    processes = 4
    threads = 8
 
-To test the caching behaviour, a tool like uwsgicachetop (https://pypi.python.org/pypi/uwsgicachetop) will be very useful. 
+要测试缓存行为，诸如uwsgicachetop (https://pypi.python.org/pypi/uwsgicachetop) 这样的工具将非常有用。
 
-More information about caching here: :doc:`CachingCookbook`
+更多关于缓存的信息在这里： :doc:`CachingCookbook`
 
-Security note
+安全注意事项
 ^^^^^^^^^^^^^
 
-Enabling MKCOL, PUT and DELETE may be high security risks.
+启用MKCOL, PUT和DELETE可能会有很高的安全风险。
 
-Combine them with the internal routing framework for adding authentication/authorization policies:
+将它们与内部路由框架结合，以添加鉴权/认证策略：
 
 .. code-block:: ini
 
@@ -223,11 +217,11 @@ Combine them with the internal routing framework for adding authentication/autho
    
 
 
-Notes
-^^^^^
+注意事项
+^^^^^^^^^^
 
-* The plugin automatically enables the MIME type engine.
-* There is no directory index support. It makes no sense in rados/ceph context.
-* You should drop privileges in your uWSGI instances, so be sure you give the right permissions to the ceph keyring.
-* If you use it for getting/storing large objects, consider increasing ``buffer_size``. 4194304 is very performant value, 1048576 is also good, if you wish to conserve memory.
-* PUT into Erasure coded pools is supported. ``put_buffer_size`` is automatically adjusted to satisfy pool alignment requirements.
+* 这个插件自动启用MIME type引擎。
+* 无目录索引支持。在rados/ceph上下文中，它并无意义。
+* 你应该在你的uWSGI实例中移除特权，因此，确保你把正确的权限给予了ceph keyring。
+* 如果你用它来获取/存储大对象，那么考虑提高 ``buffer_size`` 。4194304是个非常高性能的值，如果你想节约内存，那么1048576也不错。
+* 支持放入Erasure编码的池。会自动调整 ``put_buffer_size`` 来满足池对齐要求。

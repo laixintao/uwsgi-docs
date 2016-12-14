@@ -87,10 +87,7 @@
 第3步：嵌入flask自身
 ------------------------------
 
-Now, we are ready to kick asses with uWSGI ninja awesomeness.  We want a single
-binary embedding all of the Flask modules, including Werkzeug and Jinja2,
-Flask's dependencies.  We need to have these packages' directories and then
-specify them in the build profile.
+现在，我们准备好玩转uWSGI的忍者神功了。我们想要单个二进制文件，它嵌入所有的Flask模块，包括Werkzeug和Jinja2，Flask的依赖。我们需要拥有这些包的目录，然后在构建配置文件中指定它们。
 
 .. code-block:: ini
 
@@ -100,12 +97,9 @@ specify them in the build profile.
     embed_files = bootstrap.py,myapp.py,werkzeug=site-packages/werkzeug,jinja2=site-packages/jinja2,flask=site-packages/flask
     embed_config = flaskconfig.ini
 
-.. note:: This time we have used the form "name=directory" to force symbols to
-   a specific names to avoid ending up with a clusterfuck like
-   ``site_packages_flask___init___py``.
+.. note:: 这次，我们使用了"name=directory"形式，来强制符号使用指定的名字，以避免获得像 ``site_packages_flask___init___py`` 这样恶心的名字。
 
-Rebuild and re-run. We're adding --no-site when running to show you that the
-embedded modules are being loaded.
+重新构建并重新运行。当运行以向你展示加载嵌入模块时，我们添加了--no-site。
 
 .. code-block:: sh
 
@@ -125,9 +119,7 @@ embedded modules are being loaded.
     embed_files = bootstrap.py,myapp.py,werkzeug=site-packages/werkzeug,jinja2=site-packages/jinja2,flask=site-packages/flask,templates
     embed_config = flaskconfig.ini
 
-Templates will be added to the binary... but we'll need to instruct Flask on
-how to load templates from the binary image by creating a custom Jinja2
-template loader.
+模板将会被添加到二进制文件中……但是我们会需要通过创建一个自定义的Jinja2模板加载器，指示Flask如何从二进制镜像中加载模板。
 
 .. code-block:: py
 

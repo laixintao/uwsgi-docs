@@ -1,57 +1,50 @@
-Integrating uWSGI with Erlang
+集成uWSGI和Erlang
 =============================
 
-.. warning:: Erlang support is broken as of 1.9.20. A new solution is being worked on.
+.. warning:: 自1.9.20起，Erlang支持已经不能用了。新方案正在开发中。
 
-The uWSGI server can act as an Erlang C-Node and exchange messages and RPC with Erlang nodes.
+uWSGI服务器可以作为一个Erlang C-Node，并且和Erlang节点交换数据以及进行RPC。
 
-Building
+构建
 --------
 
-First of all you need the ``ei`` libraries and headers. They are included in
-the official erlang tarball. If you are on Debian/Ubuntu, install the
-``erlang-dev`` package.  Erlang support can be embedded or built as a plugin.
-For embedding, add the ``erlang`` and ``pyerl`` plugins to your buildconf.
+首先，你需要 ``ei`` 库和头文件。在官方的Erlang包中可以找到它们。如果你在Debian/Ubuntu之上，那么安装
+``erlang-dev`` 包。可以嵌入Erlang支持，或者将其当成一个插件进行构建。要嵌入，则添加 ``erlang`` 和 ``pyerl`` 插件到你的构建配置文件中。
 
 .. code-block:: ini
 
     embedded_plugins = python, ping, nagios, rpc, fastrouter, http, ugreen, erlang, pyerl
 
-or build both as plugins
+或者将其作为插件构建
 
 .. code-block:: sh
 
     python uwsgiconfig --plugin plugins/erlang
     python uwsgiconfig --plugin plugins/pyerl
 
-The Erlang plugin will allow uWSGI to became a Erlang C-Node. The ``pyerl``
-plugin will add Erlang functions to the Python plugin.
+Erlang插件将允许uWSGI成为一个Erlang C-Node。 ``pyerl`` 插件将添加Erlang函数到Python插件中。
 
-Activating Erlang support
+激活Erlang支持
 -------------------------
 
-You only need to set two options to enable Erlang support in your
-Erlang-enabled uWSGI build.  The ``erlang`` option sets the Erlang node name of
-your uWSGI server. It may be specified in simple or extended format:
+你只需要设置两个选项来在你的启用Erlang的uWSGI构建中启用Erlang支持。 ``erlang`` 选项设置了你的uWSGI服务器的Erlang节点名。它可以以简单或扩展格式指定：
 
 * ``nodename@ip``
 * ``nodename@address``
 * ``nodename``
 
-The ``erlang-cookie`` option sets the cookie for inter-node communications. If
-you do not specify it, the value is taken from the :file:`~/.erlang.cookie`
-file. 
+ ``erlang-cookie`` 选项为内部节点通信设置cookie。如果你不指定它，那么会从 :file:`~/.erlang.cookie` 文件获取这个值。
 
-To run uWSGI with Erlang enabled:
+要运行带启用Erlang的uWSGI：
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --erlang testnode@192.168.173.15 --erlang-cookie UUWSGIUWSGIU -p 2
 
-A simple RPC hello world example
+一个简单的RPC hello world例子
 --------------------------------
 
-* Define a new erlang module that exports only a simple function.
+* 定义一个新的Erlang模块，它只导出一个简单的函数。
 
   .. code-block:: erlang
       
@@ -61,28 +54,27 @@ A simple RPC hello world example
       hello() ->
           'hello world !'.
   
-* Launch the ``erl`` shell specifying the nodename and (eventually) the cookie:
+* 启动 ``erl`` shell，指定节点名和（最终） (eventually) cookie:
   
   .. code-block:: sh
   
       erl -name testnode@192.168.173.1
   
-* Compile the uwsgitest Erlang module
+* 编译uwsgitest Erlang模块
   
   .. code-block:: erlang
   
       c(uwsgitest).
       {ok,uwsgitest}
   
-* ... and try to run the ``hello`` function:
+* ... 然后试着运行 ``hello`` 函数：
   
   .. code-block:: erlang
   
       uwsgitest:hello().
       'hello world !'
 
-Great - now that our Erlang module is working, we are ready for RPC!  Return to
-your uWSGI server machine and define a new WSGI module -- let's call it
+不错 - 现在，我们的Erlang模块就能用了，我们准备好RPC了！返回你的uWSGI服务器机器，然后定义一个新的WSGI模块 —— 让我们称之为
 :file:`erhello.py`.
 
 .. code-block:: py
@@ -95,7 +87,7 @@ your uWSGI server machine and define a new WSGI module -- let's call it
         yield uwsgi.erlang_rpc(testnode, "uwsgitest", "hello", [])
         uwsgi.erlang_close(testnode)
 
-or the fast-style
+或者快速方式
 
 .. code-block:: py
 
@@ -105,36 +97,34 @@ or the fast-style
         start_response('200 OK', [('Content-Type', 'text/plain')])
         yield uwsgi.erlang_rpc("testnode@192.168.173.1", "uwsgitest", "hello", [])
 
-Now relaunch the uWSGI server with this new module:
+现在，使用这个新的模块启动uWSGI服务器：
 
 .. code-block:: xxx
 
     uwsgi --socket :3031 --erlang testnode@192.168.173.15 --erlang-cookie UUWSGIUWSGIU -p 2 -w erhello
 
-Point your browser to your uWSGI enabled webserver and you should see the output of your erlang RPC call.
+在你的浏览器中访问启用了uWSGI的web服务器，你应该会看到你的Erlang RPC调用的输出。
 
-Python-Erlang mappings
+Python-Erlang映射
 ----------------------
 
-The uWSGI server tries to translate Erlang types to Python objects according to the table below.
+uWSGI服务器试着根据下面这张表将Erlang类型转换成Python对象。
 
 ==========  ====== ====
-Python      Erlang note
+Python      Erlang 注意
 ==========  ====== ====
 str         binary
-unicode     atom   limited by internal atom size
+unicode     atom   受内部atom大小限制
 int/long    int
 list        list
 tuple       tuple
 3-tuple     pid
 ==========  ====== ====
 
-Sending messages to Erlang nodes
+发送消息给Erlang节点
 --------------------------------
 
-One of the most powerful features of Erlang is the inter-node message passing
-system.  uWSGI can communicate with Erlang nodes as well.  Lets define a new
-Erlang module that simply will echo back whatever we send to it.
+Erlang的最强大的特性之一是节点间消息传递系统。uWSGI也可以与Erlang节点进行通信。让我们定义一个新的Erlang模块，它简单回显任何我们发送给它的东西。
 
 .. code-block:: erlang
 
@@ -155,27 +145,21 @@ Erlang module that simply will echo back whatever we send to it.
     start() ->
             register(echoer, spawn(uwsgiecho, loop, [])).
 
-Remember to register your process with the Erlang ``register`` function. Using
-pids to identify processes is problematic.  Now you can send messages with
-:py:meth:`uwsgi.erlang_send_message`.
+记得用Erlang ``register`` 函数注册你的进程。使用pid来标志进程是有问题的。现在，你可以用
+:py:meth:`uwsgi.erlang_send_message` 来发送消息。
 
 .. code-block:: py
 
     uwsgi.erlang_send_message(node, "echoer", "Hello echo server !!!" )
 
-The second argument is the registered process name. If you do not specify the
-name, pass a 3-tuple of Python elements to be interpreted as a Pid. If your
-Erlang server returns messages to your requests you can receive them with
-:py:meth:`uwsgi.erlang_recv_message`. Remember that even if Erlang needs a
-process name/pid to send messages, they will be blissfully ignored by uWSGI.
+第二个参数是注册进程名。如果你不指定名字，那么传递一个Python的3元素元组会被解析为一个Pid。如果你的Erlang服务器返回消息给你的请求，那么你可以用
+:py:meth:`uwsgi.erlang_recv_message` 来接收它们。记住，即使Erlang需要一个进程名/pid来发送消息，但是它们将被uWSGI所忽略。
 
 
-Receiving erlang messages
+接收Erlang消息
 -------------------------
 
-Sometimes you want to directly send messages from an Erlang node to the uWSGI
-server. To receive Erlang messages you have to register "Erlang processes" in
-your Python code.
+有时，你想直接从一个Erlang节点发送消息给uWSGI服务器。要接收Erlang消息，你必须在你的Python代码中注册"Erlang进程"。
 
 .. code-block:: py
 
@@ -186,7 +170,7 @@ your Python code.
     
     uwsgi.erlang_register_process("myprocess", erman)
 
-Now from Erlang you can send messages to the "myprocess" process you registered:
+现在，在Erlang中，你可发送消息给你注册的"myprocess"进程了：
 
 .. code-block:: erlang
 
@@ -196,39 +180,34 @@ Now from Erlang you can send messages to the "myprocess" process you registered:
 RPC
 ---
 
-You can call uWSGI :doc:`RPC` functions directly from Erlang.
+你可以直接从Erlang调用uWSGI :doc:`RPC` 函数。
 
 .. code-block:: erlang
 
     rpc:call('testnode@192.168.173.15', useless, myfunction, []).
 
-this will call the "myfunction" uWSGI RPC function on a uWSGI server configured
-as an Erlang node.
+这将会调用一个配置为Erlang节点的uWSGI服务器上的"myfunction" uWSGI RPC函数。
 
-Connection persistence
+连接持久化
 ----------------------
 
-On high-loaded sites opening and closing connections for every Erlang
-interaction is overkill. Open a connection on your app initialization with
-:meth:`uwsgi.erlang_connect` and hold on to the file descriptor.
+在高负载站点上，为每一个Erlang交互打开和关闭连接是很过分的。在你的应用初始化过程中用
+:meth:`uwsgi.erlang_connect` 打开一个连接，并让文件描述符保持。
 
-What about Mnesia?
+Mnesia又如何？
 ------------------
 
-We suggest you to use Mnesia_ when you need a high-availability site. Build an
-Erlang module to expose all the database interaction you need and use
-:py:meth:`uwsgi.erlang_rpc` to interact with it.
+当你需要一个高可用性站点的时候，我们建议你使用 Mnesia_ 。构建一个Erlang模块来公开所有你需要的数据库交互，并且使用
+:py:meth:`uwsgi.erlang_rpc` 来与之交互。
 
 .. _Mnesia: http://en.wikipedia.org/wiki/Mnesia
 
 
-Can I run EWGI_ applications on top of uWSGI?
+我可以在uWSGI之上运行 EWGI_ 应用吗？
 ---------------------------------------------
 
-For now, no. The best way to do this would be to develop a plugin and assign a
-special modifier for EWGI apps.
+现在，是不行的。最好的方式是开发一个插件，并且为EWGI应用分配一个特殊的modifier。
 
-But before that happens, you can wrap the incoming request into EWGI form in
-Python code and use :py:meth:`uwsgi.erlang_rpc` to call your Erlang app.
+那在此之前，你可以在Python代码中封装即将到来的请求为EWGI形式，并使用 :py:meth:`uwsgi.erlang_rpc` 来调用你的Erlang应用。
 
 .. _EWGI: http://code.google.com/p/ewgi/wiki/EWGISpecification

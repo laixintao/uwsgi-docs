@@ -1,21 +1,21 @@
-uWSGI RPC Stack
+uWSGI RPC栈
 ===============
 
 uWSGI包含了一个快速、简单、平稳跨平台的RPC栈。
 
-虽然，你或许会爱上这个子系统，try to use it only when you need it. There are plenty of higher-level RPC technologies better suited for the vast majority of situations.
+虽然，你或许会爱上这个子系统，但是，答应我，只在你需要的时候才用它，好吗？对于绝大部分常见，有大量更适合的高层次RPC技术可以用。
 
-That said, the uWSGI RPC subsystem shines with its performance and memory usage. As an example, if you need to split the load of a request to multiple servers, the uWSGI RPC is a great choice, as it allows you to offload tasks with very little effort.
+也就是说，uWSGI RPC子系统闪光点在于它的性能和内存使用。例如，如果你需要将一个请求的负载拆分到多个服务器上，那么uWSGI RPC是个不错的选择，因为它允许你不怎么费力就可以卸载任务。
 
-Its biggest limit is in its "typeless" approach.
+它最大的限制在于它的“无类型”方法。
 
-RPC functions can take up to 254 args. Each argument has to be a string with a 16 bit maximum size (65535 bytes), while the return value has to be a string (this time 64-bit, so that's not a practical limit).
+RPC函数可以接收多达254个参数。每个参数必须是一个字符串，最大大小为16位 (65535字节)，而返回值必须是一个字符串 (这次是64位，所以这不是一个实际的限制)。
 
-.. warning:: 64 bit response length has been implemented only in uWSGI 1.9.20, older releases have 16 bit response length limit.
+.. warning:: 64位响应长度只在uWSGI 1.9.20中实现，较老的版本则是16位响应长度限制。
 
-.. note:: RPC functions receive arguments in the form of binary strings, so every RPC exportable function must assume that each argument is a string. Every RPC function returns a binary string of 0 or more characters.
+.. note:: RPC函数以二进制字符串的形式接收参数，所以每个RPC可导出函数必须假设每个参数都是一个字符串。每个RPC函数返回一个0或者拥有更多字符的二进制字符串。
 
-So, if you need "elegance" or strong typing, just look in another place (or roll your own typing on top of uWSGI RPC, maybe...).
+所以，如果你需要“优雅的”或者强类型，那么就看看其他的吧 (或者，在uWSGI RPC之上自己处理，或许……)。
 
 从1.9起，RPC子系统就是完全异步友好型的，因此，你可以把它跟gevent和Coro::AnyEvent等一起使用。
 
@@ -35,9 +35,9 @@ So, if you need "elegance" or strong typing, just look in another place (or roll
 
     uwsgi.register_rpc("hello", hello_world)
 
-This uses :py:meth:`uwsgi.register_rpc` to declare a function called "hello" to be exported. We'll start the server with ``--socket :3031``.
+这使用了 :py:meth:`uwsgi.register_rpc` 来声明一个名为"hello"的函数，以备导出。我们会用 ``--socket :3031`` 启动这个服务器。
 
-On the caller's side, on ``10.0.0.1``, let's declare the world's (second) simplest WSGI app.
+在调用者那端，在 ``10.0.0.1`` 之上，让我们声明这个世界（第二个）最简单的WSGI应用。
 
 .. code-block:: py
 
@@ -61,7 +61,7 @@ On the caller's side, on ``10.0.0.1``, let's declare the world's (second) simple
 
     uwsgi::register_rpc("hello",\&hello_world);
 
-Or perhaps you want to call an RPC function from a standalone perl script?
+或者也许你想要从单个perl脚本中调用一个RPC函数？
 
 .. code-block:: perl
     #!/usr/bin/perl
@@ -72,7 +72,7 @@ Or perhaps you want to call an RPC function from a standalone perl script?
 那么，比方说，Lua呢？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Glad you asked. If you want to export functions in Lua, simply do:
+很高兴你问了。如果你想要导出Lua中的函数，简单这样：
 
 .. code-block:: lua
 
@@ -95,17 +95,17 @@ Glad you asked. If you want to export functions in Lua, simply do:
 其他语言/平台？
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Check the language specific docs, basically all of them should support registering and calling RPC functions.
+查看语言特定文档，基本上，它们所有都应该支持注册和调用RPC函数。
 
-You can build multi-languages app with really no effort at all and will be happily surprised about how easy it is to call :doc:`Java<JVM>` functions from Perl, JavaScript from Python and so on.
+你可以基本不花啥力气就能构建多语言应用，并且将会愉快地惊讶于调用来自于Perl，JavaScript，Python等等的 :doc:`Java<JVM>` 函数是有多容易。
 
 
 本地进行RPC
 -----------------
 
-本地进行RPC听起来可能有点蠢，但如果you need to call a Lua function from Python with the absolute least possible overhead, uWSGI RPC is your man.
+本地进行RPC听起来可能有点蠢，但如果你需要从Python调用一个Lua函数，并且使用绝对最少的开销，那么uWSGI RPC就是你的人啦。
 
-If you want to call a RPC defined in the same server (governed by the same master, etc.), simply set the first parameter of ``uwsgi.rpc`` to None or nil, or use the convenience function :py:meth:`uwsgi.call`.
+如果你想要调用定义在同一台服务器（由同一个master管理，等）上的RPC，只需设置 ``uwsgi.rpc`` 的第一个参数为None或者nil，或者使用方便函数 :py:meth:`uwsgi.call` 。
 
 从内部路由子系统进行RPC
 ---------------------------------------------
@@ -129,7 +129,7 @@ RPC插件导出了一堆内部路由动作：
 从nginx进行RPC
 --------------------
 
-As Nginx supports low-level manipulation of the uwsgi packets sent to upstream uWSGI servers, you can do RPC directly through it. Madness!
+由于Nginx支持对发送到上游uWSGI服务器的uwsgi包的低层次操作，所以你可以直接通过它进行RPC。疯了！
 
 .. code-block:: nginx
 
@@ -146,9 +146,9 @@ As Nginx supports low-level manipulation of the uwsgi packets sent to upstream u
         uwsgi_pass_request_body off;
     }
 
-Zero size strings will be ignored by the uWSGI array parser, so you can safely use them when the numbers of parameters + function_name is not even.
+大小为0的字符串将会被uWSGI数组解析器忽略，所以当参数数目+function_name不是偶数的时候，你可以安全使用它们。
 
-Modifier2 is set to 1 to inform that raw strings (HTTP responses in this case) are received. Otherwise the RPC subsystem would encapsulate the output in an uwsgi protocol packet, and nginx isn't smart enough to read those.
+Modifier2被设为1，来通知接收到了原始字符串 (在这个例子中，是HTTP响应)。否则，RPC子系统会将输出封装到一个uwsgi协议包中，而nginx还没智能到读取它们。
 
 
 HTTP PATH_INFO -> RPC bridge

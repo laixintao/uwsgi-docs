@@ -30,9 +30,9 @@
 
    my $msg = uwsgi::chunked_read_nb
    
-该函数将会立即返回 ``undef`` (或者在Python上是 ``None``) if no chunks are available (and croak/raise an exception on error).
+如果没有可用的块（并且错误时抛出了异常），那么该函数将会立即返回 ``undef`` (或者在Python上是 ``None``)。
 
-A full PSGI streaming echo example:
+一个完整的PSGI流回显例子：
 
 .. code-block:: perl
 
@@ -56,35 +56,35 @@ A full PSGI streaming echo example:
    };
 
 
-Tuning the chunks buffer
+调整块缓冲
 ************************
 
-Before starting to read chunks, uWSGI allocates a fixed buffer for storing chunks.
+在开始读取块之前，uWSGI会分配一个固定的缓冲来存储块。
 
-All of the messages are always stored in the same buffer. If a message bigger than the buffer is received, an exception will be raised.
+所有的消息总是会存储在相同的缓冲中。如果接收到了比缓冲大的消息，那么会引发一个异常。
 
-By default the buffer is limited to 1 MB. You can tune it with the ``--chunked-input-limit`` option (bytes).
+默认情况下，缓冲限制为1MB。你可以用 ``--chunked-input-limit`` 选项来调整它 (单位是字节)。
 
 
 与代理集成
 ************************
 
-If you plan to put uWSGI behind a proxy/router be sure it supports chunked input requests (or generally raw HTTP requests).
+如果你计划把uWSGI放在代理/路由器之后，那么确保它支持块输入请求 (或者一般原始HTTP请求)。
 
-When using the uWSGI HTTP router just add --http-raw-body to support chunked input.
+当使用uWSGI HTTP路由器时，只需添加--http-raw-body来支持块输入。
 
-HAProxy works out of the box.
+HAProxy属于开箱即用。
 
-Nginx >= 1.4 supports chunked input.
+Nginx >= 1.4支持块输入。
 
 选项
 *******
 
-* ``--chunked-input-limit``: the limit (in bytes) of a chunk message (default 1MB)
-* ``--chunked-input-timeout``: the default timeout (in seconds) for blocking chunked_read (default to the same --socket-timeout value, 4 seconds)
+* ``--chunked-input-limit``: 一个块消息的限制 (以字节为单位，默认是1MB)
+* ``--chunked-input-timeout``: 阻塞chunked_read的默认超时时间 (以秒为单位，默认与--socket-timeout值相同，4秒)
 
 小抄
 *****
 
-* Calling chunked API functions after having consumed even a single byte of the request body is wrong (this includes ``--post-buffering``).
-* Chunked API functions can be called independently by the presence of "Transfer-Encoding: chunked" header.
+* 在消耗了请求体哪怕是一字节之后调用块API函数是错误的 (这包含 ``--post-buffering``)。
+* 块API函数可以被"Transfer-Encoding: chunked" 头的存在独立调用。

@@ -1,11 +1,11 @@
-The GridFS plugin
+GridFS插件
 =================
 
 Beginning in uWSGI 1.9.5 a "GridFS" plugin is available. It exports both a
 request handler and an internal routing function.  Its official modifier is
 '25'. The routing instruction is "gridfs" The plugin is written in C++.
 
-Requirements and install
+要求和安装
 ************************
 
 To build the plugin you need the ``libmongoclient`` headers (and a functioning
@@ -86,7 +86,7 @@ initial slash:
 
 Now instead of searching for /myfile.txt it will search for "myfile.txt".
 
-Multiple mountpoints (and servers)
+多挂载点 (和服务器)
 **********************************
 
 You can mount different GridFS databases under different SCRIPT_NAME (or
