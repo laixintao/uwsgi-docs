@@ -1,50 +1,49 @@
 uWSGI订阅服务器
 =========================
 
-Some components of the uWSGI stack require a key-value mapping system.
+uWSGI栈的一些部分要求有一个键值映射系统。
 
-For example the :doc:`Fastrouter` needs to know which server to contact for a specific request.
+例如， :doc:`Fastrouter` 需要知道对于一个特定的请求，要联系哪个服务器。
 
-In big networks with a lot of nodes manually managing this configuration could be a real hell.
-uWSGI implements a subscription system where the node itself announces its presence to Subscription Servers, which will in turn populate their internal dictionaries.
+在拥有大量的节点的大网络中，手工管理这些配置可能就是地狱般可怕。uWSGI实现了一个订阅系统，其中，节点本身向订阅服务器宣告它的存在，这将反过来填入它们的内部字典。
 
 .. code-block:: sh
 
     uwsgi --fastrouter :1717 --fastrouter-subscription-server 192.168.0.100:2626
 
-This will run an uWSGI fastrouter on port 1717 and create an empty dictionary where the hostname is the key and the uwsgi address is the value.
+这将会在端口1717上运行一个uWSGI fastrouter，并且创建一个空字典，其中，主机名是键，而uwsgi地址则是值。
 
-To populate this dictionary you can contact 192.168.0.100:2626, the address of the subscription server.
+要填充这个字典，你可以联系192.168.0.100:2626，这是订阅服务器的地址。
 
-For every key multiple addresses can exist, enabling load balancing (various algorithms are available).
+对于每个键，可以存在多个地址，启用负载均衡 (各种算法也能用)。
 
-A node can announce its presence to a Subscription Server using the ``subscribe-to`` or ``subscribe2`` options.
+一个节点可以使用 ``subscribe-to`` 或者 ``subscribe2`` 选项来向订阅服务器宣告它的存在。
 
 .. code-block:: sh
 
     uwsgi --socket 192.168.0.10:3031 --wsgi myapp -M --subscribe-to 192.168.0.100:2626:uwsgi.it
 
-The FastRouter will map every request for uwsgi.it to 192.168.0.10:3031.
+FastRouter将会映射每个对uwsgi.it的请求到192.168.0.10:3031。
 
-To now add a second node for uwsgi.it simply run it and subscribe:
+现在，为uwsgi.it添加第二个节点，简单运行它并订阅：
 
 .. code-block:: xxx
 
     uwsgi --socket 192.168.0.11:3031 --wsgi myapp --master --subscribe-to 192.168.0.100:2626:uwsgi.it
 
-Dead nodes are automatically removed from the pool.
+会自动将死掉的节点从池中移除。
 
-The syntax for ``subscribe2`` is similar but it allows far more control since it allows to specify additional options like the address to which all requests should be forwarded. Its value syntax is a string with "key=value" pairs, each separated by a comma.
+ ``subscribe2`` 的语法是类似的，但是它允许更多的控制，因为它允许指定额外的选项，例如所有的请求应该被转发到哪个地址。它的值语法是一个带"key=value"对的字符串，每个由一个逗号分隔。
 
 .. code-block:: sh
 
     uwsgi -s 192.168.0.10:3031 --wsgi myapp --master --subscribe2 server=192.168.0.100:2626,key=uwsgi.it,addr=192.168.0.10:3031
 
-For a list of the available ``subscribe2`` keys, see below.
+可用 ``subscribe2`` 键的列表，见下。
 
-The subscription system is currently available for cluster joining (when multicast/broadcast is not available), the Fastrouter, the HTTP/HTTPS/SPDY router, the rawrouter and the sslrouter.
+The subscription system is currently available for cluster joining (当多播/广播不能用的时候), the Fastrouter, the HTTP/HTTPS/SPDY router, the rawrouter and the sslrouter.
 
-That said, you can create an evented/fast_as_hell HTTP load balancer in no time.
+那就是说，你可以很快创建一个evented/fast_as_hell HTTP load balancer in no time.
 
 .. code-block:: sh
 
@@ -118,7 +117,7 @@ To avoid replay attacks, each subscription packet has an increasing number (norm
 Even if an attacker manages to sniff a subscription packet it will be unusable as it is already processed previously.
 Obviously if someone manages to steal your private key he will be able to build forged packets.
 
-Using SSH keys
+使用SSH密钥
 **************
 
 SSH-formatted keys are generally loved by developers (well, more than classic PEM files).
@@ -139,7 +138,7 @@ This is the keyval version of --subscribe-to. It supports more tricks and a (gen
    uwsgi --socket 127.*:0 --subscribe2 server=127.0.0.1:7171,key=ubuntu64.local:9090,sign=SHA1:chiavessh001
    
    
-Supported fields are:
+支持的字段是：
 
 * ``server`` the address of the subscription server
 * ``key`` the key to subscribe (generally the domain name)
@@ -156,14 +155,14 @@ Supported fields are:
 * ``proto`` (uWSGI 2.1) the protocol to use, by default it is 'uwsgi'
 * ``backup`` (uWSGI 2.1) set the backup level (change meaning based on algo)
 
-Notifications
+通知
 -------------
 
 When you subscribe to a server, you can ask it to "acknowledge" the acceptance of your request.
 
 Just add ``--subscription-notify-socket <addr>`` pointing to a datagram (Unix or UDP) address, on which your instance will bind and the subscription server will send acknowledgements to.
 
-Mountpoints (uWSGI 2.1)
+挂载点 (uWSGI 2.1)
 -----------------------
 
 Generally you subscribe your apps to specific domains.

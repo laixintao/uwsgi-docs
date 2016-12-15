@@ -1,15 +1,14 @@
 在uWSGI中运行PHP脚本
 ============================
 
-You can safely run PHP scripts using uWSGI's :doc:`CGI<CGI>` support. The downside of this approach is the latency caused by the spawn of a new PHP interpreter at each request.
+You can safely run PHP scripts using 你可以通过uWSGI的 :doc:`CGI<CGI>` 支持安全运行PHP脚本。这个方法的缺点是每次请求生成新的PHP解释器引发的延迟。
 
-To get far superior performance you will want to embed the PHP interpreter in the uWSGI core and use the PHP plugin.
+要获得超级不错的性能，你会想要嵌入PHP解释器到uWSGI核心中，并使用PHP插件。
 
 构建
 --------
 
-A bunch of distros (such as Fedora, Red Hat and CentOS) include a ``php-embedded`` package.
-Install it, along with ``php-devel`` and you should be able to build the php plugin:
+一堆发行版 (例如Fedora, Red Hat和CentOS) 包含了一个 ``php-embedded`` 包。安装它，以及 ``php-devel`` ，然后你应该能够构建php插件：
 
 .. code-block:: sh
 
@@ -19,16 +18,16 @@ Install it, along with ``php-devel`` and you should be able to build the php plu
     # or directly specify the directory in which you have installed your php environment
     UWSGICONFIG_PHPDIR=/opt/php53 python uwsgiconfig.py --plugin plugins/php
 
-If you get linkage problems (such as libraries not found), install those missing packages (``ncurses-devel``, ``gmp-devel``, ``pcre-devel``...) but be warned that if you add development packages modifying the uWSGI core behaviour (``pcre`` is one of these) you _need_ to recompile the uWSGI server too, or strange problems will arise.
+如果有链接问题 (例如找不到库)，那么安装那些缺失的包 (``ncurses-devel``, ``gmp-devel``, ``pcre-devel``...)，但是要警告下你，如果你添加了修改uWSGI核心行为的开发包 (``pcre`` 就是其中一个)，那么你也 _需要_ 重新编译uWSGI服务器，否则会引发奇怪的问题。
 
-For distros that do not supply a libphp package (all Debian-based distros, for instance), you have to rebuild PHP with the ``--enable-embed`` flag to ``./configure``:
+对于那些不提供一个libphp包的发行版 (例如，所有基于Debian的发行版)，你必须在 ``./configure`` 中带上 ``--enable-embed`` 标志来重新构建PHP：
 
 .. code-block:: sh
 
     ./configure --prefix=/usr/local --with-mysql --with-mysqli --with-pdo-mysql --with-gd --enable-mbstring --enable-embed
     # That's a good starting point
 
-Ubuntu 10.04 (newer versions include official libphp-embed sapi)
+Ubuntu 10.04 (较新的版本包括官方嵌入libphp的sapi)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: sh
@@ -45,7 +44,7 @@ Ubuntu 10.04 (newer versions include official libphp-embed sapi)
 多个PHP版本
 ^^^^^^^^^^^^^^^^^^^^^
 
-Sometimes (always, if you are an ISP) you might have multiple versions of PHP installed in the system. In such a case, you will need one uWSGI plugin for each version of PHP:
+有时 (如果你是ISP，那么总是) 你或许在系统中安装了多个PHP版本。在这种情况下，你会需要对每个PHP版本使用一个uWSGI插件：
 
 .. code-block:: sh
 
@@ -53,14 +52,14 @@ Sometimes (always, if you are an ISP) you might have multiple versions of PHP in
     UWSGICONFIG_PHPDIR=/opt/php52 python uwsgiconfig.py --plugin plugins/php default php52
     UWSGICONFIG_PHPDIR=/opt/php53 python uwsgiconfig.py --plugin plugins/php default php53
 
-'default' is the build profile of your server core. If you build uWSGI without a specific profile, it will be 'default'.
+'default'是你的服务器核心的构建配置文件。如果你不带一个指定的配置文件构建uWSGI，那么它将会是'default'。
 
-You can then load a specific plugin with ``plugins php51``, etc. You cannot load multiple PHP versions in the same uWSGI process.
+然后，你可以使用 ``plugins php51`` 加载一个指定的插件，等等。你不能在同一个uWSGI进程内加载多个PHP版本。
 
-Running PHP apps with nginx
+用nginx运行PHP应用
 ---------------------------
 
-If you have simple apps (based on file extensions) you can use something like this:
+如果你有简单的应用 (基于文件扩展名)，那么你可以使用像这样的东东：
 
 .. code-block:: nginx
 
@@ -71,7 +70,7 @@ If you have simple apps (based on file extensions) you can use something like th
         uwsgi_pass 127.0.0.1:3030;
     }
     
-You might want to check for all of URIs containing the string ``.php``:
+或许你想要检查所有包含字符串 ``.php`` 的URI：
 
 .. code-block:: nginx
 
@@ -82,7 +81,7 @@ You might want to check for all of URIs containing the string ``.php``:
         uwsgi_pass 127.0.0.1:3030;
     }
     
-Now simply run the uWSGI server with a bunch of processes:
+现在，只需运行带一堆进程的uWSGI服务器：
 
 .. code-block:: sh
 
@@ -90,21 +89,21 @@ Now simply run the uWSGI server with a bunch of processes:
     # Or abuse the adaptive process spawning with the --cheaper option
     uwsgi -s :3030 --plugin php -M -p 40 --cheaper 4
 
-This will allow up to 40 concurrent php requests but will try to spawn (or destroy) workers only when needed, maintaining a minimal pool of 4 processes.
+这将允许多达40个并发php请求，但只会在需要的时候试着生成（或摧毁）worker，维持一个包含4个进程的最小池。
 
-Advanced configuration
+高级配置
 ----------------------
 
-By default, the PHP plugin will happily execute whatever script you pass to it. You may want to limit it to only a subset of extensions with the ``php-allowed-ext`` option.
+默认情况下，PHP插件将会愉悦地执行任何你传给它的脚本。你或许想要用 ``php-allowed-ext`` 选项限制到一个扩展名子集。
 
 .. code-block:: sh
 
     uwsgi --plugin php --master --socket :3030 --processes 4 --php-allowed-ext .php --php-allowed-ext .inc
 
-Run PHP apps without a frontend server
+无前端服务器运行PHP应用
 --------------------------------------
 
-This is an example configuration with a "public" uWSGI instance running a PHP app and serving static files. It is somewhat complex for an example, but should be a good starting point for trickier configurations.
+这是一个样例配置，有一个“公用的”uWSGI实例，它运行一个PHP应用，并提供静态文件。对于例子而言，它有点复杂，但对于棘手配置而言，应该是一个不错的开始点。
 
 .. code-block:: ini
 
@@ -153,7 +152,7 @@ This is an example configuration with a "public" uWSGI instance running a PHP ap
     ; ...but start with only 2 and spawn the others on demand
     cheaper = 2
     
-A more extreme example that mixes :doc:`CGI <CGI>` with PHP using :doc:`internal routing <InternalRouting>` and a dash of :doc:`configuration logic <ConfigLogic>`.
+一个更极端的例子，混合了 :doc:`CGI <CGI>` 和PHP，使用 :doc:`internal routing <InternalRouting>` 和一点 :doc:`configuration logic <ConfigLogic>` 。
 
 .. code-block:: ini
 
@@ -214,10 +213,10 @@ A more extreme example that mixes :doc:`CGI <CGI>` with PHP using :doc:`internal
     ; how cool is 1.1 config logic
     show-config = true
 
-uWSGI API support
+uWSGI API支持
 -----------------
 
-Preliminary support for some of the uWSGI API has been added in 1.1. This is the list of supported functions:
+对一些uWSGI API的初期支持已经在1.1版本添加了。这是支持函数的列表：
 
 * uwsgi_version()
 * uwsgi_setprocname($name)
@@ -230,7 +229,7 @@ Preliminary support for some of the uWSGI API has been added in 1.1. This is the
 * uwsgi_cache_update($key, $value)
 * uwsgi_cache_del($key)
 
-Yes, this means you can call Python functions from PHP using RPC.
+是哒，这意味着你可以使用RPC，从PHP调用Python函数。
 
 .. code-block:: py
     
@@ -245,9 +244,9 @@ Yes, this means you can call Python functions from PHP using RPC.
 
     Python says the value is <? echo uwsgi_rpc("", "hello", "foo", "bar", "test"); ?>
 
-Setting the first argument of ``uwsgi_rpc`` to empty, will trigger local rpc.
+设置 ``uwsgi_rpc`` 的第一个参数为空，将会触发本地rpc。
 
-Or you can share the uWSGI :doc:`cache <Caching>`...
+或者你可以共享uWSGI :doc:`cache <Caching>`...
 
 .. code-block:: py
     
@@ -258,10 +257,10 @@ Or you can share the uWSGI :doc:`cache <Caching>`...
     <? echo uwsgi_cache_get("foo"); ?>
     
     
-Sessions over uWSGI caches (uWSGI >=2.0.4)
+uWSGI缓存之上的会话 (uWSGI >=2.0.4)
 ------------------------------------------
 
-Starting from uWSGI 2.0.4, you can store PHP sessions in uWSGI caches.
+从uWSGI 2.0.4起，你可以将PHP会话存储在uWSGI缓存中。
 
 .. code-block:: ini
 
@@ -283,9 +282,9 @@ Starting from uWSGI 2.0.4, you can store PHP sessions in uWSGI caches.
 Zend Opcode Cache (uWSGI >= 2.0.6)
 ----------------------------------
 
-For some mysterious reason, the opcode cache is disabled in the embed SAPI.
+由于某些神秘的原因，在嵌入SAPI中，Opcode Cache是禁用的。
 
-You can bypass the problem by telling the PHP engine that is running under the apache SAPI (using the ``php-sapi-name`` option):
+你可以通过告诉PHP引擎运行在apache SAPI之下(使用 ``php-sapi-name`` 选项)来绕过这个问题：
 
 .. code-block:: ini
 
@@ -298,17 +297,17 @@ You can bypass the problem by telling the PHP engine that is running under the a
 ForkServer (uWSGI >= 2.1)
 -------------------------
 
-:doc:`ForkServer` is one of the main features of the 2.1 branch. It allows you to inherit your vassals from specific parents instead of the Emperor.
+:doc:`ForkServer` 是2.1分支的主要特性之一。它允许你从指定的父亲那里继承你的vassal，而不是Emperor。
 
-The PHP plugin has been extended to support a fork-server so you can have a pool of php base instances from which vassals can `fork()`. This means you can share the opcode cache and do other tricks.
+PHP插件已被扩展，来支持fork服务器，所以你可以拥有一个php基本实例池，其中，vassal可以 `fork()` 。这意味着，你可以共享opcode cache以及做其他花样。
 
-Thanks to the vassal attributes in uWSGI 2.1 we can choose from which parent a vassal will call fork().
+多亏了uWSGI 2.1中的vassal属性，我们可以选择一个vassal将从哪个父亲中调用fork()。
 
 .. note::
 
-    You need Linux kernel >= 3.4 (the feature requires ``PR_SET_CHILD_SUBREAPER``) for "solid" use. Otherwise your Emperor will not be able to correctly wait() on children (and this will slow-down your vassal's respawns, and could lead to various form of race conditions).
+    你需要Linux内核 >= 3.4 (这个特性要求 ``PR_SET_CHILD_SUBREAPER``) 以获得“稳定”使用。否则，你的Emperor将不能够正确wait()孩子(children) (这将会减缓你的vassal的重新生成，并且会导致各种形式的竞争条件)。
 
-In the following example we will spawn 3 vassals, one (called base.ini) will initialize a PHP engine, while the others two will `fork()` from it.
+在下面的例子中，我们将会生成3个vassal，一个 (称为base.ini) 将会初始化一个PHP引擎，而其他两个将会从第一个 `fork()` 。
 
 .. code-block:: ini
 
@@ -323,7 +322,7 @@ In the following example we will spawn 3 vassals, one (called base.ini) will ini
    ; ... and wait for fork() requests on /run/php_fork.socket
    fork-server = /run/php_fork.socket
    
-then the 2 vassals
+然后2个vassal
 
 .. code-block:: ini
 
@@ -361,14 +360,14 @@ then the 2 vassals
    uid = two
    gid = two
    
-The two vassals are completely unrelated (even if they fork from the same parent), so you can drop privileges, have different process policies and so on.
+这两个vassal是完全无关的 (即使它们是从同一个父亲那里fork过来的)，所以你可以移除特权，使用不同的进程策略，等等。
 
-Now spawn the Emperor:
+现在生成Emperor：
  
  .. code-block:: sh
  
     uwsgi --emperor phpvassals/ --emperor-collect-attr fork-server --emperor-fork-server-attr fork-server
     
-The ``--emperor-collect-attr`` forces the Emperor to search for the 'fork-server' attribute in the [emperor] section of the vassal file, while ``--emperor-fork-server-attr`` tells it to use this parameter as the address of the fork server.
+ ``--emperor-collect-attr`` 迫使Emperor在vassal文件的[emperor]部分搜索'fork-server'属性，而 ``--emperor-fork-server-attr`` 告诉它使用这个参数作为fork服务器的地址。
 
-Obviously if a vassal does not expose such an attribute, it will normally fork() from the Emperor.
+显然，如果一个vassal不公开这么一个属性，那么它将会正常地从Emperor fork()。

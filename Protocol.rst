@@ -165,29 +165,29 @@ uwsgi包头
      - 编组/序列化对象传递 (保留)
    
    * - 48
-     - snmp specific
-     - snmp specific
-     - identify a SNMP request/response (mainly via UDP)
+     - snmp特定
+     - snmp特定
+     - 标识一个SNMP请求/响应 (主要通过UDP)
    
    * - 72
      - chr(TT)
      - chr(P)
-     - Corresponds to the 'HTTP' string and signals that this is a raw HTTP response.
+     - 相对于'HTTP'字符串，标志这是一个原始的HTTP响应。
    
    * - 73
-     - announce message size (完备性检查)
-     - announce type (0 = hostname)
-     - announce message
+     - 宣告消息大小 (完备性检查)
+     - 宣告类型(0 = 主机名)
+     - 宣告消息
    
    * - 74
      - 多播消息大小 (完备性检查)
      - 0
-     - array of chars; a custom multicast message managed by ``uwsgi.multicast_manager``
+     - 字符数组；一个自定义的多播消息，由 ``uwsgi.multicast_manager`` 管理
    
    * - 95
-     - cluster membership dict size
+     - 集群成员字典大小
      - ``action``
-     - add/remove/enable/disable node from a cluster. Action may be 0 = add, 1 = remove, 2 = enable, 3 = disable. Add action requires a dict of at least 3 keys: ``hostname``, ``address`` and ``workers``
+     - 从一个机器添加/移除/启用/禁用节点。操作可以是 0 = 添加, 1 = 移除, 2 = 启用, 3 = 禁用。添加操作要求一个至少包含3个键的字典： ``hostname``, ``address`` 和 ``workers``
    
    * - 96
      - 日志消息大小
@@ -205,14 +205,14 @@ uwsgi包头
      - 优雅重载请求 (0 请求 - 1 确认)
    
    * - 99
-     - size of options dictionary (if response)
+     - 选项字典的大小 (如果响应)
      - 0, 1
-     - request configuration data from a uwsgi node (even via multicast)
+     - 来自一个uwsgi节点的请求配置数据 (即使通过多播)
    
    * - 100
      - 0
      - 0, 1
-     - PING- PONG if modifier2 is 0 it is a PING request otherwise it is a PONG (a response). Useful for cluster health- check
+     - PING- PONG 如果modifier2为0，那么它是一个PING请求，否则它是一个PONG (一个响应)。对于集群健康检查有用
    
    * - 101
      - 包大小
@@ -220,34 +220,34 @@ uwsgi包头
      - ECHO服务
 
    * - 109
-     - size of clean payload
+     - 干净的有效负荷的大小
      - 0 to 255
-     - legion msg (UDP, the body is encrypted) 
+     - legion消息 (UDP, 请求体被加密) 
    
    * - 110
      - 负载大小
      - 0 to 255
-     - ``uwsgi_signal`` framework (payload is optional), modifier2 is the signal num 
+     - ``uwsgi_signal`` 框架 (有效负荷是可选的), modifier2是信号数字
    
    * - 111
      - 包大小
      - 0, 1, 2, 3
-     - Cache operations. 0: read, 1: write, 2: delete, 3: dict_based
+     - 缓存操作。0: 读, 1: 写, 2: 删除, 3: 基于字典
 
    * - 123
      - 包大小
      - -
-     - special modifier for signaling corerouters about special conditions
+     - 用于通知核心路由器特殊条件的特殊modifier
    
    * - 173
      - 包大小
      - 0, 1
-     - RPC. The packet is an uwsgi array where the first item is the name of the function and the following are the args (if ``modifier2`` is 1 the RPC will be 'raw' and all of the response will be returned to the app, uwsgi header included, if available.
+     - RPC。包时一个uwsgi数组，其中，第一个项是函数名，而接下来是参数 (如果 ``modifier2`` 是1，那么RPC将会是'raw'，并且所有的响应将会被返回给应用，包含uwsgi头，如果可用的话。
    
    * - 200
      - 0
      - 0
-     - Close mark for persistent connections
+     - 用于持久性连接的关闭标志
    
    * - 224
      - 包大小
