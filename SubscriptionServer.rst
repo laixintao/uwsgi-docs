@@ -41,34 +41,34 @@ FastRouter将会映射每个对uwsgi.it的请求到192.168.0.10:3031。
 
 可用 ``subscribe2`` 键的列表，见下。
 
-The subscription system is currently available for cluster joining (当多播/广播不能用的时候), the Fastrouter, the HTTP/HTTPS/SPDY router, the rawrouter and the sslrouter.
+该订阅系统目前对集群加入（cluster joining） (当多播/广播不能用的时候)、Fastrouter、HTTP/HTTPS/SPDY路由器、rawrouter和sslrouter可用。
 
-那就是说，你可以很快创建一个evented/fast_as_hell HTTP load balancer in no time.
+那就是说，你可以很快创建一个事件化/fast_as_hell的HTTP负载均衡器。
 
 .. code-block:: sh
 
     uwsgi --http :80 --http-subscription-server 192.168.0.100:2626 --master
 
-Now simply subscribe your nodes to the HTTP subscription server.
+现在，简单订阅你的节点到HTTP订阅服务器。
 
-You can check the subscription server stats and/or the subscribed nodes through the ``http-stats-server`` option.
+你可以通过 ``http-stats-server`` 选项检查订阅服务器统计信息以及/或者订阅节点。
 
 .. code-block:: sh
 
     uwsgi --http :80 --http-subscription-server 192.168.0.100:2626 --http-stats-server 192.168.0.100:5004 --master
 
-You can also forward subscription requests to another server with the option ``http-resubscribe``.
+你还可以使用 ``http-resubscribe`` 选项转发订阅请求到其他服务器。
 
 .. code-block:: sh
 
     uwsgi --http :80 --http-subscription-server 192.168.0.100:2626 --http-resubscribe 192.168.0.101:2627 --master
 
-Securing the Subscription System
+防护订阅系统
 --------------------------------
 
-The subscription system is meant for "trusted" networks. All of the nodes in your network can potentially make a total mess with it.
+订阅服务器意味着“可信任”网络。你网络中的所有节点可能潜在会制造大混乱。
 
-If you are building an infrastructure for untrusted users or you simply need more control over who can subscribe to a Subscription Server you can use openssl rsa public/private key pairs for "signing" you subscription requests.
+如果你正为不可信任用户构建基础设施，或者你只是对可以订阅到订阅服务器的用户需要更多的控制权，那么你可以使用openssl rsa 公钥/密钥对，来“签名”你的订阅请求。
 
 .. code-block:: sh
 
@@ -77,11 +77,11 @@ If you are building an infrastructure for untrusted users or you simply need mor
     # Generate the public key for the subscription server:
     openssl rsa -pubout -out test.uwsgi.it_8000.pem -in private.pem
 
-The keys must be named after the domain/key we are subscribing to serve, plus the .pem extension.
+密钥必须以我们订阅到服务器的域名/键命名，加上.pem扩展名。
 
-.. note:: If you're subscribing to a pool for an application listening on a specified port you need to use the ``domain_port.pem`` scheme for your key files. Generally all of the DNS-allowed chars are supported, all of the others are mapped to an underscore.
+.. note:: 如果你正订阅到一个池，使得应用监听到一个指定的端口，那么你需要为你的密钥文件使用 ``domain_port.pem`` 模式。一般而言，支持所有DNS允许的字符，其他都会被映射到一个下划线。
 
-An example of an RSA protected server looks like this:
+一个RSA保护的服务器如下：
 
 .. code-block:: ini
 
@@ -91,11 +91,11 @@ An example of an RSA protected server looks like this:
     http-subscription-server = 127.0.0.1:2626
     subscriptions-sign-check = SHA1:/etc/uwsgi/keys
 
-The last line tells uWSGI that public key files will be stored in /etc/uwsgi/keys.
+最后一行告诉uWSGI，公钥文件将会存储在/etc/uwsgi/keys中。
 
-At each subscription request the server will check for the availability of the public key file and use it, if available, to verify the signature of the packet. Packets that do not correctly verify are rejected.
+对于每个订阅请求，服务器将会检查公钥文件的可用性，如果可用，则会用它来验证包的签名。拒绝不能正确验证的包。
 
-On the client side you need to pass your private key along with other ``subscribe-to`` options. Here's an example:
+在客户端，你需要传递你的私钥，以及其他 ``subscribe-to`` 选项。这是一个例子：
 
 .. code-block:: ini
 
@@ -104,25 +104,23 @@ On the client side you need to pass your private key along with other ``subscrib
     subscribe-to = 127.0.0.1:2626:test.uwsgi.it:8000,5,SHA1:/home/foobar/private.pem
     psgi = test.psgi
 
-Let's analyze the ``subscribe-to`` usage:
+让我们分析 ``subscribe-to`` 使用：
 
-* ``127.0.0.1:2626`` is the subscription server we want to subscribe to.
-* ``test.uwsgi.it:8000`` is the subscription key.
-* ``5`` is the modifier1 value for our psgi app
-* ``SHA1:/home/private/test.uwsgi.it_8000.pem`` is the <digest>:<rsa> couple for authenticating to the server (the <rsa> field is the private key path).
+* ``127.0.0.1:2626`` 是我们想要订阅的订阅服务器。
+* ``test.uwsgi.it:8000`` 是订阅键。
+* ``5`` 是用于我们的psgi应用的modifier1值
+* ``SHA1:/home/private/test.uwsgi.it_8000.pem`` 是用来鉴权服务器的 <digest>:<rsa> 对 (<rsa>字段是私钥地址)。
 
-.. note:: Please make sure you're using the same digest method (SHA1 in the examples above) both on the server and on the client.
+.. note:: 请确保你在服务器和客户端都使用相同的摘要方法 (上面的例子中是SHA1)。
 
-To avoid replay attacks, each subscription packet has an increasing number (normally the unix time) avoiding the allowance of duplicated packets.
-Even if an attacker manages to sniff a subscription packet it will be unusable as it is already processed previously.
-Obviously if someone manages to steal your private key he will be able to build forged packets.
+为了避免重放攻击，每个订阅包都有一个增量数字 (一般是Unix时间)，避免允许重复包。即使攻击者试图嗅探一个订阅包，它也会是不可用的，因为之前已经处理它了。显然，如果有人试图窃取你的私钥，他将能够构建伪造数据包。
 
 使用SSH密钥
 **************
 
-SSH-formatted keys are generally loved by developers (well, more than classic PEM files).
+SSH格式的密钥一般受到开发者喜爱 (嗯，比经典的PEM文件更受欢迎)。
 
-Both --subscribe-to and --subscribe2 (see below) support SSH private keys, while for the server part you have the encode the public key in pkcs8:
+--subscribe-to和--subscribe2 (见下) 都支持SSH密钥，而对于服务器部分，你要用pkcs8编码公钥：
 
 .. code-block:: sh
 
@@ -131,7 +129,7 @@ Both --subscribe-to and --subscribe2 (see below) support SSH private keys, while
 --subscribe2
 ------------
 
-This is the keyval version of --subscribe-to. It supports more tricks and a (generally) more readable syntax:
+这是--subscribe-to的键值版本。它支持更多技巧，以及（一般）更可读的语法：
 
 .. code-block:: sh
 
@@ -140,42 +138,42 @@ This is the keyval version of --subscribe-to. It supports more tricks and a (gen
    
 支持的字段是：
 
-* ``server`` the address of the subscription server
-* ``key`` the key to subscribe (generally the domain name)
-* ``addr`` the address to subscribe (the value of the item)
-* ``socket`` the socket number (zero-based), this is like 'addr' by take the uWSGI internal socket number
-* ``weight`` the load balancing value
-* ``modifier1`` and ``modifier2``
-* ``sign`` <algo>:<file> the signature for the secured system
-* ``check`` it takes a file as argument. If it exists the packet is sent, otherwise it is skipped
-* ``sni_key`` set the keyfile to use for SNI proxy management
-* ``sni_crt`` set the crt file to use for SNI proxy management
-* ``sni_ca`` set the ca file to use for SNI proxy management
-* ``algo`` (uWSGI 2.1) set the load balancing algorithm to use (they are pluggable, included are wrr, lrc, wlrc and iphash)
-* ``proto`` (uWSGI 2.1) the protocol to use, by default it is 'uwsgi'
-* ``backup`` (uWSGI 2.1) set the backup level (change meaning based on algo)
+* ``server`` 订阅服务器的地址
+* ``key`` 订阅的键 (一般是域名)
+* ``addr`` 订阅的地址 (项的值)
+* ``socket`` socket数字 (基于0)，这就像'addr'，通过接收uWSGI内部socket值
+* ``weight`` 负载均衡值
+* ``modifier1`` 和 ``modifier2``
+* ``sign`` <algo>:<file> 安全系统的签名
+* ``check`` 它接收一个文件作为参数。如果存在，则发送包，否则，跳过它
+* ``sni_key`` 为SNI代理管理设置密钥文件
+* ``sni_crt`` 为SNI代理管理设置crt文件
+* ``sni_ca`` 为SNI代理管理设置ca文件
+* ``algo`` (uWSGI 2.1) 设置使用的负载均衡算法 (它们是可插拔的，包含wrr, lrc, wlrc和iphash)
+* ``proto`` (uWSGI 2.1) 使用的协议，默认是'uwsgi'
+* ``backup`` (uWSGI 2.1) 设置备份层次 (基于算法改变意义)
 
 通知
 -------------
 
-When you subscribe to a server, you can ask it to "acknowledge" the acceptance of your request.
+当你订阅到一个服务器的时候，你可以让它“确认”你的请求的接受情况。
 
-Just add ``--subscription-notify-socket <addr>`` pointing to a datagram (Unix or UDP) address, on which your instance will bind and the subscription server will send acknowledgements to.
+只需添加 ``--subscription-notify-socket <addr>`` ，指向一个数据报 (Unix或者UDP) 地址，你的实例将会绑定到上面，并且订阅服务器将会发送确认到这个地址。
 
 挂载点 (uWSGI 2.1)
 -----------------------
 
-Generally you subscribe your apps to specific domains.
+一般来说，你订阅你的应用到指定域上。
 
-Thanks to the mountpoint support introduced in uWSGI 2.1, you can now subscribe each node to a specific directory (you need to specify how much levels you want to support):
+幸好有了uWSGI 2.1中引入的挂载点支持，你现在可以订阅每个节点到一个指定的目录了 (需要指定你想要支持多少层次)：
 
-First of all you need to tell the subscription server to accept (and manage) mountpoint requests:
+首先，你需要告诉订阅服务器支持 (和管理) 挂载点请求：
 
 .. code-block:: sh
 
    uwsgi --master --http :8080 --http-subscription-server 127.0.0.1:4040 --subscription-mountpoints 1
    
-Then you can start subscribing to mountpoints.
+然后，你可以开始订阅到挂载点。
    
 .. code-block:: sh
 
@@ -184,8 +182,8 @@ Then you can start subscribing to mountpoints.
    uwsgi --socket 127.0.0.1:0 --subscribe2 server=127.0.0.1:4040,key=mydomain.it/foo
    uwsgi --socket 127.0.0.1:0 --subscribe2 server=127.0.0.1:4040,key=mydomain.it
 
-The first and the third instance will answer to all of the requests for /foo, the second will answer for /bar and the last one will manage all of the others.
+第一个和第三个实例将会响应所有对/foo的请求，而第二个将会响应/bar，最后一个会管理所有其他的请求。
 
-For the secured subscription system, you only need to use the domain key (you do not need to generate a certificate for each mountpoint).
+对于安全的订阅系统，你只需要使用域名键（不需要为每个挂载点生成证书）。
 
-If you want to support mountpoints in the form /one/two instead of /one, just pass '2' to --subscription-mountpoints and so on. For performance reason you need to choose how much elements your path can support, and you cannot mix them (read: if --subscription-mountpoints is 2 you can support /one/two or /foo/bar but not /foobar)
+如果你想以/one/two的形式，而不是/one的形式来支持挂载点，那么只需传递'2'到--subscription-mountpoints，等等。出于性能考虑，你需要选择你的路径可以支持多少个元素，并且不能弄混它们 (说明：如果--subscription-mountpoints是2，那么你可以支持/one/two或者/foo/bar，但不能支持/foobar)
