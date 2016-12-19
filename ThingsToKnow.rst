@@ -1,9 +1,8 @@
-Things to know (best practices and "issues") 必读！！！
+需要知道的事情 (最佳实践和“问题”) 必读！！！
 ========================================================
 
-*  ``http`` 和 ``http-socket`` 选项是完全不同的options are entirely different beasts.
-  The first one spawns an additional process forwarding requests to a series of workers (think about it as a form of shield, at the same level of apache or nginx), while the second one sets workers to natively speak the http protocol.
-  TL/DR: if you plan to expose uWSGI directly to the public, use ``--http``, if you want to proxy it behind a webserver speaking http with backends, use ``--http-socket``.
+*  ``http`` 和 ``http-socket`` 选项是完全不同的。第一个生成一个额外的进程，转发请求到一系列的worker (将它想象为一种形式的盾牌，与apache或者nginx同级)，而第二个设置worker为原生使用http协议。
+  TL/DR: 如果你计划直接将uWSGI公开，那么使用 ``--http`` ，如果你想要在一个使用http与后端通信的web服务器后代理它，那么使用 ``--http-socket`` 。
   .. seealso:: :doc:`HTTP`
 
 * 直到uWSGI 2.1，默认情况下，发送 ``SIGTERM`` 信号给uWSGI意味着“粗鲁地重载栈”，然而习惯是用 ``SIGTERM`` 信号来关闭一个应用。要关闭uWSGI，请使用 ``SIGINT`` 或者 ``SIGQUIT`` 代替。
@@ -17,7 +16,7 @@ Things to know (best practices and "issues") 必读！！！
 
 * 配置文件支持一种有限形式的继承、变量、if构造和简单的循环。看看 :doc:`ConfigLogic` 和 :doc:`ParsingOrder` 页面。
 
-* To route requests to a specific plugin, the webserver needs to pass a magic number known as a modifier to the uWSGI instances. By default this number is set to 0, which is mapped to Python. As an example, routing a request to a :doc:`PSGI` app requires you to set the modifier to ``5`` - or optionally to load the PSGI plugin as modifier ``0``. (This will mean that all modifierless requests will be considered Perl.)
+* 要路由请求到一个指定的插件，web服务器需要传递一个称为modifier的魔术数字到uWSGI实例。默认情况下，这个数字被设置为0，这会映射到Python。例如，路由一个请求到一个 :doc:`PSGI` 应用要求你设置modifier为 ``5`` - 或者可选地加载PSGI插件作为modifier ``0`` 。(这将意味着，所有的无modifier的请求将会被认为是Perl的。)
 
 * 没有设置要使用的进程数或线程数的魔法规则。它是灰常依赖于应用和系统的。简单的算术，例如 ``processes = 2 * cpucores`` ，并不够。你需要对多种步骤进行实验，并且准备好不断监控当你的应用。 ``uwsgitop`` 会是一个帮你找到最佳值的好工具。
 
@@ -29,27 +28,27 @@ Things to know (best practices and "issues") 必读！！！
 
 * 常识：不要以root用户运行uWSGI实例。你可以作为root启动你的uWSGI们，但是确保使用 ``uid`` 和 ``gid`` 选项来移除权限。
 
-* uWSGI tries to (ab)use the Copy On Write semantics of the `fork() <http://en.wikipedia.org/wiki/Fork_%28operating_system%29>`_ call whenever possible. By default it will fork after having loaded your applications to share as much of their memory as possible. If this behavior is undesirable for some reason, use the ``lazy-apps`` option. This will instruct uWSGI to load the applications after each worker's ``fork()``. Beware as there is an older options named ``lazy`` that is way more invasive and highly discouraged (it is still here only for backward compatibility)
+* uWSGI试图在一切可能的情况下(滥)用 `fork() <http://en.wikipedia.org/wiki/Fork_%28operating_system%29>`_ 调用的写时拷贝语义。默认情况下，它会在加载你的应用之后进行fork，以尽可能的共享它们的内存。如果出于某些原因，不期望这个行为，那么使用 ``lazy-apps`` 选项。这将会指示uWSGI在每个worker的 ``fork()`` 之后加载应用。注意，有一个更老的名为 ``lazy`` 的选项，它是一种更侵入以及极度不推荐的方式 (它仍然能用，只是为了向后兼容)
 
 * 默认情况下，Python插件并不初始化GIL。这意味着你由应用生成的线程并不会运行。如果你需要线程，记得通过 ``enable-threads`` 启用它们。在多线程模式（使用 ``threads`` 选项）下运行uWSGI将会自动启用线程支持。这种“奇怪的”默认行为是出于性能考量的，这并不可耻。
 
 * 如果你在请求期间生成一个新的进程，那么它户继承生成它的worker的文件描述符 - 包括连接到web服务器/路由器的socket。如果你并不想要这种行为，那么设置 ``close-on-exec`` 选项。
 
-* The Ruby garbage collector is configured by default to run after every request. This is an aggressive policy that may slow down your apps a bit -- but CPU resources are cheaper than memory, and especially cheaper than running out of memory. To tune this frequency use the ``ruby-gc <freq>`` option.
+* Ruby垃圾回收器是默认配置的，它会在每个请求之后运行。这是一个激进的策略，可能会减缓一点你的应用 —— 但是CPU资源比内存便宜，特别是比耗尽内存便宜。要调整这个评论，则使用 ``ruby-gc <freq>`` 选项。
 
-* On OpenBSD, NetBSD and FreeBSD < 9, SysV IPC semaphores are used as the locking subsystem. These operating systems tend to limit the number of allocable semaphores to fairly small values. You should raise the default limits if you plan to run more than one uWSGI instance. FreeBSD 9 has POSIX semaphores, so you do not need to bother with that.
+* 在OpenBSD, NetBSD和FreeBSD < 9上，SysV IPC信号量被用作锁子系统。这些操作系统倾向于限制可分配信号量的数目为一个非常小的值。如果你计划运行超过1个uWSGI实例，那么你应该提高默认限制。FreeBSD 9有POSIX信号量，所以你无需为它费心。
 
-* Do not build plugins using a different config file than used to build the uWSGI binary itself -- unless you like pain or know *exactly* what you are doing.
+* 不要使用与构建uWSGI二进制文件本身的配置文件不同的配置文件来构建插件 —— 除非你喜欢遭罪，或者 *确切* 知道你在干什么。
 
 * 默认情况下，uWSGI为每个请求头分配一个非常小的缓存 (4096字节)。如果你的日志中开始收到"invalid request block size"，这可能意味着你需要更大的缓存了。通过``buffer-size`` 选项来增加它（最大值为65535）。
 
   .. note::
 
-     If you receive '21573' as the request block size in your logs, it could mean you are using the HTTP protocol to speak with an instance speaking the uwsgi protocol. Don't do this.
+     如果你的日志中接收到了请求块大小为'21573'，那这可能意味着你使用HTTP协议与一个使用uwsgi协议的实例进行通信。不要这样做。
 
 * 如果你的 (Linux) 服务器似乎有大量的idle状态的worker，但性能仍然不佳，那么你或许想要看看 ``ip_conntrack_max`` 系统变量 (``/proc/sys/net/ipv4/ip_conntrack_max``) 的值，然后增加它以看看是否有帮助。
 
-* Some Linux distributions (read: Debian 4 Etch, RHEL / CentOS 5) make a mix of newer kernels with very old userspace. This kind of combination can make the uWSGI build system spit out errors (most notably on ``unshare()``, pthread locking, ``inotify``...). You can force uWSGI to configure itself for an older system prefixing the 'make' (or whatever way you use to build it) with ``CFLAGS="-DOBSOLETE_LINUX_KERNEL"``
+* 一些Linux发行版 (即，Debian 4 Etch, RHEL / CentOS 5)混合了较新的内核和非常老的用户空间。这种组合会让uWSGI构建系统显示错误 (在 ``unshare()`` , pthread locking, ``inotify``...之上最值得注意)。你可以给'make' (或者任何你用来构建它的方式) 加上前缀 ``CFLAGS="-DOBSOLETE_LINUX_KERNEL"`` ，强制uWSGI对较老的系统进行配置
 
 * 默认情况下，在uWSGI启动的适合，stdin被重新映射到 ``/dev/null`` 。如果你需要一个有效的stdin (用于调试、管道等等)，那么添加 ``--honour-stdin`` 。
 

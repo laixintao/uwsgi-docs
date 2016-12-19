@@ -1,4 +1,4 @@
-Snippets
+代码片段
 ========
 
 这是uWSGI特性的一些最“有趣”的使用的集合。
@@ -6,7 +6,7 @@ Snippets
 X-Sendfile模拟
 --------------------
 
-即使你的前端代理/web服务器不支持X-Sendfile (或者不能访问你的静态资源)，但是你可以使用uWSGI的内部卸载（）来模拟它。 (your process/thread will delegate the actual static file serving to offload threads).
+即使你的前端代理/web服务器不支持X-Sendfile (或者不能访问你的静态资源)，但是你可以使用uWSGI的内部卸载（你的进程/线程将会委托实际的静态文件服务给卸载线程）来模拟它。
 
 .. code-block:: ini
 
@@ -67,11 +67,11 @@ X-Sendfile模拟
 Python自动重载 (DEVELOPMENT ONLY!)
 -----------------------------------------
 
-In production you can monitor file/directory changes for triggering reloads (touch-reload, fs-reload...).
+在生产环境中，你可以监控文件/目录的改动来触发重载 (touch-reload, fs-reload...).
 
-During development having a monitor for all of the loaded/used python modules can be handy. But please use it only during development.
+在开发期间，拥有一个用于所有的重载/已用python模块的监控器是很方便的。但是请只在开发期间才使用它。
 
-The check is done by a thread that scans the modules list with the specified frequency:
+检查是通过一个以指定频率扫描模块列表的线程来完成的：
 
 .. code-block:: ini
 
@@ -79,20 +79,19 @@ The check is done by a thread that scans the modules list with the specified fre
    ...
    py-autoreload = 2
    
-will check for python modules changes every 2 seconds and eventually restart the instance.
+将会每2秒检查一次python模块的改动，并最终重启实例。
 
-And again:
+再次说明：
 
-.. warning:: Use this only in development.
+.. warning:: 只在开发时使用它。
 
 
-Full-Stack CGI setup
+全栈CGI设置
 --------------------
 
-This example spawned from a uWSGI mainling-list thread.
+这个例子从一个uWSGI的邮件列表线程生成。
 
-We have static files in /var/www and cgis in /var/cgi. Cgi will be accessed using the /cgi-bin
-mountpoint. So /var/cgi/foo.lua will be run on request to /cgi-bin/foo.lua
+我们在/var/www中有静态文件，在/var/cgi中有cgi。将会使用/cgi-bin挂载点访问cgi。所以将会在到/cgi-bin/foo.lua的请求上运行/var/cgi/foo.lua
 
 .. code-block:: ini
 
@@ -131,7 +130,7 @@ mountpoint. So /var/cgi/foo.lua will be run on request to /cgi-bin/foo.lua
    cgi-index = index.lua
    
    
-Multiple flask apps in different mountpoints
+不同挂载点中的多个flask应用
 --------------------------------------------
 
 写3个flask应用：
@@ -168,15 +167,15 @@ Multiple flask apps in different mountpoints
    def hello():
        return "Hello World! i am app3"
 
-each will be mounted respectively in /app1, /app2, /app3
+每个将会被分别挂载在/app1, /app2, /app3上
 
-To mount an application with a specific "key" in uWSGI, you use the --mount option:
+要在uWSGI中挂载一个使用指定“键”的应用，使用--mount选项：
 
 ```
 --mount <mountpoint>=<app>
 ```
 
-in our case we want to mount 3 python apps, each keyed with what will be the WSGI SCRIPT_NAME variable:
+在我们的例子中，我们想要挂载3个python应用，每个使用WSGI SCRIPT_NAME变量名作为键：
 
 .. code-block :: ini
    
@@ -196,29 +195,28 @@ in our case we want to mount 3 python apps, each keyed with what will be the WSG
 
 
 
-now directly point your webserver.proxy to the instance socket (without doing additional configurations)
+现在，直接将你的webserver.proxy指向实例socket (无需进行额外的配置)
 
-Note: by default every app is loaded in a new python interpreter (that means a pretty-well isolated namespace for each app).
-If you want all of the app to be loaded in the same python vm, use the --single-interpreter option.
+注意事项：默认情况下，每个应用都会在一个新的python解释器中加载 (那意味着每个应用都有一个相当棒的隔离的名字空间)。如果你想要在相同的python vm中加载所有的应用，那么使用--single-interpreter选项。
 
-Another note: you may find reference to an obscure "modifier1 30" trick. It is deprecated and extremely ugly. uWSGI is able to rewrite request variables in lot of advanced ways
+另一个注意事项：你或许发现到一个不起眼的"modifier1 30"引用技巧。它已经被弃用了，并且非常丑陋。uWSGI能够以许多种高级方式重写请求变量
 
-Final note: by default, the first loaded app is mounted as the "default one". That app will be served when no mountpoint matches.
+最后一个注意事项：默认情况下，第一个加载的应用作为"默认应用"挂载。当没有挂载点匹配上的时候，将会使用那个应用。
 
 
-rbenv on OSX (should work on other platforms too)
+OSX上的rbenv (应该也能在其他平台上用)
 -------------------------------------------------
 
-install rbenv
+安装rbenv
 
 .. code-block:: sh
 
    brew update
    brew install rbenv ruby-build
    
-(do not set the magic line in .bash_profile as described in the classic howto, as we want to not clobber the environment, and allow uWSGI to get rid of it)
+(不要像经典的howto中描述的那样在.bash_profile中设置魔术行，因为我们希望不破坏环境，并且让uWSGI摆脱它)
 
-get a uWSGI tarball and build the 'nolang' version (it is a monolithic one without language plugins compiled in)
+获取一个uWSGI压缩包，并且构建'nolang'版本 (它是一个单片版本，其中并未编译任何语言插件)
 
 .. code-block:: sh
 
@@ -227,14 +225,14 @@ get a uWSGI tarball and build the 'nolang' version (it is a monolithic one witho
    cd uwsgi-xxx
    make nolang
    
-now start installing the ruby versions you need
+现在，开始安装你需要的ruby版本
 
 .. code-block:: sh
 
    rbenv install 1.9.3-p551
    rbenv install 2.1.5
    
-and install the gems you need (sinatra in this case):
+并且安装你需要的gem (这个例子中是sinatra)：
 
 .. code-block:: sh
 
@@ -254,7 +252,7 @@ and install the gems you need (sinatra in this case):
    /Users/roberta/.rbenv/versions/2.1.5/bin/gem install sinatra
    PATH=/Users/roberta/.rbenv/versions/2.1.5/bin:$PATH ./uwsgi --build-plugin "plugins/rack rack_215"
    
-now to switch from one ruby to another, just change the plugin:
+现在，从一个ruby切换到另一个，只需修改插件：
 
 .. code-block:: ini
 
@@ -263,7 +261,7 @@ now to switch from one ruby to another, just change the plugin:
    rack = config.ru
    http-socket = :9090
    
-or 
+或者
 
 .. code-block:: ini
 
@@ -272,7 +270,7 @@ or
    rack = config.ru
    http-socket = :9090
 
-ensure plugins are stored in the current working directory, or set the plugins-dir directive or specify them with absolute path like
+确保插件存储在当前的工作目录中，或者设置plugins-dir指令，又或者像这样涌绝对路径指定它们
 
 .. code-block:: ini
 
@@ -282,13 +280,12 @@ ensure plugins are stored in the current working directory, or set the plugins-d
    http-socket = :9090
 
 
-Authenticated WebSocket Proxy
+认证的WebSocket代理
 -----------------------------
 
-App server identifies websocket traffic, authenticates/authorizes the user using whatever CGI variables against the
-app's own policies/infrastructure, then offloads/proxies the request to a simple kafka-websocket backend.
+应用服务器识别websocket流量，相对于应用自身策略/基础架构，使用任何CGI变量来认证/鉴权用户，然后卸载/代理请求到一个简单的kafka-websocket后端。
 
-First create ``auth_kafka.py``:
+首先，创建 ``auth_kafka.py``:
 
 .. code-block:: python
 
@@ -340,31 +337,29 @@ First create ``auth_kafka.py``:
    ; route the request to our websocket server
    route-if-not = empty:${AUTH_KAFKA} httpdumb:%(kafka-ws-host)
    
-Start a "kafka-websocket" server:
+启动一个"kafka-websocket"服务器：
 
 .. code-block:: bash
 
    nc -l -k -p 7080
    
-Now go to ``http://127.0.0.1:8000`` in a web browser! You should see ``Hello!``. Open chrome inspector or firebug and type:
+现在，在一个web浏览器中访问 ``http://127.0.0.1:8000`` ！你应该看到 ``Hello!`` 。打开chrome的查看器或者firebug，然后输入：
 
 .. code-block:: javascript
 
    ws = new WebSocket('ws://127.0.0.1:8000/?subscribe=true')
    
-You should see this request proxied to your ``nc`` command! This pattern allows the internal network to host a more-or-less
-wide-open/generic kafka -> websocket gateway and delegates auth needs to the app server. Using ``offload-threads`` means
-proxied requests do *NOT* block workers; using ``httpdumb`` prevents mangling the request (``http`` action forces ``HTTP/1.0``)
+你应该看到这个请求代理到你的 ``nc`` 命令！这个模式允许内部网络托管一个或多或少全开/通用的kafka -> websocket网关，并且委托认证需求给应用服务器。使用 ``offload-threads`` 意味着代理请求 *不会* 阻塞worker；使用 ``httpdumb`` 避免了重整请求 (``http`` 动作强制使用 ``HTTP/1.0``)
 
 
 SELinux和uWSGI
 -----------------
 
-SELinux allows you to isolate web application processes from each other, and limits each program to its purpose only. The applications can be placed into strongly isolated individual sandboxes, separating them from one another and from the underlying operating system. Since SELinux is implemented within the kernel, applications do not need to be specifically written or modified to work under SELinux. There is an `SELinux security policy for web applications  <https://github.com/reinow/sepwebapp>`_ at github well suited for uWSGI. This security policy also supports the uWSGI emperor process running in one domain, and each web application's worker processes running in a separate domain, requiring only minimal privileges for the worker processes even if Linux namespaces are used. Of course, there is no requirement for emperor mode, or Linux namespaces, to use SELinux with uWSGI.
+SELinux允许你将web应用进程彼此隔离，并且限制每个程序只用于自身目的。应用可以被放置于高度隔离的独立沙箱中，将它们与其他应用以及底层操作系统分离开来。由于SELinux是在内核中实现的，因此不需要特殊编写或修改应用就能让其在SELinux之下使用。github上有一个 `SELinux security policy for web applications  <https://github.com/reinow/sepwebapp>`_ ，非常适于uWSGI。这个安全策略也支持运行在一个域中的uWSGI emperor进程，以及运行在一个分隔域中的每个web应用的worker进程，即使使用了Linux名字空间，worker进程也只要求最小的特权。当然，使用SELinux不要求emperor模式，或者Linux名字空间。
 
-On Linux it is possible to run each vassal with a dedicated view of the filesystems, ipc, uts, networking, pids and uids. Then each vassal can, for example, modify the filesystem layout, networking, and hostname without damaging the main system. With this setup, privileged tasks, like mounting filesystems, setting hostnames, configuring the network, and setting gid and uid of the worker processes can be done before changing the SELinux security context of the vassals' process ensuring that only minimal privileges are required for the worker processes.
+在Linux上，有可能使用文件系统、ipc、uts、网络、pid和uid的专有视图来运行每个vassal。然后，每个vassal可以，比方说，修改文件系统布局、网络和主机名，而无需损坏主系统。有了这个设置，特权任务，例如挂载文件系统、设置主机名、配置网络和设置worker进程的gid和uid就可以在修改vassal进程的SELinux安全上下文之前完成了，确保每个worker进程只需要最少的特权。
 
-First configure, compile and load the SELinux web application security policy. Then, relabel the application files. Further information on how to configure web application policies can be found in the README.md included in the `SELinux security policy for web applications <https://github.com/reinow/sepwebapp>`_. Finally, in each vassall's configuration file, call the setcon function in libselinux to set the web application's SELinux security context:
+首先，配置、编译和加载SELinux web应用安全策略。然后，重新标记应用文件。关于如何配置web应用策略的进一步信息可以在 `SELinux security policy for web applications <https://github.com/reinow/sepwebapp>`_ 中包含的README.md上找到。最后，在每个vassal的配置文件中，调用libselinux的setcon函数来设置web应用的SELinux安全上下文：
 
 .. code-block:: ini
 
@@ -372,9 +367,9 @@ First configure, compile and load the SELinux web application security policy. T
 	...
 	hook-as-user = callret:setcon system_u:system_r:webapp_id_t:s0
 
-where id is the identity of the domain. Example, foo is the identity of the webapp_foo_t domain.
+其中，id是域的标识。例如，foo是webapp_foo_t域的标识。
 
-It may be required to load libselinux in the uWSGI address space with the --dlopen option:
+也许需要使用--dlopen选项在uWSGI地址空间内加载libselinux:
 
 .. code-block:: ini
 

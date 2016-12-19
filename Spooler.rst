@@ -152,8 +152,8 @@ Python支持使用 ``--spooler-python-import`` 选项，直接在spooler中导�
 
 * 'spooler' => 指定必须管理这个任务的spooler的绝对路径
 * 'at' => 必须执行该任务的unix时间 (读：该任务将不会运行，直到过去'at'时间)
-* 'priority' => this will be the subdirectory in the spooler directory in which the task will be placed, you can use that trick to give a good-enough prioritization to tasks (for better approach use multiple spoolers)
-* 'body' => use this key for objects bigger than 64k, the blob will be appended to the serialzed uwsgi packet and passed back to the spooler function as the 'body' argument
+* 'priority' => 这将是spooler目录中的子目录，任务将会被放置在其中，你可以使用哪个技巧来赋予任务足够好的优先权 (更好的方法是使用多个spooler)
+* 'body' => 为大于64k的对象使用这个键，这个blob将会被附加到序列化的uwsgi包上，然后作为'body'参数传回给spooler函数
 
 .. note::
 
@@ -162,15 +162,15 @@ Python支持使用 ``--spooler-python-import`` 选项，直接在spooler中导�
 外部spooler
 -----------------
 
-You could want to implement a centralized spooler for your server across many uWSGI instances.
+你可能想要为你的服务器实现一个跨多个uWSGI实例的集中式spooler。
 
-A single instance will manage all of the tasks enqueued by multiple uWSGI instances.
+单个实例将会管理由多个uWSGI实例入队的所有任务。
 
-To accomplish this setup, each uWSGI instance has to know which spooler directories are valid (consider it a form of security).
+要完成这个配置，每个uWSGI实例必须知道哪个spooler目录是有效的 (将其当成一种形式的安全来考虑)。
 
-To add an external spooler directory use the ``--spooler-external <directory>`` option, then add to it using the spool function.
+要添加一个外部spooler目录，使用 ``--spooler-external <directory>`` 选项，然后使用spool函数来添加。
 
-The spooler locking subsystem will avoid any messes that you might think could occur.
+spooler锁子系统将会避免你认为可能会出现的任何混乱。
 
 .. code-block:: ini
 
@@ -189,14 +189,14 @@ The spooler locking subsystem will avoid any messes that you might think could o
 
 
 
-Networked spoolers
+网络spooler
 ------------------
 
-You can even enqueue tasks over the network (be sure the 'spooler' plugin is loaded in your instance, but generally it is built in by default).
+你甚至可以通过网络入队任务 (确保在你的实例中加载了'spooler'插件，但是一般来说，是默认内置的)。
 
-As we have already seen, spooler packets have modifier1 17, you can directly send those packets to an uWSGI socket of an instance with a spooler enabled.
+正如我们已经看到的那样，spooler包使用modifier1 17，你可以直接发送那些包到一个启用了spooler的实例的uWSGI socket上。
 
-We will use the Perl ``Net::uwsgi`` module (exposing a handy uwsgi_spool function) in this example (but feel free to use whatever you want to write the spool files).
+在这个例子中，我们会使用Perl的 ``Net::uwsgi`` 模块 (公开了一个方便的uwsgi_spool函数) (但随意使用任何你想要的模块来写spool文件)。
 
 .. code-block:: perl
 
@@ -215,18 +215,18 @@ We will use the Perl ``Net::uwsgi`` module (exposing a handy uwsgi_spool functio
    perl-exec = /path/for/script-which-registers-spooler-sub.pl  
    ...
    
-(thanks brianhorakh for the example)
+(感谢brianhorakh提供这个例子)
 
 优先级
 ----------
 
-We have already seen that you can use the 'priority' key to give order in spooler parsing.
+我们已经看到，你可以使用'priority'键来赋予spooler解析次序。
 
-While having multiple spoolers would be an extremely better approach, on system with few resources 'priorities' are a good trick.
+虽然使用多个spooler也许是一个更好的方法，但是在一个资源不多的系统上，‘优先权’是个好技巧。
 
-They works only if you enable the ``--spooler-ordered`` option. This option allows the spooler to scan directories entry in alphabetical order.
+只有你启动了 ``--spooler-ordered`` 选项，它们才能用。这个选项允许spooler以字母序扫描目录项。
 
-If during the scan a directory with a 'number' name is found, the scan is suspended and the content of this subdirectory will be explored for tasks.
+如果在扫描期间，发现了一个具有‘数字’名的目录，那么扫描就会被挂起，然后将会探索这个子目录的内容以查找任务。
 
 .. code-block:: sh
 
@@ -237,7 +237,7 @@ If during the scan a directory with a 'number' name is found, the scan is suspen
    /spool/1/task0
    /spool/2/foo
    
-With this layout the order in which files will be parsed is:
+使用这个布局，文件解析的次序将是：
 
 .. code-block:: sh
 
@@ -247,60 +247,59 @@ With this layout the order in which files will be parsed is:
    /spool/xtask
    /spool/ztask
    
-Remember, priorities only work for subdirectories named as 'numbers' and you need the ``--spooler-ordered`` option.
+记住，优先级只对命名为“数字”的子目录有用，并且你需要 ``--spooler-ordered`` 选项。
 
-The uWSGI spooler gives special names to tasks so the ordering of enqueuing is always respected.
+uWSGI spooler为任务赋予了特殊的名字，因此，入队的次序总是会被遵循的。
 
 选项
 -------
 ``spooler=directory``
-run a spooler on the specified directory
+在指定的目录上运行一个spooler
 
 ``spooler-external=directory``
-map spoolers requests to a spooler directory managed by an external instance
+映射spooler请求到一个由外部实例管理的spooler目录
 
 ``spooler-ordered``
-try to order the execution of spooler tasks (uses scandir instead of readdir)
+试着排序spooler任务的执行 (使用scandir来取代readdir)
 
 ``spooler-chdir=directory``
-call chdir() to specified directory before each spooler task
+在每个spooler任务之前，调用chdir()到指定的目录
 
 ``spooler-processes=##``
-set the number of processes for spoolers
+为spooler设置进程数
 
 ``spooler-quiet``
-do not be verbose with spooler tasks
+不要打印spooler任务的冗余信息
 
 ``spooler-max-tasks=##``
-set the maximum number of tasks to run before recycling a spooler (to help alleviate memory leaks)
+设置循环利用一个spooler之前运行的最大任务数 (以帮助减轻内存泄漏)
 
 ``spooler-signal-as-task``
-combined use with ``spooler-max-tasks``. enable this, spooler will treat signal events as task.
-run signal handler will also increase the spooler task count.
+与 ``spooler-max-tasks`` 组合使用。启用这个，spooler将会把信号事件当成任务。运行信号处理器也将会增加spooler任务数。
 
 ``spooler-harakiri=##``
-set harakiri timeout for spooler tasks, see [harakiri] for more information.
+为spooler任务设置harakiri超时时间，见[harakiri]以获取更多信息。
 
 ``spooler-frequency=##``
-set the spooler frequency
+设置spooler频率
 
 ``spooler-python-import=???``
-import a python module directly in the spooler
+直接在spooler中导入一个python模块
 
 技巧和窍门
 ---------------
 
-You can re-enqueue a spooler request by returning ``uwsgi.SPOOL_RETRY`` in your callable:
+你可以通过在你的可回调对象中返回 ``uwsgi.SPOOL_RETRY`` 来重新入队一个spooler请求：
 
 .. code-block:: py
 
     def call_me_again_and_again(env):
         return uwsgi.SPOOL_RETRY
     
-You can set the spooler poll frequency using the ``--spooler-frequency <secs>`` option (default 30 seconds).
+你可以使用 ``--spooler-frequency <secs>`` 选项来设置spooler poll频率 (默认是30秒)。
 
-You could use the :doc:`Caching` or :doc:`SharedArea` to exchange memory structures between spoolers and workers.
+你可以使用 :doc:`Caching` 或者 :doc:`SharedArea` 来在spooler和worker之间交换内存结构。
 
-Python (uwsgidecorators.py) and Ruby (uwsgidsl.rb) exposes higher-level facilities to manage the spooler, try to use them instead of the low-level approach described here.
+Python (uwsgidecorators.py)和Ruby (uwsgidsl.rb)公开了高层次的功能来管理spooler，试着使用它们来取代这里描述的低层次方法。
 
-When using a spooler as a target for a uWSGI signal handler you can specify which one to route signal to using its ABSOLUTE directory name.
+当把一个spooler当成uWSGI信号处理器的目标使用的时候，你可以使用绝对目录名来指定路由信号到哪个。

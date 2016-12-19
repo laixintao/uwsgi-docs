@@ -13,17 +13,17 @@ TunTap路由器默认不编译。
 
    UWSGI_EMBED_PLUGINS=tuntap make
    
-(yes the plugin is named only 'tuntap' as effectively it exposes various tuntap devices features)
+(是哒，这个插件只命名为'tuntap'，因为它有效公开了各种tuntap设备特性)
 
-The best way to use it is binding it to a unix socket, allowing processes in new namespaces to reach it (generally unix sockets are the best communication channel for linux namespaces).
+使用它的最佳方式是将其绑定到一个unix socket上，允许新的名字空间中的进程访问它 (一般来说，unix socket是用于linux名字空间的最佳通信通道)。
 
 
 第一个配置
 ****************
 
-We want our vassals to live in the 192.168.0.0/24 network, with 192.168.0.1 as default gateway.
+我们想要让我们的vassal使用192.168.0.0/24网络，并且将192.168.0.1作为默认网关。
 
-The default gateway (read: the tuntap router) is managed by the Emperor itself
+默认网关 (也就是说，tuntap路由器) 是由Emperor自身管理的
 
 .. code-block:: ini
 
@@ -41,10 +41,9 @@ The default gateway (read: the tuntap router) is managed by the Emperor itself
    emperor-use-clone = net
    emperor = /etc/vassals
    
-The vassals spawned by this Emperor will born without network connectivity.
+由这个Emperor生成的vassal将在无网络连接的情况下产生。
 
-To give them access to the public network we create a new tun device (it will exist only in the vassal network namespace)
-instructing it to route traffic to the Emperor tuntap unix socket:
+要让它们访问公共网络，我们创建一个新的tun设备 (它将只存在于vassal网络名字空间中)，指示它路由流量到Emperor的tuntap unix socket：
 
 .. code-block:: ini
 
@@ -70,16 +69,16 @@ instructing it to route traffic to the Emperor tuntap unix socket:
 内嵌防火墙
 *********************
 
-The TunTap router includes a very simple firewall for governing vassal's traffic
+TunTap路由器由一个非常简单的防火墙，用来管理vassal的流量
 
-Firewalling is based on 2 chains (in and out), and each rule is formed by 3 parameters: <action> <src> <dst>
+防火墙基于2个链 (入链和出链)，而每条规则是由3个参数组成的：<action> <src> <dst>
 
-The firewall is applied to traffic from the clients to the tuntap device (out) and the opposite (in)
+会将这个防火墙应用于从客户端到tuntap设备(out)以及反过来(in)的流量
 
 
-The first matching rule stops the chain, if no rule applies, the policy is "allow"
+第一条匹配的规则终止这个链，如果没有规则应用上，那么策略就是"allow"
 
-the following rules allows access from vassals to the internet, but block vassals intercommunication
+以下规则允许从vassal到互联网的访问，但是阻塞vassal的内部通信
 
 .. code-block:: ini
 
@@ -108,8 +107,7 @@ the following rules allows access from vassals to the internet, but block vassal
 安全性
 ********
 
-The "switching" part of the TunTap router (read: mapping ip addresses to vassals) is pretty simple: the first packet received from a vassal by the TunTap router
-register the vassal for that ip address. A good approach (from a security point of view) is sending a ping packet soon after network setup in the vassal:
+TunTap路由器的“切换”部分 (即，映射ip地址到vassal)是灰常简单的：TunTap路由器接收到的第一个来自于vassal的包为vassal注册那个ip地址。一个好方法 (从安全的角度来说) 是在vassal中的网络设置之后立即发送一个ping包：
 
 .. code-block:: ini
 
@@ -129,21 +127,21 @@ register the vassal for that ip address. A good approach (from a security point 
    ; classic options
    ...
    
-after a vassal/ip pair is registered, only that combo will be valid (so other vassals will not be able to use that address until the one holding it dies)
+在注册了一个vassal/ip对之后，只有那个组合才是有效的 (因此，其他vassal将不能够使用那个地址，直到持有该地址的vassal死掉)
    
    
 未来
 **********
 
-This is becoming a very important part of the unbit.it networking stack. We are currently working on:
+这正成为unbit.it网络栈的一个非常重要的部分。我们现在致力于：
 
-- dynamic firewall rules (luajit resulted a great tool for writing fast networking rules)
+- 动态防火墙规则 (luajit搞了一个用于编写快速网络规则的很棒的工具)
 
-- federation/proxy of tuntap router (the tuntaprouter can multiplex vassals networking over a tcp connection to an external tuntap router [that is why you can bind a tuntap router to a tcp address])
+- tuntap路由器的联合/代理 (tuntaprouter可以在一个tcp连接上多路传输vassal网络到一个外部的tuntap路由器 [这就是为什么你可以绑定一个tuntap路由器到一个tcp地址上])
 
-- authentication of vassals (maybe the old UNIX ancillary credentials could be enough)
+- vassal鉴权 (或许老的UNIX配套凭证就够了)
 
-- a stats server for network statistics (rx/tx/errors)
+- 用于网络统计数据(rx/tx/errors)的统计数据服务器
 
-- a bandwidth shaper based on the blastbeat project
+- 基于blastbeat项目的bandwidth shaper
 
