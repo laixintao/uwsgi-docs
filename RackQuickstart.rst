@@ -1,16 +1,16 @@
 ruby/Rack应用快速入门
 =====================================
 
-The following instructions will guide you through installing and running a Ruby-based uWSGI distribution aimed at running Rack apps.
+以下指导将带你安装和运行一个基于Ruby的uWSGI发行版 ，旨在运行Rack应用。
 
-Installing uWSGI with Ruby support
+安装带Ruby支持的uWSGI
 **********************************
 
-To build uWSGI you need a C compiler (gcc and clang are supported) and the Python binary (to run the uwsgiconfig.py script that will execute the various compilation steps).
+要构建uWSGI，你需要一个C编译器 (支持gcc和clang) 和Python二进制文件 (用来运行uwsgiconfig.py脚本，它将执行各种编译步骤)。
 
-As we are building an uWSGI binary with Ruby support we need the Ruby development headers too (the ``ruby-dev`` package on Debian-based distributions).
+因为我们正在构建一个带Ruby支持的uWSGI二进制文件，因此我们也需要Ruby开发头文件 (基于Debian发行版上的 ``ruby-dev`` 包)。
 
-You can build uWSGI manually -- all of these are equivalent:
+你可以手工构建uWSGI —— 这些都是等价的：
 
 .. code-block:: sh
 
@@ -19,42 +19,37 @@ You can build uWSGI manually -- all of these are equivalent:
    make PROFILE=rack
    python uwsgiconfig.py --build rack
    
-But if you are lazy, you can download, build and install an uWSGI + Ruby binary in a single shot:
+但是如果你懒癌犯了，那么你可以一次性下载、构建和安装一个uWSGI + Ruby二进制文件：
 
 .. code-block:: sh
 
    curl http://uwsgi.it/install | bash -s rack /tmp/uwsgi
    
-Or in a more "Ruby-friendly" way:
+或者以一种更“Ruby友好型”方式：
 
 .. code-block:: sh
 
    gem install uwsgi
    
-All of these methods build a "monolithic" uWSGI binary.
-The uWSGI project is composed by dozens of plugins. You can choose to build the server core and having a plugin for every feature (that you will load when needed),
-or you can build a single binary with all the features you need. This latter kind of build is called 'monolithic'.
+这些方法都构建一个“单片”uWSGI二进制文件。uWSGI项目是由许多插件注册的。你可以选择构建服务器核心，并为每个特性使用一个插件（需要时加载），或者你可以构建一个带有所有你需要的特性的单个二进制文件。后者这种构建称之为“单片”。
 
-This quickstart assumes a monolithic binary (so you do not need to load plugins).
-If you prefer to use your package distributions (instead of building uWSGI from official sources), see below.
+这个快速入门假设使用一个单片二进制文件 (因此你无需加载插件)。如果你更喜欢使用你的包发行版 (而不是从官方来源构建uWSGI)，那么见下。
 
-Note for distro packages
+关于发布包的注意事项
 ************************
 
-Your distribution very probably contains an uWSGI package set. Those uWSGI packages tend to be highly modular (and occasionally highly outdated),
-so in addition to the core you need to install the required plugins. Plugins must be loaded in your uWSGI configuration.
-In the learning phase we strongly suggest to not use distribution packages to easily follow documentation and tutorials.
+你的发行版非常有可能包含一个uWSGI包集合。那些uWSGI包趋向于高模块化的 (并且偶尔高度过时)，因此，除了核心部分之外，你需要安装所需插件。必须在你的uWSGI配置中加载插件。在学习阶段，我们强烈建议不要使用发行版包，从而轻松跟着文档和教程。
 
-Once you feel comfortable with the "uWSGI way" you can choose the best approach for your deployments.
+一旦你适应了“uWSGI方式”，你就可以为你的部署选择最佳方式。
 
-As an example, the tutorial makes use of the "http" and "rack" plugins. If you are using a modular build be sure to load them with the ``--plugins http,rack`` option.
+例如，本教程利用"http"和"rack"插件。如果你正使用模块化构建，那么确保通过 ``--plugins http,rack`` 选项加载它们。
 
-Your first Rack app
+你的第一个Rack应用
 *******************
 
-Rack is the standard way for writing Ruby web apps.
+Rack是编写Ruby web应用的标准方式。
 
-This is a standard Rack Hello world script (call it app.ru):
+这是一个标准的Rack Hello world脚本 (称之为app.ru)：
 
 .. code-block:: rb
 
@@ -68,66 +63,63 @@ This is a standard Rack Hello world script (call it app.ru):
    
    run App.new
    
-The ``.ru`` extension stands for "rackup", which is the deployment tool included in the Rack distribution.
-Rackup uses a little DSL, so to use it into uWSGI you need to install the rack gem:
+扩展名 ``.ru`` 表示"rackup"，这是Rack发行版中包含的部署工具。Rackup使用了一点DSL，因此，要将其用到uWSGI中，你需要安装rack gem：
 
 .. code-block:: sh
 
    gem install rack
    
-Now we are ready to deploy with uWSGI:
+现在，我们准备好部署uWSGI了：
 
 .. code-block:: sh
 
    uwsgi --http :8080 --http-modifier1 7 --rack app.ru
 
-(remember to replace ‘uwsgi’ if it is not in your current $PATH)
+(如果‘uwsgi’并不在你当前的$PATH中，记得替换它)
 
-or if you are using a modular build (like the one of your distribution)
+或者如果你正使用的是一个模块化构建 (就像你的发行版的那个)
 
 .. code-block:: sh
 
    uwsgi --plugins http,rack --http :8080 --http-modifier1 7 --rack app.ru
    
-With this command line we've spawned an HTTP proxy routing each request to a process (named the 'worker') that manages it and send back the response to the HTTP router (that sends back to the client).
+使用这个命令行，我们生成了一个HTTP代理，路由每个请求到一个进程 (名为'worker')，进程管理它并把响应发送回HTTP路由器 (接着路由器发送回客户端)。
 
-If you are asking yourself why spawning two processes, it is because this is the normal architecture you will use in production (a frontline web server with a backend application server).
+如果你对为什么生成两个进程有疑问，那么（我告诉你）是因为这是你将会在生产上使用的正常架构 (一个带有一个后端应用服务器的前线web服务器)。
 
-If you do not want to spawn the HTTP proxy and directly force the worker to answer HTTP requests just change the command line to
+如果你不想要生成HTTP代理，而是直接强制worker应答HTTP请求，那么仅需将命令行修改为
 
 .. code-block:: sh
 
    uwsgi --http-socket :8080 --http-socket-modifier1 7 --rack app.ru
    
-now you have a single process managing requests (but remember that directly exposing the application server to the public is generally dangerous and less versatile).
+现在，你有了单个管理请求的进程了 (但记住，直接将应用服务器公开一般是危险的，并且并不通用)。
 
-What is that '--http-modifier1 7' thing?
+那个'--http-modifier1 7'东东是啥？
 ****************************************
 
-uWSGI supports various languages and platforms. When the server receives a request it has to know where to 'route' it.
+uWSGI支持多种语言和平台。当服务器接收到一个请求的时候，它必须知道将其“路由” 到哪里。
 
-Each uWSGI plugin has an assigned number (the modifier), the ruby/rack one has the 7. So ``--http-modifier1 7`` means "route to the rack plugin".
+每个uWSGI插件都有一个分配的数字 (即modifier)，ruby/rack这个使用的是7。因此， ``--http-modifier1 7`` 意思是“路由到rack插件”。
 
-Though uWSGI also has a more "human-friendly" :doc:`internal routing system <InternalRouting>` using modifiers is the fastest way, so if at all possible always use them.
+虽然uWSGI也有一个更加“人类友好型”的 :doc:`internal routing system <InternalRouting>` ，但是，使用modifier是最快的方式，所以，尽可能使用它们。
 
-Using a full webserver: nginx
+使用一个完整的web服务器：nginx
 *****************************
 
-The supplied HTTP router, is (yes, astoundingly enough) only a router.
-You can use it as a load balancer or a proxy, but if you need a full web server (for efficiently serving static files or all of those task a webserver is good at),
-you can get rid of the uwsgi HTTP router (remember to change --plugins http,rack to --plugins rack if you are using a modular build) and put your app behind Nginx.
+提供的HTTP路由器，是 (是哒，真的已经够了) 只是一个路由器。你可以将它当成一个负载均衡器或者代理使用，但是如果你需要一个完整的web服务器 (用于有效提供静态文件，或者一个web服务器所擅长的所有那些任务)，那么你可以摆脱uwsgi HTTP路由器 (如果你正使用模块化构建，那么记得修改--plugins http,rack为--plugins rack)，然后将你的应用放在Nginx之后。
 
-To communicate with Nginx, uWSGI can use various protocol: HTTP, uwsgi, FastCGI, SCGI, etc.
+为了与Nginx通信，uWSGI可以使用多个协议：HTTP, uwsgi, FastCGI, SCGI, 等等。
 
-The most efficient one is the uwsgi one. Nginx includes uwsgi protocol support out of the box.
+最有效的是uwsgi。Nginx默认支持uwsgi协议。
 
-Run your rack application on an uwsgi socket:
+在一个uwsgi socket上运行你的rack应用：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --rack app.ru
 
-then add a location stanza in your nginx config
+然后在你的nginx配置中添加一个location节
 
 .. code-block:: c
 
@@ -137,47 +129,42 @@ then add a location stanza in your nginx config
        uwsgi_modifier1 7;
    }
 
-Reload your nginx server, and it should start proxying requests to your uWSGI instance.
+重载你的nginx服务器，然后它应该开始代理请求到你的uWSGI实例。
 
-Note that you do not need to configure uWSGI to set a specific modifier, nginx will do it using the ``uwsgi_modifier1 5;`` directive.
+注意，你不需要配置uWSGI来设置一个指定的modifier，nginx将会使用 ``uwsgi_modifier1 5;`` 指令来实现它。
 
-Adding concurrency
+添加并发性
 ******************
 
-With the previous example you deployed a stack being able to serve a single request at time.
+通过前面的例子，你部署了一个能够服务单个请求的栈。
 
-To increase concurrency you need to add more processes.
-If you are hoping there is a magic math formula to find the right number of processes to spawn, well... we're sorry.
-You need to experiment and monitor your app to find the right value.
-Take in account every single process is a complete copy of your app, so memory usage should be taken in account.
+要增加并发性，你需要添加更多的进程。如果你希望有一个魔法数学公式可以找到要生成的正确进程数，嗯……很抱歉，我们没有。你需要进行实验，并且监控你的应用，以找到正确的值。考虑到每个进程是你的应用的一个完全拷贝，因此，必须考虑内存使用。
 
-To add more processes just use the `--processes <n>` option:
+要添加更多的进程，只需使用 `--processes <n>` 选项：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --rack app.ru --processes 8
    
-will spawn 8 processes.
+将生成8个进程。
 
-Ruby 1.9/2.0 introduced an improved threads support and uWSGI supports it via the 'rbthreads' plugin. This plugin is automatically
-built when you compile the uWSGI+ruby (>=1.9) monolithic binary.
+Ruby 1.9/2.0引入了一个改进的线程支持，uWSGI通过'rbthreads'插件支持它。当你编译uWSGI+ruby (>=1.9)单片二进制文件的时候，会自动内建这个插件。
 
-To add more threads:
+要添加更多线程：
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --rack app.ru --rbthreads 4
    
-or threads + processes
+或者线程+进程
 
 .. code-block:: sh
 
    uwsgi --socket 127.0.0.1:3031 --rack app.ru --processes --rbthreads 4
    
-There are other (generally more advanced/complex) ways to increase concurrency (for example 'fibers'), but most of the time
-you will end up with a plain old multi-process or multi-thread models. If you are interested, check the complete documentation over at :doc:`Rack`.
+有其他（一般更高级/复杂）的方式来提高并发性 (例如，'fiber')，但是，大多时候，你最终会得到一个普通的旧式多进程或者多线程模型。如果你感兴趣，那么请查看 :doc:`Rack` 之上的完整文档。
 
-Adding robustness: the Master process
+添加健壮性：Master进程
 *************************************
 
 It is highly recommended to have the uWSGI master process always running on productions apps.
@@ -190,13 +177,12 @@ To enable the master simply add ``--master``
 
    uwsgi --socket 127.0.0.1:3031 --rack app.ru --processes 4 --master
    
-Using config files
+使用配置文件
 ******************
 
-uWSGI has literally hundreds of options (but generally you will not use more than a dozens of them). Dealing with them via command line is basically silly, so try to always use config files.
+uWSGI有数百个选项 (但一般来说，你不会使用超过数十个)。通过命令行处理它们有点蠢，因此，试着总是使用配置文件。
 
-uWSGI supports various standards (XML, INI, JSON, YAML, etc). Moving from one to another is pretty simple.
-The same options you can use via command line can be used with config files by simply removing the ``--`` prefix:
+uWSGI支持各种标准 (XML, INI, JSON, YAML, 等等)。从一个移到另一个相当简单。你可以通过命令行使用的相同的选项也可以在配置文件中使用，只需将前缀 ``--`` 移除：
 
 .. code-block:: ini
 
@@ -206,7 +192,7 @@ The same options you can use via command line can be used with config files by s
    processes = 4
    master = true
    
-or xml:
+或者xml:
 
 .. code-block:: xml
 
@@ -217,14 +203,13 @@ or xml:
      <master/>
    </uwsgi>
    
-To run uWSGI using a config file, just specify it as argument:
+要通过配置文件运行uWSGI，只需将其当做一个参数指定：
 
 .. code-block:: sh
 
    uwsgi yourconfig.ini
    
-if for some reason your config cannot end with the expected extension (.ini, .xml, .yml, .js) you can force the binary to
-use a specific parser in this way:
+如果出于某些原因，你的配置不以期望的扩展名 (.ini, .xml, .yml, .js) 结尾，那么你可以通过这种方式，强制二进制文件使用一个指定的解析器：
 
 .. code-block:: sh
 
@@ -238,37 +223,35 @@ use a specific parser in this way:
 
    uwsgi --yaml yourconfig.foo
 
-and so on.
+等等等等。
 
-You can even pipe configs (using the dash to force reading from stdin):
+你甚至可以通过管道使用配置 (使用破折号强制从标准输入中读取)：
 
 .. code-block:: sh
 
    ruby myjsonconfig_generator.rb | uwsgi --json -
    
-The fork() problem when you spawn multiple processes
+当你生成多个进程时的fork()问题
 ****************************************************
 
-uWSGI is "Perlish" in a way, there is nothing we can do to hide that. Most of its choices (starting from "There's more than one way to do it") came from the Perl world (and more generally from classical UNIX sysadmin approaches).
+uWSGI某种程度上是“Perl化的”，我们没法隐藏它。它的大多数抉择 (从“不止一种实现的方式”开始) 来自于Perl世界 (更一般来说，是来自于传统的UNIX系统管理员方法)。
 
-Sometimes this approach could lead to unexpected behaviors when applied to other languages/platforms.
+当应用到其他语言/平台上的时候，这个方法有时会导致意外行为。
 
-One of the "problems" you can face when starting to learn uWSGI is its ``fork()`` usage.
+当你开始学习uWSGI的时候，你会面对的其中一个“问题”是它的 ``fork()`` 使用。
 
-By default uWSGI loads your application in the first spawned process and then ``fork()`` itself multiple times.
+默认情况下，uWSGI在第一个生成的进程中加载你的应用，然后多次 ``fork()`` 自身。
 
-It means your app is loaded a single time and then copied.
+这意味着，你的应用被单次加载，然后被拷贝。
 
-While this approach speedups the start of the server, some application could have problems with this technique (especially those initializing db connections
-on startup, as the file descriptor of the connection will be inherited in the subprocesses).
+虽然这个方法加速了服务器的启动，但是有些应用在这项技术下会出问题 (特别是那些在启动时初始化db连接的应用，因为将会在子进程中继承连接的文件描述符)。
 
-If you are unsure about the brutal preforking used by uWSGI, just disable it with the ``--lazy-apps`` option. It will force uWSGI to completely load
-your app one time per each worker.
+如果你对uWSGI使用的粗暴的preforking不确定，那么只需使用 ``--lazy-apps`` 选项来禁用它。它将会强制uWSGI在每个worker中完全加载你的应用一次。
 
-Deploying Sinatra
+部署Sinatra
 *****************
 
-Let's forget about fork(), and back to fun things. This time we're deploying a Sinatra application:
+让我们忘掉fork()，回到有趣的事情上来。这次，我们部署一个Sinatra应用：
 
 .. code-block:: rb
 
@@ -280,7 +263,7 @@ Let's forget about fork(), and back to fun things. This time we're deploying a S
 
    run Sinatra::Application
    
-save it as ``config.ru`` and run as seen before:
+将其另存为 ``config.ru`` ，然后如前所见那样运行：
 
 .. code-block:: ini
 
@@ -295,17 +278,16 @@ save it as ``config.ru`` and run as seen before:
 
    uwsgi yourconf.ini
    
-Well, maybe you already noted that basically nothing changed from the previous app.ru examples.
+好吧，或许你已经注意到，基本与前面的app.ru例子没啥区别。
 
-That is because basically every modern Rack app exposes itself as a .ru file (generally called config.ru), so there is no need
-for multiple options for loading applications (like for example in the Python/WSGI world).
+这是因为，基本上，每个现代的Rack应用都将其自身作为一个.ru文件（一般称为config.ru）公开，因此，无需使用多个选项来加载应用 (例如，像Python/WSGI世界中的那样)。
 
-Deploying RubyOnRails >= 3
+部署RubyOnRails >= 3
 **************************
 
-Starting from 3.0, Rails is fully Rack compliant, and exposes a config.ru file you can directly load (like we did with Sinatra).
+从3.0起，Rails就是完全兼容Rack的，并且它公开了一个你可以直接加载的config.ru文件 (就像我们用Sinatra那样)。
 
-The only difference from Sinatra is that your project has a specific layout/convention expecting your current working directory is the one containing the project, so let's add a chdir option:
+与Sinatra的唯一不同是，你的项目有一个特定的布局/约定，期望你当前的工作目录是包含项目的那个目录，因此，让我们添加一个chdir选项：
 
 .. code-block:: ini
 
@@ -322,9 +304,9 @@ The only difference from Sinatra is that your project has a specific layout/conv
 
    uwsgi yourconf.ini
    
-In addition to chdir we have added the 'env' option that set the ``RAILS_ENV`` environment variable.
+除了chdir之外，我们添加了'env'选项，它设置 ``RAILS_ENV`` 环境变量。
 
-Starting from 4.0, Rails support multiple threads (only for ruby 2.0):
+从4.0起，Rails支持多线程 (只适用于ruby 2.0)：
 
 .. code-block:: ini
 
@@ -338,10 +320,10 @@ Starting from 4.0, Rails support multiple threads (only for ruby 2.0):
    chdir = <path_to_your_rails_app>
    env = RAILS_ENV=production
 
-Deploying older RubyOnRails
+部署更老的RubyOnRails
 ***************************
 
-Older Rails versions are not fully Rack-compliant. For such a reason a specific option is available in uWSGI to load older Rails apps (you will need the 'thin' gem too).
+较老的Rails版本并非完全Rack兼容的。出于这样的原因，uWSGI中有一个特定的选项，用来加载较老的Rails应用 (你也会需要'thin'这个gem)。
 
 .. code-block:: ini
 
@@ -353,14 +335,14 @@ Older Rails versions are not fully Rack-compliant. For such a reason a specific 
    rails = <path_to_your_rails_app>
    env = RAILS_ENV=production
    
-So, in short, specify the ``rails`` option, passing the rails app directory as the argument, instead of a Rackup file.
+所以，长话短说，指定 ``rails`` 选项，将rails应用的目录（而不是Rackup文件）作为参数传递。
 
-Bundler and RVM
+Bundler和RVM
 ***************
 
-Bundler is the standard de-facto Ruby tool for managing dependencies. Basically you specify the gems needed by your app in the Gemfile text file and then you launch bundler to install them.
+Bundler是用来管理依赖的标准的事实上的Ruby工具。基本上，你在Gemfile文本文件中指定你的应用所需的gem，然后启动bundler来安装它们。
 
-To allow uWSGI to honor bundler installations you only need to add:
+要让uWSGI遵守bundler安装，你只需要添加：
 
 .. code-block:: ini
 
@@ -368,11 +350,11 @@ To allow uWSGI to honor bundler installations you only need to add:
    rbrequire = bundler/setup
    env = BUNDLE_GEMFILE=<path_to_your_Gemfile>
 
-(The first require stanza is not required for ruby 1.9/2.x.)
+(第一个并非ruby 1.9/2.x要求的必须节。)
 
-Basically those lines force uWSGI to load the bundler engine and to use the Gemfile specified in the ``BUNDLE_GEMFILE`` environment variable.
+基本上，这些行强制uWSGI加载bundler引擎，并且使用在 ``BUNDLE_GEMFILE`` 环境变量中指定的Gemfile。
 
-When using Bundler (like modern frameworks do) your common deployment configuration will be:
+当使用Bundler的时候 (就像现代框架所做的那样)，你的常见部署配置将会是：
 
 .. code-block:: ini
 
@@ -386,11 +368,11 @@ When using Bundler (like modern frameworks do) your common deployment configurat
    rbrequire = bundler/setup
    env = BUNDLE_GEMFILE=<path_to_your_Gemfile>
    
-In addition to Bundler, RVM is another common tool.
+除了Bundler之外，RVM是另一个常见的工具。
 
-It allows you to have multiple (independent) Ruby installations (with their gemsets) on a single system.
+它允许你在单个系统中安装多个 (独立的) Ruby版本 (带自己的gemset)。
 
-To instruct uWSGI to use the gemset of a specific RVM version just use the `--gemset` option:
+要指示uWSGI使用一个指定RVM版本的gemset，只需使用 `--gemset` 选项：
 
 .. code-block:: ini
 
@@ -405,9 +387,9 @@ To instruct uWSGI to use the gemset of a specific RVM version just use the `--ge
    env = BUNDLE_GEMFILE=<path_to_your_Gemfile>
    gemset = ruby-2.0@foobar
    
-Just pay attention you need a uWSGI binary (or a plugin if you are using a modular build) for every Ruby version (that's Ruby version, not gemset!).
+只是注意，对于每个Ruby版本（是Ruby版本，不是gemset！），你都需要一个uWSGI二进制文件（或者如果你使用模块化构建，则是一个插件）。
 
-If you are interested, this is a list of commands to build the uWSGI core + 1 one plugin per every Ruby version installed in rvm:
+如果你有兴趣，那么这里是构建uWSGI核心+每个rvm中安装的Ruby版本1个插件的命令列表。
 
 .. code-block:: sh
 
@@ -421,7 +403,7 @@ If you are interested, this is a list of commands to build the uWSGI core + 1 on
    ./uwsgi --build-plugin "plugins/rack rack192"
    # and so on...
    
-Then if you want to use ruby 1.9.2 with the @oops gemset:
+然后，如果你想要使用ruby 1.9.2和@oops gemset：
 
 .. code-block:: ini
 
@@ -437,19 +419,19 @@ Then if you want to use ruby 1.9.2 with the @oops gemset:
    env = BUNDLE_GEMFILE=<path_to_your_Gemfile>
    gemset = ruby-1.9.2@oops
 
-Automatically starting uWSGI on boot
+开机时自动启动uWSGI
 ************************************
 
-If you are thinking about firing up vi and writing an init.d script for spawning uWSGI, just sit (and calm) down and make sure your system doesn't offer a better (more modern) approach first.
+如果你正想着打开vi，然后编写一个init.d脚本来生成uWSGI，那么坐下（并且淡定），首先确保你的系统并没有提供一个更好（更现代）的方法。
 
-Each distribution has chosen a startup system (:doc:`Upstart<Upstart>`, :doc:`Systemd`...) and there are tons of process managers available (supervisord, god, monit, circus...).
+每个发行版都选择了一个启动系统 (:doc:`Upstart<Upstart>`, :doc:`Systemd`...)，并且有大量可用的进程管理器 (supervisord, god, monit, circus...)。
 
-uWSGI will integrate very well with all of them (we hope), but if you plan to deploy a big number of apps check the uWSGI :doc:`Emperor<Emperor>` - it is more or less the dream of every devops engineer.
+uWSGI将与它们完美集成（我们希望），但是如果你计划部署大量的应用，那么看看uWSGI :doc:`Emperor<Emperor>` - 它或多或少是每个devops工程师的梦想。
 
-Security and availability
+安全性和可用性
 *************************
 
-ALWAYS avoid running your uWSGI instances as root. You can drop privileges using the uid and gid options.
+总是避免以root运行你的uWSGI实例。你可以使用uid和gid选项来移除特权。
 
 .. code-block:: ini
 
@@ -463,9 +445,9 @@ ALWAYS avoid running your uWSGI instances as root. You can drop privileges using
    processes = 8
 
 
-A common problem with webapp deployment is "stuck requests". All of your threads/workers are stuck blocked on a request and your app cannot accept more of them.
+web应用部署的一个常见问题是“卡住的请求”。你所有的线程/worker都卡住了 (请求阻塞) ，而你的应用无法接收更多的请求。
 
-To avoid that problem you can set an ``harakiri`` timer. It is a monitor (managed by the master process) that will destroy processes stuck for more than the specified number of seconds.
+要避免这个问题，你可以设置一个 ``harakiri`` 定时器。它是一个监控器 (由master进程管理)，会摧毁那些卡住超过指定秒数的进程。
 
 .. code-block:: ini
 
@@ -479,11 +461,11 @@ To avoid that problem you can set an ``harakiri`` timer. It is a monitor (manage
    processes = 8
    harakiri = 30
 
-This will destroy workers blocked for more than 30 seconds. Choose the harakiri value carefully!
+这将会摧毁那些阻塞超过30秒的worker。小心选择 ``harakiri`` 值！
 
-In addition to this, since uWSGI 1.9, the stats server exports the whole set of request variables, so you can see (in real time) what your instance is doing (for each worker, thread or async core)
+除此之外，自uWSGI 1.9起，stats服务器导出了全部请求变量，因此，你可以（实时）看到你的实例正在做什么 (对于每个worker, thread 或者异步核)。
 
-Enabling the stats server is easy:
+启用统计信息服务器是很简单的：
 
 .. code-block:: ini
 
@@ -498,38 +480,36 @@ Enabling the stats server is easy:
    harakiri = 30
    stats = 127.0.0.1:5000
    
-just bind it to an address (UNIX or TCP) and just connect (you can use telnet too) to it to receive a JSON representation of your instance.
+只需将其绑定到一个地址 (UNIX或者TCP) 上，并且只需连接 (你也可以使用telnet) 到它上面，来接收你的实例的一个JSON内容。
 
-The ``uwsgitop`` application (you can find it in the official github repository) is an example of using the stats server to have a top-like realtime monitoring tool (with fancy colors!)
+ ``uwsgitop`` 应用 (你可以在官方的github仓库中找到它) 是一个使用统计信息服务器来实现类top实时监控的工具的例子 (有颜色！！！)
 
-Memory usage
+内存使用
 ************
 
-Low memory usage is one of the selling point of the whole uWSGI project.
+低内存使用是整个uWSGI项目的卖点之一。
 
-Unfortunately being aggressive with memory by default could (read well: could) lead to some performance problems.
+不幸的是，默认对内存的积极态度也许（看好：是也许）会导致某些性能问题。
 
-By default the uWSGI Rack plugin calls the Ruby GC (garbage collector) after every request. If you want to reduce this rate just add the ``--rb-gc-freq <n>`` option, where n is the number of requests after the GC is called.
+默认情况下，uWSGI Rack插件在每次请求之后调用Ruby GC (垃圾回收器)。如果你想要减少这个频率，只需添加``--rb-gc-freq <n>`` 选项，其中，n是调用GC之后的请求数。
 
-If you plan to make benchmarks of uWSGI (or compare it with other solutions) take in account its use of GC.
+如果你计划进行uWSGI的基准 (或者把它与其他方法对比)，那么考虑它对GC的使用。
 
-Ruby can be a real memory devourer, so we prefer to be aggressive with memory by default instead of making hello-world benchmarkers happy.
+Ruby可以是一个真正的内存吞噬者，因此，我们更喜欢默认积极对待内存，而不是取悦hello-world基准点。
 
-Offloading
+卸载
 **********
 
-:doc:`OffloadSubsystem` allows you to free your workers as soon as possible when some specific pattern matches and can be delegated
-to a pure-c thread. Examples are sending static file from the file system, transferring data from the network to the client and so on.
+:doc:`OffloadSubsystem` 允许你在某些特定的模式匹配的时候尽快释放你的worker，并且能够委托给一个纯c线程。例如，发送来自文件系统的静态文件，从网络传输数据到客户端，等等。
 
-Offloading is very complex, but its use is transparent to the end user. If you want to try just add ``--offload-threads <n>`` where <n> is the number of threads to spawn (1 per CPU is a good value to start with).
+卸载是非常复杂的，但是它的使用对终端用户是透明的。如果你想要试一试，那么只需添加--offload-threads <n>，其中，<n>是要生成的线程数 (一个cpu一个线程是个不错的值)。
 
-When offload threads are enabled, all of the parts that can be optimized will be automatically detected.
+当启用了卸载线程时，所有可以被优化的部分将会被自动检测到。
 
 
-And now
-*******
+以及现在
+*********
 
-You should already be able to go in production with such few concepts, but uWSGI is an enormous project with hundreds of features
-and configurations. If you want to be a better sysadmin, continue reading the full docs.
+有了这些许概念，你应该已经可以上生产了，但是uWSGI是个巨大的项目，它有数百个特性和配置。如果你想要成为一个更好的系统管理员，那么请求继续阅读完整的文档。
 
-Welcome!
+欢迎进入uWSGI的世界！

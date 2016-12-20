@@ -1,12 +1,12 @@
 Ruby API支持
 ================
 
-Status
+状态
 ------
 
-The uWSGI API for Ruby is still incomplete (QueueFramework, SharedArea, custom routing and SNMP being the most missing players). The DSL will be extended as soon as the various API calls are ready.
+用于Ruby的uWSGI API仍然未完成 (QueueFramework, SharedArea, 自定义路由和SNMP是最缺乏的一员)。一旦各种API调用准备好了，将会立即扩展DSL。
 
-Currently available API functions and constants (available in the UWSGI ruby module) are
+当前可用的API函数和常量 (可用在UWSGI ruby模块中找到) 是
 
 
 * UWSGI.suspend
@@ -62,14 +62,14 @@ Currently available API functions and constants (available in the UWSGI ruby mod
 uWSGI DSL
 ---------
 
-In parallel to the uWSGI API Python decorators, a DSL for Ruby is available, allowing elegant access to the uWSGI API.
+平行于uWSGI API Python装饰器，有一个可用的用于Ruby的DSL，允许优雅访问 uWSGI API。
 
-The module is available as :file:`uwsgidsl.rb` in the source distribution. You can put this code in your :file:`config.ru` file, or use the ``rbrequire`` option to auto-include it.
+这个模块作为 :file:`uwsgidsl.rb` ，可以在源代码发行版中找到。你可以将这个代码放到你的 :file:`config.ru` 文件中，或者使用 ``rbrequire`` 选项来自动包含它。
 
 timer(n, block)
 ---------------
 
-Execute code at regular intervals.
+定期执行代码。
 
 .. code-block:: ruby
 
@@ -80,7 +80,7 @@ Execute code at regular intervals.
 rbtimer(n, block)
 -----------------
 
-As timer, but using a red-black tree timer.
+就像timer，但是使用一个红黑树计时器。
 
 .. code-block:: ruby
 
@@ -91,7 +91,7 @@ As timer, but using a red-black tree timer.
 filemon(path, block)
 --------------------
 
-Execute code at file modifications.
+在文件修改的时候执行代码。
 
 
 .. code-block:: ruby
@@ -103,7 +103,7 @@ Execute code at file modifications.
 cron(hours, mins, dom, mon, dow, block)
 ---------------------------------------
 
-Execute a task periodically using the :doc:`CronInterface`.
+使用 :doc:`CronInterface` 周期性执行一个任务
 
 .. code-block:: ruby
 
@@ -114,7 +114,7 @@ Execute a task periodically using the :doc:`CronInterface`.
 signal(signum, block)
 ---------------------
 
-Register code as a signal handler for the :doc:`SignalFramework`.
+为 :doc:`SignalFramework` 将代码注册为信号处理器。
 
 .. code-block:: ruby
 
@@ -125,7 +125,7 @@ Register code as a signal handler for the :doc:`SignalFramework`.
 postfork(block)
 ---------------
 
-Execute code after each ``fork()``.
+每次 ``fork()`` 之后执行代码。
 
 .. code-block:: ruby
 
@@ -136,7 +136,7 @@ Execute code after each ``fork()``.
 rpc(name, block)
 ----------------
 
-Register code as a :doc:`RPC` function.
+将代码作为 :doc:`RPC` 函数注册。
 
 .. code-block:: ruby
   
@@ -151,7 +151,7 @@ Register code as a :doc:`RPC` function.
 mule(id?, block)
 ----------------
 
-Execute code as a :doc:`Mule <Mules>` brain.
+将代码作为 :doc:`Mule <Mules>` brain注册。
 
 .. code-block:: ruby
   
@@ -163,12 +163,12 @@ Execute code as a :doc:`Mule <Mules>` brain.
     puts "I am the mule #{UWSGI.mule_id}"
   end
 
-After the function returns, the mule will be brainless. To avoid this, put the code in a loop, or use ``muleloop``.
+在函数返回之后，mule将会是无brain的。要避免这个问题，请将这个代码放到一个循环中，或者使用 ``muleloop`` 。
 
 muleloop(id?, block)
 --------------------
 
-Execute code in a mule in looped context.
+在一个循环上下文中，在Mule中执行代码。
 
 .. code-block:: ruby
   
@@ -180,7 +180,7 @@ Execute code in a mule in looped context.
 SpoolProc
 ---------
 
-A subclass of ``Proc``, allowing you to define a task to be executed in the :doc:`Spooler<Spooler>`.
+ ``Proc`` 的子类，允许你定义一个在 :doc:`Spooler<Spooler>` 中执行的任务。
 
 .. code-block:: ruby
 
@@ -196,7 +196,7 @@ A subclass of ``Proc``, allowing you to define a task to be executed in the :doc
 MuleFunc
 --------
 
-Call a function from any process (such as a worker), but execute in a mule
+从任意进程（例如一个worker）中调用一个函数，但是在mule中执行
 
 .. code-block:: ruby
 
@@ -206,9 +206,9 @@ Call a function from any process (such as a worker), but execute in a mule
   
   i_am_a_long_running_function.call("serena", "alessandro")
 
-The worker calls ``i_am_a_long_running_function()`` but the function will be execute asynchronously in the first available mule.
+这个worker调用 ``i_am_a_long_running_function()`` ，但是函数将会在第一个可用mule中异步执行。
 
-If you want to run the function on a specific mule, add an ID parameter. The following would only use mule #5.
+如果你想在一个指定的mule中运行函数，那么添加一个ID参数。以下代码将会只使用mule #5。
 
 .. code-block:: ruby
 
@@ -218,10 +218,10 @@ If you want to run the function on a specific mule, add an ID parameter. The fol
 
   i_am_a_long_running_function.call("serena", "alessandro")
 
-Real world usage
+真实世界的使用
 ----------------
 
-A simple Sinatra app printing messages every 30 seconds:
+一个简单的Sinatra应用，每30秒打印消息：
 
 .. code-block:: ruby
 
@@ -241,7 +241,7 @@ A simple Sinatra app printing messages every 30 seconds:
   
   run Sinatra::Application
 
-Or you can put your code in a dedicated file (:file:`mytasks.rb` here)
+或者你可以将你的代码放到一个专有的文件中 (这里是 :file:`mytasks.rb`)
 
 .. code-block:: ruby
   
@@ -255,7 +255,7 @@ Or you can put your code in a dedicated file (:file:`mytasks.rb` here)
     puts "60 seconds elapsed"
   end
 
-and then load it with
+然后这样加载它
 
 .. code-block:: sh
 

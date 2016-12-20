@@ -1711,7 +1711,7 @@ emperor-on-demand-directory
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: enable on demand mode binding to the unix socket in the specified directory named like the vassal + .socket
+``help``: 启用在即需模式下，绑定到enable on demand mode binding to the unix socket in the specified directory named like the vassal + .socket
 
 
 
@@ -13317,7 +13317,7 @@ ugreen
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ugreen coroutine subsystem
+``help``: 启用ugreen协程子系统
 
 
 
@@ -13340,7 +13340,7 @@ v8-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a javascript file
+``help``: 加载一个javascript文件
 
 
 
@@ -13350,7 +13350,7 @@ v8-preemptive
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: put v8 in preemptive move (single isolate) with the specified frequency
+``help``: put v8 in preemptive move (单个隔离) with the specified frequency
 
 
 
@@ -13360,7 +13360,7 @@ v8-gc-freq
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: set the v8 garbage collection frequency
+``help``: 设置v8垃圾回收频率
 
 
 
@@ -13370,7 +13370,7 @@ v8-module-path
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: set the v8 modules search path
+``help``: 设置v8模块搜索路径
 
 
 
@@ -13380,7 +13380,7 @@ v8-jsgi
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified JSGI 3.0 application
+``help``: 加载指定的JSGI 3.0应用
 
 
 
@@ -13395,7 +13395,7 @@ webdav-mount
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: map a filesystem directory as a webdav store
+``help``: 映射一个文件系统目录作为webdav仓库
 
 
 
@@ -13407,7 +13407,7 @@ webdav-css
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a css url for automatic webdav directory listing
+``help``: 为自动webdav目录列表添加一个css url
 
 
 
@@ -13419,7 +13419,7 @@ webdav-javascript
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a javascript url for automatic webdav directory listing
+``help``: 为自动webdav目录列表添加一个javascript url
 
 
 
@@ -13431,7 +13431,7 @@ webdav-js
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a javascript url for automatic webdav directory listing
+``help``: 为自动webdav目录列表添加一个javascript url
 
 
 
@@ -13443,7 +13443,7 @@ webdav-class-directory
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: set the css directory class for automatic webdav directory listing
+``help``: 为自动webdav目录列表设置css目录类
 
 
 
@@ -13455,7 +13455,7 @@ webdav-div
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: set the div id for automatic webdav directory listing
+``help``: 为自动webdav目录列表设置div id
 
 
 
@@ -13467,7 +13467,7 @@ webdav-lock-cache
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: set the cache to use for webdav locking
+``help``: 为webdav锁设置使用的缓存
 
 
 
@@ -13479,7 +13479,7 @@ webdav-principal-base
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: enable WebDAV Current Principal Extension using the specified base
+``help``: 使用指定的基础启用WebDAV当前主要扩展
 
 
 
@@ -13491,7 +13491,7 @@ webdav-add-option
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV standard to the OPTIONS response
+``help``: 添加一个WebDAV标准到OPTIONS响应中
 
 
 
@@ -13503,7 +13503,7 @@ webdav-add-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all resources
+``help``: 添加一个WebDAV属性到所有资源中
 
 
 
@@ -13515,7 +13515,7 @@ webdav-add-collection-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all collections
+``help``: 添加一个WebDAV属性到所有集合中
 
 
 
@@ -13527,7 +13527,7 @@ webdav-add-object-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all objects
+``help``: 添加一个WebDAV属性到所有对象中
 
 
 
@@ -13539,7 +13539,7 @@ webdav-add-prop-href
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all resources (href value)
+``help``: 添加一个WebDAV属性到所有资源中 (href值)
 
 
 
@@ -13551,7 +13551,7 @@ webdav-add-collection-prop-href
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all collections (href value)
+``help``: 添加一个WebDAV属性到所有集合中 (href值)
 
 
 
@@ -13563,7 +13563,7 @@ webdav-add-object-prop-href
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all objects (href value)
+``help``: 添加一个WebDAV属性到所有对象中 (href值)
 
 
 
@@ -13575,7 +13575,7 @@ webdav-add-prop-comp
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all resources (xml value)
+``help``: 添加一个WebDAV属性到所有资源中 (xml值)
 
 
 
@@ -13587,7 +13587,7 @@ webdav-add-collection-prop-comp
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all collections (xml value)
+``help``: 添加一个WebDAV属性到所有集合中 (xml值)
 
 
 
@@ -13599,7 +13599,7 @@ webdav-add-object-prop-comp
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV property to all objects (xml value)
+``help``: 添加一个WebDAV属性到所有对象中 (xml值)
 
 
 
@@ -13611,7 +13611,7 @@ webdav-add-rtype-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV resourcetype property to all resources
+``help``: 添加一个WebDAV资源类型属性到所有资源中
 
 
 
@@ -13623,7 +13623,7 @@ webdav-add-rtype-collection-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV resourcetype property to all collections
+``help``: 添加一个WebDAV资源类型属性到所有集合中
 
 
 
@@ -13635,7 +13635,7 @@ webdav-add-rtype-object-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: add a WebDAV resourcetype property to all objects
+``help``: 添加一个WebDAV资源类型属性到所有对象中
 
 
 
@@ -13647,7 +13647,7 @@ webdav-skip-prop
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: do not add the specified prop if available in resource xattr
+``help``: 如果指定的prop在资源xattr中可用的话，不要添加它
 
 
 
@@ -13663,7 +13663,7 @@ xslt-docroot
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a document_root for xslt processing
+``help``: 为xslt处理添加一个document_root
 
 
 
@@ -13673,7 +13673,7 @@ xslt-ext
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: search for xslt stylesheets with the specified extension
+``help``: 搜索带指定扩展名的xslt样式表
 
 
 
@@ -13683,7 +13683,7 @@ xslt-var
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: get the xslt stylesheet path from the specified request var
+``help``: 从指定的请求变量中获取xslt样式表路径
 
 
 
@@ -13693,7 +13693,7 @@ xslt-stylesheet
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: if no xslt stylesheet file can be found, use the specified one
+``help``: 如果找不到xslt样式表，那么使用指定的
 
 
 
@@ -13703,7 +13703,7 @@ xslt-content-type
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the content-type for the xslt rsult (default: text/html)
+``help``: 为xslt结果设置ontent-type (默认是：text/html)
 
 
 
@@ -13718,7 +13718,7 @@ zabbix-template
 
 ``flags``: UWSGI_OPT_METRICS
 
-``help``: print (or store to a file) the zabbix template for the current metrics setup
+``help``: 为当前度量设置打印（或者存储到文件）zabbix模板
 
 
 
@@ -13731,7 +13731,7 @@ zergpool
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: start a zergpool on specified address for specified address
+``help``: 为指定的地址启动一个指定地址上的zergpool
 
 
 
@@ -13741,7 +13741,7 @@ zerg-pool
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: start a zergpool on specified address for specified address
+``help``: 为指定的地址启动一个指定地址上的zergpool
 
 
 
