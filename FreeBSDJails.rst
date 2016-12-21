@@ -1,16 +1,16 @@
 FreeBSD Jails
 =============
 
-uWSGI 1.9.16 introduced native FreeBSD jails support.
+uWSGI 1.9.16引入了原生的FreeBSD jails支持。
 
 FreeBSD jails can be seen as new-generation chroot() with fine-grained tuning of what this "jail" can see.
 
-They are very similar to Linux namespaces even if a bit higher-level (from the API point of view).
+They are very similar to Linux namespaces even if a bit higher-level (从API的角度来看)。
 
-Jails are available since FreeBSD 4
+自FreeBSD 4起，jails就可用了
 
 
-Why managing jails with uWSGI ?
+为什么用uWSGI管理jails?
 *******************************
 
 Generally jails are managed using the system tool "jail" and its utilities.
@@ -20,7 +20,7 @@ where an Emperor (for example) manages hundreds of unrelated uWSGI instances, th
 
 Managing jails directly in uWSGI config files highly reduce sysadmin costs and helps having a better organization of the whole infrastructure.
 
-Old-style jails (FreeBSD < 8)
+老式的jails (FreeBSD < 8)
 *****************************
 
 FreeBSD exposes two main api for managing jails. The old (and easier) one is based on the jail() function.
@@ -66,7 +66,7 @@ In our case the --exec-pre-jail hook will do the trick
    master = true
    processes = 2
 
-New style jails (FreeBSD >= 8)
+新式的jails (FreeBSD >= 8)
 ******************************
 
 FreeBSD 8 introdiced a new advanced api for managing jails. Based on the jail_set() syscall, libjail exposes dozens of features
@@ -103,8 +103,8 @@ Each --jail2 option maps 1:1 with a jail attribute so you can basically tune eve
    processes = 2
    
 
-Note for FreeBSD >= 8.4 but < 9.0
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+关于FreeBSD >= 8.4 但是 < 9.0 的注意事项
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 uWSGI uses ipc semaphores on FreeBSD < 9 (newer FreeBSD releases have POSIX semaphores support).
 
@@ -197,7 +197,7 @@ or (allow the jail itself to mount it)
    processes = 2
 
 
-Reloading
+重载
 *********
 
 Reloading (or binary patching) is a bit annoying to manage as uWSGI need to re-exec itself, so you need a copy of the binary, plugins and the config file
@@ -207,14 +207,14 @@ Another approach is (like with devfs) mounting the directory with the uwsgi bina
 uWSGI to use this new path with --binary-path
 
 
-The jidfile
+jid文件
 ***********
 
 Each jail can be referenced by a unique name (optional) or its "jid". This is similar to a "pid", as you can use it
 to send commands (and updates) to an already running jail. The --jidfile <file> option allows you to store the jid in a file
 for use with external applications.
 
-Attaching to a jail
+附加到一个jail
 *******************
 
 You can attach uWSGI instances to already running jails (they can be standard persistent jail too) using --jail-attach <id>
@@ -261,8 +261,8 @@ Just remember to have /dev (well, /dev/ptmx) mounted in your jail to allow the f
 Learn how to deal with devfs_ruleset to increase security of your devfs
 
 
-小抄
-*****
+注意事项
+**********
 
 A jail is destroyed when the last process running in it dies
 

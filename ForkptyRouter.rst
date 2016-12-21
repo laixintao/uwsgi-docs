@@ -1,60 +1,57 @@
 Forkpty路由器
 ==================
 
-Dealing with containers is now a common deployment pattern. One of the most annoying tasks when dealing with jails/namespaces
-is 'attaching' to already running instances.
+处理容器现在是一个常见的部署模式。处理jails/名字空间时的最烦人的任务之一是‘附加’到已经运行的实例。
 
-The forkpty router aims at simplifyng the process giving a pseudoterminal server to your uWSGI instances.
+forkpty路由器旨在简化这个过程，提供一个伪终端服务器给你的uWSGI实例。
 
-A client connect to the socket exposed by the forkpty router and get a new pseudoterminal connected to a process (generally a shell, but can be whatever you want)
+一个客户端连接到由forkpty路由器公开的socket，然后获得一个连接到进程的新的伪终端 (一般是一个shell，但是可以是任何你想要的)
 
 uwsgi模式 VS 原始模式
 **********************
 
-Clients connecting to the forkpty router can use two protocols for data exchange: uwsgi and raw mode.
+连接到forkpty路由器的客户端可以用两个协议来进行数据交换：uwsgi和原始模式。
 
-The raw mode simply maps the socket to the pty, for such a reason you will not be able to resize your terminal or send specific signals.
-The advantage of this mode is in performance: no overhead for each char.
+原始模式简单映射socket到pty，出于这样一个原因，你将不能够调整你的终端大小，或者发送特定的信号。这个模式的优点在于性能：每个字符没有开销。
 
-The uwsgi mode encapsulates every instruction (stdin, signals, window changes) in a uwsgi packet. This is very similar to how ssh works, so if you
-plan to use the forkpty router for shell sessions the uwsgi mode is the best choice (in terms of user experience).
+uwsgi模式把每个指令 (stdin, signals, window changes) 封装在一个uwsgi包中。这是非常类似于ssh的工作方式的，所以，如果你计划对shell会话使用forkpty路由器，那么uwsgi模式是最佳选择 (在用户体验方面)。
 
-The overhead of the uwsgi protocol (worst case) is 5 bytes for each stdin event (single char)
+uwsgi协议的开销 (最差情况) 是每个stdin事件的5个字节 (单个字符)
 
 运行forkpty路由器
 **************************
 
-The plugin is not builtin by default, so you have to compile it:
+这个插件不是默认内建的，因此你必须编译它：
 
 .. code-block:: sh
 
 	uwsgi --build-plugin plugins/forkptyrouter
 
-or, using the old plugin build system:
+或者，使用老的插件构建系统：
 
 .. code-block:: sh
 
 	python uwsgiconfig.py --plugin plugins/forkptyrouter
 
-generally compiling the pty plugin is required too (for client access)
+一般来说，也需要编译pty插件 (为了客户端访问)
 
 .. code-block:: sh
 
    uwsgi --build-plugin plugins/pty
 
-or again, using the old build system:
+或者再次，使用老的构建系统：
 
 .. code-block:: sh
 
 	python uwsgiconfig.py --plugin plugins/pty
 
-Alternatively, you can build all in one shot with:
+又或者，你可以一次性构建：
 
 .. code-block:: sh
 
    UWSGI_EMBED_PLUGINS=pty,forkptyrouter make
 
-Now you can run the forkptyrouter as a standard gateway (we use UNIX socket as we want a communication channel with jails, and we unshare the uts namespace to give a new hostname)
+现在，你可以将forkptyrouter作为一个标准网关运行 (我们使用UNIX socket，因为我们想要一个与jails的通信信道，并且不共享uts名字空间，以提供一个新的主机名)
 
 .. code-block:: ini
 
@@ -66,16 +63,16 @@ Now you can run the forkptyrouter as a standard gateway (we use UNIX socket as w
    gid = kratos
    forkpty-router = /tmp/fpty.socket
 
-and connect with the pty client:
+并且用pty客户端连接：
 
 .. code-block:: sh
 
    uwsgi --pty-connect /tmp/fpty.socket
    
 
-now you have a shell (/bin/sh by default) in the uWSGI instance. Running ``hostname`` will give you 'iaminajail'
+现在，在uWSGI实例中，你有了一个shell (默认是/bin/sh)。运行 ``hostname`` 将会给你'iaminajail'
 
-Eventually you can avoid using uWSGI to attacj to the pty and instead you can rely on this simple python script:
+最终，你可以避免使用uWSGI附加到pty上，取而代之，你可以依赖于这个简单的python脚本：
 
 .. code-block:: py
 
@@ -119,9 +116,9 @@ Eventually you can avoid using uWSGI to attacj to the pty and instead you can re
 
 
 
-The previous example uses raw mode, if you resize the client terminal you will se no updates.
+前一个例子使用原始模式，如果调整客户端客户端大小，你将看不到任何更新。
 
-To use the 'uwsgi' mode add a 'u':
+要使用'uwsgi'模式，则添加一个'u'：
 
 .. code-block:: ini
 
@@ -138,7 +135,7 @@ To use the 'uwsgi' mode add a 'u':
 
    uwsgi --pty-uconnect /tmp/fpty.socket
 
-a single instance can expose both protocols on different sockets
+单个实例可以在不同的socket上公开两个协议
 
 .. code-block:: ini
 

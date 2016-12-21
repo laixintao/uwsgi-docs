@@ -149,7 +149,7 @@ This option has been added in uWSGI 2.0 and allows advanced configurations. It i
 * ``ns_pid``: spawn the process in a new pid namespace (requires master running as root, Linux only)
 * ``chdir``: chdir() to the specified directory before running the command (added in uWSGI 2.0.6)
 
-Example:
+例如：
 
 .. code-block:: ini
 
