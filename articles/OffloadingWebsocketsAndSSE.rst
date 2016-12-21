@@ -28,9 +28,9 @@ uWSGI卸载
 
 这个概念并非是个新东西，或者是uWSGI特有的。诸如nodejs或者twisted这样的项目已经用它多年了。
 
-.. note:: an example of a webapp serving a static file is not very interesting, nor the best thing to show, but will be useful later, when presenting a real-world scenario with X-Sendfile
+.. note:: 一个提供静态文件服务的web应用的例子并不非常有趣，也不是用来展示的最好的东西，但是在稍后展示一个使用X-Sendfile的真实世界的例子的时候，会游泳。
 
-Immagine this simple WSGI app:
+想象这个简单的WSGI应用：
 
 .. code-block:: python
 
@@ -40,25 +40,23 @@ Immagine this simple WSGI app:
        # do not do it, if the file is 4GB it will allocate 4GB of memory !!!
        yield f.read()
 
-This will simply return the content of /etc/services. It is a pretty tiny file, so in few milliseconds your process will be ready to process another request.
+这将会简单返回/etc/services的内容。它是一个相当小的文件，因此在几毫秒时间内，你的进程将会准备好处理另一个请求。
 
-What if /etc/services is 4 gigabytes? Your process (or thread) will be blocked for several seconds (even minutes), and will not be able to manage another request
-until the file is completely transferred.
+那要是/etc/services是4千兆字节呢？你的进程（或者线程）将会阻塞几秒（甚至几分钟），并且不能够管理其他请求，直到完全传输这个文件。
 
-Wouldn't it be cool if you could tell another thread to send the file for you, so you will be able to manage another request?
+如果你可以告诉其他线程为你发送这个文件，这样你就能够管理其他请求，岂不是很酷？
 
-Offloading is exactly this: it will give you one ore more threads for doing simple and slow task for you. Which kind of tasks? All of those that can be managed
-in a non-blocking way, so a single thread can manage thousand of transfers for you.
+卸载就是这样的：它会为你提供一个或多个线程来为你完成一些简单并且慢点任务。哪种任务呢？所有那些可以以一种非阻塞方式管理的任务，因此单个线程就可以为你管理上千个传输。
 
-You can see it as the DMA engine in your computer, your CPU will program the DMA to transfer memory from a controller to the RAM, and then will be freed to accomplish another task while the DMA works in background.
+你可以将其视为你的电脑中的DMA引擎，你的CPU将会编程DMA来将内存从控制器传输到RAM，然后将会被释放，以完成其他任务，同时DMA在后台工作。
 
-To enable offloading in uWSGI you only need to add the ``--offload-threads <n>`` option, where <n> is the number of threads per-process to spawn. (generally a single thread will be more than enough, but if you want to use/abuse your multiple cpu cores feel free to increase it)
+要在uWSGI中启用卸载，你只需要添加 ``--offload-threads <n>`` 选项，其中<n>是每个进程要生成的线程数。 (一般而言，单个线程就够了，但是如果你想要使用/滥用你的多CPU核，那么随意增加)
 
-Once offloading is enabled, uWSGI will automatically use it whenever it detects that an operation can be offloaded safely.
+一旦启用了卸载，那么每当uWSGI检测到一个操作能够安全被卸载的时候，它将自动使用它。
 
-In the python/WSGI case any use of wsgi.file_wrapper will be offloaded automatically, as well as when you use the uWSGI proxy features for passing requests to other server speaking the uwsgi or HTTP protocol.
+在python/WSGI中，任何对wsgi.file_wrapper的使用将会被自动卸载，以及当你使用uWSGI代理特性来传递请求到其他使用uwsgi或者HTTP协议到服务器时。
 
-A cool example (showed even in the Snippets page of uWSGI docs) is implementing an offload-powered X-Sendfile feature:
+一个很酷的例子 (甚至在uWSGI文档的Snippets页面也有展示) 是实现一个卸载助力的X-Sendfile特性：
 
 .. code-block:: ini
 
@@ -86,7 +84,7 @@ A cool example (showed even in the Snippets page of uWSGI docs) is implementing 
    wsgi-file = myapp.py
   
   
-Now in our app we can X-Sendfile to send static files without blocking:
+现在，在我们的应用中，我们可以X-Sendfile来在无阻塞情况下发送静态文件：
 
 .. code-block:: python
 
@@ -95,12 +93,12 @@ Now in our app we can X-Sendfile to send static files without blocking:
        return []
 
 
-A very similar concept will be used in this article: We will use a normal Django to setup our session, to authorize the user and whatever (that is fast) you want, then we will return a special header that will instruct uWSGI to offload the connection to another uWSGI instance (listening on a private socket) that will manage the websocket/sse transaction using gevent in a non-blocking way.
+在这篇文章中将会使用一个非常类似的概念：我们将会使用一个正常的Django来设置我们的会话，来认证用户，以及任意（快的）东东，然后我们会返回一个特别的头，它会指示uWSGI卸载连接到另一个uWSGI实例 (监听一个私有socket)，这个实例将使用gevent，以一种非阻塞方式管理websocket/sse事务。
 
 我们的SSE应用
 -----------
 
-The SSE part will be very simple, a gevent-based WSGI app will send the current time every second:
+SSE部分将非常简单，一个基于gevent的WSGI应用将会每秒发送当前时间：
 
 .. code-block:: python
 
@@ -125,13 +123,13 @@ The SSE part will be very simple, a gevent-based WSGI app will send the current 
            # send to the client
            yield str(session)
            
-Let's run it on /tmp/foo UNIX socket (save the app as sseapp.py)
+让我们在/tmp/foo UNIX socket上运行它 (将应用保存为sseapp.py)
 
 .. code-block:: sh
 
    uwsgi --wsgi-file sseapp.py --socket /tmp/foo --gevent 1000 --gevent-monkey-patch
    
-(monkey patching is required for time.sleep(), feel free to use gevent primitives for sleeping if you want/prefer)
+(time.sleep()需要猴子补丁，如果你想要/喜欢的话，随意使用gevent原语来休眠)
 
 （无趣的）HTML/Javascript
 ----------------------------
@@ -158,12 +156,12 @@ Let's run it on /tmp/foo UNIX socket (save the app as sseapp.py)
        </body>
      </html>
 
-It is very simple, it will connect to /subscribe and will start waiting for events.
+它非常简单，它将连接到/subscribe，并且将开始等待事件。
 
 Django视图
 ---------------
 
-Our django view, will be very simple, it will simply generate a special response header (we will call it X-Offload-to-SSE) with the username of the logged user as its value:
+我们的django视图，将非常简单，它将简单生成一个特色的响应头 (我们讲称之为X-Offload-to-SSE)，并且把登录用户的用户名作为它的值：
 
 .. code-block:: python
 
@@ -172,13 +170,12 @@ Our django view, will be very simple, it will simply generate a special response
        response['X-Offload-to-SSE'] = request.user
        return response
        
-Now we are ready for the "advanced" part.
+现在，我们已经为“高级”部分准备好了。
 
-
-Let's offload the SSE transaction
+让我们卸载SSE事务
 ---------------------------------
 
-The configuration could look a bit complex but it is the same concept of the X-Sendfile seen before:
+配置看起来会有点复杂，但是它与之前看到的X-Sendfile概念相同：
 
 .. code-block:: ini
 
@@ -195,11 +192,9 @@ The configuration could look a bit complex but it is the same concept of the X-S
    ; if X_OFFLOAD is defined, offload the request to the app running on /tmp/foo
    response-route-if-not = empty:${X_OFFLOAD} uwsgi:/tmp/foo,0,0
    
-The only "new' part is the use of ``disableheaders`` routing action. It is required otherwise the headers generated by Django
-will be sent along the ones generated by the gevent-based app.
+唯一“新的”部分是使用 ``disableheaders`` 路由动作。这是必须的，否则Django生成的头将会伴着由基于gevent的应用生成的头发送。
 
-You could avoid it (remember that ``disableheaders`` has been added only in 2.0.3) removing the call to start_response() in the gevent app (at the risk of being cursed by some WSGI-god) and changing the Django view
-to set the right headers:
+你可以避免它 (记住，只在2.0.3添加了 ``disableheaders`` )，在gevent应用中移除到start_response()到调用 (冒着被一些WSGI神诅咒的风险)，然后修改Django视图来设置正确的头部：
 
 .. code-block:: python
 
@@ -209,7 +204,7 @@ to set the right headers:
        response['X-Offload-to-SSE'] = request.user
        return response
        
-Eventually you may want to be more "streamlined" and simply detect for 'text/event-stream' content_type presence:
+最终，你或许想要更加“精简”，并简单检测'text/event-stream' content_type存在：
 
 .. code-block:: ini
 
@@ -225,9 +220,9 @@ Eventually you may want to be more "streamlined" and simply detect for 'text/eve
    response-route-if = equal:${CONTENT_TYPE};text/event-stream uwsgi:/tmp/foo,0,0
    
    
-Now, how to access the username of the Django-logged user in the gevent app?
+现在，如何在gevent应用中访问Django登录用户的用户名呢？
 
-You should have noted that the gevent-app prints the content of the WSGI environ on each request. That environment is the same
+你应该注意到，gevent应用在每个请求中打印了WSGI环境变量的内容。That environment is the same
 of the Django app + the collected headers. So accessing environ['X_OFFLOAD'] will return the logged username. (obviously in the second example, where the content type is used, the variable with the username is no longer collected, so you should fix it)
 
 You can pass all of the information you need using the same approach, you can collect all of the vars you need and so on.
@@ -252,7 +247,7 @@ You can even add variables at runtime:
    ; if CONTENT_TYPE is 'text/event-stream', forward the request
    response-route-if = equal:${CONTENT_TYPE};text/event-stream uwsgi:/tmp/foo,0,0
    
-Or (using goto for better readability):
+或者 (使用goto以获得更好的可读性):
 
 .. code-block:: ini
 
@@ -293,7 +288,7 @@ This allows a more "elegant" approach (even if highly non-portable):
        uwsgi.add_var("OFFLOAD_SERVER", "/tmp/foo")
        return HttpResponse()
        
-Now the config can change to something more gentle:
+现在，配置可以修改成更优雅：
 
 .. code-block:: ini
 
@@ -321,7 +316,7 @@ Now we can go even further. We will not use the routing framework (except for di
        uwsgi.route("uwsgi", "/tmp/foo,0,0")
        return HttpResponse()
        
-and a simple:
+以及一个简单的：
 
 .. code-block:: ini
 

@@ -1,16 +1,16 @@
-The uWSGI Caching Cookbook
+uWSGI缓存烹饪指南
 ==========================
 
-This is a cookbook of various caching techniques using :doc:`../InternalRouting`, :doc:`../Caching` 和 :doc:`../Transformations`
+这是使用 :doc:`../InternalRouting`, :doc:`../Caching` 和 :doc:`../Transformations` 的各种缓存技术的烹饪指南。
 
-The examples assume a modular uWSGI build. You can ignore the 'plugins' option, if you are using a monolithic build.
+例子假设使用模块化uWSGI构建。如果你正使用单片构建，那么你可以忽略'plugins'选项。
 
-Recipes are tested over uWSGI 1.9.7. Older versions may not work.
+菜谱是在uWSGI 1.9.7之上测试的。较老的版本可能不能用。
 
 我们开始吧
 ***********
 
-This is a simple perl/PSGI Dancer app we deploy on an http-socket with 4 processes.
+这是一个简单的perl/PSGI Dancer应用，我们部署在一个http-socket上，使用4个进程。
 
 .. code-block:: pl
 
@@ -22,8 +22,7 @@ This is a simple perl/PSGI Dancer app we deploy on an http-socket with 4 process
 
    dance;
 
-This is the uWSGI config. Pay attention to the log-micros directive. The objective of uWSGI in-memory caching is generating a response
-in less than 1 millisecond (yes, this is true), so we want to get the response time logging in microseconds (thousandths of a millisecond).
+这是uWSGI配置。注意log-micros指令。uWSGI内存中缓存的目标是在不到1毫秒的时间内生成一个响应 (是哒，这是真的)，所以我们想让响应时间以微秒记录 (一毫秒的千分之一)。
 
 .. code-block:: ini
 
@@ -42,13 +41,13 @@ in less than 1 millisecond (yes, this is true), so we want to get the response t
    log-micros = true
 
 
-Run the uWSGI instance in your terminal and just make a bunch of requests to it.
+在你的终端中运行uWSGI实例，然后对其进行一堆请求。
 
 .. code-block:: sh
 
    curl -D /dev/stdout http://localhost:9090/
 
-If all goes well you should see something similar in your uWSGI logs:
+如果一切顺利，你应该会在你的uWSGI日志中看到类似的东东：
 
 .. code-block:: sh
 
@@ -59,7 +58,7 @@ If all goes well you should see something similar in your uWSGI logs:
    [pid: 26586|app: 0|req: 5/5] 192.168.173.14 () {24 vars in 327 bytes} [Wed Apr 17 09:07:18 2013] GET / => generated 12 bytes in 1016 micros (HTTP/1.1 200) 4 headers in 126 bytes (0 switches on core 0)
 
 
-while cURL will return:
+而cURL将会返回：
 
 .. code-block:: txt
 
@@ -71,16 +70,16 @@ while cURL will return:
 
    Hello World!
 
-The first request on a process took about 3 milliseconds (this is normal as lot of code is executed for the first request), but the following run in about 1 millisecond.
+一个进程上的第一个请求花费大概3毫秒 (这是正常的，因为对于第一个请求，会执行大量的代码)，但接下来的请求则花费大概1毫秒。
 
-Now we want to store the response in the uWSGI cache.
+现在，我们想要将响应存储在uWSGI缓存中。
 
-The first recipe
+第一份菜单
 ****************
 
-We first create a uWSGI cache named 'mycache' with 100 slots of 64 KiB each (new options are at the end of the config) and for each request for '/' we search in it for a specific item named 'myhome'.
+我们首先创建一个uWSGI缓存，命名为'mycache'，它带有100个槽，每个槽64 KiB (新选项位于配置的尾部)，而对于每个对'/'的请求，我们在其中搜索一个名为'myhome'的特定的项。
 
-This time we load the ``router_cache`` plugin too (though it is built-in by default in monolithic servers).
+这次，我们也加载 ``router_cache`` 插件 (虽然在单片服务器上，是默认内建它的)。
 
 
 .. code-block:: ini
@@ -105,9 +104,9 @@ This time we load the ``router_cache`` plugin too (though it is built-in by defa
    ; 'route' apply a regexp to the PATH_INFO request var
    route = ^/$ cache:key=myhome,name=mycache
 
-Restart uWSGI and re-run the previous test with cURL. Sadly nothing will change. Why?
+重启uWSGI，然后用cURL重新运行前面的恶测试。忧伤的是，没有任何改变。为什么？
 
-Because you did not instruct uWSGI to store the plugin response in the cache. You need to use the ``cachestore`` routing action...
+因为你并没有指示uWSGI去将插件响应存储到缓存中。你需要使用 ``cachestore`` 路由动作……
 
 
 .. code-block:: ini
@@ -134,17 +133,17 @@ Because you did not instruct uWSGI to store the plugin response in the cache. Yo
    ; store each successful request (200 http status code) for '/' in the 'myhome' item
    route = ^/$ cachestore:key=myhome,name=mycache
 
-Now re-run the test, and you should see requests going down to a range of 100-300 microseconds. The gain depends on various factors, but you should gain at least 60% in response time.
+现在，重新运行测试，而你应该看到请求降到大概100-300微秒到范围内。增益取决于多种因素，但是你应该在响应时间上获得至少60%的增益。
 
-The log line reports -1 as the app id:
+日志行报告-1作为app id：
 
 .. code-block:: sh
 
    [pid: 26703|app: -1|req: -1/2] 192.168.173.14 () {24 vars in 327 bytes} [Wed Apr 17 09:24:52 2013] GET / => generated 12 bytes in 122 micros (HTTP/1.1 200) 2 headers in 64 bytes (0 switches on core 0)
 
-This is because when a response is served from the cache your app/plugin is not touched (in this case, no perl call is involved).
+这是因为，当从缓存提供响应的时候，并未碰到你的应用／插件 (在这种情况下，不涉及任何perl调用)。
 
-You will note less headers too:
+你也会注意到更少的响应头：
 
 .. code-block:: txt
 
@@ -154,13 +153,12 @@ You will note less headers too:
 
    Hello World!
 
-This is because only the body of a response is cached. By default the generated response is set as text/html but you can change it
-or let the MIME type engine do the work for you (see later).
+这是因为只有响应体会被缓存。默认情况下，生成的响应会被设置为text/html，但是可以改动它，或者让MIME类型引擎为你做这个工作 (见下文)。
 
-Cache them all !!!
-******************
+将它们统统都缓存起来！！！
+***********************
 
-We want to cache all of our requests. Some of them returns images and css, while the others are always text/html
+我们想要缓存我们所有的请求。它们中的一些返回图像和css，而其他一些则总是返回text/html
 
 
 .. code-block:: ini
@@ -196,11 +194,10 @@ We want to cache all of our requests. Some of them returns images and css, while
    route = .* cachestore:key=${REQUEST_URI},name=mycache
 
 
-Multiple caches
+多缓存
 ***************
 
-You may want/need to store items in different caches. We can change the previous recipe to use three different caches
-for images, css and html responses.
+你或许／需要存储项到不同的缓存中。我们可以修改前面的菜谱来为图像、css和html响应使用3个不同的缓存。
 
 .. code-block:: ini
 
@@ -246,15 +243,14 @@ for images, css and html responses.
    route = ^/css/ cachestore:key=${REQUEST_URI},name=stylesheets
 
 
-Important, every matched 'cachestore' will overwrite the previous one. So we are adding .* as the first rule.
+重要的是，每个匹配上的'cachestore'将会重写前一个。因此，我们添加.*作为第一条规则。
 
-Being more aggressive, the Expires HTTP header
+更激进点，Expires HTTP头部
 **********************************************
 
-You can set an expiration for each cache item. If an item has an expire, it will be translated to HTTP Expires headers.
-This means that once you have sent a cache item to the browser, it will not request it until it expires!
+你可以为每个缓存项设置过期时间。如果一个项拥有一个过期时间，那么它将会被转换成HTTP Expires头部。这意味着，一旦你发送了一个缓存项给浏览器，它将不会再请求这个项，直到过期！
 
-We use the previous recipe simply adding different expires to the items.
+我们使用前一个菜谱，简单添加不同的过期时间给项。
 
 
 .. code-block:: ini
@@ -300,24 +296,24 @@ We use the previous recipe simply adding different expires to the items.
    route = ^/img/ cachestore:key=${REQUEST_URI},name=images,expires=3600
    route = ^/css/ cachestore:key=${REQUEST_URI},name=stylesheets,expires=3600
 
-images and stylesheets are cached for 1 hour, while html response are cached for 1 minute
+图像和样式表会被缓存1个小时，而html响应会被缓存1分钟
 
-Monitoring Caches
+监控缓存
 *****************
 
-The stats server exposes cache information.
+统计信息服务器公开了缓存信息。
 
-There is an ncurses-based tool (https://pypi.python.org/pypi/uwsgicachetop) using that information.
+有一个使用那个信息的基于ncurses的工具 (https://pypi.python.org/pypi/uwsgicachetop)。
 
 
-Storing GZIP variant of an object
+存储一个对象的GZIP变体
 *********************************
 
-Back to the first recipe. We may want to store two copies of a response. The "clean" one and a gzipped one for clients supporting gzip encoding.
+回到第一个菜谱。我们或许想用存储一个响应的两份拷贝。"干净的"一份，和gzip压缩过的一个，后者用于支持gzip编码的客户端。
 
-To enable the gzip copy you only need to choose a name for the item and pass it as the 'gzip' option of the cachestore action.
+要启用gzip拷贝，你只需要为这个项选择一个名字，然后将其当成cachestore动作的‘gzip’选项传递。
 
-Then check for HTTP_ACCEPT_ENCODING request header. If it contains the 'gzip' word you can send it the gzip variant.
+然后检查HTTP_ACCEPT_ENCODING请求头部。如果它包含'gzip'一词，那么你可以发送给它gzip变体。
 
 .. code-block:: ini
 
@@ -346,10 +342,10 @@ Then check for HTTP_ACCEPT_ENCODING request header. If it contains the 'gzip' wo
    route = ^/$ cachestore:key=myhome,gzip=gzipped_myhome,name=mycache
 
 
-Storing static files in the cache for fast serving
+将静态文件存储到缓存中，以便提供快速服务
 **************************************************
 
-You can populate a uWSGI cache on server startup with static files for fast serving them. The option --load-file-in-cache is the right tool for the job
+你可以在服务器启动的时候用静态文件填充uWSGI缓存，以便提供快速服务。选项--load-file-in-cache是对于这项工作的正确工具
 
 .. code-block:: ini
 
@@ -360,7 +356,7 @@ You can populate a uWSGI cache on server startup with static files for fast serv
    load-file-in-cache = files /usr/share/doc/socat/index.html
    route-run = cache:key=${REQUEST_URI},name=files
 
-You can specify all of the --load-file-in-cache directive you need but a better approach would be
+你可以指定所有你需要的--load-file-in-cache指令，但是一个更好的方法可能是
 
 .. code-block:: ini
 
@@ -373,20 +369,20 @@ You can specify all of the --load-file-in-cache directive you need but a better 
    endfor =
    route-run = cache:key=${REQUEST_URI},name=files
 
-this will store all of the html files in /usr/share/doc/socat.
+这会存储所有的html文件到/usr/share/doc/socat中。
 
-Items are stored with the path as the key.
+存储项，并把路径当成键。
 
-When a non-existent item is requested the connection is closed and you should get an ugly
+当请求一个不存在的项时，会关闭连接，而你应该会得到一个丑陋的
 
 .. code-block:: sh
 
    -- unavailable modifier requested: 0 --
 
 
-This is because the internal routing system failed to manage the request, and no request plugin is available to manage the request.
+这是因为内部路由系统无法管理请求，并且没有能够管理这个请求的请求插件。
 
-You can build a better infrastructure using the simple 'notfound' plugin (it will always return a 404)
+你可以使用简单的“notfound”插件（它将总是返回404）来构建一个更好的基础设施
 
 .. code-block:: ini
 
@@ -400,9 +396,9 @@ You can build a better infrastructure using the simple 'notfound' plugin (it wil
    route-run = cache:key=${REQUEST_URI},name=files
 
 
-You can store file in the cache as gzip too using --load-file-in-cache-gzip
+你也可以使用--load-file-in-cache-gzip来将文件作为gzip存储到缓存中
 
-This option does not allow to set the name of the cache item, so to support client iwith and without gzip support we can use 2 different caches
+这个选项不允许设置缓存项到名字，因此，要带以及不带gzip支持来支持客户端，我们可以使用2个不同的缓存
 
 .. code-block:: ini
 
@@ -420,11 +416,10 @@ This option does not allow to set the name of the cache item, so to support clie
    ; fallback to the uncompressed one
    route-run = cache:key=${REQUEST_URI},name=files
 
-Caching for authenticated users
+为已鉴权用户缓存
 *******************************
 
-If you authenticate users with http basic auth, you can differentiate caching for each one using the ${REMOTE_USER} request variable:
-
+如果你通过http basic鉴权来鉴权用户，那么你可以使用${REMOTE_USER}请求变量来为每个区分缓存：
 
 .. code-block:: ini
 
@@ -455,9 +450,9 @@ If you authenticate users with http basic auth, you can differentiate caching fo
    route = ^/$ cachestore:key=myhome_for_${REMOTE_USER},name=mycache
 
 
-Cookie-based authentication is generally more complex, but the vast majority of time a session id is passed as a cookie.
+基于Cookie的鉴权一般更复杂，但是绝大多数的时间，session id会作为cookie传递。
 
-You may want to use this session_id as the key
+你或许想要将这个session_id作为键使用
 
 .. code-block:: ini
 
@@ -486,8 +481,7 @@ You may want to use this session_id as the key
    route = ^/$ cachestore:key=myhome_for_${cookie[PHPSESSID]},name=mycache
 
 
-Obviously a malicious user could build a fake session id and could potentially fill your cache. You should always check
-the session id. There is no single solution, but a good example for file-based php session is the following one:
+显然，恶意用户可以构建一个假的session id，然后也许会装满你的缓存。你应该总是检查这个session id。没有单个（好）方法，但是对于基于文件的php会话的一个好例子是下面这个：
 
 .. code-block:: ini
 
@@ -517,12 +511,12 @@ the session id. There is no single solution, but a good example for file-based p
    ; store each successful request (200 http status code) for '/'
    route = ^/$ cachestore:key=myhome_for_${cookie[PHPSESSID]},name=mycache
 
-Caching to files
+缓存到文件
 ****************
 
-Sometimes, instead of caching in memory you want to store static files.
+有时候，你想要存储静态文件，而不是缓存在内存中。
 
-The transformation_tofile plugin allows you to store responses in files:
+transformation_tofile插件让你在文件中存储响应：
 
 .. code-block:: ini
 
@@ -545,5 +539,4 @@ The transformation_tofile plugin allows you to store responses in files:
    ; otherwise store the response in it
    route-run = tofile:/var/www/cache/${hex[PATH_INFO]}.html
 
-the hex[] routing var take a request variable content and encode it in hexadecimal. As PATH_INFO tend to contains / it is a better approach than storing
-full path names (or using other encoding scheme like base64 that can include slashes too)
+hex[]路由变量接收一个请求变量内容，然后以十六进制对其进行编码。因为PATH_INFO倾向于包含/，因此它是比存储完整的路径名（或者使用其他编码方案，例如也可以包含斜杠的base64）更好的方法。
