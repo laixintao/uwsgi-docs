@@ -1,4 +1,4 @@
-Fork Server with CPython
+Fork Server和CPython
 ========================
 
 我们的"base"应用 (/var/www中的myforkbase.py):
@@ -13,7 +13,7 @@ Fork Server with CPython
        return ['Hello World']
        
        
-The base vassal (in /etc/forkvassals/base.ini)
+base vassal (在/etc/forkvassals/base.ini中)
 
 .. code-block:: ini
 
@@ -26,7 +26,7 @@ The base vassal (in /etc/forkvassals/base.ini)
    fork-server = /run/forkme
    
 
-and now two vassals inheriting from the base
+然后现在是两个继承自base vassal的vassal
 
 .. code-block:: ini
 
@@ -61,10 +61,9 @@ and now two vassals inheriting from the base
 
    uwsgi --emperor /etc/forkvassals --emperor-collect-attr myfork-base --emperor-fork-server-attr myfork-base
    
-the `--emperor-collect-attr` option tells the Emperor to search for a 'myfork-base' attribute in the [emperor] section, while `--emperor-fork-server-attr`
-instruct it to use the parameter as the fork-server to connect to.
+`--emperor-collect-attr` 选项告诉Emperor在[emperor]部分搜索一个'myfork-base'属性，而 `--emperor-fork-server-attr` 指示它把参数当成fork服务器来连接。
 
 待办事项
 ====
 
-The --emperor-collect-attr could be implicited by emperor-fork-server-attr
+--emperor-collect-attr可以由emperor-fork-server-attr隐含

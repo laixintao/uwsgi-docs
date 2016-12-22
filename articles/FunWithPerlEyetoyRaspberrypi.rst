@@ -156,19 +156,18 @@ uWSGI进程将会在此之后立即退出，因为我们并没有告诉它要做
 
    uwsgi::sharedarea_wait(0, 50);
    
-这个函数This function suspends the current request until the specified shared area (the 'zero' one) gets an update. As this function is basically a busy-loop poll, the second argument specifies the polling frequency in milliseconds. 50 milliseconds gave us good results (feel free to try with other values).
+这个函数挂起当前请求，直到指定的共享区域 ('zero'那个) 得到更新。由于这个函数基本上是一个频繁循环的poll，因此第二个参数指定了poll的频率，以毫秒为单位。50毫秒就能有不错的结果了(随意尝试其他值)。
 
 .. code-block:: pl
 
    uwsgi::websocket_send_binary_from_sharedarea(0, 0)
    
-This is a special utility function sending a websocket binary message directly from the sharedarea (yep, zero-copy). The first argument is the sharedarea id (the 'zero' one) and the second is the position
-in the sharedarea to start reading from (zero again, as we want a full frame).
+这是一个特别的功能性函数，直接发送一个来自于共享区域（是哒，zero拷贝）的websocket二进制消息。第一个参数是共享区域id ('zero'那个)，而第二个是共享区域中开始读取的位置 (再次是0，因为我们想要一个完整的帧)。
 
 第三步：HTML5
 *************
 
-The HTML part (well it would be better to say Javascript part) is very easy, aside from the YUYV to RGB(A) transform voodoo.
+HTML部分 (好吧，说是Javascript部分更恰当些) 是非常简单的，除了从YUYV到RGB(A)转换。
 
 .. code-block:: html
 
@@ -238,8 +237,7 @@ The HTML part (well it would be better to say Javascript part) is very easy, asi
         </body>
    </html>
    
-Nothing special here. The vast majority of the code is related to YUYV->RGBA conversion. Pay attention to set the websocket communication in 'binary' mode (binaryType = 'arraybuffer' is enough) and be sure to use
-an Uint8ClampedArray (otherwise performance will be terribly bad)
+这里没啥特别的。绝大部分的代码是关于YUYV->RGBA转换。注意设置websocket通信为“二进制”模式 (binaryType = 'arraybuffer'就够了)，并且一定要使用Uint8ClampedArray (否则性能将会很糟糕)
 
 准备观看
 **************
@@ -248,59 +246,57 @@ an Uint8ClampedArray (otherwise performance will be terribly bad)
 
    ./uwsgi --plugin capture --v4l-capture /dev/video0 --http-socket :9090 --psgi uwsgi-capture/rpi-examples/eyetoy.pl --mule="captureloop()"
 
-Connect with your browser to TCP port 9090 of your Raspberry Pi and start watching.
+连接你的浏览器到你的树莓派到TCP端口9090，然后开始看看。
 
 并发性
 ***********
 
-While you watch your websocket stream, you may want to start another browser window to see a second copy of your video. Unfortunately
-you spawned uWSGI with a single worker, so only a single client can get the stream.
+当你看你的websocket流时，你或许想要启动另一个浏览器窗口来看看你的视频的第二份拷贝。不幸的是，你生成的uWSGI只有一个worker，因此只有一个客户端才能获取到流。
 
-You can add multiple workers easily:
+你可以轻松添加多个worker：
 
 .. code-block:: sh
 
    ./uwsgi --plugin capture --v4l-capture /dev/video0 --http-socket :9090 --psgi uwsgi-capture/rpi-examples/eyetoy.pl --mule="captureloop()" --processes 10
 
-Like this up to 10 people will be able to watch the stream.
+就像这个，最多支持10个人观看视频流。
 
-But coroutines are way better (and cheaper) for I/O bound applications such as this:
+但是对于像这样的绑定I/O应用，协程是更好的方式 (并且更便宜)：
 
 .. code-block:: sh
 
    ./uwsgi --plugin capture --v4l-capture /dev/video0 --http-socket :9090 --psgi uwsgi-capture/rpi-examples/eyetoy.pl --mule="captureloop()" --coroae 10
    
-Now, magically, we are able to manage 10 clients with but a single process! The memory on the RPI will be grateful to you.
+现在，奇妙的是，我们能够只用一个进程来管理10个客户端！树莓派上的内存将会对你心存感激。
 
-Zero-copy all the things
+零拷贝所有的东西
 ************************
 
-Why are we using the SharedArea?
+为什么我们要使用共享区域？
 
-The SharedArea is one of the most advanced uWSGI features. If you give a look at the uwsgi-capture plugin you will see how it easily creates a sharedarea pointing
-to a mmap()'ed region. Basically each worker, thread (but please do not use threads with Perl) or coroutine will have access to that memory in a concurrently safe way.
+共享区域是uWSGI最高级的特性之一。如果你看看uwsgi-capture插件，那么你会看到它是如何轻松创建一个指向一个mmap()区域的共享区域的。基本上，每个worker，线程（但是在Perl中请千万不要使用线程）或者协程将会以一种并发安全的方式访问那个内存。
 
-In addition to this, thanks to the websocket/sharedarea cooperation API you can directly send websocket packets from a sharedarea without copying memory (except for the resulting websocket packet).
+除此之外，多亏了websocket/共享区域合作API，你可以直接发送来自于一个共享区域的websocket包，而无需拷贝内存 (除了结果websocket包)。
 
-This is way faster than something like:
+这是比下面这样更快的方式：
 
 .. code-block:: pl
 
    my $chunk = uwsgi::sharedarea_read(0, 0)
    uwsgi::websocket_send_binary($chunk)
    
-We would need to allocate the memory for $chunk at every iteration, copying the sharedarea content into it and finally encapsulating it in a websocket message.
+我们需要每次迭代的时候为$chunk分配内存，拷贝共享区域内容到它里面，最后在一个websocket消息中封装它。
 
-With the sharedarea you remove the need to allocate (and free) memory constantly and to copy it from sharedarea to the Perl VM.
+有了共享区域，你移除了不断分配（和释放）内存，以及将其从共享区域拷贝到Perl VM的需求。
 
 其他方法
 **********************
 
-There are obviously other approaches you can follow. 
+显然你还可以使用其他方法。
 
-You could hack uwsgi-capture to allocate a second sharedarea into which it will directly write RGBA frames.
+你可以破解uwsgi-capture，分配直接写入RGBA帧的第二个共享区域。
 
-JPEG encoding is relatively fast, you can try encoding frames in the RPI and sending them as MJPEG frames (instead of using websockets):
+JPEG编码是相当快的，你可以尝试在RPI中编码帧，然后将其作为MJPEG帧发送 (而不是使用websockets):
 
 .. code-block:: pl
 
@@ -318,14 +314,15 @@ JPEG encoding is relatively fast, you can try encoding frames in the RPI and sen
 其他语言
 ***************
 
-At the time of writing, the uWSGI PSGI plugin is the only one exposing the additional API for websockets+sharedarea. The other language plugins will be updated soon.
+在写这篇文章的时候，uWSGI PSGI插件是唯一一个为websockets+sharedarea公开了额外API的插件。其他语言插件将在不久后进行更新。
 
 
-More hacking
+更多的hack
 ************
 
-The RPI board is really fun to tinker with and uWSGI is a great companion for it (especially its lower-level API functions).
+捣鼓RPI板子是相当有趣的，而uWSGI则是它的一个不错的伴侣 (特别是它的低层次API函数)。
 
 .. note::
 
-  As an exercise left to the reader: remember you can mmap() the address 0x20200000 to access the Raspberry PI GPIO controller... ready to write a uwsgi-gpio plugin?
+  留给读者的一个练习：记住，你可以mmap()地址0x20200000来访问Raspberry PI GPIO控制器……准备好写一个uwsgi-gpio插件了吗？
+  
