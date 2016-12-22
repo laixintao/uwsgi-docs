@@ -200,19 +200,16 @@ or (allow the jail itself to mount it)
 重载
 *********
 
-Reloading (or binary patching) is a bit annoying to manage as uWSGI need to re-exec itself, so you need a copy of the binary, plugins and the config file
-in your jail (unless you can sacrifice graceful reload and simply delegate the Emperor to respawn the instance)
+重载（或者二进制补丁）的管理有点烦人，因为uWSGI需要重新执行自身，所以在你的jail中，需要一个二进制文件、插件和配置文件的拷贝 (除非你可以牺牲掉优雅重载和简单指定Emperor来重新生成实例)
 
-Another approach is (like with devfs) mounting the directory with the uwsgi binary (and the eventual plugins) in the jail itself and instruct
+另一个方法是 (就和devfs一样) mounting the directory with the uwsgi binary (and the eventual plugins) in the jail itself and instruct
 uWSGI to use this new path with --binary-path
 
 
 jid文件
 ***********
 
-Each jail can be referenced by a unique name (optional) or its "jid". This is similar to a "pid", as you can use it
-to send commands (and updates) to an already running jail. The --jidfile <file> option allows you to store the jid in a file
-for use with external applications.
+每个jail可以由一个唯一的名字 (可选的) 或者它的"jid"应用。这类似于一个"pid"，因为你可以用它来发送命令（和更新）到一个已经运行的jail。--jidfile <file>选项允许你存储jid到一个文件中，用于和外部应用使用。
 
 附加到一个jail
 *******************
@@ -226,44 +223,44 @@ This feature requires FreeBSD 8
 Debian/kFreeBSD
 ***************
 
-This is an official Debian project aiming at building an os with FreeBSD kernel and common Debian userspace.
+这是一个官方Debian项目，旨在构建一个带有FreeBSD内核和常见Debian用户空间的操作系统。
 
-It works really well, and it has support for jails too.
+它工作良好，也支持jail。
 
-Let's create a jail with debootstrap
+让我们用debootstrap创建一个jail
 
 .. code-block:: sh
 
    debootstrap wheezy /jails/wheezy
    
-add a network alias
+添加一个网络别名
 
 .. code-block:: sh
 
    ifconfig em0 192.168.173.105 netmask 255.255.255.0 alias
    
-(change em0 with your network interface name)
+(将em0改为你的网络接口名)
 
-and run it
+然后运行它
 
 .. code-block:: sh
 
    uwsgi --http-socket 192.168.173.105:8080 --jail /jails/wheezy -jail-ip4 192.168.173.105
    
 
-Jails with Forkpty Router
+使用Forkpty Router的Jails
 *************************
 
-You can easily attach to FreeBSD jails with :doc:`ForkptyRouter`
+你可以使用 :doc:`ForkptyRouter` 轻松附加到FreeBSD jails
 
-Just remember to have /dev (well, /dev/ptmx) mounted in your jail to allow the forkpty() call
+只是记得将/dev (嗯，/dev/ptmx) 挂载到你的jail，以允许forkpty()调用
 
-Learn how to deal with devfs_ruleset to increase security of your devfs
+学习如何处理devfs_ruleset以增加你的devfs的安全性
 
 
 注意事项
 **********
 
-A jail is destroyed when the last process running in it dies
+当jail中运行的最后一个进程死掉的时候，会销毁这个jail
 
-By default everything mounted under the rootfs (before entering the jail) will be seen by the jail it self (we have seen it before when dealing with devfs)
+默认情况下，所有挂载在rootfs（在进入jail之前）的东东将对jail自身可见 (we have seen it before when dealing with devfs)

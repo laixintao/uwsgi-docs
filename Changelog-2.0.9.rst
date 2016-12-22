@@ -19,11 +19,11 @@ uWSGI 2.0.9
 * https/spdy路由器中的多个ssl/tls修复
 * 修复python3 --py-auto-reload-ignore
 * 修复corerouter中的modifier
-* support for yajl from homebrew (OSX)
+* 支持yajl (OSX)
 * psgi: 确保我们在psgix.harakiri.commit上调用任何DESTROY钩子 (Ævar Arnfjörð Bjarmason)
-* systemdlogger: fix compilation with -Werror=format-security (Riccardo Magliocchetti)
-* fixed unmasked websockets
-* perl fixed latent refcounting bug (Mattia Barbon)
+* systemdlogger: 使用-Werror=format-security修复编译 (Riccardo Magliocchetti)
+* 修复无掩码websockets
+* perl修复潜在的refcounting问题 (Mattia Barbon)
 
 新特性
 ********
@@ -38,7 +38,7 @@ https://uwsgi-docs.readthedocs.io/en/latest/PyPy.html
 Fastrouter post-buffering
 *************************
 
-The fastrouter got post-buffering:
+fastrouter拥有post-buffering功能：
 
 https://uwsgi-docs.readthedocs.io/en/latest/Fastrouter.html#post-buffering-mode-uwsgi-2-0-9
 
