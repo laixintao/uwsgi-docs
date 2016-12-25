@@ -222,12 +222,11 @@ Django视图
    
 现在，如何在gevent应用中访问Django登录用户的用户名呢？
 
-你应该注意到，gevent应用在每个请求中打印了WSGI环境变量的内容。That environment is the same
-of the Django app + the collected headers. So accessing environ['X_OFFLOAD'] will return the logged username. (obviously in the second example, where the content type is used, the variable with the username is no longer collected, so you should fix it)
+你应该注意到，gevent应用在每个请求中打印了WSGI环境变量的内容。那个环境变量与Django应用+已收集头部相同。因此，访问environ['X_OFFLOAD']将会返回已登录用户名。 (显然，在第二个例子中，使用了内容类型，不再收集带用户名的变量，因此你应该修复它)
 
-You can pass all of the information you need using the same approach, you can collect all of the vars you need and so on.
+你可以使用相同的方法传递所有你需要的信息，你可以收集所有你需要的变量，等等等等。
 
-You can even add variables at runtime:
+你甚至可以在运行时添加变量：
 
 
 .. code-block:: ini
@@ -272,10 +271,9 @@ You can even add variables at runtime:
 使用uwsgi api (>= uWSGI 2.0.3) 进行简化
 -------------------------------------------------------
 
-While dealing with headers is pretty HTTP friendly, uWSGI 2.0.3 added the possibility to define per-request variables
-directly in your code.
+虽然处理头部是相当HTTP友好型的，但uWSGI 2.0.3增加了在代码中直接定义每个请求变量的可能性。
 
-This allows a more "elegant" approach (even if highly non-portable):
+这允许一个更“优雅”的方式 (即使高度不可移植):
 
 .. code-block:: python
 
@@ -302,9 +300,9 @@ This allows a more "elegant" approach (even if highly non-portable):
    ; if OFFLOAD_TO_SSE is 'y', offload the request to the app running on 'OFFLOAD_SERVER'
    response-route-if = equal:${OFFLOAD_TO_SSE};y uwsgi:${OFFLOAD_SERVER},0,0
    
-Have you noted how we allowed the Django app to set the backend server to use using a request variable?
+你注意到我们如何允许Django应用设置后端服务器来使用请求变量了吗？
 
-Now we can go even further. We will not use the routing framework (except for disabling headers generation):
+现在，我们可以更进一步。我们不会使用路由框架 (除了禁用头部生成):
 
 .. code-block:: python
 
@@ -328,13 +326,12 @@ Now we can go even further. We will not use the routing framework (except for di
    response-route = ^/subscribe disableheaders:
 
 
-What about Websockets ?
+Websockets怎样？
 -----------------------
 
-We have seen how to offload SSE (that are mono-directional). We can offload websockets too (that are bidirectional).
+我们已经看到了如何卸载SSE (那是单向的)。我们也可以卸载websockets (那是双向的)。
 
-The concept is the same, you only need to ensure (as before) that no headers are sent by django, (otherwise the websocket handshake will fail) and then you
-can change your gevent app:
+概念是相同的，你只需要保证 (和之前一样) Django没有发送任何头部，(否则，websocket握手将会失败)，然后，你可以修改你的gevent应用：
 
 .. code-block:: python
 
@@ -354,19 +351,18 @@ can change your gevent app:
 使用redis或者uWSGI缓存框架
 --------------------------------------
 
-Request vars are handy (and funny), but they are limited (see below). If you need to pass a big amount of data between Django and the sse/websocket app, Redis
-is a great way (and works perfectly with gevent). Basically you store infos from django to redis and than you pass only the hash key (via request vars) to the sse/websocket app.
+请求变量是方便的 (并且有趣)，但是它们有限 (见下)。如果你需要在Django和sse/websocket应用之间传递大量的数据，那么Redis是个不错的方式 (并且和gevent完美契合)。基本上，你存储来自Django的信息到redis中，然后只传递哈希键 (通过请求变量) 到sse/websocket应用。
 
-The same can be accomplished with the uWSGI caching framework, but take into account redis has a lot of data primitives, while uWSGI only supports key->value items.
+可以用uWSGI缓存框架完成相同的工作，但是考虑到redis拥有大量的数据原语，而uWSGI只支持key->value项。
 
 常见陷阱
 ---------------
 
-* The amount of variables you can add per-request is limited by the uwsgi packet buffer (default 4k). You can increase it up to 64k with the --buffer-size option.
+* 你可以添加到每个请求上的变量总数是由uwsgi包缓存（默认是4k）限制的。你可以用--buffer-size选项将其增至64k。
 
-* This is the whole point of this article: do not use the Django ORM in your gevent apps unless you know what you are doing!!! (read: you have a django database adapter that supports gevent and does not suck compared to the standard ones...)
+* 这是这篇文章的重点：不要在你的gevent应用中使用Django ORM，除非你知道你在干什么！！！(读一读：你有一个Django数据库适配器，它支持gevent，并且与标准的相比，它并不糟糕……)
 
-* Forget about finding a way to disable headers generation in django. This is a "limit/feature" of its WSGI adapter, use the uWSGI facilities (if available) or do not generate headers in your gevent app. Eventually you can modify wsgi.py in this way:
+* 忘记找到一种方式来禁用Django中的头部生成吧。这是它的WSGI适配器的一个“限制/特性”，使用uWSGI设施 (如果可用的话)，或者不要在你的gevent应用中生成头部。最终，你可以以这种方式修改wsgi.py：
 
 .. code-block:: python
 

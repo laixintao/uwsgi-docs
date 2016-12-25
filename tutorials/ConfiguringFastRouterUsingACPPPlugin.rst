@@ -10,14 +10,14 @@ This tutorial assumes that you are familiar with the usage and purpose of the uw
 
 To make things a bit more complicated I will do the development of this plugin on windows using a cygwin environment. In case of such a simple plugin this involves only 1-2 extra steps compared to building on linux, I will comment the differences. For production I'm using "original" Debian and Ubuntu distros so my examples work there for sure.
 
-Prerequisites
+前提条件
 -------------
 
 - A ready-made uwsgi-2.0.3 executable or uwsgi-2.0.3 sources to build from. In case of older uwsgi releases the uwsgi binary-only solution may not be an option as uwsgi doesn't have the --build-plugin commandline argument in older releases.
 - gcc and g++ (I use version 4.8.2, and also used 4.6 in a recent project release)
 - If you are on windows you need cygwin of course
 
-Plugin sources and build configs
+插件源和构建配置
 ================================
 
 Create a directory for your plugin somewhere in your filesystem. Note that this directory doesn't have to be inside the extracted uwsgi source directory, put it anywhere. I will refer to this directory as ``$PLUGIN_DIR`` in this tutorial. The plugin directory will contain the following things:
@@ -163,7 +163,8 @@ Here is the structure and contents of my ``$PLUGIN_DIR``:
 
 The my_uwsgi_lib.ini file is needed only on cygwin and it is a copy of my_uwsgi.ini with an extra line appended: ``as_shared_library = true``. You need neither my_uwsgi.ini nor my_uwsgi_lib.ini if you are working with a pre-built new uwsgi binary that supports the --build-plugin commandline parameter but only uwsgi version ~2 and newer have it.
 
-Building uwsgi (or uwsgi.exe and libuwsgi.a on cygwin)
+
+构建uwsgi (或者uwsgi.exe and libuwsgi.a on cygwin)
 ------------------------------------------------------
 
 Of course you can skip this step if you are working with a new uwsgi binary. Otherwise download the uwsgi source (uwsgi-2.0.3.tar.gz in my case) and extract it, then enter the extracted source folder.
@@ -195,7 +196,7 @@ Note that these steps are needed only on cygwin. Now let's build uwsgi:
 
 The above command produces uwsgi on linux and uwsgi.exe on cygwin. We have used custom ini files to build a minimal uwsgi that serves only as a fastrouter that loads our fastrouter logic plugin. The use of this ini file results in an uwsgi that doesn't have dependencies on libs like ssl, pcre and it includes only the bare minimum set of uwsgi plugins needed for the fastrouter. From now you don't need the uwsgi sources (you can even delete them if you want). The only things we have to keep is the uwsgi binary (and libuwsgi.a on cygwin) because building an external uwsgi plugin can be done by running uwsgi with the --build-plugin parameter and the uwsgi binary has an embedded copies of the uwsgiconfig.py and uwsgi.h files needed for a plugin build.
 
-Building our plugin:
+构建我们的插件：
 --------------------
 
 .. code:: bash

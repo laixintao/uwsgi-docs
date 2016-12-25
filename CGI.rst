@@ -1,57 +1,56 @@
 在uWSGI上运行CGI脚本
 ============================
 
-The CGI plugin provides the ability to run CGI scripts using the uWSGI server.
+CGI插件提供了使用uWSGI服务器运行CGI脚本的能力。
 
-Web servers/clients/load balancers send requests to the uWSGI server using modifier ``9``. uWSGI then uses the variables passed from the client as CGI variables (on occasion fixing them) and calls the corresponding script/executable, re-forwarding its output to the client.
+Web服务器/客户端／负载均衡器使用modifier ``9`` 发送请求给uWSGI服务器。然后，uWSGI使用从客户端传过来的变量作为CGI变量（有时会修复它们），调用对应的脚本／可执行文件，再转发其输出到客户端。
 
-The plugin tries to resemble Apache's behavior, allowing you to run CGI scripts even on webservers that do not support CGI natively, such as Nginx.
+该插件会尝试模仿apache的行为，允许你即使在那种原生不支持CGI的服务器，例如nginx上，也能运行CGI脚本。
 
-Enabling the plugin
+启用插件
 -------------------
 
-The CGI plugin is by default not built in to the core. You need to build a binary with cgi embedded or build the cgi plugin.
+默认情况下，不会将CGI插件构建到核心部分中。你需要构建一个嵌入了cgi的二进制文件，或者构建cgi插件。
 
-To build a single binary with CGI support:
+要构建带CGI支持的单个二进制文件：
 
 .. code-block:: sh
 
    curl http://uwsgi.it/install | bash -s cgi /tmp/uwsgi
 
-To compile it as a plugin,
+要将其作为插件编译，
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/cgi
    
-or, from sources directory:
+或者，在源代码目录：
 
 .. code-block:: sh
 
    make PROFILE=cgi
 
-Configuring CGI mode
+配置CGI模式
 --------------------
 
-The ``cgi <[mountpoint=]path>`` option is the main entry point for configuring your CGI environment.
+``cgi <[mountpoint=]path>`` 选项是配置你的CGI环境的主要入口点。
 
-``path`` may be a directory or an executable file.
-In the case of a directory, the CGI plugin will use the URI to find the path of the script. If an executable is passed, it will be run, with ``SCRIPT_NAME``, ``SCRIPT_FILENAME`` and ``PATH_INFO`` set in its environment.
+``path`` 可以是一个目录或者一个可执行文件。如果是一个目录，CGI插件将会使用该URI来查找脚本路径。如果传递了一个可执行文件，那么将会运行它，并且会在其环境中设置 ``SCRIPT_NAME``, ``SCRIPT_FILENAME`` 和 ``PATH_INFO`` 。
 
-The ``mountpoint`` is optional. You can use it to map different URIs to different CGI directories/scripts.
+``mountpoint`` 是可选的。你可以用它来映射不同的URI到不同的CGI目录／脚本。
 
 
-Notes
+注意
 -----
 
-* Remember to use uWSGI's resource limiting and jailing techniques (namespaces, chroot, capability, unshare....) with your CGI apps to limit the damage they might cause.
-* Starting from uWSGI 2.0.2 you can have even more cheap concurrency by using async mode.
-* If not mapped to a helper, each CGI script must have read and execution permissions.
+* 记得让你的CGI应用使用uWSGI的资源限制和jailing技术 (名字空间，chroot, capability, unshare....)，来限制它们可能会造成的损害。
+* 从uWSGI 2.0.2开始，你可以通过使用异步模式，拥有甚至更加便宜的并发。
+* 如果没有映射到一个辅助函数，那么每个CGI脚本必须拥有读取和执行权限。
 
-Examples
+例子
 --------
 
-Example 1: Dumb CGI-enabled directory
+例子1:启用CGI的哑目录
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ini
@@ -61,11 +60,11 @@ Example 1: Dumb CGI-enabled directory
   socket = uwsgi.sock
   cgi = /var/www/cgi-bin
 
-Each request will search for the specified file in :file:`/var/www/cgi-bin` and execute it.
+每个请求将会搜索 :file:`/var/www/cgi-bin` 中的指定文件，并执行它。
 
-A request to ``http://example.com/foo.cgi`` would run ``/var/www/cgi-bin/foo.cgi``.
+到 ``http://example.com/foo.cgi`` 的请求会运行 ``/var/www/cgi-bin/foo.cgi`` 。
 
-Example 2: old-style cgi-bin directory
+例子2:老式cgi-bin目录
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: ini
@@ -75,12 +74,12 @@ Example 2: old-style cgi-bin directory
   socket = uwsgi.sock
   cgi = /cgi-bin=/var/lib/cgi-bin
 
-A call to ``http://example.com/cgi-bin/foo`` will run ``/var/lib/cgi-bin/foo``.
+对 ``http://example.com/cgi-bin/foo`` 的调用将会运行 ``/var/lib/cgi-bin/foo`` 。
 
-Example 3: restricting usage to certain extensions
+例子3:限制使用某些扩展
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We want only .cgi and .pl files to be executed:
+我们只想执行.cgi和.pl文件：
 
 .. code-block:: ini
   
@@ -91,10 +90,10 @@ We want only .cgi and .pl files to be executed:
   cgi-allowed-ext = .cgi
   cgi-allowed-ext = .pl
 
-Example 4: mapping scripts to interpreters using their extension
+例子4:使用脚本扩展名，映射脚本到解释器
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We want to run files ending with ``.php`` in the directory ``/var/www`` via the ``php5-cgi`` binary:
+我们想要通过 ``php5-cgi`` 二进制文件，运行目录 ``/var/www`` 中的以 ``.php`` 结尾的文件：
 
 .. code-block:: ini
 
@@ -105,14 +104,14 @@ We want to run files ending with ``.php`` in the directory ``/var/www`` via the 
   cgi-allowed-ext = .php
   cgi-helper = .php=php5-cgi
 
-If a file is run with an helper, the file to be run will not require the execute permission bit. The helper of course does.
+如果用辅助函数运行一个文件，那么运行的文件将不需要执行权限。当然，辅助函数是需要的。
 
-Extension comparison is not case sensitive.
+扩展名比较是不区分大小写的。
 
-Example 5: running PHP scripts as CGI via Nginx
+例子5:通过nginx，将PHP脚本作为CGI运行
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Configure Nginx to pass .php requests to uWSGI, with :file:`/var/www/foo` as the document root.
+配置Nginx来传递.php请求到uWSGI，使用 :file:`/var/www/foo` 作为文档根目录。
 
 .. code-block:: nginx
 
@@ -123,7 +122,7 @@ Configure Nginx to pass .php requests to uWSGI, with :file:`/var/www/foo` as the
     uwsgi_pass 127.0.0.1:3031;
   }
 
-And configure uWSGI like this:
+并且像这样配置uWSGI：
 
 .. code-block:: ini
 
@@ -134,15 +133,14 @@ And configure uWSGI like this:
   cgi-allowed-ext = .php
   cgi-helper = .php=php5-cgi
 
-Example 6: Concurrency
+例子6:并发
 ^^^^^^^^^^^^^^^^^^^^^^
 
-By default each uWSGI worker will be able to run a single CGI script.
-This mean that using one process, will block your incoming requests until the first request has been ended. 
+默认情况下，每个uWSGI worker将能够运行单个CGI脚本。这意味着，使用一个进程将会阻塞传入的请求，直到结束了第一个请求。
 
-Adding more workers will mitigate the problem, but will consume a lot of memory.
+添加更多的worker将会缓解这个问题，但是也会消耗大量内存。
 
-Threads are a better choice. Let's configure each worker process to run 20 worker threads and thus run 20 CGI scripts concurrently.
+线程是个更好的选择。让我们配置每个worker进程运行20个worker线程，这样，并发运行20个CGI脚本。
 
 .. code-block:: ini
 
@@ -155,7 +153,7 @@ Threads are a better choice. Let's configure each worker process to run 20 worke
   cgi-helper = .php=php5-cgi
   
   
-Using async mode to have even more cheap concurrency:
+使用异步模式来得到甚至更廉价的并发：
 
 
 .. code-block:: ini
@@ -169,10 +167,10 @@ Using async mode to have even more cheap concurrency:
   cgi-allowed-ext = .php
   cgi-helper = .php=php5-cgi
   
-this will spawn 200 coroutines, each able to manage a CGI script (with few K of memory)
+这将会生成200个协程，每个能够管理一个CGI脚本（使用几k内存）
   
 
-Example 7: Mailman web interface behind Nginx
+例子7:nginx之后到Mailman web接口
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: nginx
@@ -193,13 +191,12 @@ Example 7: Mailman web interface behind Nginx
   cgi = /cgi-bin/mailman=/usr/lib/cgi-bin/mailman
   cgi-index = listinfo
 
-The ``cgi-index`` directive specifies which script is run when a path ending with a slash is requested. This way ``/cgi-bin/mailman/`` will be mapped to the ``/cgi-bin/mailman/listinfo`` script.
+``cgi-index`` 指令指定了当请求一个以斜杠结尾的路径时，运行哪个脚本。这样， ``/cgi-bin/mailman/`` 将会被映射到 ``/cgi-bin/mailman/listinfo`` 脚本。
 
-Example 8: Viewvc as CGI in a subdir
+例子8:在一个子目录中作为CGI的Viewvc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Using the Mountpoint option.
-
+使用挂载点选项。
 .. code-block:: ini
 
   [uwsgi]
@@ -208,11 +205,10 @@ Using the Mountpoint option.
   socket = 127.0.0.1:3031
   cgi = /viewvc=/usr/lib/cgi-bin/viewvc.cgi
 
-Example 9: using the uWSGI HTTP router and the ``check-static`` option
+例子9:使用uWSGI HTTP路由器和 ``check-static`` 选项
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This is pretty much a full-stack solution using only uWSGI running on port 8080.
-
+这是一个非常全栈的解决方案，只使用运行在8080端口上的uWSGI。
 
 .. code-block:: ini
 
@@ -238,23 +234,22 @@ This is pretty much a full-stack solution using only uWSGI running on port 8080.
   cgi-allowed-ext = .pl
   cgi-allowed-ext = .cgi
 
-Example 10: optimizing CGIs (advanced)
+例子10:优化CGI (高级)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can avoid the overhead of re-running interpreters at each request, loading the interpreter(s) on startup and calling a function in them instead of ``execve()`` ing the interpreter itself.
+你可以避免在每次请求上重新运行解释器的开销，启动时加载解释器（们），并且调用它们中的函数，而不是 ``execve()`` 解释器本身。
 
-The :file:`contrib/cgi_python.c` file in the source distribution is a tiny example on how to optimize Python CGI scripts.
+源代码发行版中的 :file:`contrib/cgi_python.c` 文件是关于如何优化Python CGI脚本的一个小小的例子。
 
-The Python interpreter is loaded on startup, and after each ``fork()``,  ``uwsgi_cgi_run_python`` is called.
+启动时加载Python解释器，并且在每次 ``fork()`` 后，调用 ``uwsgi_cgi_run_python`` 。
 
-To compile the library you can use something like this:
-
+要编译该库，你可以使用像这样的命令：
 
 .. code-block:: sh
 
   gcc -shared -o cgi_python.so -fPIC -I /usr/include/python2.7/ cgi_python.c -lpython2.7
 
-And then map ``.py`` files to the ``uwsgi_cgi_run_python`` function.
+然后映射 ``.py`` 文件到 ``uwsgi_cgi_run_python`` 函数。
 
 
 .. code-block:: ini
@@ -268,4 +263,4 @@ And then map ``.py`` files to the ``uwsgi_cgi_run_python`` function.
 
 }}}
 
-Remember to prefix the symbol in the helper with ``sym://`` to enable uWSGI to find it as a loaded symbol instead of a disk file.
+记得在辅助函数中给符号加上 ``sym://`` 前缀，让uWSGI把它当成一个已加载符号进行搜索，而不是一个磁盘文件。
