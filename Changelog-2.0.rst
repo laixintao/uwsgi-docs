@@ -15,7 +15,7 @@ uWSGI 2.0
 - 不依赖unix信号在harakiri期间打印请求状态
 - 为uid和gid添加魔术变量
 - 各种Lua修复
-- a tons of coverity-governed bugfixes made by Riccardo Magliocchetti
+- Riccardo Magliocchetti贡献的大量coverity管理（coverity-governed）的错误修复
 
 新特性
 ********

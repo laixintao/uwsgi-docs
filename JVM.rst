@@ -1,4 +1,4 @@
-JVM in the uWSGI server (updated to 1.9)
+uWSGI服务器中的JVM (更新至1.9)
 ========================================
 
 .. toctree::
@@ -7,65 +7,45 @@ JVM in the uWSGI server (updated to 1.9)
    JWSGI
    Ring
 
-Introduction
+介绍
 ************  
 
-As of uWSGI 1.9, you can have a full, thread-safe and versatile JVM embedded in
-the core.  All of the plugins can call JVM functions (written in Java, JRuby,
-Jython, Clojure, whatever new fancy language the JVM can run) via the :doc:`RPC
-subsystem<RPC>` or using uWSGI :doc:`Signals` The JVM plugin itself can
-implement request handlers to host JVM-based web applications. Currently
-:doc:`JWSGI` and :doc:`Ring` (Clojure) apps are supported. A long-term goal is
-supporting servlets, but it will require heavy sponsorship and funding (feel
-free to ask for more information about the project at info@unbit.it).
+自uWSGI 1.9起，你可以拥有一个嵌入在核心中的完整、线程安全的通用JVM。所有的插件可以通过 :doc:`RPC subsystem<RPC>` 或者使用uWSGI :doc:`Signals` 来调用JVM函数 (用Java, JRuby, Jython, Clojure, 任何JVM可以运行的新式语言编写的)。JVM插件本身可以实现请求处理器来托管基于JVM的web应用。目前，支持 :doc:`JWSGI` 和 :doc:`Ring` (Clojure)应用。长期目标是支持servlets，但它将需要大量的赞助和资金 (请随意到info@unbit.it询问更多有关项目的信息)。
 
-Building the JVM support
+构建JVM支持
 ************************
 
-First of all, be sure to have a full JDK distribution installed.  The uWSGI
-build system will try to detect common JDK setups (Debian, Ubuntu, Centos,
-OSX...), but if it is not able to find a JDK installation it will need some
-information from the user (see below).  To build the JVM plugin simply run:
+首先，确保安装了一个完整的JDK发行版。uWSGI构建系统将试着检测常见的JDK设置 (Debian, Ubuntu, Centos, OSX...)，但是，如果它没法找到一个JDK安装，那么它会需要一些来自用户的信息（见下）。要构建JVM插件，只需运行：
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/jvm default
 
-Change 'default', if needed, to your alternative build profile. For example if
-you have a Perl/PSGI monolithic build just run
+如果需要的话，修改'default'为你的构建配置文件。例如，如果你有一个Perl/PSGI单片构建，只需运行
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/jvm psgi
 
-or for a fully-modular build
+或者对于一个完整的模块化构建
 
 .. code-block:: sh
 
    python uwsgiconfig.py --plugin plugins/jvm core
 
-If all goes well the jvm_plugin will be built.  If the build system cannot find
-a JDK installation you will ned to specify the path of the headers directory
-(the directory containing the jni.h file) and the lib directory (the directory
-containing libjvm.so).  As an example, if jni.h is in /opt/java/includes and
-libjvm.so is in /opt/java/lib/jvm/i386, run the build system in that way:
+如果一切顺利，将会构建jvm_plugin。如果构建系统不能找到一个JDK案子，那么你将需要指定头文件目录（包含jni.h文件的目录）和lib目录（包含libjvm.so的目录）的地址。例如，如果jni.h在/opt/java/includes中，而libjvm.so在/opt/java/lib/jvm/i386中，那么这样运行构建系统：
 
 .. code-block:: sh
 
    UWSGICONFIG_JVM_INCPATH=/opt/java/includes UWSGICONFIG_JVM_LIBPATH=/opt/java/lib/jvm/i386 python uwsgiconfig --plugin plugins/jvm
 
 
-After a successful build, you will get the path of the uwsgi.jar file.  That
-jarball contains classes to access the uWSGI API, and you should copy it into
-your CLASSPATH or at the very least manually load it from uWSGI's
-configuration.
+成功构建之后，你会获得uwsgi.jar文件的路径。那个jarball包含了访问uWSGI API的类，而你应该将它拷贝到你的CLASSPATH中，或者至少手工从uWSGI的配置加载它。
 
-Exposing functions via the RPC subsystem
+通过RPC子系统公开函数
 ****************************************
 
-In this example we will export a "hello" Java function (returning a string) and
-we will call it from a Python WSGI application.  This is our base configuration
-(we assume a modular build).
+在这个例子中，我们将公开一个"hello" Java函数 (返回一个字符串)，并且将从一个Python WSGI应用中调用它。这是我们的基本配置 (假设使用模块化构建)。
 
 .. code-block:: ini
 
@@ -75,10 +55,7 @@ we will call it from a Python WSGI application.  This is our base configuration
    wsgi-file = myapp.py
    jvm-classpath = /opt/uwsgi/lib/uwsgi.jar
 
-The ``jvm-classpath`` is an option exported by the JVM plugin that allows you
-to add directories or jarfiles to your classpath. You can specify as many
-``jvm-classpath`` options you need.  Here we are manually adding ``uwsgi.jar``
-as we did not copy it into our CLASSPATH.  This is our WSGI example script.
+``jvm-classpath`` 是一个由JVM插件公开的选项，它允许你添加目录或者jar文件到你的classpath中。你可以指定任意多的 ``jvm-classpath`` 选项。这里，我们手工添加 ``uwsgi.jar`` ，因为我们并没有将它拷贝到我们的CLASSPATH中。这是我们的WSGI样例脚本。
 
 .. code-block:: py
 
@@ -90,9 +67,7 @@ as we did not copy it into our CLASSPATH.  This is our WSGI example script.
        yield uwsgi.call('hello')
        yield "</h1>"
 
-Here we use ``uwsgi.call()`` instead of ``uwsgi.rpc()`` as a shortcut (little
-performance gain in options parsing).  We now create our Foobar.java class. Its
-``static void main()`` function will be run by uWSGI on startup.
+这里，我们使用 ``uwsgi.call()`` 来取代 ``uwsgi.rpc()`` ，作为一种快捷方式 (选项解析时会有小的性能提升)。现在，我们创建我们的Foobar.java类。它的 ``static void main()`` 函数将会在启动的时候由uWSGI运行。
 
 .. code-block:: java
 
@@ -112,16 +87,14 @@ performance gain in options parsing).  We now create our Foobar.java class. Its
    }
 
 
-The ``uwsgi.RpcFunction`` interface allows you to easily write uWSGI-compliant
-RPC functions.  Now compile the Foobar.java file:
+``uwsgi.RpcFunction`` 接口允许你轻松编写uWSGI兼容的RPC函数。现在，编译Foobar.java文件：
 
 .. code-block:: sh
 
    javac Foobar.java
 
-(eventually fix the classpath or pass the uwsgi.jar path with the -cp option)
-You now have a Foobar.class that can be loaded by uWSGI. Let's complete the
-configuration...
+(最终，修正classpath，或者用-cp选项传递uwsgi.jar路径)
+你现在有了一个Foobar.class，它可以由uWSGI加载。让我们完成配置……
 
 .. code-block:: ini
 
@@ -132,16 +105,14 @@ configuration...
    jvm-classpath = /opt/uwsgi/lib/uwsgi.jar
    jvm-main-class = Foobar
 
-The last option (``jvm-main-class``) will load a java class and will execute
-its ``main()`` method.  We can now visit localhost:9090 and we should see the
-Hello World message.
+最后一个选项 (``jvm-main-class``) 将会加载一个java类，并且执行它的 ``main()`` 方法。现在，我们可以访问localhost:9090，并且应该看到Hello World消息。
 
-Registering signal handlers
+注册信号处理器
 ***************************
 
-In the same way as the RPC subsystem you can register signal handlers.  You
-will be able to call Java functions on time events, file modifications, cron...
-Our Sigbar.java:
+用与RPC子系统相同的方式，你可以注册信号处理器。你将能够在时间事件、文件修改、cron等上调用Java函数
+
+我们的Sigbar.java:
 
 .. code-block:: java
 
@@ -160,40 +131,27 @@ Our Sigbar.java:
       }
    }
 
-``uwsgi.SignalHandler`` is the interface for signal handlers.
+``uwsgi.SignalHandler`` 是用于信号处理器的接口。
 
-Whenever signal 17 is rased, the corresponding JVM function will be run.
-Remember to compile the file, load it in uWSGI and to enable to master process
-(without it the signal subsystem will not work).
+每当触发了信号17，将会运行对应的JVM。记得编译这个文件，在uWSGI中加载它，并启用master进程 (没有它，信号子系统将不能用)。
 
 
-The fork() problem and multithreading
+fork()问题和多线程
 *************************************
 
-The JVM is not ``fork()`` friendly. If you load a virtual machine in the master
-and then you fork() (like generally you do in other languages) the children JVM
-will be broken (this is mainly because threads required by the JVM are not
-inherited).  For that reason a JVM for each worker, mule and spooler is
-spawned.  Fortunately enough, differently from the vast majority of other
-platforms, the JVM has truly powerful multithreading support.  uWSGI supports
-it, so if you want to run one of the request handlers (JWSGI, Clojure/Ring)
-just remember to spawn a number of threads with the ``--threads`` option.
+JVM并不是 ``fork()`` 友好的。如果你在master中加载一个虚拟机，然后fork() (就像你通常在其他语言中做的那样) 子JVM将会失败 (这主要是因为JVM需要的线程并不会继承)。出于这样的原因，会为每个worker、mule和spooler生成一个JVM。幸运的是，与其他绝大部分平台不同，JVM带有真正强大的多线程支持。uWSGI支持它，因此，如果你想要运行请求处理器 (JWSGI, Clojure/Ring) 中的一个，那么只需记得使用 ``--threads`` 选项生成一批线程。
 
-How does it work?
+它是如何工作的呢？
 *****************
 
-uWSGI embeds the JVM using the JNI interface. Unfortunately we cannot rely on
-JVM's automatic garbage collector, so we have to manually unreference all of
-the allocated objects. This is not a problem from a performance and usage point
-of view, but makes the development of plugins a bit more difficult compared to
-other JNI-based products.  Fortunately the current API simplifies that task.
+uWSGI使用JNI接口嵌入JVM。不幸的是，我们不能依赖JVM的自动垃圾回收器，因此我们必须自动解引用所有分配的对象。这从性能和使用的角度来说并不是个问题，但是会让插件的开发与其他基于JVM的产品相比更难一点。幸运的是，当前的API简化了那个任务。
 
-Passing options to the JVM
+传递选项到JVM
 **************************
 
-You can pass specific options to the JVM using the ``--jvm-opt`` option.
+你可以使用 ``--jvm-opt`` 选项传递指定的选项给JVM。
 
-For example to limit heap usage to 10 megabytes:
+例如，要把堆使用限制为10兆字节：
 
 .. code-block:: ini
 
@@ -201,13 +159,10 @@ For example to limit heap usage to 10 megabytes:
    ...
    jvm-opt = -Xmx10m
 
-Loading classes (without main method)
+加载类 (不带main方法)
 *************************************
 
-We have already seen how to load classes and run their ``main()`` method on
-startup.  Often you will want to load classes only to add them to the JVM
-(allowing access to external modules needing them) To load a class you can use
-``--jvm-class``.
+我们已经看到了如何加载类和在启动时运行它们的 ``main()`` 方法。通常来说，你会想要只在添加它们到JVM的时候加载类 (运行访问外部模块需要用到它们)。要加载一个类，你可以使用 ``--jvm-class`` 。
 
 .. code-block:: ini
 
@@ -216,24 +171,14 @@ startup.  Often you will want to load classes only to add them to the JVM
    jvm-class = Foobar
    jvm-class = org/unbit/Unbit
 
-Remember class names must use the '/' format instead of dots! This rule applies
-to ``--jvm-main-class`` too.
+记住，类名必须使用'/'格式，而不是点！这个规则也应用到 ``--jvm-main-class`` 。
 
-Request handlers
+请求处理器
 ****************
 
-Although the Java(TM) world has its J2EE environment for deploying web
-applications, you may want to follow a different approach.  The uWSGI project
-implements lot of features that are not part of J2EE (and does not implement
-lot of features that are a strong part of J2EE), so you may find its approach
-more suited for your setup (or taste, or skills).
+虽然Java(TM)的世界有它自己的J2EE环境来部署web应用，你可以响应使用一个不同的方法。uWSGI项目实现了J2EE没有的大量特性 (并且没有实现大量J2EE强大的特性)，因此，你可能会发现它的方法更适合你的设置（或者口味，又或者技能）。
 
-The JVM plugin exports an API to allow hooking web requests. This approach
-differs a bit from "classic" way uWSGI works.  The JVM plugin registers itself
-as a handler for modifier1==8, but will look at the modifier2 value to know
-which of its request handlers has to manage it.  For example the :doc:`Ring`
-plugin registers itself in the JVM plugin as the modifier2 number '1'.  So to
-pass requests to it you need something like that:
+JVM插件公开了一个API，允许hook web请求。这个方法与uWSGI工作的“传统”方式有点托尼盖。JVM插件将自己注册为一个处理器，使用modifier1==8，但将会看看modifier2的值，以确定使用它的哪一个请求处理器来处理它。例如， :doc:`Ring` 插件在JVM插件中注册，使用modifier2数为'1'。因此，要传递请求给它，你需要类似于这样的：
 
 .. code-block:: ini
 
@@ -242,7 +187,7 @@ pass requests to it you need something like that:
    http-modifier1 = 8
    http-modifier2 = 1
 
-or with nginx:
+或者使用nginx:
 
 .. code-block:: c
 
@@ -254,22 +199,17 @@ or with nginx:
    }
 
 
-Currently there are 2 JVM request handlers available:
+目前，有2个JVM请求处理器可用：
 
 * :doc:`JWSGI`
 * :doc:`Ring` (for Clojure)
 
-As already said, the idea of developing a servlet request handler is there, but
-it will require a sponsorship (aka. money) as it'll be a really big effort.
+前面已经说了，开发一个servlet请求处理器的想法是有的，但是它将需要赞助（也就是说，银子），因为这会需要相当大的努力。
 
-小抄
-*****
+注意事项
+**********
 
-* You do not need special jar files to use UNIX sockets -- the JVM plugin has
-  access to all of the uWSGI features.
-* You may be addicted to the log4j module. There is nothing wrong with it, but
-  do take a look at uWSGI's logging capabilities (less resources needed, less
-  configuration, and more NoEnterprise)
-* The uWSGI API access is still incomplete (will be updated after 1.9)
-* The JVM does not play well in environments with limited address space. Avoid
-  using ``--limit-as`` if you load the JVM in your instances.
+* 要使用UNIX socket，无需特殊的jar文件 —— JVM插件可以访问所有的uWSGI特性。
+* 你可能会沉迷于log4j模块。这没啥不对，但是看看uWSGI的日志记录功能 (需要更少的资源，更少的配置，以及更少的进取心)
+* uWSGI API访问仍然未完成 (将会在1.9后更新)
+* JVM在受限地址空间的环境中无法愉快使用。如果你在你的实例中加载JVM，那么避免使用 ``--limit-as`` 。

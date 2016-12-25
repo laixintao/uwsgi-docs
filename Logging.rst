@@ -1,21 +1,18 @@
 日志记录
-=======
+==============
 
 .. seealso:: :doc:`LogFormat`
 
 基本的日志记录
 -------------
 
-uWSGI中最基本的日志记录的形式是将请求、错误和信息消息写到stdout/stderr。This happens in the default
-configuration.  The most basic form of log redirection is the ``--logto`` /
-``--logto2`` / ``--daemonize`` options which allow you to redirect logs to
-files.
+uWSGI中最基本的日志记录的形式是将请求、错误和信息消息写到标准输出/标准错误。这是默认配置中使用的方式。日志重定向的最基本的形式是 ``--logto`` /
+``--logto2`` / ``--daemonize`` 选项，它们允许你重定向日志到文件中。
 
-Basic logging to files
+基本记录日志到文件
 ^^^^^^^^^^^^^^^^^^^^^^
 
-To log to files instead of stdout/stderr, use ``--logto``, or to simultaneously
-daemonize uWSGI, ``--daemonize``.
+要将日志写到文件中，而不是标准输出/标准错误，则使用 ``--logto`` ，或者同时守护uWSGI， ``--daemonize`` 。
 
 .. code-block:: sh
 
@@ -24,59 +21,42 @@ daemonize uWSGI, ``--daemonize``.
     # logto2 only opens the log file after privileges have been dropped to the specified uid/gid.
     ./uwsgi -s :3031 -w simple_app --uid 1001 --gid 1002 --logto2 /tmp/mylog.log
 
-Basic logging (connected UDP mode)
+基本日志记录 (连接UDP模式)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-With UDP logging you can centralize cluster logging or redirect the persistence
-of logs to another machine to offload disk I/O. UDP logging works in both
-daemonized and interactive modes. UDP logging operaties in connected-socket
-mode, so the UDP server must be available before uWSGI starts.  For a more raw
-approach (working in unconnected mode) see the section on socket logging.
+使用UDP日志记录，你可以集中集群日志记录，或者重定向日志的持久化到其他机器上，以卸载磁盘I/O。UDP日志记录可以工作在守护模式和互动模式下。UDP日志记录是在连接socket模式下进行的，因此，UDP服务器必须在uWSGI启动前可用。对于更原始的方法（在未连接模式下工作），见socket日志记录部分。
 
-To enable connected UDP mode pass the address of a UDP server to the
-``--daemonize``/``--logto`` option:
+要启用连接UDP模式，则传递UDP服务器的地址到 ``--daemonize``/``--logto`` 选项：
 
 .. code-block:: sh
 
     ./uwsgi -s :3031 -w simple_app --daemonize 192.168.0.100:1717
     ./uwsgi -s :3031 -w simple_app --logto 192.168.0.100:1717
 
-This will redirect all the stdout/stderr data to the UDP socket on
-192.168.0.100, port 1717.  Now you need an UDP server that will manage your UDP
-messages. You could use netcat, or even uWSGI:
+这将会重定向所有的标准输出/标准错误数据到192.168.0.100，端口1717上的UDP socket。现在，你需要一个UDP服务器，它将管理你的UDP消息。你可以使用netcat，甚至是uWSGI：
 
 .. code-block:: sh
 
     nc -u -p 1717 -s 192.168.0.100 -l
     ./uwsgi --udp 192.168.0.100:1717
 
-The second way is a bit more useful as it will print the source (ip:port) of
-every message. In case of multiple uWSGI server logging on the same UDP server
-it will allow you to recognize one server from another. Naturally you can
-write your own apps to manage/filter/save the logs received via udp.
+第二种方式更有用一点，因为它将打印每条消息的来源 (ip:port)。在多个uWSGI服务器将日志记录在同一个UDP服务器上的情况下，它将让你区分服务器。当然，你可以编写你自己的应用来管理/过滤/保存通过UDP接收到的日志。
 
 
 可插拔记录器
 -----------------
 
-uWSGI also supports pluggable loggers, which allow you more flexibility on
-where and what to log. Depending on the configuration of your uWSGI build,
-some loggers may or may not be available. Some may require to be loaded as
-plugins. To find out what plugins are available in your build, invoke uWSGI
-with ``--logger-list``. To set up a pluggable logger, use the ``--logger`` or
-``--req-logger`` options. ``--logger`` will set up a logger for every message
-while ``--req-logger`` will set up a logger for request information messages.
+uWSGI还支持可插拔记录器，这让你在何处以及如何记录更具灵活性。取决于于你的uWSGI构建的配置，一些记录器可能/可能没有用。一些也许要求作为插件加载。要找出你的构建中哪些插件可用，请带 ``--logger-list`` 调用uWSGI。要设置一个可插拔记录器，则使用 ``--logger`` 或者
+``--req-logger`` 选项。 ``--logger`` 将为每条消息设置一个记录器，而 ``--req-logger`` 将会为请求信息消息设置一个记录器。
 
-This is the syntax:
+这是语法：
 
 .. code-block:: sh
 
     --logger <plugin>[:options]
     --logger "<name> <plugin>[:options]" # The quotes are only required on the command line -- config files don't use them
 
-You may set up as many loggers as you like. Named plugins are used for log
-routing.  A very simple example of split request/error logging using plain text
-files follows.
+只要你喜欢，你可以设置尽可能多的记录器。命名插件用于日志路由，下面是使用纯文本文件分割请求/错误日志记录的一个非常简单的例子。
 
 .. code-block:: ini
 
@@ -87,12 +67,9 @@ files follows.
 日志路由
 -----------
 
-By default all log lines are sent to all declared loggers. If this is not what
-you want, you can use ``--log-route`` (and ``--log-req-route`` for request
-loggers) to specify a regular expression to route certain log messages to
-different destinations.
+默认情况下，所有的日志行会被发送到所有声明的记录器。如果你不想要这样，那么你可以使用 ``--log-route`` (以及用于请求记录器的 ``--log-req-route`` )，指定一个正则表达式来路由某些日志消息到不同的目的地。
 
-For instance:
+例如：
 
 .. code-block:: ini
 
@@ -106,15 +83,12 @@ For instance:
     log-route = internalservererror (HTTP/1.\d 500)
     log-route = mylogger1 uWSGI listen queue of socket .* full
 
-This will log each 500 level error to /tmp/errors, while listen queue full errors
-will end up in /tmp/foobar.  This is somewhat similar to the
-:doc:`AlarmSubsystem`, though alarms are usually heavier and should only be
-used for critical situations.
+这将会记录每个500错误到/tmp/errors，而监听队列满错误将会出现在/tmp/foobar中。这有点类似于 :doc:`AlarmSubsystem` ，虽然告警通常更重，应该只用于紧急情况。
 
 写日志到文件中
 ----------------
 
-``logfile`` plugin -- embedded by default.
+``logfile`` 插件 —— 默认嵌入。
 
 .. code-block::
 
@@ -123,24 +97,21 @@ used for critical situations.
 写日志到socket
 ------------------
 
-``logsocket`` plugin -- embedded by default.
+``logsocket`` 插件 —— 默认嵌入。
 
-You can log to an unconnected UNIX or UDP socket using ``--logger socket:...``
-(or ``--log-socket ...``).
+你可以使用 ``--logger socket:...`` (或者 ``--log-socket ...``) 写日志到一个未连接UNIX/UDP socket。
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --logger socket:/tmp/uwsgi.logsock
 
-will send log entries to the Unix socket ``/tmp/uwsgi.logsock``.
+将会发送日志项到Unix socket ``/tmp/uwsgi.logsock``.
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --logger socket:192.168.173.19:5050
 
-will send log datagrams to the UDP address 192.168.173.19 on port 5050.  You
-may also multicast logs to multiple log servers by passing the multicast
-address:
+将会发送日志数据报到UDP地址192.168.173.19，端口是5050.你也可以通过传递多播地址，多播日志到多个日志服务器上：
 
 .. code-block:: sh
 
@@ -149,34 +120,30 @@ address:
 写日志到syslog
 -----------------
 
-``logsyslog`` plugin -- embedded by default
+``logsyslog`` 插件 —— 默认嵌入。
 
-The ``logsyslog`` plugin routes logs to Unix standard syslog. You may pass an
-optional ID to send and the "facility" for the log entry.
+ ``logsyslog`` 插件路由日志到Unix标准的syslog中。你可以传递一个用于发送的可选的ID，作为日志项的"facility"参数。
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --logger syslog:uwsgi1234
 
-or
+或者
 
 .. code-block:: sh
 
     uwsgi --socket :3031 --logger syslog:uwsgi1234,local6
 
-to send to the local6 facility
+发送到local6 facility
 
 
 写日志到远程syslog
 ------------------------
 
-``logrsyslog`` plugin -- embedded by default
+``logrsyslog`` 插件 —— 默认嵌入。
 
 
-The ``logrsyslog`` plugin routes logs to Unix standard syslog residing on a
-remote server. In addtition to the address+port of the remote syslog server,
-you may pass an optional ID to send as the "facility" parameter for the log
-entry.
+``logrsyslog`` 插件路由日志到位于远程服务器的Unix标准syslog上。除了远程syslog服务器的address+port外，你可以传递一个用于发送的可选的ID，作为日志项的"facility"参数。
 
 .. code-block:: sh
 
@@ -185,58 +152,46 @@ entry.
 Redis记录器
 ------------
 
-``redislog`` plugin -- embedded by default.
+``redislog`` 插件 —— 默认嵌入。
 
-By default the ``redislog`` plugin will 'publish' each logline to a redis
-pub/sub queue. The logger plugin syntax is:
+默认情况下， ``redislog`` 插件将会“发布”每个日志行到一个redis pub/sub队列中。该记录器插件的语法如下：
 
 .. code-block:: sh
 
     --logger redislog[:<host>,<command>,<prefix>]
 
-By default ``host`` is mapped to ``127.0.0.1:6379``, ``command`` is mapped to
-"publish uwsgi" and ``prefix`` is empty.  To publish to a queue called foobar,
-use ``redislog:127.0.0.1:6379,publish foobar``.  Redis logging is not limited
-to pub/sub. You could for instance push items into a list, as in the next
-example.
+默认， ``host`` 会被映射到 ``127.0.0.1:6379`` ， ``command`` 会被映射到"publish uwsgi" 并且 ``prefix`` 是空的。要发布到一个名为foobar的队列，则使用 ``redislog:127.0.0.1:6379,publish foobar`` 。Redis日记记录不只限于pub/sub。例如，你可以推送项到一个列表中，如下所示。
 
 .. code-block:: sh
 
     --logger redislog:/tmp/redis.sock,rpush foo,example.com
 
-As error situations could cause the master to block while writing a log line to
-a remote server, it's a good idea to use ``--threaded-logger`` to offload log
-writes to a secondary thread.
+当将一个日志行写入到一个远程服务器的时候，一个错误的场景会导致阻塞master，好的办法是使用 ``--threaded-logger`` 来卸载日志写入到第二个线程中。
 
 MongoDB记录器
 --------------
 
-``mongodblog`` plugin -- embedded by default.
+``mongodblog`` 插件 —— 默认嵌入。.
 
-The logger syntax for MongoDB logging (``mongodblog``) is
+MongoDB日志记录(``mongodblog``)的记录器语法是
 
 .. code-block:: sh
 
     --logger mongodblog[:<host>,<collection>,<node>]
 
-Where ``host`` is the address of the MongoDB instance (default
-``127.0.0.1:27017``), ``collection`` names the collection to write log lines
-into (default ``uwsgi.logs``) and ``node`` is an identification string for the
-instance sending logs (default: server hostname).
+其中， ``host`` 是MongoDB实例的地址 (默认 ``127.0.0.1:27017``)， ``collection`` 命名要写入日志行的集合 (默认是 ``uwsgi.logs``)，而 ``node`` 是用于实例发送日志的身份字符串 (默认是server hostname)。
 
 .. code-block:: sh
 
     --logger mongodblog
 
-Will run the logger with default values, while
+将会用默认值运行记录器，而
 
 .. code-block:: sh
 
     --logger mongodblog:127.0.0.1:9090,foo.bar
 
-Will write logs to the mongodb server 127.0.0.1:9090 in the collection
-``foo.bar`` using the default node name.  As with the Redis logger, offloading
-log writes to a dedicated thread is a good choice.
+将会写入日志到mongodb服务器127.0.0.1:9090的集合 ``foo.bar`` 中，使用默认的节点名。就如Redis记录器一样，卸载日志写入到一个专用的线程是个好的选择。
 
 .. code-block:: ini
 
@@ -250,8 +205,7 @@ log writes to a dedicated thread is a good choice.
 ZeroMQ日志记录
 --------------
 
-As with UDP logging you can centralize/distribute logging via ZeroMQ. Build
-your logger daemon using a ``ZMQ_PULL`` socket:
+就如UDP日志记录一样，你可以通过ZeroMQ集中/分布日志记录。使用 ``ZMQ_PULL`` socket构建你的日志记录守护程序：
 
 .. code-block:: python
 
@@ -266,41 +220,35 @@ your logger daemon using a ``ZMQ_PULL`` socket:
         message = puller.recv()
         print message,
 
-Now run your uWSGI server:
+现在，运行你的uWSGI服务器：
 
 .. code-block:: sh
 
     uwsgi --logger zeromq:tcp://192.168.173.18:9191 --socket :3031 --module werkzeug.testapp:test_app
 
-(``--log-zeromq`` is an alias for this logger.)
+(``--log-zeromq`` 是这个记录器的一个别名。)
 
 
 Crypto记录器 (插件)
 ----------------------
 
-If you host your applications on cloud services without persistent storage you
-may want to send your logs to external systems.  However logs often contain
-sensitive information that should not be transferred in clear.  The
-``logcrypto`` plugin logger attempts to solve this issue by encrypting each log
-packet before sending it over UDP to a server able to decrypt it.  The next
-example will send each log packet to a UDP server available at
-192.168.173.22:1717 encrypting the text with the secret key ``ciaociao`` with
-Blowfish in CBC mode.
+如果你在云服务商托管你的应用，并且不使用持久化存储，那么你也许想要发送你的日志到一个外部系统。然而，日志通常包含敏感信息，并应该将那些信息明文传输。
+``logcrypto`` 插件记录器试图通过在发送之前加密每个日志包，然后通过UDP发送到一个能够解密它的服务器，从而解决这个问题。下一个例子将会发送每个日志包到192.168.173.22:1717上的一个UDP服务器，每个日志包都会用CBC模式中的Blowfish算法，通过密钥 ``ciaociao`` 进行加密。
 
 
 .. code-block:: sh
 
    uwsgi --plugin logcrypto --logger crypto:addr=192.168.173.22:1717,algo=bf-cbc,secret=ciaociao -M -p 4 -s :3031
 
-An example server is available at
+一个样例服务器如下：
 https://github.com/unbit/uwsgi/blob/master/contrib/cryptologger.rb
 
 Graylog2记录器 (插件)
 ------------------------
 
-``graylog2`` plugin -- not compiled by default.
+``graylog2`` 插件 —— 非默认编译。
 
-This plugin will send logs to a Graylog2 server in Graylog2's native GELF format.
+这个插件将会发送日志的到一个Graylog2服务器上，使用Graylog2的原生GELF格式。
 
 .. code-block:: sh
 
@@ -309,9 +257,9 @@ This plugin will send logs to a Graylog2 server in Graylog2's native GELF format
 Systemd记录器 (插件)
 -----------------------
 
-``systemd_logger`` plugin -- not compiled by default.
+``systemd_logger`` 插件 —— 非默认编译。
 
-This plugin will write log entries into the Systemd journal.
+这个插件将会将日志项写入到Systemd journal中。
 
 .. code-block:: sh
 
@@ -321,8 +269,7 @@ This plugin will write log entries into the Systemd journal.
 编写你自己的日志记录插件
 -------------------------------
 
-这个插件， ``foolog.c`` will write your messages in the file specified with
---logto/--daemonize with a simple prefix using vector IO.
+这个插件， ``foolog.c`` 将会把你的消息写入到由--logto/--daemonize指定的文件中，带有一个简单前缀，并使用vector IO。
 
 .. code-block:: c
 

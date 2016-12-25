@@ -135,7 +135,8 @@ Legion支持
 * ``ns_pid``: 在新的pid名字空间内生成进程 (要求master作为root运行，仅限Linux)
 * ``chdir``: 运行命令之前，chdir()到指定的目录 (在uWSGI 2.0.6中添加)
 
-例子：
+
+例如：
 
 .. code-block:: ini
 
