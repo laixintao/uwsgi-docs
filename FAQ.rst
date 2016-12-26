@@ -4,8 +4,7 @@
 我应该选择uWSGI吗？
 --------------------------
 
-Because you can! :) uWSGI wants to be a complete web application deployment
-solution with batteries included:
+因为你可以呀！ :) uWSGI想要成为一个完整的web应用部署解决方案，包含以下助力：
 
  * :doc:`ProcessManagement`
  * Management of long-running tasks
@@ -15,185 +14,116 @@ solution with batteries included:
  * :doc:`Monitoring`
  * :doc:`ResourceLimiting`
 
-... and many other annoying everyday tasks that you'd have to delegate to
-external scripts and manual sysadmin tasks.
+... 以及许多其他你必须委托给外部脚本和手工系统管理员任务的烦人日常任务。
 
-If you are searching for a simple server for your WSGI, PSGI or Rack app, uWSGI
-may not be for you. Though, if you are building an app which needs to be rock
-solid, fast, and easy to distribute and optimize for various loads, you will
-most likely find yourself needing uWSGI. 
+如果你正为你的WSGI, PSGI或者Rack应用搜寻一个简单的服务器，那么uWSGI可能不适合你。不过，如果你正构建一个应用，它需要坚如磐石、快速、易于分发并且为各种负载进行优化，那么你很可能会发现自己需要uWSGI。
 
-The best definition for uWSGI is "Swiss Army Knife for your network applications".
+uWSGI最好的定义是“你的网络应用的瑞士军刀”。
 
 协议是什么？
 ------------------------
 
-The uwsgi (all lowercase) protocol is derived from SCGI but with binary string
-length representations and a 4-byte header that includes the size of the var
-block (16 bit length) and a couple of general-purpose bytes.  We are not
-reinventing the wheel. Binary management is much easier and cheaper than string
-parsing, and every single bit of power is required for our projects. If you
-need proof, look at the :doc:`official protocol documentation<Protocol>` and
-you will understand why a new protocol was needed.  Obviously, you are free to
-use the other supported protocols. Remember, if you cannot use uWSGI in some
-scenario, it is a uWSGI bug.
+uwsgi (全部小写) 是从SCGI衍生而来的，但使用二进制字符串长度表示，以及一个包含var块（16位长）大小的4字节头部，和几个通用字节。我们不重新发明轮子。二进制管理比字符串解析容易且廉价得多，而每一位对我们的项目都是必须的。如果你需要证明，那么看看 :doc:`official protocol documentation<Protocol>` ，你将会明白，为什么需要一个新的协议。显然，你可以随意使用其他支持的协议。记住，如果在某些场景下，你不能使用uWSGI，那么这是一个uWSGI问题。
 
 我可以将它用于集群环境中吗？
 -------------------------------------
 
-Yes, this is one of the main features of the uWSGI stack.  You can have
-multiple instances bound on different servers, and using the load balancing
-facilities of your webserver/proxy/router you can distribute your load.
-Systems like :doc:`RPC` allows you to fast call functions on remote nodes, and
-:doc:`Legion` allows you to elect a master in a multi-node setup.
+是哒，这是uWSGI的主要特性之一。你可以将多个实例绑定在不同的服务器上，而使用你的web服务器/代理/路由器的负载均衡功能，你可以分布负载。像 :doc:`RPC` 这样的系统允许你快速调用远端节点的函数，而
+:doc:`Legion` 允许你在多节点设置中选出一个master。
 
-So, why all those timeout configuration flags?
+那么，为嘛会有所有那些超时配置标志？
 ----------------------------------------------
 
-Choosing sane timeouts is the key to high availability.  Do not trust network
-applications that do not permit you to choose a timeout.
+理智选择超时时间是高可用性的关键。不要信任那些不允许你选择超时时间的网络应用。
 
 我需要帮助！我该怎么做？
 --------------------------
 
-Post a message on the uWSGI mailing list including your
+在uWSGI邮件列表上发布一条信息，其中包含你的
 
-* Operating system version
-* CPU architecture
-* Webserver used (if any)
-* uWSGI version
-* uWSGI command line or config files
+* 操作系统版本
+* CPU架构
+* 使用的web服务器（如果有的话）
+* uWSGI版本
+* uWSGI命令行或配置文件
 
-You should add the `--show-config` option and post the output in the message.
-It will be very useful for finding out just what's wrong with your uWSGI.  You
-can also :doc:`rebuild uWSGI<Build>` with debug symbols and run it under a
-debugger like `gdb`.
+你应该添加 `--show-config` 选项，然后把输出贴到消息中。这对找出uWSGI有啥问题将非常有用。你也可以使用调试符号进行 :doc:`rebuild uWSGI<Build>` ，并且将其运行在诸如 `gdb` 这样的调试器下。
 
-uWSGI is an enormous project with hundreds of options. You should be prepared
-that not everything will go right at the first shot. Ask for help, ask for help
-and ask for help. If you are frustrated, do not waste time blaming and ranting
-- instead simply join the list and ask for help. This is open source, if you
-only rant you are doing nothing useful.
+uWSGI是一个浩大的工程，带有数百个选项。你应该做好准备，并不是所有的东西在第一次使用的时候都是对的。寻求帮助，寻求帮助，以及寻求帮助。如果你感到沮丧，那么不要把时间花在谴责和咆哮上 —— 相反，简单加入邮件列表，然后寻求帮助。它是开源的，如果你只是咆哮，那么只是无用功。
 
 我不是系统管理员，也不是UNIX专家。我可以用uWSGI吗？
 ------------------------------------------------------
 
-That's a good question :) But sadly there is no simple answer.  uWSGI has not
-been developed with simplicity in mind, but with versatility.  You can try it
-by starting with one of the quickstarts and if you have problems, simply ask
-for help in the list or on the IRC channel.
+这是一个好问题 :) 但是忧伤的是，没有简单的答案。uWSGI在开发中并未考虑简单性，而是通用性。你可以通过其中一个快速入门来开始，如果有问题，只需在邮件列表，或者IRC频道中寻求帮助。
 
 我可以如何为我的公司购买商业支持？
 ------------------------------------------------
 
-Send an email to info at unbit.it with the word "uWSGI" in the subject. The
-email you send should include your company information and your specific
-request. We will reply as soon as possible.
+发送邮件到unbit.it上的info，并在主题中使用单词"uWSGI"。你发送的邮件应该包含你的公司信息以及你的具体要求。我们将尽快答复。
 
-Will this allow me to run my awesome apps on my ancient close-minded ISP?
+这会允许我在我古旧的ISP上运行我美妙的应用吗？
 -------------------------------------------------------------------------
 
-Probably not. The uWSGI server requires a modern platform/environment. 
+可能不行哦。uWSGI服务器要求一个现代的平台/环境。
 
 基准在何处？
 -------------------------
 
-Sorry, we only do "official" benchmarks for regression testing. If benchmarks
-are very important to you, you can search on the mailing list, make your own
-benchmarks or search on Google.  uWSGI gives precedence to machine health, so
-do not expect your `ab` test with an unrealistic number of concurrent
-connections to be managed flawlessly without tuning.  Some socket and
-networking knowledge is required if you want to make a valid benchmark (and
-avoid geek rage in your blog comments ;).  Also remember that uWSGI can be
-run in various modes, so avoid comparing it configured in preforking mode
-with another server in non-blocking/async mode if you do not want to look
-ridiculous.
+抱歉哈，我们只为回归测试进行“官方”基准。如果基准对你非常重要，那么你可以在邮件列表上搜索，自己做基准，或者Google一下。uWSGI赋予机器健康优先权，因此，不要期望你使用不切实际数目的并发连接数的 `ab` 测试无需调整就能完美进行管理。如果你想要进行有效的基准（并且避免有人在你的博客下咆哮），那么一些socket和网络知识是必须的。还要记得，uWSGI可以在各种模式下运行，因此，如果你不想看起来不可理喻，那么避免把preforking模式下配置的服务器与其他在非阻塞/异步模式下配置的服务器进行对比。
 
 .. note::
 
-  If you see your tests failing at higher concurrency rates you are probably
-  hitting your OS socket backlog queue limit (maximum of 128 slots on Linux,
-  tunable via `/proc/sys/net/somaxconn` and
-  `/proc/sys/net/ipv4/tcp_max_syn_backlog` for TCP sockets).
+  如果你看到你的测试在更高的并发速率下失败了，那么你可能到达了你的OS socket backlog队列限制 (在Linux中最高是128个槽，可以通过 `/proc/sys/net/somaxconn` 和
+  `/proc/sys/net/ipv4/tcp_max_syn_backlog` 对TCP socket进行调整)。
 
-  You can set this value in uWSGI with the `listen` configuration option.
+  你可以使用 `listen` 配置选项，在uWSGI中设置这个值。
 
 
-Ha! Server XXX is faster than uWSGI! Take that!
+哎呀！服务器XXX比uWSGI快！用那个！
 -----------------------------------------------
 
-As already stated uWSGI is not a silver bullet, it is not meant to be liked by
-the whole world and it is obviously not the fastest server out there.  It is a
-piece of software following an "approach" to problems you may not like or that
-you may conversely love. The approach taken will work better for certain cases
-than others, and each application should be analyzed on it's own merits using
-appropriate and accruate real-world benchmarks.
+如前所述，uWSGI不是灵丹妙药，它并不打算让整个世界都喜欢，而显然，它也不是世界上最快的服务器。它就是一个软件，遵循一个你可能不喜欢，又或者爱得要死的问题“解决方法”。使用的方法对于某些情况下会更好，而应该在每个应用自己的优点上进行分析，使用适当而准确的真实世界的基准。
 
 'Harakiri模式'是什么？
 ------------------------
 
-At Unbit we host hundreds of unreliable web apps on our servers. All of them
-run on hardly constrained (at kernel level) environments where having processes
-block due to an implementation error will result in taking down an entire site.
-The harakiri mode has two operational modes:
+在Unbit，我们在服务器上托管了数百个不可靠的web应用。它们所有都运行在没有限制（内核级别）环境下，其中因为一个实现错误导致的进程阻塞将会导致整个站点挂掉。而harakiri模式有两种操作模式：
 
-* one that we define as "raw and a bit unreliable" (used for simple setup without a process manager) 
-* and another one that we define as "reliable" that depends on the presence of the uWSGI process manager (see :doc:`ProcessManagement`).
+* 一个我们定义为“原始，并且有点靠不住”（用于不带进程管理器的简单设置）
+* 另一个我们定义为“可靠的”，依赖于uWSGI进程管理器 (见 :doc:`ProcessManagement`)。
 
-The first one sets a simple alarm at the start of every request. If the process
-gets a `SIGALRM` signal, it terminates itself. We call this unreliable, because
-your app or some module you use could overwrite or simply cancel the alarm with
-a simple call to `alarm()`.
+第一个在每个请求的开始设置一个简单的告警。如果进程获得 `SIGALRM` 信号，那么它会终止。我们称其为不可靠的，因为你的应用或者你使用的一些模块可能会通过简单调用 `alarm()` ，从而覆盖或者简单取消告警。
 
-The second one uses a master process shared memory area (via `mmap`) that
-maintains statistics on every worker in the pool. At the start of every
-request, the worker sets a timestamp representing the time after which the process
-will be killed in its dedicated area. This timestamp is zeroed after every
-successful request. If the master process finds a worker with a timestamp in
-the past it will mercilessly kill it.
+第二个使用一个master进程共享内存区域 (通过 `mmap`)，它维护池中每个worker上的统计信息。在每个请求的开始，worker设置一个时间戳，表示过了多久， 进程将在其专用区域被杀死。这个时间戳会在每次成功请求之后清零。如果master进程发现了一个带有过去时间戳的worker，那么它会毫不留情地杀死它。
 
 用uWSGI会让我的应用运行得更快吗？
 ----------------------------------
 
-It's unlikely. The biggest bottleneck in web app deployment is the application
-itself. If you want a faster environment, optimize your code or use techniques
-such as clustering or caching. We say that uWSGI is fast because it introduces
-a very little overhead in the deployment structure.
+不可能。web应用部署中的最大瓶颈是应用本身。如果你想要一个更快的环境，那么优化你的代码，或者使用诸如集群、缓存这样的技术。我们之所以说uWSGI快，是因为它引入非常少等待开销到部署结构中。
 
 uWSGI环境中，对于性能和健壮性，什么是最重要的选项？
 --------------------------------------------------------------------------------------------
 
-By default, uWSGI is configured with sane "almost-good-for-all" values. But if
-and when things start going wild, tuning is a must.
+默认情况下，是用合理的“几乎是会所有”的值来配置uWSGI的。但是如果以及当事情开始变得不可控制的时候，调整是必须的。
 
-* Increasing (or decreasing) timeout is important, as is modifying the socket listen queue size.
-* Think about threading. If you do not need threads, do not enable them.
-* If you are running only a single application you can disable multiple interpreters.
-* Always remember to enable the master process in production environments. See :doc:`ProcessManagement`.
-* Adding workers does not mean "increasing performance", so choose a good value
-  for the `workers` option based on the nature of your app (IO bound, CPU bound,
-  IO waiting...)
+* 增加（或减少）超时时间是重要的，修改socket监听队列大小也是如此。
+* 考虑线程。如果你不需要线程，那么不要启用它们。
+* 如果你只是运行一个应用，那么你可以禁用多解释器。
+* 总是记住在生产环境上启用master进程。见 :doc:`ProcessManagement` 。
+* 增加worker不是意味着“增加性能”，因此，基于你的应用的性质，为 `workers` 选项选择一个合适的值 (受IO限制，受CPU限制，IO等待……)
 
 为什么不简单地使用HTTP作为协议？
 ----------------------------------------
 
-A good question with a simple answer: HTTP parsing is slow, really slow.  Why
-should we do a complex task twice? The web server has already parsed the
-request! The :doc:`uwsgi protocol<Protocol>` is very simple to parse for a
-machine, while HTTP is very easy to parse for a human.  As soon as humans are
-being used as servers, we will abandon the uwsgi protocol in favor of the HTTP
-protocol.  All this said, you can use uWSGI via :doc:`HTTP`, :doc:`FastCGI`,
-:doc:`ZeroMQ` and other protocols as well. 
+一个好问题，它有一个简单的答案：HTTP解析很慢，真的很慢。为嘛我们应该做一个复杂的任务两次呢？web服务器已经解析请求了！ :doc:`uwsgi protocol<Protocol>` 对机器而言，是非常容易解析的，而HTTP对人类而言，是非常容易解析的。一旦人类被当成服务器使用，我们会放弃uwsgi协议，支持HTTP协议。这就是说，你也可以通过 :doc:`HTTP`, :doc:`FastCGI`,
+:doc:`ZeroMQ` 和其他协议使用uWSGI。
 
-Why do you support multiple methods of configuration?
+为嘛你支持配置的多种方式？
 -----------------------------------------------------
 
-System administration is all about skills and taste. uWSGI tries to give
-sysadmins as many choices as possible for integration with whatever
-infrastructure is already available.  Having multiple methods of configuration is
-just one way we achieve this.
+系统管理是件关于技能和品味的事。uWSGI试图为系统管理员提供尽可能多的选择来与任何已经能用的基础设施集成。拥有多种配置方法只是我们达成此目标的一种方式。
 
 最好的webserver处理器是什么？
 -----------------------------------
 
-See :doc:`WebServers`.
+见 :doc:`WebServers`.

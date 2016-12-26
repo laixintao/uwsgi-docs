@@ -155,25 +155,14 @@ cheaper-busyness-multiplier
    cheaper-busyness-multiplier = 20
    cheaper-busyness-min = 25
 
-如果平均worker busyness低于25% for 20 checks in a row, executed every
-10 seconds (total of 200 seconds), tone worker will be stopped. The idle cycles
-counter will be reset if average busyness jumps above ``cheaper-busyness-max``
-and we spawn new workers. If during idle cycle counting the average busyness
-jumps above ``cheaper-busyness-min`` but still below ``cheaper-busyness-max``,
-then the idle cycles counter is adjusted and we need to wait extra one idle
-cycle. If during idle cycle counting the average busyness jumps above
-``cheaper-busyness-min`` but still below ``cheaper-busyness-max`` three times
-in a row, then the idle cycle counter is reset.
+如果连续20次检查，每10秒执行一次（总共200秒），平均worker busyness低于25%，那么将会停止一个worker。如果平均busyness跳到 ``cheaper-busyness-max`` 以上，idle周期计数器将会被重置，并且我们生成新的worker。如果在idle周期计数期间，平均busyness跳到 ``cheaper-busyness-min`` 以上，但仍然低于 ``cheaper-busyness-max`` ，那么idle周期计数器将会被调整，而我们需要等待另外一个idle周期。如果在idle周期计数期间，平均busyness跳到 ``cheaper-busyness-min`` 以上，但仍然低于 ``cheaper-busyness-max`` 连续3次，那么会重置idle周期计数器。
 
 cheaper-busyness-penalty
 ************************
 
-uWSGI will automatically tune the number of idle cycles needed to stop worker
-when worker is stopped due to enough idle cycles and then spawned back to fast
-(less than the same time we need to cheap worker), then we will increment the
-``cheaper-busyness-multiplier`` value this value.  Default is 1.
+当worker因为足够的idle周期停止，然后快速(比worker所需的同等时间少)又生成回来的时候，uWSGI将会自动调整停止worker所需的idle周期数，然后我们会增加 ``cheaper-busyness-multiplier`` 值这个值。默认是1.
 
-Example:
+例如：
 
 .. code-block:: ini
 
@@ -182,61 +171,34 @@ Example:
    cheaper-busyness-min = 25
    cheaper-busyness-penalty = 2
 
-If average worker busyness is under 25% for 20 checks in a row, executed every
-10 seconds (total 200 seconds), one worker will be stopped. If new worker is
-spawned in less than 200 seconds (counting from the time when we spawned the
-last worker before it), the ``cheaper-busyness-multiplier`` value will be
-incremented up to 22 (20+2). Now we will need to wait 220 seconds (22*10) to
-cheap another worker.  This option is used to prevent workers from being
-started and stopped all the time since once we stop one worker, busyness might
-jump up enough to hit ``cheaper-busyness-max``. Without this, or if tuned
-poorly, we can get into a stop/start feedback loop .
+如果连续20次检查，每10秒执行一次（总共200秒），平均worker busyness低于25%，那么将会停止一个worker。如果新的worker在少于200秒内生成 (时间从我们生成它之前的最后一个worker算起)，那么 ``cheaper-busyness-multiplier`` 值将会被增加到22 (20+2)。现在，我们将需要等待220秒 (22*10)来cheap另一个worker。这个选项用于防止worker一直启动和停止，因为一旦我们停止了一个worker，busyness也许会提供以致于够着 ``cheaper-busyness-max`` 。没有这个，或者如果被不充分地调整，我们会陷入一个停止/启动反馈循环。
 
 cheaper-busyness-verbose
 ************************
 
-This option enables debug logs from the ``cheaper_busyness`` plugin.
+这个选项启用 ``cheaper_busyness`` 插件的调试日志。
 
 cheaper-busyness-backlog-alert
 ******************************
 
-This option is only available on Linux. It is used to allow quick response to
-load spikes even with high ``cheaper-overload`` values. On every uWSGI master
-cycle (default 1 second) the current listen queue is checked. If it is higher
-than this value, an emergency worker is spawned. When using this option it is
-safe to use high ``cheaper-overload`` values to have smoother scaling of worker
-count. Default is 33.
+这个选项只有在Linux上能用。它用于允许快速响应负载峰值，即使使用了高的 ``cheaper-overload`` 值。在每个uWSGI master周期（默认是1秒）中，会检查当前的监听队列。如果它比这个值高，那么会生成一个紧急worker。当使用这个选项的时候，使用高的 ``cheaper-overload`` 值以拥有更平滑的worker数缩放是安全的。默认是33.
 
 cheaper-busyness-backlog-multiplier
 ***********************************
 
-This option is only available on Linux. It works just like
-``cheaper-busyness-multiplier``, except it is used only for emergency workers
-spawned when listen queue was higher than ``cheaper-busyness-backlog-alert``.
+这个选项只有在Linux上能用。它就像 ``cheaper-busyness-multiplier`` ，除了它只用于监听队列高于 ``cheaper-busyness-backlog-alert`` 时的紧急worker生成。
 
-Emergency workers are spawned in case of big load spike to prevent currently
-running workers from being overloaded. Sometimes load spike are random and
-short which can spawn a lot of emergency workers. In such cases we would need
-to wait several cycles before reaping those workers. This provides an alternate
-multiplier to reap these processes faster.  Default is 3.
+紧急worker是在大负载峰值下生成的，用以防止当前运行的worker过载。有时，负载峰值是随机并且短暂的，这会生成大量的紧急worker。在这种情况下，获得那些worker之前，我们会需要等待几个周期。这提供了一个交替的multiplier来更快的获得这些进程。默认是3.
 
 cheaper-busyness-backlog-step
 *****************************
 
-This option is only available on Linux. It sets the number of emergency workers
-spawned when listen queue is higher than ``cheaper-busyness-backlog-alert``.
-Defaults to 1.
+这个选项只有在Linux上能用。 它设置当监听队列高于 ``cheaper-busyness-backlog-alert`` 时生成的紧急worker数。默认是1.
 
 cheaper-busyness-backlog-nonzero
 ********************************
 
-This option is only available on Linux. It will spawn new emergency workers if
-the request listen queue is > 0 for more than N seconds.  It is used to protect
-the server from the corner case where there is only a single worker running and
-the worker is handling a long running request. If uWSGI receives new requests
-they would stay in the request queue until that long running request is
-completed. With this option we can detect such a condition and spawn new worker
-to prevent queued requests from being timed out.  Default is 60.
+这个选项只有在Linux上能用。如果超过N秒，请求监听队列都>0，那么它将会生成新的紧急worker。它用来保护服务器不受这样的边缘情况之害：只有单个worker运行，并且这个worker在处理一个长时间运行的请求。如果uWSGI收到了新的请求，那么它们将会待在请求队列中，直到那个长时间运行请求完成。使用这个选项，我们可以检测这样一个条件，并生成新的worker来防止入队请求超时。默认是60.
 
 关于Busyness的一些注意事项
 **************************
@@ -244,9 +206,9 @@ to prevent queued requests from being timed out.  Default is 60.
 * 通过实验确定设置。对于每个人而言，没有哪个万金油值应该被使用。测试并挑选对你来说的最佳值。监控uWSGI统计数据 (例如，通过Carbon) 会使得决定使用哪个值简单一些。
 * 不要指望busyness恒久不变。它会经常改变。最终，真正的用户是以非常随机的方式与你的应用进行交互的。推荐使用更长的--cheaper-overload值 (>=30) ，使得尖峰更少。
 * 如果你想要运行这个插件的一些基准，那么你应该使用添加随机性到工作负载的工具。
-* With a low number of workers (2-3) starting new worker or stopping one might affect busyness a lot, if You have 2 workers with busyness of 50%, than stopping one of them will increase busyness to 100%. Keep that in mind when picking min and max levels, with only few workers running most of the time max should be more than double of min, otherwise every time one worker is stopped it might increase busyness to above max level.
-* With a low number of workers (1-4) and default settings expect this plugin will keep average busyness below the minimum level; adjust levels to compensate for this.
-* With a higher number of workers required to handle load, worker count should stabilize somewhere near minimum busyness level, jumping a little bit around this value
+* 使用少量的worker (2-3)，启动新的worker，或者停止一个worker或许会大大影响busyness。如果你有2个worker，带50%的busyness，那么停止其中一个将会增加busyness到100%。记住，当挑选最小和最大程度的时候，如果大部分时间只有少量的worker在运行，那么max应该超过min的两倍，否则，每当停止一个worker的时候，它将会增加busyness到超过max程度。
+* 使用少量的worker (1-4) 和默认设置，期望这个插件将会保持平静busyness低于最小程度；调整程度来补偿。
+* 使用处理负载所需的更多数量的worker，worker计数器将会稳定在接近最小busyness程度的某处，在这个值附近上下波动。
 * 在对这个插件进行实验的时候，建议启用 ``--cheaper-busyness-verbose`` ，从而知道它正在做什么。一个样例日志如下。
 
   .. code-block:: python

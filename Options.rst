@@ -249,7 +249,7 @@ puwsgi-socket
 
 ``parser``: uwsgi_opt_add_socket
 
-``help``: bind to the specified UNIX/TCP socket using persistent uwsgi protocol (puwsgi)
+``help``: 使用持久性uwsgi协议(puwsgi)绑定到指定的UNIX/TCP socket上
 
 
 
@@ -1691,7 +1691,7 @@ emperor-on-demand-extension
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: search for text file (vassal name + extension) containing the on demand socket name
+``help``: 搜索包含按需socket名的文本文件 (vassal名+扩展名)
 
 
 
@@ -1711,7 +1711,7 @@ emperor-on-demand-directory
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 启用在即需模式下，绑定到enable on demand mode binding to the unix socket in the specified directory named like the vassal + .socket
+``help``: 在按需模式下启用，绑定到指定目录下名字像vassal + .socket的unix socket
 
 
 
@@ -1721,7 +1721,7 @@ emperor-on-demand-dir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: enable on demand mode binding to the unix socket in the specified directory named like the vassal + .socket
+``help``: 在按需模式下启用，绑定到指定目录下名字像vassal + .socket的unix socket
 
 
 
@@ -1731,7 +1731,7 @@ emperor-on-demand-exec
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: use the output of the specified command as on demand socket name (the vassal name is passed as the only argument)
+``help``: 使用指定命令的输出作为按需socket名 (传递vassal名作为唯一的参数)
 
 
 
@@ -1741,7 +1741,7 @@ emperor-extra-extension
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: allows the specified extension in the Emperor (vassal will be called with --config)
+``help``: 允许在Emperor使用指定的扩展名（将会用--config调用vassal）
 
 
 
@@ -1751,7 +1751,7 @@ emperor-extra-ext
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: allows the specified extension in the Emperor (vassal will be called with --config)
+``help``: 允许在Emperor使用指定的扩展名（将会用--config调用vassal）
 
 
 
@@ -1761,7 +1761,7 @@ emperor-no-blacklist
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable Emperor blacklisting subsystem
+``help``: 禁用Emperor黑名单子系统
 
 
 
@@ -1771,7 +1771,7 @@ emperor-use-clone
 
 ``parser``: uwsgi_opt_set_unshare
 
-``help``: use clone() instead of fork() passing the specified unshare() flags
+``help``: 使用clone()而不是fork()来传递指定的unshare()标志
 
 
 
@@ -1781,7 +1781,7 @@ emperor-use-fork-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: connect to the specified fork server instead of using plain fork() for new vassals
+``help``: 对于新的vassal，连接到指定的fork服务器，而不是使用简单的fork()
 
 
 
@@ -1791,7 +1791,7 @@ vassal-fork-base
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: use plain fork() for the specified vassal (instead of a fork-server)
+``help``: 对指定的vassal使用简单的fork() (而不是一个fork服务器)
 
 
 
@@ -1801,7 +1801,7 @@ emperor-subreaper
 
 ``parser``: uwsgi_opt_true
 
-``help``: force the Emperor to be a sub-reaper (if supported)
+``help``: 强制Emperor成为一个子reaper (如果支持的话)
 
 
 
@@ -1811,7 +1811,7 @@ emperor-cap
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
-``help``: set vassals capability
+``help``: 设置vassal的capability
 
 
 
@@ -1821,7 +1821,7 @@ vassals-cap
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
-``help``: set vassals capability
+``help``: 设置vassal的capability
 
 
 
@@ -1831,7 +1831,7 @@ vassal-cap
 
 ``parser``: uwsgi_opt_set_emperor_cap
 
-``help``: set vassals capability
+``help``: 设置vassal的capability
 
 
 
@@ -1841,7 +1841,7 @@ emperor-collect-attribute
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: collect the specified vassal attribute from imperial monitors
+``help``: 收集来自帝国监控器的指定vassal属性
 
 
 
@@ -1851,7 +1851,7 @@ emperor-collect-attr
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: collect the specified vassal attribute from imperial monitors
+``help``: 收集来自帝国监控器的指定vassal属性
 
 
 
@@ -1861,7 +1861,7 @@ emperor-fork-server-attr
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the vassal's attribute to get when checking for fork-server
+``help``: 当检查fork服务器时，设置获取的vassal属性
 
 
 
@@ -1871,7 +1871,7 @@ emperor-wrapper-attr
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the vassal's attribute to get when checking for fork-wrapper
+``help``: 当检查fork封装器时，设置获取的vassal属性
 
 
 
@@ -1881,7 +1881,7 @@ emperor-chdir-attr
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the vassal's attribute to get when checking for chdir
+``help``: 当检查chdir时，设置获取的vassal属性
 
 
 
@@ -1891,7 +1891,7 @@ imperial-monitor-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled imperial monitors
+``help``: 列出启用的帝国监控器
 
 
 
@@ -1901,7 +1901,7 @@ imperial-monitors-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled imperial monitors
+``help``: 列出启用的帝国监控器
 
 
 
@@ -1911,7 +1911,7 @@ vassals-inherit
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add config templates to vassals config (uses --inherit)
+``help``: 添加配置模板到vassal配置中 (使用--inherit)
 
 
 
@@ -1921,7 +1921,7 @@ vassals-include
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: include config templates to vassals config (uses --include instead of --inherit)
+``help``: 包含配置模板到vassal配置 (使用--include而不是--inherit)
 
 
 
@@ -1931,7 +1931,7 @@ vassals-inherit-before
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add config templates to vassals config (uses --inherit, parses before the vassal file)
+``help``: 添加配置模板到vassal配置中 (使用--inherit，在vassal文件之前解析)
 
 
 
@@ -1941,7 +1941,7 @@ vassals-include-before
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: include config templates to vassals config (uses --include instead of --inherit, parses before the vassal file)
+``help``: 包含配置模板到vassal配置 (使用--include而不是--inherit，在vassal文件之前解析)
 
 
 
@@ -1951,7 +1951,7 @@ vassals-start-hook
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the specified command before each vassal starts
+``help``: 在每个vassal启动之前，运行指定的命令
 
 
 
@@ -1961,7 +1961,7 @@ vassals-stop-hook
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the specified command after vassal's death
+``help``: 在vassal死掉之后，运行指定命令
 
 
 
@@ -1971,7 +1971,7 @@ vassal-sos
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: ask emperor for reinforcement when overloaded
+``help``: 当过载时，要求emperor增援
 
 
 
@@ -1981,7 +1981,7 @@ vassal-sos-backlog
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: ask emperor for sos if backlog queue has more items than the value specified
+``help``: 当backlog队列拥有比指定的值多的项的时候，要求emperor紧急救援
 
 
 
@@ -1991,7 +1991,7 @@ vassals-set
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: automatically set the specified option (via --set) for every vassal
+``help``: 对每个vassal自动设置指定选项 (通过--set)
 
 
 
@@ -2001,7 +2001,7 @@ vassal-set
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: automatically set the specified option (via --set) for every vassal
+``help``: 对每个vassal自动设置指定选项 (通过--set)
 
 
 
@@ -2011,7 +2011,7 @@ heartbeat
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: announce healthiness to the emperor
+``help``: 向emperor宣告健康
 
 
 
@@ -2021,7 +2021,7 @@ zeus
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: enable Zeus mode
+``help``: 启用Zeus模式
 
 
 
@@ -2041,7 +2041,7 @@ worker-reload-mercy
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the maximum time (in seconds) a worker can take to reload/shutdown (default is 60)
+``help``: 设置一个worker重载/关闭可以花费的最大时间 (以秒为单位，默认是60)
 
 
 
@@ -2051,7 +2051,7 @@ mule-reload-mercy
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the maximum time (in seconds) a mule can take to reload/shutdown (default is 60)
+``help``: 设置一个mule重载/关闭可以花费的最大时间 (以秒为单位，默认是60)
 
 
 
@@ -2061,7 +2061,7 @@ exit-on-reload
 
 ``parser``: uwsgi_opt_true
 
-``help``: force exit even if a reload is requested
+``help``: 强制退出，即使请求重载
 
 
 
@@ -2071,7 +2071,7 @@ die-on-term
 
 ``parser``: uwsgi_opt_deprecated
 
-``help``: exit instead of brutal reload on SIGTERM (no more needed)
+``help``: 对于SIGTERM，退出而不是粗鲁重载 (不再需要)
 
 
 
@@ -2081,7 +2081,7 @@ force-gateway
 
 ``parser``: uwsgi_opt_true
 
-``help``: force the spawn of the first registered gateway without a master
+``help``: 强制第一个注册的网关在无需master的情况下生成
 
 
 
@@ -2095,7 +2095,7 @@ help
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: show this help
+``help``: 显示帮助
 
 
 
@@ -2109,7 +2109,7 @@ usage
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: show this help
+``help``: 显示帮助
 
 
 
@@ -2121,7 +2121,7 @@ print-sym
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: print content of the specified binary symbol
+``help``: 打印指定二进制符号的内容
 
 
 
@@ -2133,7 +2133,7 @@ print-symbol
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: print content of the specified binary symbol
+``help``: 打印指定二进制符号的内容
 
 
 
@@ -2145,7 +2145,7 @@ reaper
 
 ``parser``: uwsgi_opt_true
 
-``help``: call waitpid(-1,...) after each request to get rid of zombies
+``help``: 每个请求之后调用waitpid(-1,...)，以摆脱僵尸进程
 
 
 
@@ -2157,7 +2157,7 @@ max-requests
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: reload workers after the specified amount of managed requests
+``help``: 在指定数量的管理请求后重载worker
 
 
 
@@ -2167,7 +2167,7 @@ max-requests-delta
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: add (worker_id * delta) to the max_requests value of each worker
+``help``: 添加(worker_id * delta)到每个worker的max_requests值
 
 
 
@@ -2177,7 +2177,7 @@ min-worker-lifetime
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: number of seconds worker must run before being reloaded (default is 60)
+``help``: 在重载之前必须运行的秒数 (默认是60)
 
 
 
@@ -2187,7 +2187,7 @@ max-worker-lifetime
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: reload workers after the specified amount of seconds (default is disabled)
+``help``: 在指定秒数后重载worker (默认禁止)
 
 
 
@@ -2199,7 +2199,7 @@ socket-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set internal sockets timeout
+``help``: 设置间隔socket超时时间
 
 
 
@@ -2209,7 +2209,7 @@ no-fd-passing
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable file descriptor passing
+``help``: 禁用文件描述符传递
 
 
 
@@ -2219,7 +2219,7 @@ locks
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: create the specified number of shared locks
+``help``: 创建指定数目的共享锁
 
 
 
@@ -2229,7 +2229,7 @@ lock-engine
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the lock engine
+``help``: 设置锁引擎
 
 
 
@@ -2239,7 +2239,7 @@ ftok
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: set the ipcsem key via ftok() for avoiding duplicates
+``help``: 通过ftok()设置ipcsem键，以避免重复
 
 
 
@@ -2249,7 +2249,7 @@ persistent-ipcsem
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not remove ipcsem's on shutdown
+``help``: 关闭时不移除ipcsem
 
 
 
@@ -2261,7 +2261,7 @@ sharedarea
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: create a raw shared memory area of specified pages (note: it supports keyval too)
+``help``: 创建指定页的原始共享内存区域 (注意：它也支持键值)
 
 ``reference``: :doc:`SharedArea`
 
@@ -2273,7 +2273,7 @@ safe-fd
 
 ``parser``: uwsgi_opt_safe_fd
 
-``help``: do not close the specified file descriptor
+``help``: 不关闭指定的文件描述符
 
 
 
@@ -2283,7 +2283,7 @@ fd-safe
 
 ``parser``: uwsgi_opt_safe_fd
 
-``help``: do not close the specified file descriptor
+``help``: 不关闭指定的文件描述符
 
 
 
@@ -2293,7 +2293,7 @@ cache
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: create a shared cache containing given elements
+``help``: 创建一个包含给定元素的共享缓存
 
 
 
@@ -2303,7 +2303,7 @@ cache-blocksize
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: set cache blocksize
+``help``: 设置缓存块大小
 
 
 
@@ -2315,7 +2315,7 @@ cache-store
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: enable persistent cache to disk
+``help``: 启用到磁盘的持久缓存
 
 
 
@@ -2325,7 +2325,7 @@ cache-store-sync
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set frequency of sync for persistent cache
+``help``: 设置持久化缓存的同步频率
 
 
 
@@ -2335,7 +2335,7 @@ cache-no-expire
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable auto sweep of expired items
+``help``: 禁用对过期项的自动清除
 
 
 
@@ -2345,7 +2345,7 @@ cache-expire-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the frequency of cache sweeper scans (default 3 seconds)
+``help``: 设置缓存清道夫扫描频率（默认3秒）
 
 
 
@@ -2355,7 +2355,7 @@ cache-report-freed-items
 
 ``parser``: uwsgi_opt_true
 
-``help``: constantly report the cache item freed by the sweeper (use only for debug)
+``help``: 不断报告由清道夫释放的缓存项 (只用于调试)
 
 
 
@@ -2367,7 +2367,7 @@ cache-udp-server
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: bind the cache udp server (used only for set/update/delete) to the specified socket
+``help``: 绑定缓存udp服务器 (只用于设置/更新/删除) 到指定socket
 
 
 
@@ -2379,7 +2379,7 @@ cache-udp-node
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: send cache update/deletion to the specified cache udp server
+``help``: 发送缓存更新/删除到指定的缓存udp服务器
 
 
 
@@ -2389,7 +2389,7 @@ cache-sync
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: copy the whole content of another uWSGI cache server on server startup
+``help``: 在服务器启动时拷贝另一个uWSGI缓存服务器的完整内容
 
 
 
@@ -2399,7 +2399,7 @@ cache-use-last-modified
 
 ``parser``: uwsgi_opt_true
 
-``help``: update last_modified_at timestamp on every cache item modification (default is disabled)
+``help``: 在每次缓存项修改时更新last_modified_at时间戳 (默认禁止)
 
 
 
@@ -2409,7 +2409,7 @@ add-cache-item
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an item in the cache
+``help``: 添加一个项到缓存
 
 
 
@@ -2419,7 +2419,7 @@ load-file-in-cache
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a static file in the cache
+``help``: 加载缓存中的一个静态文件
 
 
 
@@ -2429,7 +2429,7 @@ load-file-in-cache-gzip
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a static file in the cache with gzip compression
+``help``: 使用gzip压缩加载缓存中的一个静态文件
 
 
 
@@ -2439,7 +2439,7 @@ cache2
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: create a new generation shared cache (keyval syntax)
+``help``: 创建一个新生代共享缓存（键值语法）
 
 
 
@@ -2449,7 +2449,7 @@ queue
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable shared queue
+``help``: 启用共享队列
 
 
 
@@ -2459,7 +2459,7 @@ queue-blocksize
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set queue blocksize
+``help``: 设置队列块大小
 
 
 
@@ -2471,7 +2471,7 @@ queue-store
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: enable persistent queue to disk
+``help``: 启用到磁盘的持久化队列
 
 
 
@@ -2481,7 +2481,7 @@ queue-store-sync
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set frequency of sync for persistent queue
+``help``: 为持久化队列设置同步频率
 
 
 
@@ -2495,7 +2495,7 @@ spooler
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: run a spooler on the specified directory
+``help``: 在指定目录上运行一个spooler
 
 
 
@@ -2507,7 +2507,7 @@ spooler-external
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: map spoolers requests to a spooler directory managed by an external instance
+``help``: 映射spooler请求到由外部实例管理的spooler目录
 
 
 
@@ -2517,7 +2517,7 @@ spooler-ordered
 
 ``parser``: uwsgi_opt_true
 
-``help``: try to order the execution of spooler tasks
+``help``: 尝试排序spooler任务的执行
 
 
 
@@ -2527,7 +2527,7 @@ spooler-chdir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: chdir() to specified directory before each spooler task
+``help``: 每个spooler任务之前chdir()到指定目录
 
 
 
@@ -2539,7 +2539,7 @@ spooler-processes
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: set the number of processes for spoolers
+``help``: 为spooler设置进程数
 
 
 
@@ -2549,7 +2549,7 @@ spooler-quiet
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not be verbose with spooler tasks
+``help``: 不要打印spooler任务的冗余信息
 
 
 
@@ -2559,7 +2559,7 @@ spooler-max-tasks
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set the maximum number of tasks to run before recycling a spooler
+``help``: 在循环使用一个spooler之前设置运行的最大任务数
 
 
 
@@ -2569,7 +2569,7 @@ spooler-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set harakiri timeout for spooler tasks
+``help``: 为spooler任务设置harakiri超时时间
 
 
 
@@ -2579,7 +2579,7 @@ spooler-frequency
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set spooler frequency, default 30 seconds
+``help``: 设置spooler频率，默认是30秒
 
 
 
@@ -2589,7 +2589,7 @@ spooler-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set spooler frequency, default 30 seconds
+``help``: 设置spooler频率，默认是30秒
 
 
 
@@ -2601,7 +2601,7 @@ mule
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a mule
+``help``: 添加一个mule
 
 
 
@@ -2613,7 +2613,7 @@ mules
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add the specified number of mules
+``help``: 添加指定数目的mule
 
 
 
@@ -2625,7 +2625,7 @@ farm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a mule farm
+``help``: 添加一个mule farm
 
 
 
@@ -2637,7 +2637,7 @@ mule-msg-size
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: set mule message buffer size
+``help``: 设置mule消息缓冲大小
 
 
 
@@ -2649,7 +2649,7 @@ signal
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: send a uwsgi signal to a server
+``help``: 发送一个uwsgi信号到服务器
 
 
 
@@ -2659,7 +2659,7 @@ signal-bufsize
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set buffer size for signal queue
+``help``: 设置信号队列的缓冲大小
 
 
 
@@ -2669,7 +2669,7 @@ signals-bufsize
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: set buffer size for signal queue
+``help``: 设置信号队列的缓冲大小
 
 
 
@@ -2681,7 +2681,7 @@ signal-timer
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a timer (syntax: <signal> <seconds>)
+``help``: 设置定时器 (语法： <signal> <seconds>)
 
 
 
@@ -2693,7 +2693,7 @@ timer
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a timer (syntax: <signal> <seconds>)
+``help``: 设置定时器 (语法： <signal> <seconds>)
 
 
 
@@ -2705,7 +2705,7 @@ signal-rbtimer
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a redblack timer (syntax: <signal> <seconds>)
+``help``: 添加一个红黑定时器 (语法： <signal> <seconds>)
 
 
 
@@ -2717,7 +2717,7 @@ rbtimer
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a redblack timer (syntax: <signal> <seconds>)
+``help``: 添加一个红黑定时器 (语法： <signal> <seconds>)
 
 
 
@@ -2727,7 +2727,7 @@ rpc-max
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: maximum number of rpc slots (default: 64)
+``help``: rpc槽的最大数（默认：64）
 
 
 
@@ -2739,7 +2739,7 @@ disable-logging
 
 ``parser``: uwsgi_opt_false
 
-``help``: disable request logging
+``help``: 禁用请求日志记录
 
 
 
@@ -2751,7 +2751,7 @@ flock
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: lock the specified file before starting, exit if locked
+``help``: 在启动前锁住指定文件，如果已经被锁了，则退出
 
 
 
@@ -2763,8 +2763,7 @@ flock-wait
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: lock the specified file before starting, wait if locked
-
+``help``: 在启动前锁住指定文件，如果已经被锁了，则等待
 
 
 flock2
@@ -2775,7 +2774,7 @@ flock2
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: lock the specified file after logging/daemon setup, exit if locked
+``help``: 在日志记录/守护设置之后锁住指定文件，如果已经被锁了，则退出
 
 
 
@@ -2787,7 +2786,7 @@ flock-wait2
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: lock the specified file after logging/daemon setup, wait if locked
+``help``: 在日志记录/守护设置之后锁住指定文件，如果已经被锁了，则等待
 
 
 
@@ -2797,7 +2796,7 @@ pidfile
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: create pidfile (before privileges drop)
+``help``: 创建pid文件 (在移除特权之前)
 
 
 
@@ -2807,7 +2806,7 @@ pidfile2
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: create pidfile (after privileges drop)
+``help``: 创建pid文件 (在移除特权之后)
 
 
 
@@ -2817,7 +2816,7 @@ safe-pidfile
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: create safe pidfile (before privileges drop)
+``help``: 创建安全的pid文件 (在移除特权之前)
 
 
 
@@ -2827,7 +2826,7 @@ safe-pidfile2
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: create safe pidfile (after privileges drop)
+``help``: 创建安全的pid文件 (在移除特权之后)
 
 
 
@@ -2837,7 +2836,7 @@ chroot
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: chroot() to the specified directory
+``help``: chroot()到指定目录
 
 
 
@@ -2847,7 +2846,7 @@ pivot-root
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: pivot_root() to the specified directories (new_root and put_old must be separated with a space)
+``help``: pivot_root()到指定目录 (必须用一个空格来分隔new_root和put_old)
 
 
 
@@ -2857,7 +2856,7 @@ pivot_root
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: pivot_root() to the specified directories (new_root and put_old must be separated with a space)
+``help``: pivot_root()到指定目录 (必须用一个空格来分隔new_root和put_old)
 
 
 
@@ -2877,7 +2876,7 @@ gid
 
 ``parser``: uwsgi_opt_set_gid
 
-``help``: setgid to the specified group/gid
+``help``: setgid到指定的group/gid
 
 
 
@@ -2887,7 +2886,7 @@ add-gid
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add the specified group id to the process credentials
+``help``: 添加指定group id到进程凭证
 
 
 
@@ -2899,7 +2898,7 @@ immediate-uid
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: setuid to the specified user/uid IMMEDIATELY
+``help``: 立即setuid到指定的user/uid
 
 
 
@@ -2911,7 +2910,7 @@ immediate-gid
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: setgid to the specified group/gid IMMEDIATELY
+``help``: 立即setgid到指定的group/gid
 
 
 
@@ -2921,7 +2920,7 @@ no-initgroups
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable additional groups set via initgroups()
+``help``: 通过initgroups()禁用额外的组设置
 
 
 
@@ -2931,7 +2930,7 @@ cap
 
 ``parser``: uwsgi_opt_set_cap
 
-``help``: set process capability
+``help``: 设置进程capability
 
 
 
@@ -2941,7 +2940,7 @@ unshare
 
 ``parser``: uwsgi_opt_set_unshare
 
-``help``: unshare() part of the processes and put it in a new namespace
+``help``: unshare()部分进程，然后将其放在一个新的名字空间中
 
 
 
@@ -2951,7 +2950,8 @@ unshare2
 
 ``parser``: uwsgi_opt_set_unshare
 
-``help``: unshare() part of the processes and put it in a new namespace after rootfs change
+``help``: 在rootfs改动之后，unshare()部分进程，然后将其放在一个新的名字空间中
+
 
 
 
@@ -2963,7 +2963,7 @@ setns-socket
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: expose a unix socket returning namespace fds from /proc/self/ns
+``help``: 公开一个返回来自/proc/self/ns的名字空间fds的 unix socket
 
 
 
@@ -2973,7 +2973,7 @@ setns-socket-skip
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: skip the specified entry when sending setns file descriptors
+``help``: 当发送setns文件描述符时，跳过指定项
 
 
 
@@ -2983,7 +2983,7 @@ setns-skip
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: skip the specified entry when sending setns file descriptors
+``help``: 当发送setns文件描述符时，跳过指定项
 
 
 
@@ -2993,7 +2993,7 @@ setns
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: join a namespace created by an external uWSGI instance
+``help``: 加入一个由外部uWSGI实例创建的名字空间
 
 
 
@@ -3003,7 +3003,7 @@ setns-preopen
 
 ``parser``: uwsgi_opt_true
 
-``help``: open /proc/self/ns as soon as possible and cache fds
+``help``: 尽快打开/proc/self/ns，并缓存fds
 
 
 
@@ -3013,7 +3013,7 @@ fork-socket
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: suspend the execution after early initialization and fork() at every unix socket connection
+``help``: 在早期初始化之后挂起执行，并且在每次unix socket连接时fork()
 
 
 
@@ -3023,7 +3023,7 @@ fork-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: suspend the execution after early initialization and fork() at every unix socket connection
+``help``: 在早期初始化之后挂起执行，并且在每次unix socket连接时fork()
 
 
 
@@ -5631,7 +5631,7 @@ privileged-binary-patch
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command (before privileges drop)
+``help``: patch the uwsgi binary with a new command (在移除特权之前)
 
 
 
@@ -5641,7 +5641,7 @@ unprivileged-binary-patch
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command (after privileges drop)
+``help``: patch the uwsgi binary with a new command (在移除特权之后)
 
 
 
@@ -5651,7 +5651,7 @@ privileged-binary-patch-arg
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command and arguments (before privileges drop)
+``help``: patch the uwsgi binary with a new command and arguments (在移除特权之前)
 
 
 
@@ -5661,7 +5661,7 @@ unprivileged-binary-patch-arg
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command and arguments (after privileges drop)
+``help``: patch the uwsgi binary with a new command and arguments (在移除特权之后)
 
 
 

@@ -3,9 +3,9 @@ FreeBSD Jails
 
 uWSGI 1.9.16引入了原生的FreeBSD jails支持。
 
-FreeBSD jails can be seen as new-generation chroot() with fine-grained tuning of what this "jail" can see.
+FreeBSD jails可以被看成新一代的chroot()，能够细粒度调整“jail”可以访问的东西。
 
-They are very similar to Linux namespaces even if a bit higher-level (从API的角度来看)。
+即使在更高一点的级别上，它们都非常类似于Linux的名字空间 (从API的角度来看)。
 
 自FreeBSD 4起，jails就可用了
 
@@ -13,21 +13,20 @@ They are very similar to Linux namespaces even if a bit higher-level (从API的�
 为什么用uWSGI管理jails?
 *******************************
 
-Generally jails are managed using the system tool "jail" and its utilities.
+一般来说，jails是用系统工具“jail”及其实用程序管理的。
 
-Til now running uWSGI in FreeBSD jails was pretty common, but for really massive setups (read: hosting business)
-where an Emperor (for example) manages hundreds of unrelated uWSGI instances, the setup could be really overkill.
+时至今日，在FreeBSD jails中运行uWSGI是非常常见的，但是对于真正大规模的设置 (即，托管业务)，其中，Emperor (比方说) 管理数百个无关的uWSGI实例，设置真真会磨死人。
 
-Managing jails directly in uWSGI config files highly reduce sysadmin costs and helps having a better organization of the whole infrastructure.
+在uWSGI配置文件中直接管理jails极大降低了系统管理员成本，并且帮助更好的组织整个基础设施。
 
 老式的jails (FreeBSD < 8)
 *****************************
 
-FreeBSD exposes two main api for managing jails. The old (and easier) one is based on the jail() function.
+FreeBSD公开了2个主要的API，用于管理jails。老的（更早的）那个是基于jail()函数的。
 
-It is available since FreeBSD 4 and allows you to set the rootfs, the hostname and one ore more ipv4/ipv6 addresses
+它自FreeBSD 4起可用，并且允许你设置rootfs、主机名和一个或多个ipv4/ipv6地址。
 
-Two options are needed for running a uWSGI instance in a jail: --jail and --jail-ip4/--jail-ip6 (effectively they are 3 if you use IPv6)
+在一个jail中运行一个uWSGI实例需要2个选项：--jail和--jail-ip4/--jail-ip6 (实际上是3个，如果你使用IPv6的话)
 
 ``--jail <rootfs> [hostname] [jailname]``
 
@@ -35,11 +34,9 @@ Two options are needed for running a uWSGI instance in a jail: --jail and --jail
 
 ``--jail-ip6 <address>`` (can be specified multiple times)
 
-Showing how to create the rootfs for your jail is not the objective of this document, but personally i hate rebuilding from sources, so generally
-i simply explode the base.tgz file from an official repository and chroot() to it to make the fine tuning.
+显示如何为你的jail创建rootfs并非本文档的目的，但是就我个人而言，我讨厌从源代码重新构建，因此一般而言，我只是从官方库搞到base.tgz文件，并且chroot()到它那里，以进行微调。
 
-An important thing you have to remember is that the ip addresses you attach to a jail must be available in the system (as aliases). As always we tend to abuse uWSGI facilities.
-In our case the --exec-pre-jail hook will do the trick
+一个你必须记得的事情是，附加到jail的ip地址必须在系统中可用（作为别名）。与往常一样，我们往往滥用uWSGI设施。在我们的例子中，--exec-pre-jail hook将会获得成功
 
 
 .. code-block:: ini
@@ -69,12 +66,11 @@ In our case the --exec-pre-jail hook will do the trick
 新式的jails (FreeBSD >= 8)
 ******************************
 
-FreeBSD 8 introdiced a new advanced api for managing jails. Based on the jail_set() syscall, libjail exposes dozens of features
-and allows fine-tuning of your jails. To use the new api you need the --jail2 option (aliased as --libjail)
+FreeBSD 8引入了一个用于管理jails的新的高级的api。基于jail_set()系统调用，libjail公开了几十个功能，并且允许jails的微调。要使用这个新的api，你需要--jail2选项 (别名为--libjail)
 
 ``--jail2 <key>[=value]``
 
-Each --jail2 option maps 1:1 with a jail attribute so you can basically tune everything !
+每个--jail2选项都和一个jail属性1：1映射，因此你基本可以调整一切！
 
 .. code-block:: ini
 
@@ -106,9 +102,9 @@ Each --jail2 option maps 1:1 with a jail attribute so you can basically tune eve
 关于FreeBSD >= 8.4 但是 < 9.0 的注意事项
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-uWSGI uses ipc semaphores on FreeBSD < 9 (newer FreeBSD releases have POSIX semaphores support).
+uWSGI在FreeBSD < 9上使用ipc信号量 (较新的FreeBSD发行版支持POSIX信号量)。
 
-Since FreeBSD 8.4 you need to explicitely allows sysvipc in jails. So be sure to have
+从FreeBSD 8.4起，你需要明确在jails中允许sysvipc。因此，确保这样
 
 .. code-block:: ini
 
@@ -121,11 +117,11 @@ Since FreeBSD 8.4 you need to explicitely allows sysvipc in jails. So be sure to
 DevFS
 *****
 
-The DevFS virtual filesystem manages the /dev directory on FreeBSD.
+DevFS虚拟文件系统管理FreeBSD上的/dev目录。
 
-The /dev filesystem is not mounted in the jail, but you can need it for literally hundreds of reasons.
+/dev文件系统并没有挂载在jail中，但是出于数以百计的原因，你可能需要它。
 
-Two main approaches are available: mounting it in the /dev/ directory of the roots before creating the jail, or allowing the jail to mount it
+有两个可用的主要方法：在创建jail之前，将其挂载在roots的/dev/目录中，或者允许jail挂载它
 
 
 .. code-block:: ini
@@ -159,7 +155,7 @@ Two main approaches are available: mounting it in the /dev/ directory of the roo
    processes = 2
 
 
-or (allow the jail itself to mount it)
+或者 (允许jail自身挂载它)
 
 .. code-block:: ini
 
@@ -202,8 +198,7 @@ or (allow the jail itself to mount it)
 
 重载（或者二进制补丁）的管理有点烦人，因为uWSGI需要重新执行自身，所以在你的jail中，需要一个二进制文件、插件和配置文件的拷贝 (除非你可以牺牲掉优雅重载和简单指定Emperor来重新生成实例)
 
-另一个方法是 (就和devfs一样) mounting the directory with the uwsgi binary (and the eventual plugins) in the jail itself and instruct
-uWSGI to use this new path with --binary-path
+另一个方法是 (就和devfs一样) 在jail自身中，使用uwsgi二进制文件（和最终插件）挂载该目录，并且使用--binary-path来指示uWSGI使用这个新的路径
 
 
 jid文件
@@ -214,11 +209,11 @@ jid文件
 附加到一个jail
 *******************
 
-You can attach uWSGI instances to already running jails (they can be standard persistent jail too) using --jail-attach <id>
+你可以使用--jail-attach <id>将uWSGI实例附加到已经运行的jails（也可以是标准的持久化jail）上
 
-The id argument can be a jid or the name of the jail.
+id参数可以是jid或者jail的名字。
 
-This feature requires FreeBSD 8
+这个特性需要FreeBSD 8
 
 Debian/kFreeBSD
 ***************
@@ -263,4 +258,4 @@ Debian/kFreeBSD
 
 当jail中运行的最后一个进程死掉的时候，会销毁这个jail
 
-默认情况下，所有挂载在rootfs（在进入jail之前）的东东将对jail自身可见 (we have seen it before when dealing with devfs)
+默认情况下，所有挂载在rootfs（在进入jail之前）的东东将对jail自身可见 (前面在处理devfs的时候，我们已经看到了)
