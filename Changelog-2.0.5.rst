@@ -13,14 +13,14 @@ uWSGI 2.0.5
 - 修复共享区域的poller
 - 修复统计信息服务器中的JSON编码器
 - 修复FastCGI解析器并实现EOF管理 (关于作者： Jeff Trawick)
-- improved fast on-demand mode
+- 改进快速按需模式
 - 排除对静态文件的avg_rt计算
 - 修复uwsgi内部路由器中的变量支持
 - 修复websockets + keepalive顺序
 - 禁用基于协程的循环引擎中的SIGPIPE管理
 - 修复32位系统中的64位共享区域管理
-- honor chmod/chown-socket in fd0 mode
-- hack to avoid Safari on iOS making a mess with keepalive
+- 在fd0模式下遵循chmod/chown-socket
+- hack以避免iOS上的Safari弄乱keepalive
 - 当同时使用--logto和--log2时的日志设置 (关于作者：Łukasz Mierzwa)
 - 修复mule_get_msg EAGAIN
 - signal_pidfile返回正确的错误码code

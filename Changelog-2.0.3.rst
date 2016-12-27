@@ -15,7 +15,7 @@ uWSGI 2.0.3
 * 修复tuntap路由器内存损坏
 * 独立于DHE参数设置ECDHE曲线 (Hynek Schlawack)
 * 在检查每一个waitpid之前，不等待整个Emperor循环
-* fix a regression with caller() not indicating the starting *.psgi程序 (Ævar Arnfjörð Bjarmason)
+* 修复caller()的一个回退，不代表启动*.psgi程序 (Ævar Arnfjörð Bjarmason)
 
 新特性
 ********
@@ -65,7 +65,7 @@ add_var已在CPython和Perl插件中实现
 'disableheaders'路由动作
 -------------------------------
 
-This new action disables the sending of response headers, independently by the current request state
+这个新的动作禁用响应头的发送，独立于当前的请求状态
 
 糟糕的条件下更智能的Emperor
 ---------------------------------

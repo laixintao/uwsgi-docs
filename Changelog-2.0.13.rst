@@ -14,10 +14,10 @@ uWSGI 2.0.13
 - 大量的缓存修复 (Darvame)
 - 使得在一个不同的目录中编译插件更简单(Jakub Jirutka)
 - 添加wheel包机制 (Matt Robenolt)
-- Use EPOLLEXCLUSIVE for reading, helps with the thundering herd problem (在linux 4.5+上) (INADA Naoki)
+- 将EPOLLEXCLUSIVE用于读取，有助于惊群问题 (在linux 4.5+上) (INADA Naoki)
 - 修复与unix socket的apache 2.4集成 (Alexandre Rossi)
 - 添加HTTP/2支持到apache 2 proxy (Michael Fladischer, OGAWA Hirofumi)
-- Fix apache mod proxy compilation with apache 2.4.20 (Mathieu Arnold)
+- 修复apache 2.4.20的apache mod proxy编译 (Mathieu Arnold)
 - 默认使用clang作为MacOS X上的默认编译器 (Riccardo Magliocchetti)
 - 添加--cgi-close-stdin-on-eof (Roberto De Ioris)
 

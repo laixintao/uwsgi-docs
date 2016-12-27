@@ -13,7 +13,7 @@ uWSGI 2.0.1
 - 改进psgi.input以支持read()中的偏移
 - 修复 (和简化) perl堆栈跟踪使用情况
 - 修复sni安全订阅
-- CGI plugin does not require anymore that Status header is the first one (Andjelko Horvat)
+- CGI插件不再需要了，Status头部是第一个 (Andjelko Horvat)
 - 修复CPython mule_msg_get超时时间解析
 - 允许通过绝对路径嵌入配置文件
 - 修复symcall rpc
@@ -27,7 +27,7 @@ uWSGI 2.0.1
 - 对logfile-chown支持log-master
 - 改进legion重载
 - 修复tuntap网络掩码
-- fixed busyness plugin without metrics subsystem
+- 修复busyness插件，无需度量子系统
 
 新特性
 ********
