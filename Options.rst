@@ -2031,7 +2031,7 @@ reload-mercy
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum time (in seconds) we wait for workers and other processes to die during reload/shutdown
+``help``: 设置the maximum time (以秒为单位) we wait for workers and other processes to die during reload/shutdown
 
 
 
@@ -5242,7 +5242,7 @@ legion-scroll
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置the scroll of a legion
+``help``: 设置一个legion的scroll
 
 
 
@@ -5252,7 +5252,7 @@ legion-scroll-max-size
 
 ``parser``: uwsgi_opt_set_16bit
 
-``help``: 设置max size of legion scroll buffer
+``help``: 设置legion scroll缓冲的最大大小
 
 
 
@@ -5262,7 +5262,7 @@ legion-scroll-list-max-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置max size of legion scroll list buffer
+``help``: 设置legion scroll列表缓冲的最大大小
 
 
 
@@ -5274,7 +5274,7 @@ subscriptions-sign-check
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置digest algorithm and certificate directory for secured subscription system
+``help``: 为安全的订阅系统设置digest算法和证书目录
 
 
 
@@ -5286,7 +5286,7 @@ subscriptions-sign-check-tolerance
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置the maximum tolerance (in seconds) of clock skew for secured subscription system
+``help``: 为安全的订阅系统设置时钟偏差的最大容忍度（以秒为单位）
 
 
 
@@ -5298,7 +5298,7 @@ subscriptions-sign-skip-uid
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: skip signature check for the specified uid when using unix sockets credentials
+``help``: 当使用unix socket凭证的时候，对指定的uid跳过签名检查
 
 
 
@@ -5310,7 +5310,7 @@ subscriptions-credentials-check
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a directory to search for subscriptions key credentials
+``help``: 添加一个用以搜索订阅密钥凭证的目录
 
 
 
@@ -5320,7 +5320,7 @@ subscriptions-use-credentials
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable management of SCM_CREDENTIALS in subscriptions UNIX sockets
+``help``: 启用订阅UNIX socket中的SCM_CREDENTIALS管理
 
 
 
@@ -5330,7 +5330,7 @@ subscription-algo
 
 ``parser``: uwsgi_opt_ssa
 
-``help``: 设置load balancing algorithm for the subscription system
+``help``: 为订阅系统设置负载均衡算法
 
 
 
@@ -5340,7 +5340,7 @@ subscription-dotsplit
 
 ``parser``: uwsgi_opt_true
 
-``help``: try to fallback to the next part (dot based) in subscription key
+``help``: 尝试回退到订阅键中的下一个部分（基于点）
 
 
 
@@ -5352,7 +5352,7 @@ subscribe-to
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: subscribe to the specified subscription server
+``help``: 订阅到指定的订阅服务器
 
 
 
@@ -5364,7 +5364,7 @@ st
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: subscribe to the specified subscription server
+``help``: 订阅到指定的订阅服务器
 
 
 
@@ -5376,7 +5376,7 @@ subscribe
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: subscribe to the specified subscription server
+``help``: 订阅到指定的订阅服务器
 
 
 
@@ -5388,7 +5388,7 @@ subscribe2
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: subscribe to the specified subscription server using advanced keyval syntax
+``help``: 使用高级的键值语法订阅到指定的订阅服务器
 
 
 
@@ -5398,7 +5398,7 @@ subscribe-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: send subscription announce at the specified interval
+``help``: 以指定间隔发送订阅宣告
 
 
 
@@ -5408,7 +5408,7 @@ subscription-tolerance
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置tolerance for subscription servers
+``help``: 为订阅服务器设置容忍度
 
 
 
@@ -5418,7 +5418,7 @@ unsubscribe-on-graceful-reload
 
 ``parser``: uwsgi_opt_true
 
-``help``: force unsubscribe request even during graceful reload
+``help``: 强制取消订阅请求，即使是在优雅重载期间
 
 
 
@@ -5428,7 +5428,7 @@ start-unsubscribed
 
 ``parser``: uwsgi_opt_true
 
-``help``: configure subscriptions but do not send them (useful with master fifo)
+``help``: 配置订阅，但是不要发送它们 (对master fifo有用)
 
 
 
@@ -5440,7 +5440,7 @@ subscribe-with-modifier1
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: force the specififed modifier1 when subscribing
+``help``: 订阅时，强制使用指定的modifier1
 
 
 
@@ -5450,7 +5450,7 @@ snmp
 
 ``parser``: uwsgi_opt_snmp
 
-``help``: enable the embedded snmp server
+``help``: 启用嵌入的snmp服务器
 
 
 
@@ -5460,7 +5460,7 @@ snmp-community
 
 ``parser``: uwsgi_opt_snmp_community
 
-``help``: 设置the snmp community string
+``help``: 设置snmp community字符串
 
 
 
@@ -5470,7 +5470,7 @@ ssl-verbose
 
 ``parser``: uwsgi_opt_true
 
-``help``: be verbose about SSL errors
+``help``: 输出SSL错误详细信息
 
 
 
@@ -5482,7 +5482,7 @@ ssl-sessions-use-cache
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: use uWSGI cache for ssl sessions storage
+``help``: 将uWSGI缓存用于ssl会话存储
 
 
 
@@ -5494,7 +5494,7 @@ ssl-session-use-cache
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: use uWSGI cache for ssl sessions storage
+``help``: 将uWSGI缓存用于ssl会话存储
 
 
 
@@ -5504,7 +5504,7 @@ ssl-sessions-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置SSL sessions timeout (default: 300 seconds)
+``help``: 设置SSL会话超时时间 (默认：300秒)
 
 
 
@@ -5514,7 +5514,7 @@ ssl-session-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置SSL sessions timeout (default: 300 seconds)
+``help``: 设置SSL会话超时时间 (默认：300秒)
 
 
 
@@ -5524,7 +5524,7 @@ sni
 
 ``parser``: uwsgi_opt_sni
 
-``help``: add an SNI-governed SSL context
+``help``: 添加一个管理SNI的SSL上下文
 
 
 
@@ -5534,7 +5534,7 @@ sni-dir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: check for cert/key/client_ca file in the specified directory and create a sni/ssl context on demand
+``help``: 检查指定目录中的cert/key/client_ca文件，并按需创建一个sni/ssl上下文
 
 
 
@@ -5544,7 +5544,7 @@ sni-dir-ciphers
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置ssl ciphers for sni-dir option
+``help``: 为sni-dir设置ssl密码
 
 
 
@@ -5554,7 +5554,7 @@ ssl-enable3
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable SSLv3 (insecure)
+``help``: 启用SSLv3 (不安全的)
 
 
 
@@ -5564,7 +5564,7 @@ ssl-option
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: 设置a raw ssl option (numeric value)
+``help``: 设置一个原始的ssl选项 (数值)
 
 
 
@@ -5574,7 +5574,7 @@ sni-regexp
 
 ``parser``: uwsgi_opt_sni
 
-``help``: add an SNI-governed SSL context (the key is a regexp)
+``help``: 添加一个管理SNI的SSL上下文 (键是一个正则表达式)
 
 
 
@@ -5584,7 +5584,7 @@ ssl-tmp-dir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: store ssl-related temp files in the specified directory
+``help``: 在指定的目录中存储ssl相关的临时文件
 
 
 
@@ -5596,7 +5596,7 @@ check-interval
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置the interval (in seconds) of master checks
+``help``: 设置master检查的间隔 (以秒为单位)
 
 
 
@@ -5608,7 +5608,7 @@ forkbomb-delay
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: sleep for the specified number of seconds when a forkbomb is detected
+``help``: 当检查到一个forkbomb时，休眠指定秒数
 
 
 
@@ -5618,7 +5618,7 @@ binary-path
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force binary path
+``help``: 强制使用二进制路径
 
 
 
@@ -5628,7 +5628,7 @@ privileged-binary-patch
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command (在移除特权之前)
+``help``: 用一个新的命令给uwsgi二进制文件打补丁 (在移除特权之前)
 
 
 
@@ -5638,7 +5638,7 @@ unprivileged-binary-patch
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command (在移除特权之后)
+``help``: 用一个新的命令给uwsgi二进制文件打补丁 (在移除特权之后)
 
 
 
@@ -5648,7 +5648,7 @@ privileged-binary-patch-arg
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command and arguments (在移除特权之前)
+``help``: 用一个新的命令和参数给uwsgi二进制文件打补丁 (在移除特权之前)
 
 
 
@@ -5658,7 +5658,7 @@ unprivileged-binary-patch-arg
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: patch the uwsgi binary with a new command and arguments (在移除特权之后)
+``help``: 用一个新的命令和参数给uwsgi二进制文件打补丁 (在移除特权之后)
 
 
 
@@ -5668,7 +5668,7 @@ async
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable async mode with specified cores
+``help``: 启用使用指定核心的异步模式
 
 
 
@@ -5678,7 +5678,7 @@ disable-async-warn-on-queue-full
 
 ``parser``: uwsgi_opt_false
 
-``help``: Disable printing 'async queue is full' warning messages.
+``help``: 禁止打印'async queue is full'警告信息。
 
 
 
@@ -5688,7 +5688,7 @@ max-fd
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置maximum number of file descriptors (requires root privileges)
+``help``: 设置文件描述符的最大数目 (需要root权限)
 
 
 
@@ -5698,7 +5698,7 @@ logto
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置logfile/udp address
+``help``: 设置logfile/udp地址
 
 
 
@@ -5708,7 +5708,7 @@ logto2
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: log to specified file or udp address 在移除特权之后
+``help``: 在移除特权之后记录日志到指定的文件或者udp地址
 
 
 
@@ -5718,7 +5718,7 @@ log-format
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置advanced format for request logging
+``help``: 为请求日志记录设置高级格式
 
 
 
@@ -5728,7 +5728,7 @@ logformat
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置advanced format for request logging
+``help``: 为请求日志记录设置高级格式
 
 
 
@@ -5738,7 +5738,7 @@ logformat-strftime
 
 ``parser``: uwsgi_opt_true
 
-``help``: apply strftime to logformat output
+``help``: 应用strftime到logformat输出
 
 
 
@@ -5748,7 +5748,7 @@ log-format-strftime
 
 ``parser``: uwsgi_opt_true
 
-``help``: apply strftime to logformat output
+``help``: 应用strftime到logformat输出
 
 
 
@@ -5758,7 +5758,7 @@ logfile-chown
 
 ``parser``: uwsgi_opt_true
 
-``help``: chown logfiles
+``help``: chown日志文件
 
 
 
@@ -5768,7 +5768,7 @@ logfile-chmod
 
 ``parser``: uwsgi_opt_logfile_chmod
 
-``help``: chmod logfiles
+``help``: chmod日志文件
 
 
 
@@ -5780,7 +5780,7 @@ log-syslog
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: log to syslog
+``help``: 记录日志到syslog
 
 
 
@@ -5792,7 +5792,7 @@ log-socket
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: send logs to the specified socket
+``help``: 发送日志到指定的socket
 
 
 
@@ -5804,7 +5804,7 @@ req-logger
 
 ``flags``: UWSGI_OPT_REQ_LOG_MASTER
 
-``help``: set/append a request logger
+``help``: 设置/附加一个请求记录器
 
 
 
@@ -5816,7 +5816,7 @@ logger-req
 
 ``flags``: UWSGI_OPT_REQ_LOG_MASTER
 
-``help``: set/append a request logger
+``help``: 设置/附加一个请求记录器
 
 
 
@@ -5828,7 +5828,7 @@ logger
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: set/append a logger
+``help``: 设置/附加一个记录器
 
 
 
@@ -5838,7 +5838,7 @@ logger-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled loggers
+``help``: 列出已启用的记录器
 
 
 
@@ -5848,7 +5848,7 @@ loggers-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled loggers
+``help``: 列出已启用的记录器
 
 
 
@@ -5860,7 +5860,7 @@ threaded-logger
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: offload log writing to a thread
+``help``: 卸载日志写入到一个线程中
 
 
 
@@ -5872,7 +5872,7 @@ log-encoder
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: add an item in the log encoder chain
+``help``: 添加一个项到日志编码器链中
 
 
 
@@ -5884,7 +5884,7 @@ log-req-encoder
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: add an item in the log req encoder chain
+``help``: 添加一个项到日志请求编码器链中
 
 
 
@@ -5896,7 +5896,7 @@ log-drain
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: drain (do not show) log lines matching the specified regexp
+``help``: 排除（不要显示）匹配到指定正则表达式的日志行
 
 
 
@@ -5908,7 +5908,7 @@ log-filter
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: show only log lines matching the specified regexp
+``help``: 只显示匹配到指定正则表达式的日志行
 
 
 
@@ -5920,7 +5920,7 @@ log-route
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: log to the specified named logger if regexp applied on logline matches
+``help``: 如果应用到日志行的正则表达式匹配上的话，则记录日志到指定名字的记录器
 
 
 
@@ -5932,7 +5932,7 @@ log-req-route
 
 ``flags``: UWSGI_OPT_REQ_LOG_MASTER
 
-``help``: log requests to the specified named logger if regexp applied on logline matches
+``help``: 如果应用到日志行的正则表达式匹配上的话，则记录请求到指定名字的记录器
 
 
 
@@ -5942,7 +5942,7 @@ use-abort
 
 ``parser``: uwsgi_opt_true
 
-``help``: call abort() on segfault/fpe, could be useful for generating a core dump
+``help``: 在segfault/fpe上调用abort()，对于生成一个core dump可能有用
 
 
 
@@ -5954,7 +5954,7 @@ alarm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: create a new alarm, syntax: <alarm> <plugin:args>
+``help``: 创建一个新的告警，语法：<alarm> <plugin:args>
 
 
 
@@ -5964,7 +5964,7 @@ alarm-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: use main alarm thread rather than create dedicated threads for curl-based alarms
+``help``: 对基于curl的告警使用主要的告警线程，而不是创建专用线程
 
 
 
@@ -5974,7 +5974,7 @@ alarm-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: tune the anti-loop alam system (default 3 seconds)
+``help``: 调整反循环告警系统 (默认3秒)
 
 
 
@@ -5986,7 +5986,7 @@ alarm-fd
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when an fd is read for read (by default it reads 1 byte, 设置8 for eventfd)
+``help``: 当一个fd准备好读取的时候，引发指定的告警 (默认情况下，它读取1个字节，为eventfd设置8)
 
 
 
@@ -5998,7 +5998,7 @@ alarm-segfault
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the segmentation fault handler is executed
+``help``: 当执行了段错误处理器时，引发指定的告警
 
 
 
@@ -6010,7 +6010,7 @@ segfault-alarm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the segmentation fault handler is executed
+``help``: 当执行了段错误处理器时，引发指定的告警
 
 
 
@@ -6022,7 +6022,7 @@ alarm-backlog
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6034,7 +6034,7 @@ backlog-alarm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6046,7 +6046,7 @@ lq-alarm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6058,7 +6058,7 @@ alarm-lq
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6070,7 +6070,7 @@ alarm-listen-queue
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6082,7 +6082,7 @@ listen-queue-alarm
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: raise the specified alarm when the socket backlog queue is full
+``help``: 当socket backlog队列满时，引发指定的告警
 
 
 
@@ -6094,7 +6094,7 @@ log-alarm
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: raise the specified alarm when a log line matches the specified regexp, syntax: <alarm>[,alarm...] <regexp>
+``help``: 当日志行匹配到指定的正则表达式时，引发指定的告警，语法： <alarm>[,alarm...] <regexp>
 
 
 
@@ -6106,7 +6106,7 @@ alarm-log
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: raise the specified alarm when a log line matches the specified regexp, syntax: <alarm>[,alarm...] <regexp>
+``help``: 当日志行匹配到指定的正则表达式时，引发指定的告警，语法： <alarm>[,alarm...] <regexp>
 
 
 
@@ -6118,7 +6118,7 @@ not-log-alarm
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: skip the specified alarm when a log line matches the specified regexp, syntax: <alarm>[,alarm...] <regexp>
+``help``: 当日志行匹配到指定的正则表达式时，跳过指定的告警，语法： <alarm>[,alarm...] <regexp>
 
 
 
@@ -6130,7 +6130,7 @@ not-alarm-log
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: skip the specified alarm when a log line matches the specified regexp, syntax: <alarm>[,alarm...] <regexp>
+``help``: 当日志行匹配到指定的正则表达式时，跳过指定的告警，语法：<alarm>[,alarm...] <regexp>
 
 
 
@@ -6172,7 +6172,7 @@ log-master
 
 ``flags``: UWSGI_OPT_MASTER|UWSGI_OPT_LOG_MASTER
 
-``help``: delegate logging to master process
+``help``: 委托日志记录给master进程
 
 
 
@@ -6182,7 +6182,7 @@ log-master-bufsize
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置the buffer size for the master logger. bigger log messages will be truncated
+``help``: 为master记录器设置缓冲大小。更大的日志消息将会被截短
 
 
 
@@ -6192,7 +6192,7 @@ log-master-stream
 
 ``parser``: uwsgi_opt_true
 
-``help``: create the master logpipe as SOCK_STREAM
+``help``: 将master logpipe作为SOCK_STREAM创建
 
 
 
@@ -6202,7 +6202,7 @@ log-master-req-stream
 
 ``parser``: uwsgi_opt_true
 
-``help``: create the master requests logpipe as SOCK_STREAM
+``help``: 将master请求logpipe作为SOCK_STREAM创建
 
 
 
@@ -6244,7 +6244,7 @@ log-backupname
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置logfile name after rotation
+``help``: 设置日志循环后的日志文件名
 
 
 
@@ -6254,7 +6254,7 @@ logdate
 
 ``parser``: uwsgi_opt_log_date
 
-``help``: prefix logs with date or a strftime string
+``help``: 给日志加上日期或者一个strftime字符串前缀
 
 
 
@@ -6264,7 +6264,7 @@ log-date
 
 ``parser``: uwsgi_opt_log_date
 
-``help``: prefix logs with date or a strftime string
+``help``: 给日志加上日期或者一个strftime字符串前缀
 
 
 
@@ -6274,7 +6274,7 @@ log-prefix
 
 ``parser``: uwsgi_opt_log_date
 
-``help``: prefix logs with a string
+``help``: 给日志加上一个字符串前缀
 
 
 
@@ -6344,7 +6344,7 @@ log-ioerror
 
 ``parser``: uwsgi_opt_true
 
-``help``: log requests with io errors
+``help``: 记录带io错误的日志请求
 
 
 
@@ -6354,7 +6354,7 @@ log-micros
 
 ``parser``: uwsgi_opt_true
 
-``help``: report response time in microseconds instead of milliseconds
+``help``: 以微秒，而不是毫秒为单位报告响应时间
 
 
 
@@ -6364,7 +6364,7 @@ log-x-forwarded-for
 
 ``parser``: uwsgi_opt_true
 
-``help``: use the ip from X-Forwarded-For header instead of REMOTE_ADDR
+``help``: 使用来自X-Forwarded-For头部而不是REMOTE_ADDR头部的ip
 
 
 
@@ -6374,7 +6374,7 @@ master-as-root
 
 ``parser``: uwsgi_opt_true
 
-``help``: leave master process running as root
+``help``: 让master进程作为root运行
 
 
 
@@ -6384,7 +6384,7 @@ drop-after-init
 
 ``parser``: uwsgi_opt_true
 
-``help``: run privileges drop after plugin initialization
+``help``: 插件初始化之后运行特权移除
 
 
 
@@ -6394,7 +6394,7 @@ drop-after-apps
 
 ``parser``: uwsgi_opt_true
 
-``help``: run privileges drop after apps loading
+``help``: 应用加载后运行特权移除
 
 
 
@@ -6404,7 +6404,7 @@ force-cwd
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force the initial working directory to the specified value
+``help``: 强制使用指定的初始工作目录
 
 
 
@@ -6414,7 +6414,7 @@ binsh
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: override /bin/sh (used by exec hooks, it always fallback to /bin/sh)
+``help``: 覆盖/bin/sh (exec钩子使用，总是回退到/bin/sh)
 
 
 
@@ -6434,7 +6434,7 @@ chdir2
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: chdir to specified directory after apps loading
+``help``: 应用加载之后chdir到指定目录
 
 
 
@@ -6466,7 +6466,7 @@ cheap
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置cheap模式 (spawn workers only after the first request)
+``help``: 设置cheap模式 (只在第一个请求后生成worker)
 
 
 
@@ -6478,7 +6478,7 @@ cheaper
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: 设置cheaper mode (adaptive process spawning)
+``help``: 设置cheaper模式 (适应性进程生成)
 
 
 
@@ -6490,7 +6490,7 @@ cheaper-initial
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: 设置the initial number of processes to spawn in cheaper mode
+``help``: 设置cheaper模式下生成的初始进程数
 
 
 
@@ -6502,7 +6502,7 @@ cheaper-algo
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: choose to algorithm used for adaptive process spawning
+``help``: 选择一个用于适应性进程生成的算法
 
 
 
@@ -6514,7 +6514,7 @@ cheaper-step
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: number of additional processes to spawn at each overload
+``help``: 在每次超载时生成的额外进程数
 
 
 
@@ -6526,7 +6526,7 @@ cheaper-overload
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: increase workers after specified overload
+``help``: 在指定过载后增加worker
 
 
 cheaper-idle
@@ -6537,7 +6537,7 @@ cheaper-idle
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: decrease workers after specified idle (algo: spare2) (default: 10)
+``help``: 在指定idle后减少worker (算法：spare2) (默认：10)
 
 
 cheaper-algo-list
@@ -6546,7 +6546,7 @@ cheaper-algo-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled cheapers algorithms
+``help``: 列出已启用的cheaper算法
 
 
 
@@ -6556,7 +6556,7 @@ cheaper-algos-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled cheapers algorithms
+``help``: 列出已启用的cheaper算法
 
 
 
@@ -6566,7 +6566,7 @@ cheaper-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled cheapers algorithms
+``help``: 列出已启用的cheaper算法
 
 
 
@@ -6578,7 +6578,7 @@ cheaper-rss-limit-soft
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: don't spawn new workers if total resident memory usage of all workers is higher than this limit
+``help``: 如果所有worker总的常驻内存使用高于这个限制，则不要生成新的worker
 
 
 
@@ -6590,7 +6590,7 @@ cheaper-rss-limit-hard
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_CHEAPER
 
-``help``: if total workers resident memory usage is higher try to stop workers
+``help``: 如果总的worker常驻内存使用更高，则试着停止worker
 
 
 
@@ -6602,7 +6602,7 @@ idle
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 设置idle mode (put uWSGI in cheap mode after inactivity)
+``help``: 设置idle模式 (在静止后，将uWSGI置于cheap模式)
 
 
 
@@ -6612,7 +6612,7 @@ die-on-idle
 
 ``parser``: uwsgi_opt_true
 
-``help``: shutdown uWSGI when idle
+``help``: 当idle时，关闭uWSGI
 
 
 
@@ -6622,7 +6622,7 @@ mount
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load application under mountpoint
+``help``: 在挂载点下加载应用
 
 
 
@@ -6632,7 +6632,7 @@ worker-mount
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load application under mountpoint in the specified worker or after workers spawn
+``help``: 在指定worker中，或者worker生成后，在挂载点下加载应用
 
 
 
@@ -6644,7 +6644,7 @@ threads
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: run each worker in prethreaded mode with the specified number of threads
+``help``: 在prethreaded模式下运行每个worker，使用指定数目的线程
 
 
 
@@ -6656,7 +6656,7 @@ thread-stacksize
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: 设置threads stacksize
+``help``: 设置线程栈大小
 
 
 
@@ -6668,7 +6668,7 @@ threads-stacksize
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: 设置threads stacksize
+``help``: 设置线程栈大小
 
 
 
@@ -6680,7 +6680,7 @@ thread-stack-size
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: 设置threads stacksize
+``help``: 设置线程栈大小
 
 
 
@@ -6692,7 +6692,7 @@ threads-stack-size
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: 设置threads stacksize
+``help``: 设置线程栈大小
 
 
 
@@ -6702,7 +6702,7 @@ vhost
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable virtualhosting mode (based on SERVER_NAME variable)
+``help``: 启用虚拟主机模式 (基于SERVER_NAME变量)
 
 
 
@@ -6714,7 +6714,7 @@ vhost-host
 
 ``flags``: UWSGI_OPT_VHOST
 
-``help``: enable virtualhosting mode (based on HTTP_HOST variable)
+``help``: 启用虚拟主机模式 (基于HTTP_HOST变量)
 
 
 
@@ -6724,7 +6724,7 @@ route
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route
+``help``: 添加一个路由
 
 
 
@@ -6734,8 +6734,7 @@ route-host
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on Host header
-
+``help``: 基于Host头部，添加一个路由
 
 
 route-uri
@@ -6744,7 +6743,7 @@ route-uri
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on REQUEST_URI
+``help``: 基于REQUEST_URI添加一个路由
 
 
 
@@ -6754,7 +6753,7 @@ route-qs
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on QUERY_STRING
+``help``: 基于QUERY_STRING添加一个路由
 
 
 
@@ -6764,7 +6763,7 @@ route-remote-addr
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on REMOTE_ADDR
+``help``: 基于REMOTE_ADDR添加一个路由
 
 
 
@@ -6774,7 +6773,7 @@ route-user-agent
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on HTTP_USER_AGENT
+``help``: 基于HTTP_USER_AGENT添加一个路由
 
 
 
@@ -6784,7 +6783,7 @@ route-remote-user
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on REMOTE_USER
+``help``: 基于REMOTE_USER添加一个路由
 
 
 
@@ -6794,7 +6793,7 @@ route-referer
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on HTTP_REFERER
+``help``: 基于HTTP_REFERER添加一个路由
 
 
 
@@ -6804,7 +6803,7 @@ route-label
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a routing label (for use with goto)
+``help``: 添加一个路由标签 (用于和goto一起使用)
 
 
 
@@ -6814,7 +6813,7 @@ route-if
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on condition
+``help``: 基于条件添加一个路由
 
 
 
@@ -6824,7 +6823,7 @@ route-if-not
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a route based on condition (negate version)
+``help``: 基于条件添加一个路由 (否定版本)
 
 
 
@@ -6834,7 +6833,7 @@ route-run
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: always run the specified route action
+``help``: 总是运行指定的路由动作
 
 
 
@@ -6844,7 +6843,7 @@ final-route
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route
+``help``: 添加一个最终路由
 
 
 
@@ -6854,7 +6853,7 @@ final-route-status
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route for the specified status
+``help``: 为指定状态添加一个最终路由
 
 
 
@@ -6864,7 +6863,7 @@ final-route-host
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on Host header
+``help``: 基于Host头部添加一个最终路由
 
 
 
@@ -6874,7 +6873,7 @@ final-route-uri
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on REQUEST_URI
+``help``: 基于REQUEST_URI添加一个最终路由
 
 
 
@@ -6884,7 +6883,7 @@ final-route-qs
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on QUERY_STRING
+``help``: 基于QUERY_STRING添加一个最终路由
 
 
 
@@ -6894,7 +6893,7 @@ final-route-remote-addr
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on REMOTE_ADDR
+``help``: 基于REMOTE_ADDR添加一个最终路由
 
 
 
@@ -6904,7 +6903,7 @@ final-route-user-agent
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on HTTP_USER_AGENT
+``help``: 基于HTTP_USER_AGENT添加一个最终路由
 
 
 
@@ -6914,7 +6913,7 @@ final-route-remote-user
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on REMOTE_USER
+``help``: 基于REMOTE_USER添加一个最终路由
 
 
 
@@ -6924,7 +6923,7 @@ final-route-referer
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on HTTP_REFERER
+``help``: 基于HTTP_REFERER添加一个最终路由
 
 
 
@@ -6934,7 +6933,7 @@ final-route-label
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final routing label (for use with goto)
+``help``: 添加一个最终路由标签 (用于和goto一起使用)
 
 
 
@@ -6944,7 +6943,7 @@ final-route-if
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on condition
+``help``: 基于条件添加一个最终路由
 
 
 
@@ -6954,7 +6953,7 @@ final-route-if-not
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a final route based on condition (negate version)
+``help``: 基于条件添加一个最终路由 (否定版本)
 
 
 
@@ -6964,7 +6963,7 @@ final-route-run
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: always run the specified final route action
+``help``: 总是运行指定的最终路由动作
 
 
 
@@ -6974,7 +6973,7 @@ error-route
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route
+``help``: 添加一个错误路由
 
 
 
@@ -6984,7 +6983,7 @@ error-route-status
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route for the specified status
+``help``: 为指定状态添加一个错误路由
 
 
 
@@ -6994,7 +6993,7 @@ error-route-host
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on Host header
+``help``: 基于Host头部添加一个错误路由
 
 
 
@@ -7004,7 +7003,7 @@ error-route-uri
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on REQUEST_URI
+``help``: 基于REQUEST_URI添加一个错误路由
 
 
 
@@ -7014,7 +7013,7 @@ error-route-qs
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on QUERY_STRING
+``help``: 基于QUERY_STRING添加一个错误路由
 
 
 
@@ -7024,7 +7023,7 @@ error-route-remote-addr
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on REMOTE_ADDR
+``help``: 基于REMOTE_ADDR添加一个错误路由
 
 
 
@@ -7034,7 +7033,7 @@ error-route-user-agent
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on HTTP_USER_AGENT
+``help``: 基于HTTP_USER_AGENT添加一个错误路由
 
 
 
@@ -7044,7 +7043,7 @@ error-route-remote-user
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on REMOTE_USER
+``help``: 基于REMOTE_USER添加一个错误路由
 
 
 
@@ -7054,7 +7053,7 @@ error-route-referer
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on HTTP_REFERER
+``help``: 基于HTTP_REFERER添加一个错误路由
 
 
 
@@ -7064,7 +7063,7 @@ error-route-label
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error routing label (for use with goto)
+``help``: 添加一个错误路由标签 (用于和goto一起使用)
 
 
 
@@ -7074,7 +7073,7 @@ error-route-if
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on condition
+``help``: 基于条件添加一个错误路由
 
 
 
@@ -7084,7 +7083,7 @@ error-route-if-not
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add an error route based on condition (negate version)
+``help``: 基于条件添加一个错误路由 (否定版本)
 
 
 
@@ -7094,7 +7093,7 @@ error-route-run
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: always run the specified error route action
+``help``: 总是运行指定的错误路由动作
 
 
 
@@ -7104,7 +7103,7 @@ response-route
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route
+``help``: 添加一个响应路由
 
 
 
@@ -7114,7 +7113,7 @@ response-route-status
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route for the specified status
+``help``: 基于指定状态添加一个响应路由
 
 
 
@@ -7124,7 +7123,7 @@ response-route-host
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on Host header
+``help``: 基于Host头部添加一个响应路由
 
 
 
@@ -7134,7 +7133,7 @@ response-route-uri
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on REQUEST_URI
+``help``: 基于REQUEST_URI添加一个响应路由
 
 
 
@@ -7144,7 +7143,7 @@ response-route-qs
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on QUERY_STRING
+``help``: 基于QUERY_STRING添加一个响应路由
 
 
 
@@ -7154,7 +7153,7 @@ response-route-remote-addr
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on REMOTE_ADDR
+``help``: 基于REMOTE_ADDR添加一个响应路由
 
 
 
@@ -7164,7 +7163,7 @@ response-route-user-agent
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on HTTP_USER_AGENT
+``help``: 基于HTTP_USER_AGENT添加一个响应路由
 
 
 
@@ -7174,7 +7173,7 @@ response-route-remote-user
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on REMOTE_USER
+``help``: 基于REMOTE_USER添加一个响应路由
 
 
 
@@ -7184,7 +7183,7 @@ response-route-referer
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on HTTP_REFERER
+``help``: 基于HTTP_REFERER添加一个响应路由
 
 
 
@@ -7194,7 +7193,7 @@ response-route-label
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response routing label (for use with goto)
+``help``: 添加一个响应路由标签 (用于和goto一起使用)
 
 
 
@@ -7204,7 +7203,7 @@ response-route-if
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on condition
+``help``: 基于条件添加一个响应路由
 
 
 
@@ -7214,7 +7213,7 @@ response-route-if-not
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: add a response route based on condition (negate version)
+``help``: 基于条件添加一个响应路由 (否定版本)
 
 
 
@@ -7224,7 +7223,7 @@ response-route-run
 
 ``parser``: uwsgi_opt_add_route
 
-``help``: always run the specified response route action
+``help``: 总是运行指定的响应路由动作
 
 
 
@@ -7234,7 +7233,7 @@ router-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled routers
+``help``: 列出已启用路由器
 
 
 
@@ -7244,7 +7243,7 @@ routers-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled routers
+``help``: 列出已启用路由器
 
 
 
@@ -7254,7 +7253,7 @@ error-page-403
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an error page (html) for managed 403 response
+``help``: 添加一个错误页面 (html) 来管理403响应
 
 
 
@@ -7264,7 +7263,7 @@ error-page-404
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an error page (html) for managed 404 response
+``help``: 添加一个错误页面 (html) 来管理404响应
 
 
 
@@ -7274,7 +7273,7 @@ error-page-500
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an error page (html) for managed 500 response
+``help``: 添加一个错误页面 (html) 来管理500响应
 
 
 
@@ -7284,7 +7283,7 @@ websockets-ping-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the frequency (in seconds) of websockets automatic ping packets
+``help``: 设置websockets自动ping包的频率 (以秒为单位) 
 
 
 
@@ -7294,7 +7293,7 @@ websocket-ping-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the frequency (in seconds) of websockets automatic ping packets
+``help``: 设置websockets自动ping包的频率 (以秒为单位) 
 
 
 
@@ -7304,7 +7303,7 @@ websockets-pong-tolerance
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the tolerance (in seconds) of websockets ping/pong subsystem
+``help``: 设置websockets ping/pong子系统的容忍度 (以秒为单位)
 
 
 
@@ -7314,7 +7313,7 @@ websocket-pong-tolerance
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the tolerance (in seconds) of websockets ping/pong subsystem
+``help``: 设置websockets ping/pong子系统的容忍度 (以秒为单位)
 
 
 
@@ -7324,7 +7323,7 @@ websockets-max-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置the max allowed size of websocket messages (in Kbytes, default 1024)
+``help``: 设置websocket消息的最大允许大小 (以KB为单位，默认是1024)
 
 
 
@@ -7334,7 +7333,7 @@ websocket-max-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置the max allowed size of websocket messages (in Kbytes, default 1024)
+``help``: 设置websocket消息的最大允许大小 (以KB为单位，默认是1024)
 
 
 
@@ -7344,7 +7343,7 @@ chunked-input-limit
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置the max size of a chunked input part (default 1MB, in bytes)
+``help``: 设置块输入部分的最大大小 (默认是1MB，以字节为单位)
 
 
 
@@ -7354,7 +7353,7 @@ chunked-input-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置default timeout for chunked input
+``help``: 为块输入设置默认超时时间
 
 
 
@@ -7364,7 +7363,7 @@ clock
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置a clock source
+``help``: 设置一个时钟源
 
 
 
@@ -7374,7 +7373,7 @@ clock-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled clocks
+``help``: 列出已启用时钟
 
 
 
@@ -7384,7 +7383,7 @@ clocks-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled clocks
+``help``: 列出已启用时钟
 
 
 
@@ -7394,7 +7393,7 @@ add-header
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: automatically add HTTP headers to response
+``help``: 自动添加HTTP头部到响应
 
 
 
@@ -7404,7 +7403,7 @@ rem-header
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: automatically remove specified HTTP header from the response
+``help``: 自动从响应移除指定的HTTP头部
 
 
 
@@ -7414,7 +7413,7 @@ del-header
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: automatically remove specified HTTP header from the response
+``help``: 自动从响应移除指定的HTTP头部
 
 
 
@@ -7424,7 +7423,7 @@ collect-header
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: store the specified response header in a request var (syntax: header var)
+``help``: 存储指定的响应头部到一个请求变量中 (语法：header var)
 
 
 
@@ -7434,7 +7433,7 @@ response-header-collect
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: store the specified response header in a request var (syntax: header var)
+``help``: 存储指定的响应头部到一个请求变量中 (语法：header var)
 
 
 
@@ -7444,7 +7443,7 @@ pull-header
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: store the specified response header in a request var and remove it from the response (syntax: header var)
+``help``: 存储指定的响应头部到一个请求变量中，并将其从响应中移除 (语法：header var)
 
 
 
@@ -7456,7 +7455,7 @@ check-static
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for static files in the specified directory
+``help``: 检查指定的目录中的静态文件
 
 
 
@@ -7468,7 +7467,7 @@ check-static-docroot
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for static files in the requested DOCUMENT_ROOT
+``help``: 检查请求的DOCUMENT_ROOT中的静态文件
 
 
 
@@ -7480,7 +7479,7 @@ static-check
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for static files in the specified directory
+``help``: 检查指定的目录中的静态文件
 
 
 
@@ -7492,7 +7491,7 @@ static-map
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: map mountpoint to static directory (or file)
+``help``: 映射挂载点到静态目录（或者文件）
 
 
 
@@ -7504,7 +7503,7 @@ static-map2
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: like static-map but completely appending the requested resource to the docroot
+``help``: 和static-map类似，但是完全附加请求资源到docroot
 
 
 
@@ -7516,7 +7515,7 @@ static-skip-ext
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: skip specified extension from staticfile checks
+``help``: 静态文件检查时跳过指定的扩展名
 
 
 
@@ -7528,7 +7527,7 @@ static-index
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: search for specified file if a directory is requested
+``help``: 如果请求一个目录，则搜索指定的文件
 
 
 
@@ -7540,7 +7539,7 @@ static-safe
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: skip security checks if the file is under the specified path
+``help``: 如果文件位于指定路径下，则跳过安全性检查
 
 
 
@@ -7552,7 +7551,7 @@ static-cache-paths
 
 ``flags``: UWSGI_OPT_MIME|UWSGI_OPT_MASTER
 
-``help``: put resolved paths in the uWSGI cache for the specified amount of seconds
+``help``: 将已解析的路径放到uWSGI缓存中，存储指定秒数
 
 
 
@@ -7564,7 +7563,7 @@ static-cache-paths-name
 
 ``flags``: UWSGI_OPT_MIME|UWSGI_OPT_MASTER
 
-``help``: use the specified cache for static paths
+``help``: 将指定缓存用于静态路径
 
 
 
@@ -7576,7 +7575,7 @@ mimefile
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置mime types file path (default /etc/apache2/mime.types)
+``help``: 设置mime types文件路径 (默认/etc/apache2/mime.types)
 
 
 
@@ -7588,7 +7587,7 @@ mime-file
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置mime types file path (default /etc/apache2/mime.types)
+``help``: 设置mime types文件路径 (默认/etc/apache2/mime.types)
 
 
 
@@ -7600,7 +7599,7 @@ mimefile
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置mime types file path (default /etc/mime.types)
+``help``: 设置mime types文件路径 (默认/etc/mime.types)
 
 
 
@@ -7612,7 +7611,7 @@ mime-file
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置mime types file path (default /etc/mime.types)
+``help``: 设置mime types文件路径 (默认/etc/mime.types)
 
 
 
@@ -7624,7 +7623,7 @@ static-expires-type
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on content type
+``help``: 基于内容类型设置Expires头部
 
 
 
@@ -7636,7 +7635,7 @@ static-expires-type-mtime
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on content type and file mtime
+``help``: 基于内容类型和文件mtime设置Expires头部
 
 
 
@@ -7648,7 +7647,7 @@ static-expires
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on filename regexp
+``help``: 基于文件名正则表达式设置Expires头部
 
 
 
@@ -7660,7 +7659,7 @@ static-expires-mtime
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on filename regexp and file mtime
+``help``: 基于文件名正则表达式和文件mtime设置Expires头部
 
 
 
@@ -7672,7 +7671,7 @@ static-expires-uri
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on REQUEST_URI regexp
+``help``: 基于REQUEST_URI正则表达式设置Expires头部
 
 
 
@@ -7684,7 +7683,7 @@ static-expires-uri-mtime
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on REQUEST_URI regexp and file mtime
+``help``: 基于REQUEST_URI正则表达式和文件mtime设置Expires头部
 
 
 
@@ -7696,7 +7695,7 @@ static-expires-path-info
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on PATH_INFO regexp
+``help``: 基于PATH_INFO正则表达式设置Expires头部
 
 
 
@@ -7708,7 +7707,7 @@ static-expires-path-info-mtime
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置the Expires header based on PATH_INFO regexp and file mtime
+``help``: 基于PATH_INFO正则表达式和文件mtime设置Expires头部
 
 
 
@@ -7720,7 +7719,7 @@ static-gzip
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: if the supplied regexp matches the static file translation it will search for a gzip version
+``help``: 如果提供的正则表达式匹配静态文件转换，那么它将搜索一个gzip版本
 
 
 
@@ -7732,7 +7731,7 @@ static-gzip-all
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for a gzip version of all requested static files
+``help``: 检查所有请求的静态文件的gzip版本
 
 
 
@@ -7744,7 +7743,7 @@ static-gzip-dir
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for a gzip version of all requested static files in the specified dir/prefix
+``help``: 检查指定目录/前缀中所有请求的静态文件的gzip版本
 
 
 
@@ -7756,7 +7755,7 @@ static-gzip-prefix
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for a gzip version of all requested static files in the specified dir/prefix
+``help``: 检查指定目录/前缀中所有请求的静态文件的gzip版本
 
 
 
@@ -7768,7 +7767,7 @@ static-gzip-ext
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for a gzip version of all requested static files with the specified ext/suffix
+``help``: 检查带指定扩展名/后缀的所有请求的静态文件的gzip版本
 
 
 
@@ -7780,7 +7779,7 @@ static-gzip-suffix
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: check for a gzip version of all requested static files with the specified ext/suffix
+``help``: 检查带指定扩展名/后缀的所有请求的静态文件的gzip版本
 
 
 
@@ -7790,7 +7789,7 @@ honour-range
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable support for the HTTP Range header
+``help``: 启用对HTTP Range头部的支持
 
 
 
@@ -7800,7 +7799,7 @@ offload-threads
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the number of offload threads to spawn (per-worker, default 0)
+``help``: 设置要生成的卸载线程数 (每个worker，默认是0)
 
 
 
@@ -7810,7 +7809,7 @@ offload-thread
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the number of offload threads to spawn (per-worker, default 0)
+``help``: 设置要生成的卸载线程数 (每个worker，默认是0)
 
 
 
@@ -7822,7 +7821,7 @@ file-serve-mode
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置static file serving mode
+``help``: 设置静态文件服务模式
 
 
 
@@ -7834,7 +7833,7 @@ fileserve-mode
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: 设置static file serving mode
+``help``: 设置静态文件服务模式
 
 
 
@@ -7844,7 +7843,7 @@ disable-sendfile
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable sendfile() and rely on boring read()/write()
+``help``: 禁用sendfile()，并依赖无聊的read()/write()
 
 
 
@@ -7854,7 +7853,7 @@ check-cache
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: check for response data in the specified cache (empty for default cache)
+``help``: 检查指定缓存中的响应数据（空则表示默认缓存）
 
 
 
@@ -7864,7 +7863,7 @@ close-on-exec
 
 ``parser``: uwsgi_opt_true
 
-``help``: 设置close-on-exec on connection sockets (could be required for spawning processes in requests)
+``help``: 在连接socket上设置close-on-exec (对于在请求中生成进程可能是必须的)
 
 
 
@@ -7874,7 +7873,7 @@ close-on-exec2
 
 ``parser``: uwsgi_opt_true
 
-``help``: 设置close-on-exec on server sockets (could be required for spawning processes in requests)
+``help``: 在服务器socket上设置close-on-exec (对于在请求中生成进程可能是必须的)
 
 
 
@@ -7884,7 +7883,7 @@ mode
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置uWSGI custom mode
+``help``: 设置uWSGI custom模式
 
 
 
@@ -7894,7 +7893,7 @@ env
 
 ``parser``: uwsgi_opt_set_env
 
-``help``: 设置environment variable
+``help``: 设置环境变量
 
 
 
@@ -7906,7 +7905,7 @@ ienv
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: 设置environment variable (IMMEDIATE version)
+``help``: 设置环境变量 (立即版本)
 
 
 
@@ -7916,7 +7915,7 @@ envdir
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a daemontools compatible envdir
+``help``: 加载一个守护工具兼容的envdir
 
 
 
@@ -7928,7 +7927,7 @@ early-envdir
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a daemontools compatible envdir ASAP
+``help``: 尽快加载一个守护工具兼容的envdir
 
 
 
@@ -7938,7 +7937,7 @@ unenv
 
 ``parser``: uwsgi_opt_unset_env
 
-``help``: un设置environment variable
+``help``: 取消设置环境变量
 
 
 
@@ -7948,7 +7947,7 @@ vacuum
 
 ``parser``: uwsgi_opt_true
 
-``help``: try to remove all of the generated file/sockets
+``help``: 尝试移除所有生成的文件/socket
 
 
 
@@ -7958,7 +7957,7 @@ file-write
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: write the specified content to the specified file (syntax: file=value) 移除特权之前
+``help``: 移除特权之前将指定内容写入到指定文件中 (语法：file=value) 
 
 
 
@@ -7968,7 +7967,7 @@ cgroup
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: put the processes in the specified cgroup
+``help``: 将进程放到指定的cgroup中
 
 
 
@@ -7978,7 +7977,7 @@ cgroup-opt
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: 设置value in specified cgroup option
+``help``: 在指定的cgroup选项中设置值
 
 
 
@@ -7988,7 +7987,7 @@ cgroup-dir-mode
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置permission for cgroup directory (default is 700)
+``help``: 为cgroup目录设置权限（默认是700）
 
 
 
@@ -7998,7 +7997,7 @@ namespace
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run in a new namespace under the specified rootfs
+``help``: 在指定的rootfs下的一个新的名字空间中运行
 
 
 
@@ -8008,7 +8007,7 @@ namespace-keep-mount
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: keep the specified mountpoint in your namespace
+``help``: 在你的名字空间中保持指定的挂载点
 
 
 
@@ -8018,7 +8017,7 @@ ns
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run in a new namespace under the specified rootfs
+``help``: 在指定的rootfs下的一个新的名字空间中运行
 
 
 
@@ -8028,7 +8027,7 @@ namespace-net
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: add network namespace
+``help``: 添加network名字空间
 
 
 
@@ -8038,7 +8037,7 @@ ns-net
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: add network namespace
+``help``: 添加network名字空间
 
 
 
@@ -8048,7 +8047,7 @@ enable-proxy-protocol
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable PROXY1 protocol support (only for http parsers)
+``help``: 启用PROXY1协议支持 (仅用于http解析器)
 
 
 
@@ -8058,7 +8057,7 @@ reuse-port
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable REUSE_PORT flag on socket (BSD only)
+``help``: 在socket上启用REUSE_PORT标志 (仅BSD)
 
 
 
@@ -8068,7 +8067,7 @@ tcp-fast-open
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable TCP_FASTOPEN flag on TCP sockets with the specified qlen value
+``help``: 在TCP socket上启用TCP_FASTOPEN标志，使用指定的qlen值
 
 
 
@@ -8078,7 +8077,7 @@ tcp-fastopen
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable TCP_FASTOPEN flag on TCP sockets with the specified qlen value
+``help``: 在TCP socket上启用TCP_FASTOPEN标志，使用指定的qlen值
 
 
 
@@ -8088,7 +8087,7 @@ tcp-fast-open-client
 
 ``parser``: uwsgi_opt_true
 
-``help``: use sendto(..., MSG_FASTOPEN, ...) instead of connect() if supported
+``help``: 如果支持的话，使用sendto(..., MSG_FASTOPEN, ...)来代替connect()
 
 
 
@@ -8098,7 +8097,7 @@ tcp-fastopen-client
 
 ``parser``: uwsgi_opt_true
 
-``help``: use sendto(..., MSG_FASTOPEN, ...) instead of connect() if supported
+``help``: 如果支持的话，使用sendto(..., MSG_FASTOPEN, ...)来代替connect()
 
 
 
@@ -8108,7 +8107,7 @@ zerg
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: attach to a zerg server
+``help``: 附加到一个zerg服务器
 
 
 
@@ -8118,7 +8117,7 @@ zerg-fallback
 
 ``parser``: uwsgi_opt_true
 
-``help``: fallback to normal sockets if the zerg server is not available
+``help``: 如果zerg服务器不可用，则回退到正常的socket
 
 
 
@@ -8130,7 +8129,7 @@ zerg-server
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: enable the zerg server on the specified UNIX socket
+``help``: 在指定的UNIX socket上启用zerg服务器
 
 
 
@@ -8142,7 +8141,7 @@ cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task
+``help``: 新增一个cron任务
 
 
 
@@ -8154,7 +8153,7 @@ cron2
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task (key=val syntax)
+``help``: 新增一个cron任务 (key=val语法)
 
 
 
@@ -8166,7 +8165,7 @@ unique-cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a unique cron task
+``help``: 添加一个唯一的cron任务
 
 
 
@@ -8176,7 +8175,7 @@ cron-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum time (in seconds) we wait for cron command to complete
+``help``: 设置等待cron命令完成的最大时间 (以秒为单位)
 
 
 
@@ -8188,7 +8187,7 @@ legion-cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，该任务只有在实例是一个指定legion的lord时才能运行
 
 
 
@@ -8200,7 +8199,7 @@ cron-legion
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，该任务只有在实例是一个指定legion的lord时才能运行
 
 
 
@@ -8212,7 +8211,7 @@ unique-legion-cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a unique cron task runnable only when the instance is a lord of the specified legion
+``help``: 新增一个唯一的cron任务，该任务只有在实例是一个指定legion的lord时才能运行
 
 
 
@@ -8224,7 +8223,7 @@ unique-cron-legion
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a unique cron task runnable only when the instance is a lord of the specified legion
+``help``: 新增一个唯一的cron任务，该任务只有在实例是一个指定legion的lord时才能运行
 
 
 
@@ -8234,7 +8233,7 @@ loop
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: select the uWSGI loop engine
+``help``: 选择uWSGI循环引擎
 
 
 
@@ -8244,7 +8243,7 @@ loop-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled loop engines
+``help``: 列出已启用的循环引擎
 
 
 
@@ -8254,7 +8253,7 @@ loops-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled loop engines
+``help``: 列出已启用的循环引擎
 
 
 
@@ -8264,7 +8263,7 @@ worker-exec
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 as worker
+``help``: 作为worker运行指定命令
 
 
 
@@ -8274,7 +8273,7 @@ worker-exec2
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 as worker (after post_fork hook)
+``help``: 作为worker运行指定命令 (post_fork钩子之后)
 
 
 
@@ -8286,7 +8285,7 @@ attach-daemon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: attach a command/daemon to the master process (the command has to not go in background)
+``help``: 附加一个命令/守护进程到master进程（命令必须不跑到后台）
 
 
 
@@ -8298,7 +8297,7 @@ attach-control-daemon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: attach a command/daemon to the master process (the command has to not go in background), when the daemon dies, the master dies too
+``help``: 附加一个命令/守护进程到master进程（命令必须不跑到后台），当守护进程死掉时，master也会死掉
 
 
 
@@ -8310,7 +8309,7 @@ smart-attach-daemon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: attach a command/daemon to the master process managed by a pidfile (the command has to daemonize)
+``help``: 附加一个命令/守护进程到由pid文件管理的master进程（命令必须被守护）
 
 
 
@@ -8322,7 +8321,7 @@ smart-attach-daemon2
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: attach a command/daemon to the master process managed by a pidfile (the command has to NOT daemonize)
+``help``: 附加一个命令/守护进程到由pid文件管理的master进程（命令必须不被守护）
 
 
 
@@ -8334,7 +8333,7 @@ legion-attach-daemon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: same as --attach-daemon but daemon runs only on legion lord node
+``help``: 与--attach-daemon相同，但是守护进程只在legion lord节点上运行
 
 
 
@@ -8346,7 +8345,7 @@ legion-smart-attach-daemon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: same as --smart-attach-daemon but daemon runs only on legion lord node
+``help``: 与--smart-attach-daemon相同，但是守护进程只在legion lord节点上运行
 
 
 
@@ -8358,7 +8357,7 @@ legion-smart-attach-daemon2
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: same as --smart-attach-daemon2 but daemon runs only on legion lord node
+``help``: 与--smart-attach-daemon2相同，但是守护进程只在legion lord节点上运行
 
 
 
@@ -8370,7 +8369,7 @@ daemons-honour-stdin
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: do not change the stdin of external daemons to /dev/null
+``help``: 不要讲外部守护进程的标准输入修改为/dev/null
 
 
 
@@ -8382,7 +8381,7 @@ attach-daemon2
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: attach-daemon keyval variant (supports smart modes too)
+``help``: attach-daemon键值变体 (也支持smart模式)
 
 
 
@@ -8394,7 +8393,7 @@ plugins
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load uWSGI plugins
+``help``: 加载uWSGI插件
 
 
 
@@ -8406,7 +8405,7 @@ plugin
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load uWSGI plugins
+``help``: 加载uWSGI插件
 
 
 
@@ -8418,7 +8417,7 @@ need-plugins
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load uWSGI plugins (exit on error)
+``help``: 加载uWSGI插件 (错误时退出)
 
 
 
@@ -8430,7 +8429,7 @@ need-plugin
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load uWSGI plugins (exit on error)
+``help``: 加载uWSGI插件 (错误时退出)
 
 
 
@@ -8442,7 +8441,7 @@ plugins-dir
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: add a directory to uWSGI plugin search path
+``help``: 新增一个目录到uWSGI插件搜索路径
 
 
 
@@ -8454,7 +8453,7 @@ plugin-dir
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: add a directory to uWSGI plugin search path
+``help``: 新增一个目录到uWSGI插件搜索路径
 
 
 
@@ -8464,7 +8463,7 @@ plugins-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled plugins
+``help``: 列出已启用的插件
 
 
 
@@ -8474,7 +8473,7 @@ plugin-list
 
 ``parser``: uwsgi_opt_true
 
-``help``: list enabled plugins
+``help``: 列出已启用的插件
 
 
 
@@ -8486,7 +8485,7 @@ autoload
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: try to automatically load plugins when unknown options are found
+``help``: 当找到未知选项时，尝试自动加载插件
 
 
 
@@ -8498,7 +8497,7 @@ dlopen
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: blindly load a shared library
+``help``: 盲目加载一个共享库
 
 
 
@@ -8508,7 +8507,7 @@ allowed-modifiers
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: comma separated list of allowed modifiers
+``help``: 允许的modifier的以逗号分隔的列表
 
 
 
@@ -8518,7 +8517,7 @@ remap-modifier
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: remap request modifier from one id to another
+``help``: 将请求modifier从一个id重新映射到另一个
 
 
 
@@ -8528,7 +8527,7 @@ dump-options
 
 ``parser``: uwsgi_opt_true
 
-``help``: dump the full list of available options
+``help``: dump可用选项的完整列表
 
 
 
@@ -8538,7 +8537,7 @@ show-config
 
 ``parser``: uwsgi_opt_true
 
-``help``: show the current config reformatted as ini
+``help``: 显示重新格式化为ini的当前配置
 
 
 
@@ -8550,7 +8549,7 @@ binary-append-data
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: return the content of a resource to stdout for appending to a uwsgi binary (for data:// usage)
+``help``: 返回一个资源的内容到标准输出，用于附加到一个uwsgi二进制文件中 (用于data://)
 
 
 
@@ -8560,7 +8559,7 @@ print
 
 ``parser``: uwsgi_opt_print
 
-``help``: simple print
+``help``: 简单打印
 
 
 
@@ -8572,7 +8571,7 @@ iprint
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: simple print (immediate version)
+``help``: 简单打印 (立即版本)
 
 
 
@@ -8584,7 +8583,7 @@ exit
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: force exit() of the instance
+``help``: 强制实例的exit()
 
 
 
@@ -8596,7 +8595,7 @@ cflags
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: report uWSGI CFLAGS (useful for building external plugins)
+``help``: 报告uWSGI CFLAGS (对构建外部插件有用)
 
 
 
@@ -8608,7 +8607,7 @@ dot-h
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: dump the uwsgi.h used for building the core  (useful for building external plugins)
+``help``: 转储用于构建核心的uwsgi.h  (对构建外部插件有用)
 
 
 
@@ -8620,7 +8619,7 @@ config-py
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: dump the uwsgiconfig.py used for building the core  (useful for building external plugins)
+``help``: 转储用于构建核心的uwsgiconfig.py  (对构建外部插件有用)
 
 
 
@@ -8632,7 +8631,7 @@ build-plugin
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: build a uWSGI plugin for the current binary
+``help``: 为当前二进制文件构建一个uWSGI插件
 
 
 
@@ -8642,7 +8641,7 @@ version
 
 ``parser``: uwsgi_opt_print
 
-``help``: print uWSGI version
+``help``: 打印uWSG版本
 
 
 
@@ -8669,7 +8668,7 @@ asyncio
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: a shortcut enabling asyncio loop engine with the specified number of async cores and optimal parameters
+``help``: 一个快捷方式，启用带有指定异步核心数和优化参数的asyncio循环引擎
 
 
 
@@ -8687,7 +8686,7 @@ carbon
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: push statistics to the specified carbon server
+``help``: 推送统计信息到指定的carbon服务器
 
 
 
@@ -8697,7 +8696,7 @@ carbon-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置carbon connection timeout in seconds (default 3)
+``help``: 设置carbon连接超时时间，以秒为单位（默认是3） 
 
 
 
@@ -8707,7 +8706,7 @@ carbon-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置carbon push frequency in seconds (default 60)
+``help``: 设置carbon推送频率，以秒为单位（默认是60）
 
 
 
@@ -8727,7 +8726,7 @@ carbon-no-workers
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable generation of single worker metrics
+``help``: 禁用单个worker度量的生成
 
 
 
@@ -8737,7 +8736,7 @@ carbon-max-retry
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置maximum number of retries in case of connection errors (default 1)
+``help``: 设置连接错误下的最大重试数 (默认是1)
 
 
 
@@ -8747,7 +8746,7 @@ carbon-retry-delay
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置connection retry delay in seconds (default 7)
+``help``: 设置连接重试延迟，以秒为单位（默认是7）
 
 
 
@@ -8757,7 +8756,7 @@ carbon-root
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置carbon metrics root node (default 'uwsgi')
+``help``: 设置carbon度量根节点 (默认是'uwsgi')
 
 
 
@@ -8767,7 +8766,7 @@ carbon-hostname-dots
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置char to use as a replacement for dots in hostname (dots are not replaced by default)
+``help``: 设置主机名中用以替换点的字符 (默认不替换点)
 
 
 
@@ -8777,7 +8776,7 @@ carbon-name-resolve
 
 ``parser``: uwsgi_opt_true
 
-``help``: allow using hostname as carbon server address (default disabled)
+``help``: 允许将主机名用作carbon服务器地址 (默认禁用)
 
 
 
@@ -8787,7 +8786,7 @@ carbon-resolve-names
 
 ``parser``: uwsgi_opt_true
 
-``help``: allow using hostname as carbon server address (default disabled)
+``help``: 允许将主机名用作carbon服务器地址 (默认禁用)
 
 
 
@@ -8797,7 +8796,7 @@ carbon-idle-avg
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: average values source during idle period (no requests), can be "last", "zero", "none" (default is last)
+``help``: idle期间（无请求）的平均值，可以是"last", "zero", "none" (默认是last)
 
 
 
@@ -8807,7 +8806,7 @@ carbon-use-metrics
 
 ``parser``: uwsgi_opt_true
 
-``help``: don't compute all statistics, use metrics subsystem data instead (warning! key names will be different)
+``help``: 不要计算所有的统计信息，使用度量子系统数据来代替 (警告！键值将不同)
 
 
 
@@ -8820,7 +8819,7 @@ cgi
 
 ``parser``: uwsgi_opt_add_cgi
 
-``help``: add a cgi mountpoint/directory/script
+``help``: 添加一个cgi挂载点/目录/脚本
 
 
 
@@ -8830,7 +8829,7 @@ cgi-map-helper
 
 ``parser``: uwsgi_opt_add_cgi_maphelper
 
-``help``: add a cgi map-helper
+``help``: 添加一个cgi map-helper
 
 
 
@@ -8840,7 +8839,7 @@ cgi-helper
 
 ``parser``: uwsgi_opt_add_cgi_maphelper
 
-``help``: add a cgi map-helper
+``help``: 添加一个cgi map-helper
 
 
 
@@ -8850,7 +8849,7 @@ cgi-from-docroot
 
 ``parser``: uwsgi_opt_true
 
-``help``: blindly enable cgi in DOCUMENT_ROOT
+``help``: 在DOCUMENT_ROOT中盲目启用cgi
 
 
 
@@ -8860,7 +8859,7 @@ cgi-buffer-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置cgi buffer size
+``help``: 设置cgi缓冲大小
 
 
 
@@ -8870,7 +8869,7 @@ cgi-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置cgi script timeout
+``help``: 设置cgi脚本超时时间
 
 
 
@@ -8880,7 +8879,7 @@ cgi-index
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a cgi index file
+``help``: 添加一个cgi索引文件
 
 
 
@@ -8890,7 +8889,7 @@ cgi-allowed-ext
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: cgi allowed extension
+``help``: 允许的cgi扩展名
 
 
 
@@ -8900,7 +8899,7 @@ cgi-unset
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: un设置specified environment variables
+``help``: 取消设置指定的环境变量
 
 
 
@@ -8910,7 +8909,7 @@ cgi-loadlib
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a cgi shared library/optimizer
+``help``: 加载一个cgi共享库/优化器
 
 
 
@@ -8920,7 +8919,7 @@ cgi-optimize
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable cgi realpath() optimizer
+``help``: 启用cgi realpath()优化器
 
 
 
@@ -8930,7 +8929,7 @@ cgi-optimized
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable cgi realpath() optimizer
+``help``: 启用cgi realpath()优化器
 
 
 
@@ -8940,7 +8939,7 @@ cgi-path-info
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable PATH_INFO management in cgi scripts
+``help``: 禁用cgi脚本中的PATH_INFO管理
 
 
 
@@ -8950,7 +8949,7 @@ cgi-do-not-kill-on-error
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not send SIGKILL to cgi script on errors
+``help``: 发生错误时，不要发送SIGKILL给cgi脚本
 
 
 
@@ -8960,7 +8959,7 @@ cgi-async-max-attempts
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: max waitpid() attempts in cgi async mode (default 10)
+``help``: cgi异步模式下的最大waitpid()尝试（默认是10）
 
 
 
@@ -8988,7 +8987,7 @@ coroae
 
 ``parser``: uwsgi_opt_setup_coroae
 
-``help``: a shortcut enabling Coro::AnyEvent loop engine with the specified number of async cores and optimal parameters
+``help``: 一个快捷方式，启用 Coro::AnyEvent 循环引擎，带指定数量的异步核心和优化参数
 
 
 
@@ -9006,7 +9005,7 @@ curl-cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL
+``help``: 新增一个cron任务，通过CURL调用指定的url
 
 
 
@@ -9018,7 +9017,7 @@ cron-curl
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL
+``help``: 新增一个cron任务，通过CURL调用指定的url
 
 
 
@@ -9030,7 +9029,7 @@ legion-curl-cron
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，通过CURL调用指定的url，只有在实例是指定legion的lord时才可运行
 
 
 
@@ -9042,7 +9041,7 @@ legion-cron-curl
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，通过CURL调用指定的url，只有在实例是指定legion的lord时才可运行
 
 
 
@@ -9054,7 +9053,7 @@ curl-cron-legion
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，通过CURL调用指定的url，只有在实例是指定legion的lord时才可运行
 
 
 
@@ -9066,7 +9065,7 @@ cron-curl-legion
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: add a cron task invoking the specified url via CURL runnable only when the instance is a lord of the specified legion
+``help``: 新增一个cron任务，通过CURL调用指定的url，只有在实例是指定legion的lord时才可运行
 
 
 
@@ -9079,7 +9078,7 @@ dumbloop-modifier1
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the modifier1 for the code_string
+``help``: 为code_string设置modifier1
 
 
 
@@ -9089,7 +9088,7 @@ dumbloop-code
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the script to load for the code_string
+``help``: 为code_string设置加载的脚本
 
 
 
@@ -9099,7 +9098,7 @@ dumbloop-function
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the function to run for the code_string
+``help``: 为code_string设置运行的函数
 
 
 
@@ -9136,7 +9135,7 @@ fastrouter
 
 ``parser``: uwsgi_opt_corerouter
 
-``help``: run the fastrouter on the specified port
+``help``: 在指定的端口上运行fastrouter
 
 ``reference``: :doc:`Fastrouter`
 
@@ -9148,7 +9147,7 @@ fastrouter-processes
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of fastrouter processes
+``help``: prefork指定数量的fastrouter进程
 
 
 
@@ -9158,7 +9157,7 @@ fastrouter-workers
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of fastrouter processes
+``help``: prefork指定数量的fastrouter进程
 
 
 
@@ -9168,7 +9167,7 @@ fastrouter-zerg
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
-``help``: attach the fastrouter to a zerg server
+``help``: 附加fastrouter到一个zerg服务器
 
 
 
@@ -9178,7 +9177,7 @@ fastrouter-use-cache
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: use uWSGI cache as hostname->server mapper for the fastrouter
+``help``: 使用uWSGI缓存作为fastrouter的hostname->server映射器
 
 
 
@@ -9188,7 +9187,7 @@ fastrouter-use-pattern
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
-``help``: use a pattern for fastrouter hostname->server mapping
+``help``: 将一个模式用于fastrouter hostname->server映射
 
 
 
@@ -9198,7 +9197,7 @@ fastrouter-use-base
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
-``help``: use a base dir for fastrouter hostname->server mapping
+``help``: 将一个基本目录用于fastrouter hostname->server映射
 
 
 
@@ -9208,7 +9207,7 @@ fastrouter-fallback
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: fallback to the specified node in case of error
+``help``: 错误情况下，回退到指定的节点
 
 
 
@@ -9218,7 +9217,7 @@ fastrouter-use-code-string
 
 ``parser``: uwsgi_opt_corerouter_cs
 
-``help``: use code string as hostname->server mapper for the fastrouter
+``help``: 将code string当成fastrouter的hostname->server映射器
 
 
 
@@ -9228,7 +9227,7 @@ fastrouter-use-socket
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
-``help``: forward request to the specified uwsgi socket
+``help``: 转发请求到指定的uwsgi socket
 
 
 
@@ -9238,7 +9237,7 @@ fastrouter-to
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward requests to the specified uwsgi server (you can specify it multiple times for load balancing)
+``help``: 转发请求到指定的uwsgi服务器 (你可以多次指定它以实现负载均衡)
 
 
 
@@ -9248,7 +9247,7 @@ fastrouter-gracetime
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: retry connections to dead static nodes after the specified amount of seconds
+``help``: 在指定秒数之后，重试连接到死掉的静态节点
 
 
 
@@ -9258,7 +9257,7 @@ fastrouter-events
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of concurrent events
+``help``: 设置并发事件的最大数
 
 
 
@@ -9268,7 +9267,7 @@ fastrouter-quiet
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report failed connections to instances
+``help``: 不要报告失败的连接给实例
 
 
 
@@ -9278,7 +9277,7 @@ fastrouter-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: run the fastrouter in cheap mode
+``help``: 在cheap模式下运行fastrouter
 
 
 
@@ -9288,7 +9287,7 @@ fastrouter-subscription-server
 
 ``parser``: uwsgi_opt_corerouter_ss
 
-``help``: run the fastrouter subscription server on the specified address
+``help``: 在指定地址上运行fastrouter订阅服务器
 
 
 
@@ -9298,7 +9297,7 @@ fastrouter-subscription-slot
 
 ``parser``: uwsgi_opt_deprecated
 
-``help``: *** deprecated ***
+``help``: *** 已弃用 ***
 
 
 
@@ -9308,7 +9307,7 @@ fastrouter-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置fastrouter timeout
+``help``: 设置fastrouter超时时间
 
 
 
@@ -9318,7 +9317,7 @@ fastrouter-post-buffering
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: enable fastrouter post buffering
+``help``: 启用fastrouter post buffering
 
 
 
@@ -9328,7 +9327,7 @@ fastrouter-post-buffering-dir
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: put fastrouter buffered files to the specified directory (noop, use TMPDIR env)
+``help``: 将fastrouter缓存的文件到指定的目录中 (空操作，使用TMPDIR env)
 
 
 
@@ -9338,7 +9337,7 @@ fastrouter-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the fastrouter 统计信息服务器
+``help``: 运行fastrouter统计信息服务器
 
 
 
@@ -9348,7 +9347,7 @@ fastrouter-stats-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the fastrouter 统计信息服务器
+``help``: 运行fastrouter统计信息服务器
 
 
 
@@ -9358,7 +9357,7 @@ fastrouter-ss
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the fastrouter 统计信息服务器
+``help``: 运行fastrouter统计信息服务器
 
 
 
@@ -9368,7 +9367,7 @@ fastrouter-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable fastrouter harakiri
+``help``: 启用fastrouter harakiri
 
 
 
@@ -9378,7 +9377,7 @@ fastrouter-uid
 
 ``parser``: uwsgi_opt_uid
 
-``help``: drop fastrouter privileges to the specified uid
+``help``: 移除fastrouter特权到指定的uid
 
 
 
@@ -9388,7 +9387,7 @@ fastrouter-gid
 
 ``parser``: uwsgi_opt_gid
 
-``help``: drop fastrouter privileges to the specified gid
+``help``: 移除fastrouter特权到指定的gid
 
 
 
@@ -9398,7 +9397,7 @@ fastrouter-resubscribe
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward subscriptions to the specified subscription server
+``help``: 转发订阅到指定的订阅服务器
 
 
 
@@ -9408,7 +9407,7 @@ fastrouter-resubscribe-bind
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: bind to the specified address when re-subscribing
+``help``: 当重新订阅时，绑定到指定的地址
 
 
 
@@ -9418,7 +9417,7 @@ fastrouter-buffer-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置internal buffer size (default: page size)
+``help``: 设置内部缓冲大小 (默认：页大小)
 
 
 
@@ -9428,7 +9427,7 @@ fastrouter-fallback-on-no-key
 
 ``parser``: uwsgi_opt_true
 
-``help``: move to fallback node even if a subscription key is not found
+``help``: 即使找不到订阅键，也要移动到回退节点
 
 
 
@@ -9438,7 +9437,7 @@ fastrouter-force-key
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: skip uwsgi parsing and directly 设置a key
+``help``: 跳过uwsgi解析，直接设置一个键
 
 
 
@@ -9451,7 +9450,7 @@ fiber
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ruby fiber as suspend engine
+``help``: 启用ruby fiber，作为挂起引擎
 
 
 
@@ -9464,7 +9463,7 @@ forkptyrouter
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
-``help``: run the forkptyrouter on the specified address
+``help``: 在指定地址上运行forkptyrouter
 
 
 
@@ -9474,7 +9473,7 @@ forkpty-router
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
-``help``: run the forkptyrouter on the specified address
+``help``: 在指定地址上运行forkptyrouter
 
 
 
@@ -9484,7 +9483,7 @@ forkptyurouter
 
 ``parser``: uwsgi_opt_forkpty_urouter
 
-``help``: run the forkptyrouter on the specified address
+``help``: 在指定地址上运行forkptyrouter
 
 
 
@@ -9494,7 +9493,7 @@ forkpty-urouter
 
 ``parser``: uwsgi_opt_forkpty_urouter
 
-``help``: run the forkptyrouter on the specified address
+``help``: 在指定地址上运行forkptyrouter
 
 
 
@@ -9504,7 +9503,7 @@ forkptyrouter-command
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 on every connection (default: /bin/sh)
+``help``: 每次连接都运行指定命令 (默认：/bin/sh)
 
 
 
@@ -9514,7 +9513,7 @@ forkpty-router-command
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 on every connection (default: /bin/sh)
+``help``: 每次连接都运行指定命令 (默认：/bin/sh)
 
 
 
@@ -9524,7 +9523,7 @@ forkptyrouter-cmd
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 on every connection (default: /bin/sh)
+``help``: 每次连接都运行指定命令 (默认：/bin/sh)
 
 
 
@@ -9534,7 +9533,7 @@ forkpty-router-cmd
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 on every connection (default: /bin/sh)
+``help``: 每次连接都运行指定命令 (默认：/bin/sh)
 
 
 
@@ -9544,7 +9543,7 @@ forkptyrouter-rows
 
 ``parser``: uwsgi_opt_set_16bit
 
-``help``: 设置forkptyrouter default pty window rows
+``help``: 设置forkptyrouter默认pty窗口行
 
 
 
@@ -9554,7 +9553,7 @@ forkptyrouter-cols
 
 ``parser``: uwsgi_opt_set_16bit
 
-``help``: 设置forkptyrouter default pty window cols
+``help``: 设置forkptyrouter默认pty窗口列
 
 
 
@@ -9564,7 +9563,7 @@ forkptyrouter-processes
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of forkptyrouter processes
+``help``: prefork指定数目的forkptyrouter进程
 
 
 
@@ -9574,7 +9573,7 @@ forkptyrouter-workers
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of forkptyrouter processes
+``help``: prefork指定数目的forkptyrouter进程
 
 
 
@@ -9584,7 +9583,7 @@ forkptyrouter-zerg
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
-``help``: attach the forkptyrouter to a zerg server
+``help``: 附加forkptyrouter到一个zerg服务器
 
 
 
@@ -9594,7 +9593,7 @@ forkptyrouter-fallback
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: fallback to the specified node in case of error
+``help``: 错误情况下，回退到指定的节点
 
 
 
@@ -9604,7 +9603,7 @@ forkptyrouter-events
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of concufptyent events
+``help``: 设置concufptyent事件的最大数
 
 
 
@@ -9614,7 +9613,7 @@ forkptyrouter-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: run the forkptyrouter in cheap mode
+``help``: 在cheap模式下运行forkptyrouter
 
 
 
@@ -9624,7 +9623,7 @@ forkptyrouter-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置forkptyrouter timeout
+``help``: 设置forkptyrouter超时时间
 
 
 
@@ -9634,7 +9633,7 @@ forkptyrouter-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the forkptyrouter 统计信息服务器
+``help``: 运行forkptyrouter 统计信息服务器
 
 
 
@@ -9644,7 +9643,7 @@ forkptyrouter-stats-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the forkptyrouter 统计信息服务器
+``help``: 运行forkptyrouter 统计信息服务器
 
 
 
@@ -9654,7 +9653,7 @@ forkptyrouter-ss
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the forkptyrouter 统计信息服务器
+``help``: 运行forkptyrouter 统计信息服务器
 
 
 
@@ -9664,7 +9663,7 @@ forkptyrouter-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable forkptyrouter harakiri
+``help``: 启用forkptyrouter harakiri
 
 
 
@@ -9677,7 +9676,7 @@ go-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a go shared library in the process address space, eventually patching main.main and __go_init_main
+``help``: 在进程地址空间中加载一个go共享库，最终为main.main和__go_init_main打补丁
 
 
 
@@ -9687,7 +9686,7 @@ gccgo-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a go shared library in the process address space, eventually patching main.main and __go_init_main
+``help``: 在进程地址空间中加载一个go共享库，最终为main.main和__go_init_main打补丁
 
 
 
@@ -9697,7 +9696,7 @@ go-args
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置go commandline arguments
+``help``: 设置go命令行参数
 
 
 
@@ -9707,7 +9706,7 @@ gccgo-args
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置go commandline arguments
+``help``: 设置go命令行参数
 
 
 
@@ -9719,7 +9718,7 @@ goroutines
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: a shortcut setting optimal options for goroutine-based apps, takes the number of max goroutines to spawn as argument
+``help``: 一个快捷方式，为基于goroutine的应用设置优化选项，接收要生成的最大goroutine数为参数
 
 
 
@@ -9732,7 +9731,7 @@ geoip-country
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified geoip country database
+``help``: 加载指定的geoip国家数据库
 
 
 
@@ -9742,7 +9741,7 @@ geoip-city
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified geoip city database
+``help``: 加载指定的geoip城市数据库
 
 
 
@@ -9752,7 +9751,7 @@ geoip-use-disk
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not cache geoip databases in memory
+``help``: 不要将geoip数据库缓存在内存中
 
 
 
@@ -9767,7 +9766,7 @@ gevent
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: a shortcut enabling gevent loop engine with the specified number of async cores and optimal parameters
+``help``: 一个快捷方式，启用gevent循环引擎，使用指定数目的异步核心数和优化参数
 
 
 
@@ -9777,7 +9776,7 @@ gevent-monkey-patch
 
 ``parser``: uwsgi_opt_true
 
-``help``: call gevent.monkey.patch_all() automatically on startup
+``help``: 启动时自动调用gevent.monkey.patch_all()
 
 
 
@@ -9787,7 +9786,7 @@ gevent-early-monkey-patch
 
 ``parser``: uwsgi_opt_true
 
-``help``: call gevent.monkey.patch_all() automatically 在应用加载之前
+``help``: 在应用加载之前自动调用gevent.monkey.patch_all()
 
 
 
@@ -9797,7 +9796,7 @@ gevent-wait-for-hub
 
 ``parser``: uwsgi_opt_true
 
-``help``: wait for gevent hub's death instead of the control greenlet
+``help``: 等待gevent hub死掉，而不是控制greenlet
 
 
 
@@ -9812,7 +9811,7 @@ glusterfs-mount
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: virtual mount the specified glusterfs volume in a uri
+``help``: 在一个uri上虚拟挂载指定的glusterfs卷
 
 
 
@@ -9822,7 +9821,7 @@ glusterfs-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: timeout for glusterfs async mode
+``help``: glusterfs异步模式的超时时间
 
 
 
@@ -9838,7 +9837,7 @@ greenlet
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable greenlet as suspend engine
+``help``: 启用greenlet作为挂起引擎
 
 
 
@@ -9853,7 +9852,7 @@ gridfs-mount
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: mount a gridfs db on the specified mountpoint
+``help``: 在指定挂载点上挂载一个gridfs数据库
 
 
 
@@ -9865,7 +9864,7 @@ gridfs-debug
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: report gridfs mountpoint and itemname for each request (debug)
+``help``: 对每个请求报告gridfs挂载点和项名称 (调试)
 
 
 
@@ -9878,7 +9877,7 @@ http
 
 ``parser``: uwsgi_opt_corerouter
 
-``help``: add an http router/server on the specified address
+``help``: 在指定地址上添加一个http路由器/服务器
 
 
 
@@ -9888,7 +9887,7 @@ httprouter
 
 ``parser``: uwsgi_opt_corerouter
 
-``help``: add an http router/server on the specified address
+``help``: 在指定地址上添加一个http路由器/服务器
 
 
 
@@ -9898,7 +9897,7 @@ https
 
 ``parser``: uwsgi_opt_https
 
-``help``: add an https router/server on the specified address with specified certificate and key
+``help``: 在指定地址上添加一个https路由器/服务器，使用指定的证书和密钥
 
 
 
@@ -9908,7 +9907,7 @@ https2
 
 ``parser``: uwsgi_opt_https2
 
-``help``: add an https/spdy router/server using keyval options
+``help``: 使用键值选项添加一个https/spdy路由器/服务器
 
 
 
@@ -9918,7 +9917,7 @@ https-export-cert
 
 ``parser``: uwsgi_opt_true
 
-``help``: export uwsgi variable HTTPS_CC containing the raw client certificate
+``help``: 导出包含原始客户端证书的uwsgi变量HTTPS_CC
 
 
 
@@ -9928,7 +9927,7 @@ https-session-context
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the session id context to the specified value
+``help``: 设置会话id上下文为指定值
 
 
 
@@ -9938,7 +9937,7 @@ http-to-https
 
 ``parser``: uwsgi_opt_http_to_https
 
-``help``: add an http router/server on the specified address and redirect all of the requests to https
+``help``: 在指定地址上添加一个http路由器/服务器，并重定向所有请求到https
 
 
 
@@ -9948,7 +9947,7 @@ http-processes
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the number of http processes to spawn
+``help``: 设置要生成的http进程数
 
 
 
@@ -9958,7 +9957,7 @@ http-workers
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the number of http processes to spawn
+``help``: 设置要生成的http进程数
 
 
 
@@ -9968,7 +9967,7 @@ http-var
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a key=value item to the generated uwsgi packet
+``help``: 添加一个key=value项到已生成的uwsgi包
 
 
 
@@ -9978,7 +9977,7 @@ http-to
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward requests to the specified node (you can specify it multiple time for lb)
+``help``: 转发请求到指定的节点 (你可以为lb多次指定)
 
 
 
@@ -9988,7 +9987,7 @@ http-zerg
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
-``help``: attach the http router to a zerg server
+``help``: 附加http路由器到一个zerg服务器
 
 
 
@@ -9998,7 +9997,7 @@ http-fallback
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: fallback to the specified node in case of error
+``help``: 发生错误时，回退到指定节点
 
 
 
@@ -10008,7 +10007,7 @@ http-modifier1
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置uwsgi protocol modifier1
+``help``: 设置uwsgi协议modifier1
 
 
 
@@ -10018,7 +10017,7 @@ http-modifier2
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置uwsgi protocol modifier2
+``help``: 设置uwsgi协议modifier2
 
 
 
@@ -10028,7 +10027,7 @@ http-use-cache
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: use uWSGI cache as key->value virtualhost mapper
+``help``: 使用uWSGI缓存作为key->value虚拟机映射器
 
 
 
@@ -10038,7 +10037,7 @@ http-use-pattern
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
-``help``: use the specified pattern for mapping requests to unix sockets
+``help``: 使用指定模式来映射请求到unix socket
 
 
 
@@ -10048,7 +10047,7 @@ http-use-base
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
-``help``: use the specified base for mapping requests to unix sockets
+``help``: 将指定的base用于映射请求到unix socket
 
 
 
@@ -10058,7 +10057,7 @@ http-events
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the number of concurrent http async events
+``help``: 设置并发http异步事件的数目
 
 
 
@@ -10068,7 +10067,7 @@ http-subscription-server
 
 ``parser``: uwsgi_opt_corerouter_ss
 
-``help``: enable the subscription server
+``help``: 启用订阅服务器
 
 
 
@@ -10078,7 +10077,7 @@ http-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置internal http socket timeout
+``help``: 设置内部http socket超时时间
 
 
 
@@ -10088,7 +10087,7 @@ http-manage-expect
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: manage the Expect HTTP request header (optionally checking for Content-Length)
+``help``: 管理Expect HTTP请求头部 (可选地检查Content-Length)
 
 
 
@@ -10098,7 +10097,7 @@ http-keepalive
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: HTTP 1.1 keepalive support (non-pipelined) requests
+``help``: HTTP 1.1 keepalive支持 (非流水) 请求
 
 
 
@@ -10108,7 +10107,7 @@ http-auto-chunked
 
 ``parser``: uwsgi_opt_true
 
-``help``: automatically transform output to chunked encoding during HTTP 1.1 keepalive (if needed)
+``help``: 在HTTP 1.1 keepalive期间，自动将输出转换成块编码 (如果需要的话)
 
 
 
@@ -10118,7 +10117,7 @@ http-auto-gzip
 
 ``parser``: uwsgi_opt_true
 
-``help``: automatically gzip content if uWSGI-Encoding header is 设置to gzip, but content size (Content-Length/Transfer-Encoding) and Content-Encoding are not specified
+``help``: 如果设置uWSGI-Encoding头部为gzip，则自动gzip压缩内容，但是不指定内容大小 (Content-Length/Transfer-Encoding)和Content-Encoding
 
 
 
@@ -10128,7 +10127,7 @@ http-raw-body
 
 ``parser``: uwsgi_opt_true
 
-``help``: blindly send HTTP body to backends (required for WebSockets and Icecast support in backends)
+``help``: 盲目发送HTTP请求体到后端 (要求后端支持WebSockets和Icecast)
 
 
 
@@ -10138,7 +10137,7 @@ http-websockets
 
 ``parser``: uwsgi_opt_true
 
-``help``: automatically detect websockets connections and put the session in raw mode
+``help``: 自动检测websockets连接，并将会话置于原始模式
 
 
 
@@ -10148,7 +10147,7 @@ http-chunked-input
 
 ``parser``: uwsgi_opt_true
 
-``help``: automatically detect chunked input requests and put the session in raw mode
+``help``: 自动检测块输入请求，并将会话置于原始模式
 
 
 
@@ -10158,7 +10157,7 @@ http-use-code-string
 
 ``parser``: uwsgi_opt_corerouter_cs
 
-``help``: use code string as hostname->server mapper for the http router
+``help``: 将code string作为hostname->server映射器，用于http路由器
 
 
 
@@ -10168,7 +10167,7 @@ http-use-socket
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
-``help``: forward request to the specified uwsgi socket
+``help``: 转发请求到指定的uwsgi socket
 
 
 
@@ -10178,7 +10177,7 @@ http-gracetime
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: retry connections to dead static nodes after the specified amount of seconds
+``help``: 指定秒数之后，重试连接死掉的静态节点
 
 
 
@@ -10188,7 +10187,7 @@ http-quiet
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report failed connections to instances
+``help``: 不要向实例报告失败的连接
 
 
 
@@ -10198,7 +10197,7 @@ http-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: run the http router in cheap mode
+``help``: 在cheap模式下运行http路由器
 
 
 
@@ -10208,7 +10207,7 @@ http-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the http router 统计信息服务器
+``help``: 运行http路由器统计信息服务器
 
 
 
@@ -10218,7 +10217,7 @@ http-stats-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the http router 统计信息服务器
+``help``: 运行http路由器统计信息服务器
 
 
 
@@ -10228,7 +10227,7 @@ http-ss
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the http router 统计信息服务器
+``help``: 运行http路由器统计信息服务器
 
 
 
@@ -10238,7 +10237,7 @@ http-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable http router harakiri
+``help``: 启用http路由器harakiri
 
 
 
@@ -10288,7 +10287,7 @@ http-buffer-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置internal buffer size (default: page size)
+``help``: 设置内部缓冲大小 (默认：页大小)
 
 
 
@@ -11049,7 +11048,7 @@ psgi-enable-psgix-io
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable psgix.io support
+``help``: 启用psgix.io support
 
 
 
@@ -11081,7 +11080,7 @@ perl-version
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: print perl version
+``help``: 打印perl版本
 
 
 
@@ -11133,7 +11132,7 @@ perl-auto-reload
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: enable perl auto-reloader with the specified frequency
+``help``: 启用perl auto-reloader with the specified frequency
 
 
 
@@ -11590,7 +11589,7 @@ pythonpath
 
 ``parser``: uwsgi_opt_pythonpath
 
-``help``: add directory (or glob) to pythonpath
+``help``: 添加目录(或者glob)到pythonpath
 
 
 
@@ -11600,7 +11599,7 @@ python-path
 
 ``parser``: uwsgi_opt_pythonpath
 
-``help``: add directory (or glob) to pythonpath
+``help``: 添加目录(或者glob)到pythonpath
 
 
 
@@ -11610,7 +11609,7 @@ pp
 
 ``parser``: uwsgi_opt_pythonpath
 
-``help``: add directory (or glob) to pythonpath
+``help``: 添加目录(或者glob)到pythonpath
 
 
 
@@ -11762,7 +11761,7 @@ paste-logger
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable paste fileConfig logger
+``help``: 启用paste fileConfig logger
 
 
 
@@ -11898,7 +11897,7 @@ py-tracebacker
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: enable the uWSGI python tracebacker
+``help``: 启用the uWSGI python tracebacker
 
 
 
@@ -12008,7 +12007,7 @@ wsgi-accept-buffer
 
 ``parser``: uwsgi_opt_true
 
-``help``: accept CPython buffer-compliant objects as WSGI response in addition to string/bytes
+``help``: 除了string/byte外，接受CPython 兼容buffer对象作为WSGI响应
 
 
 
@@ -12018,7 +12017,7 @@ wsgi-accept-buffers
 
 ``parser``: uwsgi_opt_true
 
-``help``: accept CPython buffer-compliant objects as WSGI response in addition to string/bytes
+``help``: 除了string/byte外，接受CPython 兼容buffer对象作为WSGI响应
 
 
 
@@ -12030,7 +12029,7 @@ python-version
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: report python version
+``help``: 报告python版本
 
 
 
@@ -12040,7 +12039,7 @@ python-raw
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a python file for managing raw requests
+``help``: 加载一个python文件来管理原始请求
 
 
 
@@ -12050,7 +12049,7 @@ py-sharedarea
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: create a sharedarea from a python bytearray object of the specified size
+``help``: 从指定大小的python bytearray对象创建一个共享区域
 
 
 
@@ -12060,7 +12059,7 @@ py-call-osafterfork
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable child processes running cpython to trap OS signals
+``help``: 让子进程能够运行cpython来拦截OS信号
 
 
 
@@ -12072,7 +12071,7 @@ early-python
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load the python VM as soon as possible (useful for the fork server)
+``help``: 尽快加载python VM (对fork服务器有用)
 
 
 
@@ -12084,7 +12083,7 @@ early-pyimport
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: import a python module in the early phase
+``help``: 在早期导入一个python模块
 
 
 
@@ -12096,7 +12095,7 @@ early-python-import
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: import a python module in the early phase
+``help``: 在早期导入一个python模块
 
 
 
@@ -12108,7 +12107,7 @@ early-pythonpath
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: add directory (or glob) to pythonpath (immediate version)
+``help``: 添加目录(或者glob)到pythonpath (立即版本)
 
 
 
@@ -12120,7 +12119,7 @@ early-python-path
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: add directory (or glob) to pythonpath (immediate version)
+``help``: 添加目录(或者glob)到pythonpath (立即版本)
 
 
 
@@ -12138,7 +12137,7 @@ rails
 
 ``flags``: UWSGI_OPT_POST_BUFFERING
 
-``help``: load a rails <= 2.x app
+``help``: 加载一个rails <= 2.x的应用
 
 
 
@@ -12150,7 +12149,7 @@ rack
 
 ``flags``: UWSGI_OPT_POST_BUFFERING
 
-``help``: load a rack app
+``help``: 加载一个rack应用
 
 
 
@@ -12160,7 +12159,7 @@ ruby-gc-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置ruby GC frequency
+``help``: 设置ruby GC频率
 
 
 
@@ -12170,7 +12169,7 @@ rb-gc-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置ruby GC frequency
+``help``: 设置ruby GC频率
 
 
 
@@ -12180,7 +12179,7 @@ rb-lib
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a directory to the ruby libdir search path
+``help``: 添加一个目录到ruby libdir搜索路径
 
 
 
@@ -12190,7 +12189,7 @@ ruby-lib
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a directory to the ruby libdir search path
+``help``: 添加一个目录到ruby libdir搜索路径
 
 
 
@@ -12200,7 +12199,7 @@ rb-require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script
+``help``: 导入/需要一个ruby模块/脚本
 
 
 
@@ -12210,7 +12209,7 @@ ruby-require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script
+``help``: 导入/需要一个ruby模块/脚本
 
 
 
@@ -12220,7 +12219,7 @@ rbrequire
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script
+``help``: 导入/需要一个ruby模块/脚本
 
 
 
@@ -12230,7 +12229,7 @@ rubyrequire
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script
+``help``: 导入/需要一个ruby模块/脚本
 
 
 
@@ -12240,7 +12239,7 @@ require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script
+``help``: 导入/需要一个ruby模块/脚本
 
 
 
@@ -12250,7 +12249,7 @@ shared-rb-require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script (shared)
+``help``: 导入/需要一个ruby模块/脚本 (共享)
 
 
 
@@ -12260,7 +12259,7 @@ shared-ruby-require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script (shared)
+``help``: 导入/需要一个ruby模块/脚本 (共享)
 
 
 
@@ -12270,7 +12269,7 @@ shared-rbrequire
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script (shared)
+``help``: 导入/需要一个ruby模块/脚本 (共享)
 
 
 
@@ -12280,7 +12279,7 @@ shared-rubyrequire
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script (shared)
+``help``: 导入/需要一个ruby模块/脚本 (共享)
 
 
 
@@ -12290,7 +12289,7 @@ shared-require
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: import/require a ruby module/script (shared)
+``help``: 导入/需要一个ruby模块/脚本 (共享)
 
 
 
@@ -12300,7 +12299,7 @@ gemset
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified gem设置(rvm)
+``help``: 加载指定gem设置(rvm)
 
 
 
@@ -12310,7 +12309,7 @@ rvm
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified gem设置(rvm)
+``help``: 加载指定gem设置(rvm)
 
 
 
@@ -12320,7 +12319,7 @@ rvm-path
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: search for rvm in the specified directory
+``help``: 在指定的目录中搜索rvm
 
 
 
@@ -12330,7 +12329,7 @@ rbshell
 
 ``parser``: uwsgi_opt_rbshell
 
-``help``: run  a ruby/irb shell
+``help``: 运行ruby/irb shell
 
 
 
@@ -12340,7 +12339,7 @@ rbshell-oneshot
 
 ``parser``: uwsgi_opt_rbshell
 
-``help``: 设置ruby/irb shell (one shot)
+``help``: 设置ruby/irb shell (一次搞定)
 
 
 
@@ -12355,7 +12354,7 @@ rados-mount
 
 ``flags``: UWSGI_OPT_MIME
 
-``help``: virtual mount the specified rados volume in a uri
+``help``: 虚拟挂载uri中的指定rados卷
 
 
 
@@ -12365,7 +12364,7 @@ rados-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: timeout for async operations
+``help``: 异步操作的超时时间
 
 
 
@@ -12378,7 +12377,7 @@ rawrouter
 
 ``parser``: uwsgi_opt_undeferred_corerouter
 
-``help``: run the rawrouter on the specified port
+``help``: 在指定端口上运行rawrouter
 
 
 
@@ -12388,7 +12387,7 @@ rawrouter-processes
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of rawrouter processes
+``help``: prefork指定数目的rawrouter进程
 
 
 
@@ -12398,7 +12397,7 @@ rawrouter-workers
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of rawrouter processes
+``help``: prefork指定数目的rawrouter进程
 
 
 
@@ -12408,7 +12407,7 @@ rawrouter-zerg
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
-``help``: attach the rawrouter to a zerg server
+``help``: 附加rawrouter到一个zerg服务器
 
 
 
@@ -12418,7 +12417,7 @@ rawrouter-use-cache
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: use uWSGI cache as hostname->server mapper for the rawrouter
+``help``: 将uWSGI缓存作为hostname->server映射器用于rawrouter
 
 
 
@@ -12428,7 +12427,7 @@ rawrouter-use-pattern
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
-``help``: use a pattern for rawrouter hostname->server mapping
+``help``: 将一个模式用于rawrouter hostname->server映射
 
 
 
@@ -12438,7 +12437,7 @@ rawrouter-use-base
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
-``help``: use a base dir for rawrouter hostname->server mapping
+``help``: 将一个基本目录用于rawrouter hostname->server映射
 
 
 
@@ -12448,7 +12447,7 @@ rawrouter-fallback
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: fallback to the specified node in case of error
+``help``: 发生错误时，回退到指定节点
 
 
 
@@ -12458,7 +12457,7 @@ rawrouter-use-code-string
 
 ``parser``: uwsgi_opt_corerouter_cs
 
-``help``: use code string as hostname->server mapper for the rawrouter
+``help``: 将code string作为hostname->server映射器，用于rawrouter
 
 
 
@@ -12468,7 +12467,7 @@ rawrouter-use-socket
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
-``help``: forward request to the specified uwsgi socket
+``help``: 转发请求到指定的uwsgi socket
 
 
 
@@ -12478,7 +12477,7 @@ rawrouter-to
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward requests to the specified uwsgi server (you can specify it multiple times for load balancing)
+``help``: 转发请求到指定的uwsgi服务器 (你可以为负载均衡多次指定它)
 
 
 
@@ -12488,7 +12487,7 @@ rawrouter-gracetime
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: retry connections to dead static nodes after the specified amount of seconds
+``help``: 指定秒数hour，重试连接到死亡静态节点
 
 
 
@@ -12498,7 +12497,7 @@ rawrouter-events
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of concurrent events
+``help``: 设置并发事件的最大数
 
 
 
@@ -12508,7 +12507,7 @@ rawrouter-max-retries
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of retries/fallbacks to other nodes
+``help``: 设置重试/回退到其他节点的最大次数
 
 
 
@@ -12518,7 +12517,7 @@ rawrouter-quiet
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report failed connections to instances
+``help``: 不要向实例报告失败的连接
 
 
 
@@ -12528,7 +12527,7 @@ rawrouter-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: run the rawrouter in cheap mode
+``help``: 在cheap模式下运行rawrouter
 
 
 
@@ -12538,7 +12537,7 @@ rawrouter-subscription-server
 
 ``parser``: uwsgi_opt_corerouter_ss
 
-``help``: run the rawrouter subscription server on the spcified address
+``help``: 在指定的地址上运行rawrouter订阅服务器
 
 
 
@@ -12548,7 +12547,7 @@ rawrouter-subscription-slot
 
 ``parser``: uwsgi_opt_deprecated
 
-``help``: *** deprecated ***
+``help``: *** 已弃用 ***
 
 
 
@@ -12558,7 +12557,7 @@ rawrouter-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置rawrouter timeout
+``help``: 设置rawrouter超时时间
 
 
 
@@ -12568,7 +12567,7 @@ rawrouter-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the rawrouter 统计信息服务器
+``help``: 运行rawrouter统计信息服务器
 
 
 
@@ -12578,7 +12577,7 @@ rawrouter-stats-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the rawrouter 统计信息服务器
+``help``: 运行rawrouter统计信息服务器
 
 
 
@@ -12588,7 +12587,7 @@ rawrouter-ss
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the rawrouter 统计信息服务器
+``help``: 运行rawrouter统计信息服务器
 
 
 
@@ -12598,7 +12597,7 @@ rawrouter-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable rawrouter harakiri
+``help``: 启用rawrouter harakiri
 
 
 
@@ -12608,7 +12607,7 @@ rawrouter-xclient
 
 ``parser``: uwsgi_opt_true
 
-``help``: use the xclient protocol to pass the client address
+``help``: 使用xclient协议来传递客户端地址
 
 
 
@@ -12618,7 +12617,7 @@ rawrouter-buffer-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置internal buffer size (default: page size)
+``help``: 设置内部缓冲大小 (默认：页大小)
 
 
 
@@ -12631,7 +12630,7 @@ rbthreads
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ruby native threads
+``help``: 启用ruby原生线程
 
 
 
@@ -12641,7 +12640,7 @@ rb-threads
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ruby native threads
+``help``: 启用ruby原生线程
 
 
 
@@ -12651,7 +12650,7 @@ rbthread
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ruby native threads
+``help``: 启用ruby原生线程
 
 
 
@@ -12661,7 +12660,7 @@ rb-thread
 
 ``parser``: uwsgi_opt_true
 
-``help``: enable ruby native threads
+``help``: 启用ruby原生线程
 
 
 
@@ -12677,7 +12676,7 @@ ring-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified clojure script
+``help``: 加载指定的clojure脚本
 
 
 
@@ -12687,7 +12686,7 @@ clojure-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified clojure script
+``help``: 加载指定的clojure脚本
 
 
 
@@ -12697,7 +12696,7 @@ ring-app
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: map the specified ring application (syntax namespace:function)
+``help``: 映射指定的ring应用 (语法：namespace:function)
 
 
 
@@ -12763,7 +12762,7 @@ rrdtool
 
 ``flags``: UWSGI_OPT_MASTER|UWSGI_OPT_METRICS
 
-``help``: store rrd files in the specified directory
+``help``: 在指定的目录中存储rrd文件
 
 
 
@@ -12773,7 +12772,7 @@ rrdtool-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置collect frequency
+``help``: 设置收集频率
 
 
 
@@ -12783,7 +12782,7 @@ rrdtool-lib
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the name of rrd library (default: librrd.so)
+``help``: 设置rrd库的名称 (默认：librrd.so)
 
 
 
@@ -12796,7 +12795,7 @@ rsyslog-packet-size
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置maximum packet size for syslog messages (default 1024) WARNING! using packets > 1024 breaks RFC 3164 (#4.1)
+``help``: 设置syslog消息的最大包大小 (默认1024) 警告！使用包大小 > 1024会违反RFC 3164 (#4.1)
 
 
 
@@ -12806,7 +12805,7 @@ rsyslog-split-messages
 
 ``parser``: uwsgi_opt_true
 
-``help``: split big messages into multiple chunks if they are bigger than allowed packet size (default is false)
+``help``: 如果大消息比允许的包大小大，则将它分割到多个块 (默认是false)
 
 
 
@@ -12861,7 +12860,7 @@ sslrouter
 
 ``parser``: uwsgi_opt_sslrouter
 
-``help``: run the sslrouter on the specified port
+``help``: 在指定端口上运行sslrouter
 
 
 
@@ -12871,7 +12870,7 @@ sslrouter2
 
 ``parser``: uwsgi_opt_sslrouter2
 
-``help``: run the sslrouter on the specified port (key-value based)
+``help``: 在指定端口上运行sslrouter (基于键值)
 
 
 
@@ -12881,7 +12880,7 @@ sslrouter-session-context
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the session id context to the specified value
+``help``: 设置会话id上下文到指定的值
 
 
 
@@ -12891,7 +12890,7 @@ sslrouter-processes
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of sslrouter processes
+``help``: prefork指定数目的sslrouter进程
 
 
 
@@ -12901,7 +12900,7 @@ sslrouter-workers
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: prefork the specified number of sslrouter processes
+``help``: prefork指定数目的sslrouter进程
 
 
 
@@ -12911,7 +12910,7 @@ sslrouter-zerg
 
 ``parser``: uwsgi_opt_corerouter_zerg
 
-``help``: attach the sslrouter to a zerg server
+``help``: 附加sslrouter到一个zerg服务器
 
 
 
@@ -12921,7 +12920,7 @@ sslrouter-use-cache
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: use uWSGI cache as hostname->server mapper for the sslrouter
+``help``: 将uWSGI缓存作为hostname->server映射器用于sslrouter
 
 
 
@@ -12931,7 +12930,7 @@ sslrouter-use-pattern
 
 ``parser``: uwsgi_opt_corerouter_use_pattern
 
-``help``: use a pattern for sslrouter hostname->server mapping
+``help``: 对sslrouter hostname->server映射使用一个模式
 
 
 
@@ -12941,7 +12940,7 @@ sslrouter-use-base
 
 ``parser``: uwsgi_opt_corerouter_use_base
 
-``help``: use a base dir for sslrouter hostname->server mapping
+``help``: 对sslrouter hostname->server映射使用一个基本目录
 
 
 
@@ -12951,7 +12950,7 @@ sslrouter-fallback
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: fallback to the specified node in case of error
+``help``: 发生错误时，回退到指定节点
 
 
 
@@ -12961,7 +12960,7 @@ sslrouter-use-code-string
 
 ``parser``: uwsgi_opt_corerouter_cs
 
-``help``: use code string as hostname->server mapper for the sslrouter
+``help``: 将code string作为hostname->server映射器，用于sslrouter
 
 
 
@@ -12971,7 +12970,7 @@ sslrouter-use-socket
 
 ``parser``: uwsgi_opt_corerouter_use_socket
 
-``help``: forward request to the specified uwsgi socket
+``help``: 转发请求到指定的uwsgi socket
 
 
 
@@ -12981,7 +12980,7 @@ sslrouter-to
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward requests to the specified uwsgi server (you can specify it multiple times for load balancing)
+``help``: 转发请求到指定的uwsgi服务器 (你可以为负载均衡多次指定它)
 
 
 
@@ -12991,7 +12990,7 @@ sslrouter-gracetime
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: retry connections to dead static nodes after the specified amount of seconds
+``help``: 指定秒数hour，重试连接到死亡静态节点
 
 
 
@@ -13001,7 +13000,7 @@ sslrouter-events
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of concurrent events
+``help``: 设置并发时间的最大数
 
 
 
@@ -13011,7 +13010,7 @@ sslrouter-max-retries
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the maximum number of retries/fallbacks to other nodes
+``help``: 对其他节点设置最大重试/回退数
 
 
 
@@ -13021,7 +13020,7 @@ sslrouter-quiet
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not report failed connections to instances
+``help``: 不要向实例报告失败的连接
 
 
 
@@ -13031,7 +13030,7 @@ sslrouter-cheap
 
 ``parser``: uwsgi_opt_true
 
-``help``: run the sslrouter in cheap mode
+``help``: 在cheap模式下运行sslrouter
 
 
 
@@ -13041,7 +13040,7 @@ sslrouter-subscription-server
 
 ``parser``: uwsgi_opt_corerouter_ss
 
-``help``: run the sslrouter subscription server on the spcified address
+``help``: 在指定地址上运行sslrouter订阅服务器
 
 
 
@@ -13051,7 +13050,7 @@ sslrouter-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置sslrouter timeout
+``help``: 设置sslrouter超时时间
 
 
 
@@ -13061,7 +13060,7 @@ sslrouter-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the sslrouter 统计信息服务器
+``help``: 运行sslrouter统计信息服务器
 
 
 
@@ -13071,7 +13070,7 @@ sslrouter-stats-server
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the sslrouter 统计信息服务器
+``help``: 运行sslrouter统计信息服务器
 
 
 
@@ -13081,7 +13080,7 @@ sslrouter-ss
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the sslrouter 统计信息服务器
+``help``: 运行sslrouter统计信息服务器
 
 
 
@@ -13091,7 +13090,7 @@ sslrouter-harakiri
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: enable sslrouter harakiri
+``help``: 启用sslrouter harakiri
 
 
 
@@ -13101,7 +13100,7 @@ sslrouter-sni
 
 ``parser``: uwsgi_opt_true
 
-``help``: use SNI to route requests
+``help``: 使用SNI来路由请求
 
 
 
@@ -13111,7 +13110,7 @@ sslrouter-buffer-size
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: 设置internal buffer size (default: page size)
+``help``: 设置内部缓冲大小 (默认：页大小)
 
 
 
@@ -13124,7 +13123,7 @@ stackless
 
 ``parser``: uwsgi_opt_true
 
-``help``: use stackless as suspend engine
+``help``: 使用stackless作为挂起引擎
 
 
 
@@ -13149,7 +13148,7 @@ symcall
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified C symbol as the symcall request handler (supports <mountpoint=func> too)
+``help``: 将指定的C符号作为symcall请求处理器 (也支持<mountpoint=func>)
 
 
 
@@ -13159,7 +13158,7 @@ symcall-use-next
 
 ``parser``: uwsgi_opt_true
 
-``help``: use RTLD_NEXT when searching for symbols
+``help``: 搜索符号时使用RTLD_NEXT
 
 
 
@@ -13169,7 +13168,7 @@ symcall-register-rpc
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified C symbol as an RPC function (syntax: name function)
+``help``: 将指定的C符号作为RPC函数加载 (语法：name function)
 
 
 
@@ -13179,7 +13178,7 @@ symcall-post-fork
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: call the specified C symbol after each fork()
+``help``: 每次fork()之后调用指定的C符号
 
 
 
@@ -13200,7 +13199,7 @@ tornado
 
 ``flags``: UWSGI_OPT_THREADS
 
-``help``: a shortcut enabling tornado loop engine with the specified number of async cores and optimal parameters
+``help``: 一个快捷方式，用指定核心数和优化参数启用tornado循环引擎
 
 
 
@@ -13231,7 +13230,7 @@ tuntap-router
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run the tuntap router (syntax: <device> <socket> [stats] [gateway])
+``help``: 运行tuntap路由器 (语法：<device> <socket> [stats] [gateway])
 
 
 
@@ -13241,7 +13240,7 @@ tuntap-device
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a tuntap device to the instance (syntax: <device>[ <socket>])
+``help``: 添加一个tuntap设备到实例 (语法：<device>[ <socket>])
 
 
 
@@ -13251,7 +13250,7 @@ tuntap-use-credentials
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: enable check of SCM_CREDENTIALS for tuntap client/server
+``help``: 启用对tuntap客户端/服务器的SCM_CREDENTIALS检查
 
 
 
@@ -13261,7 +13260,7 @@ tuntap-router-firewall-in
 
 ``parser``: uwsgi_tuntap_opt_firewall
 
-``help``: add a firewall rule to the tuntap router (syntax: <action> <src/mask> <dst/mask>)
+``help``: 添加一个防火墙规则到tuntap路由器 (语法：<action> <src/mask> <dst/mask>)
 
 
 
@@ -13271,7 +13270,7 @@ tuntap-router-firewall-out
 
 ``parser``: uwsgi_tuntap_opt_firewall
 
-``help``: add a firewall rule to the tuntap router (syntax: <action> <src/mask> <dst/mask>)
+``help``: 添加一个防火墙规则到tuntap路由器 (语法：<action> <src/mask> <dst/mask>)
 
 
 
@@ -13281,7 +13280,7 @@ tuntap-router-route
 
 ``parser``: uwsgi_tuntap_opt_route
 
-``help``: add a routing rule to the tuntap router (syntax: <src/mask> <dst/mask> <gateway>)
+``help``: 新增一个路由规则到tuntap路由器 (语法：<src/mask> <dst/mask> <gateway>)
 
 
 
@@ -13291,7 +13290,7 @@ tuntap-router-stats
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the tuntap router 统计信息服务器
+``help``: 运行tuntap路由器统计信息服务器
 
 
 
@@ -13301,7 +13300,7 @@ tuntap-device-rule
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a tuntap device rule (syntax: <direction> <src/mask> <dst/mask> <action> [target])
+``help``: 新增一个tuntap设备规则 (语法：<direction> <src/mask> <dst/mask> <action> [target])
 
 
 
@@ -13324,7 +13323,7 @@ ugreen-stacksize
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置ugreen stack size in pages
+``help``: 设置ugreen栈大小，以页为单位
 
 
 
@@ -13347,7 +13346,7 @@ v8-preemptive
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: put v8 in preemptive move (单个隔离) with the specified frequency
+``help``: 指定频率下将v8置于preemptive move (单个隔离) 
 
 
 

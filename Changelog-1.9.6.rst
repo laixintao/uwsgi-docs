@@ -62,11 +62,11 @@ Carbon平均值计算 (作者：Łukasz Mierzwa)
 
 有三种方式：
 
-   --carbon-idle-avg none - don't push any avg_rt value if no requests were made
+   --carbon-idle-avg none - 如果没有请求，则不要推送任何avg_rt值
 
-   --carbon-idle-avg last - use last computed avg_rt value (default)
+   --carbon-idle-avg last - 使用最后一次计算的avg_rt值（默认）
 
-   --carbon-idle-avg zero - push 0 if no requests were made
+   --carbon-idle-avg zero - 如果没有请求，则推送0
 
 
 
