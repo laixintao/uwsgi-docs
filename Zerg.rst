@@ -3,38 +3,38 @@ Zerg模式
 
 .. note::
 
-  Yes, that's Zerg as in the "quantity-over-quality" Starcraft race. If you haven't played Starcraft, be prepared for some nonsense.
+  是哒，那就像“重质不重量”的星际争霸赛中的Zerg。如果你还没有玩过星际，那么做好准备，你会看到一些废话。
 
   .. note::
 
-    Also note that this nonsense is mostly limited to the nomenclature. Zerg Mode is serious business.
+    请注意，这些废话大多仅限于命名。Zerg模式是一个严肃的事。
 
-When your site load is variable, it would be nice to be able to add workers dynamically.
+当你的站点负载时可变的时候，能够动态添加worker将会是不错的
 
-You can obviously edit your configuration to hike up ``workers`` and reload your uWSGI instance, but for very loaded apps this is undesirable, and frankly -- who wants to do manual work like that to scale an app?
+显然，你可以编辑你的配置，增加 ``workers`` ，然后重载你的uWSGI实例，但是对于负载很多的应用而言，这是不可取的，并且老实说 —— 谁会想要做那样的手工活来扩展应用呢？
 
-Enabling Zerg mode you can allow "uwsgi-zerg" instances to attach to your already running server and help it in the work.
+启用Zerg模式，你可以允许"uwsgi-zerg"实例附加到你已经运行的服务器上，然后在工作中帮助它。
 
-Zerg mode is obviously local only. You cannot use it to add remote instances -- this is a job better done by the :doc:`Fastrouter`, the :doc:`HTTP plugin<HTTP>` or your web server's load balancer.
+Zerg模式显然只能用于本地。你不能用它来添加远程实例 —— 这个工作已经由 :doc:`Fastrouter` ， :doc:`HTTP plugin<HTTP>` 或者你的web服务器的负载均衡器更好地完成了。
 
 启用zerg服务器
 ------------------------
 
-If you want an uWSGI instance to be rushed by zerg, you have to enable the Zerg server. It will be bound to an UNIX socket and will pass uwsgi socket file descriptors to the Zerg workers connecting to it.
+如果你想要zerg冲进一个uWSGI实例，那么必须启用Zerg服务器。它将会绑定到一个UNIX socket上，并且会传递uwsgi socket文件描述符到连接到它上面的Zerg worker。
 
-.. warning:: The socket must be an UNIX socket because it must be capable of passing through file descriptors. A TCP socket simply will not work.
+.. warning:: socket必须是一个UNIX socket，因为它必须能够通过文件描述符传递。一个TCP socket就是不能用。
 
-For security reasons the UNIX socket does not inherit the ``chmod-socket`` option, but will always use the current umask.
+出于安全，UNIX socket并不会继承 ``chmod-socket`` 选项，当将总会使用当前的umask。
 
-If you have filesystem permission issues, on Linux you can use the UNIX sockets in abstract namespace, by prepending an ``@`` to the socket name.
+如果你有文件系统权限问题，那么在Linux上，通过附加一个 ``@`` 到socket名前面，你可以使用抽象名字空间中的UNIX socket。
 
-* A normal UNIX socket:
+* 一个正常的UNIX socket：
 
   .. code-block:: sh
 
     ./uwsgi -M -p 8 --module welcome --zerg-server /var/run/mutalisk
 
-* A socket in a Linux abstract namespace:
+* Linux抽象名字空间内的socket：
 
   .. code-block:: sh
 
@@ -44,43 +44,43 @@ If you have filesystem permission issues, on Linux you can use the UNIX sockets 
 附加zerg到zerg服务器
 ----------------------------------
 
-To add a new instance to your zerg pool, simply use the --zerg option
+要添加一个新的实例到你的zerg池中，执行使用--zerg选项
 
 .. code-block:: sh
 
   ./uwsgi --zerg /var/run/mutalisk --master --processes 4 --module welcome
   # (or --zerg @nydus, following the example above)
 
-In this way 4 new workers will start serving requests.
+通过这种方式，4个新的worker将会开始为请求提供服务。
 
-When your load returns to normal values, you can simply shutdown all of the uwsgi-zerg instances without problems.
+当你的负载回到正常值的时候，你可以简单关闭所有的uwsgi-zerg实例，不会有任何问题。
 
-You can attach an unlimited number of uwsgi-zerg instances.
+你可以附加无限数量的uwsgi-zerg实例。
 
 在zerg服务器不可用的时候回退
 ------------------------------------------
 
-By default a Zerg client will not run if the Zerg server is not available. Thus, if your zerg server dies, and you reload the zerg client, it will simply shutdown.
+默认情况下，如果Zerg服务器不能用的话，一个Zerg客户端将不会运行。因此，如果你的zerg服务器死掉了，并且重载zerg客户端，那么这个客户端将会简单关闭。
 
-If you want to avoid that behaviour, add a ``--socket`` directive mapping to the required socket (the one that should be managed by the zerg server) and add the ``--zerg-fallback`` option.
+如果你想要避免这种行为，那么添加一个 ``--socket`` 指令，映射到所需的socket (那个应该由zerg服务器管理的)，并且添加 ``--zerg-fallback`` 选项。
 
-With this setup, if a Zerg server is not available, the Zerg client will continue binding normally to the specified socket(s).
+通过这个设置，如果一个Zerg服务器不可用，那么Zerg客户端将会继续正常绑定到指定的socket。
 
 .. TODO: This needs to be documented better. An example would rock.
 
 将Zerg当成测试器使用
 ---------------------
 
-A good trick you can use, is suspending the main instance with the ``SIGTSTP`` signal and loading a new version of your app in a Zerg. If the code is not ok you can simply shutdown the Zerg and resume the main instance.
+你可以用的一个不错的技巧是，用 ``SIGTSTP`` 信号挂起主要的实例，然后在Zerg中加载你的应用的一个新的版本。如果代码不能用，那么你可以简单关闭掉这个Zerg，然后恢复主要的实例。
 
 Zerg池
 ----------
 
-Zergpools are special Zerg servers that only serve Zerg clients, nothing more.
+Zerg池是特殊的Zerg服务器，只对Zerg客户端提供服务，仅此而已。
 
-You can use them to build high-availability systems that reduce downtime during tests/reloads.
+你可以用它们来构建高可用性的系统，减少测试/重载期间的挂机时间。
 
-You can run an unlimited number of zerg pools (on several UNIX sockets) and map an unlimited number of sockets to them.
+你可以运行无限数量的zerg池 (在几个UNIX socket上)，并且将无限数量的socket映射到它们上。
 
 .. code-block:: ini
 
@@ -89,7 +89,7 @@ You can run an unlimited number of zerg pools (on several UNIX sockets) and map 
   zergpool = /tmp/zergpool_1:127.0.0.1:3031,127.0.0.1:3032
   zergpool = /tmp/zergpool_2:192.168.173.22:3031,192.168.173.22:3032
 
-With a config like this, you will have two zergpools, each serving two sockets.
+使用一个像这样的配置，你会拥有两个zerg池，每个为两个socket服务。
 
 现在，你可以把实例附加到它们上了。
 

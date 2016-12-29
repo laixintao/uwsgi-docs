@@ -10247,7 +10247,7 @@ http-stud-prefix
 
 ``parser``: uwsgi_opt_add_addr_list
 
-``help``: expect a stud prefix (1byte family + 4/16 bytes address) on connections from the specified address
+``help``: 期待来自指定地址的连接的stud前缀 (1byte family + 4/16 bytes address)
 
 
 
@@ -10257,7 +10257,7 @@ http-uid
 
 ``parser``: uwsgi_opt_uid
 
-``help``: drop http router privileges to the specified uid
+``help``: 移除http路由器权限到指定的uid
 
 
 
@@ -10267,7 +10267,7 @@ http-gid
 
 ``parser``: uwsgi_opt_gid
 
-``help``: drop http router privileges to the specified gid
+``help``: 移除http路由器权限到指定的gid
 
 
 
@@ -10277,7 +10277,7 @@ http-resubscribe
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: forward subscriptions to the specified subscription server
+``help``: 转发订阅请求到指定的订阅服务器
 
 
 
@@ -10297,7 +10297,7 @@ http-server-name-as-http-host
 
 ``parser``: uwsgi_opt_true
 
-``help``: force SERVER_NAME to HTTP_HOST
+``help``: 强制将SERVER_NAME作为HTTP_HOST使用
 
 
 
@@ -10307,7 +10307,7 @@ http-headers-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置internal http socket timeout for headers
+``help``: 为头部设置内部http socket超时时间
 
 
 
@@ -10317,7 +10317,7 @@ http-connect-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置internal http socket timeout for backend connections
+``help``: 为后端连接设置内部http socket超时时间
 
 
 
@@ -10327,7 +10327,7 @@ http-manage-source
 
 ``parser``: uwsgi_opt_true
 
-``help``: manage the SOURCE HTTP method placing the session in raw mode
+``help``: 关联SOURCE HTTP方法，将会话置于原始模式
 
 
 
@@ -10337,7 +10337,7 @@ http-enable-proxy-protocol
 
 ``parser``: uwsgi_opt_true
 
-``help``: manage PROXY protocol requests
+``help``: 关联PROXY协议请求
 
 
 
@@ -10347,7 +10347,7 @@ http-backend-http
 
 ``parser``: uwsgi_opt_true
 
-``help``: use plain http protocol instead of uwsgi for backend nodes
+``help``: 对后端节点，使用普通的http协议来取代uwsgi
 
 
 
@@ -10357,7 +10357,7 @@ http-manage-rtsp
 
 ``parser``: uwsgi_opt_true
 
-``help``: manage RTSP sessions
+``help``: 关联RTSP会话
 
 
 
@@ -10380,7 +10380,7 @@ jvm-main-class
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified class and call its main() function
+``help``: 加载指定类，并调用它的main()函数
 
 
 
@@ -10390,7 +10390,7 @@ jvm-opt
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add the specified jvm option
+``help``: 添加指定jvm选项
 
 
 
@@ -10400,7 +10400,7 @@ jvm-class
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load the specified class
+``help``: 加载指定类
 
 
 
@@ -10410,7 +10410,7 @@ jvm-classpath
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add the specified directory to the classpath
+``help``: 添加指定目录到classpath
 
 
 
@@ -10423,7 +10423,7 @@ jwsgi
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified JWSGI application (syntax class:method)
+``help``: 加载指定的JWSGI应用 (语法 class:method)
 
 
 
@@ -10438,7 +10438,7 @@ ldap
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load configuration from ldap server
+``help``: 从ldap服务器加载配置
 
 
 
@@ -10462,7 +10462,7 @@ ldap-schema-ldif
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: dump uWSGI ldap schema in ldif format
+``help``: 以ldif格式dump uWSGI ldap schema
 
 
 
@@ -10498,7 +10498,7 @@ log-zeromq
 
 ``flags``: UWSGI_OPT_MASTER | UWSGI_OPT_LOG_MASTER
 
-``help``: send logs to a zeromq server
+``help``: 发送日志到一个zeromq服务器
 
 
 
@@ -10511,7 +10511,7 @@ lua
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load lua wsapi app
+``help``: 加载lua wsapi应用
 
 
 
@@ -10521,7 +10521,7 @@ lua-load
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a lua file
+``help``: 加载一个lua文件
 
 
 
@@ -10531,7 +10531,7 @@ lua-shell
 
 ``parser``: uwsgi_opt_luashell
 
-``help``: run the lua interactive shell (debug.debug())
+``help``: 运行lua交互式shell (debug.debug())
 
 
 
@@ -10541,7 +10541,7 @@ luashell
 
 ``parser``: uwsgi_opt_luashell
 
-``help``: run the lua interactive shell (debug.debug())
+``help``: 运行lua交互式shell (debug.debug())
 
 
 
@@ -10551,7 +10551,7 @@ lua-gc-freq
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置the lua gc frequency (default: 0, runs after every request)
+``help``: 设置lua gc频率 (默认：0，每次请求后运行)
 
 
 
@@ -10573,7 +10573,7 @@ zeromq
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
-``help``: create a mongrel2/zeromq pub/sub pair
+``help``: 创建一个mongrel2/zeromq pub/sub对
 
 
 
@@ -10583,7 +10583,7 @@ zmq
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
-``help``: create a mongrel2/zeromq pub/sub pair
+``help``: 创建一个mongrel2/zeromq pub/sub对
 
 
 
@@ -10593,7 +10593,7 @@ zeromq-socket
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
-``help``: create a mongrel2/zeromq pub/sub pair
+``help``: 创建一个mongrel2/zeromq pub/sub对
 
 
 
@@ -10603,7 +10603,7 @@ zmq-socket
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
-``help``: create a mongrel2/zeromq pub/sub pair
+``help``: 创建一个mongrel2/zeromq pub/sub对
 
 
 
@@ -10613,7 +10613,7 @@ mongrel2
 
 ``parser``: uwsgi_opt_add_lazy_socket
 
-``help``: create a mongrel2/zeromq pub/sub pair
+``help``: 创建一个mongrel2/zeromq pub/sub对
 
 
 
@@ -10626,7 +10626,7 @@ mono-app
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: load a Mono asp.net app from the specified directory
+``help``: 加载一个来自指定目录的Mono asp.net应用
 
 
 
@@ -10636,7 +10636,7 @@ mono-gc-freq
 
 ``parser``: uwsgi_opt_set_64bit
 
-``help``: run the Mono GC every <n> requests (default: run after every request)
+``help``: 每<n>个请求运行一次Mono GC requests (默认：每次请求后运行)
 
 
 
@@ -10646,7 +10646,7 @@ mono-key
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: select the ApplicationHost based on the specified CGI var
+``help``: 基于指定的CGI变量选择应用主机
 
 
 
@@ -10656,7 +10656,7 @@ mono-version
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the Mono jit version
+``help``: 设置Mono jit版本
 
 
 
@@ -10666,7 +10666,7 @@ mono-config
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the Mono config file
+``help``: 设置the Mono配置文件
 
 
 
@@ -10676,7 +10676,7 @@ mono-assembly
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load the specified main assembly (default: uwsgi.dll)
+``help``: 加载指定的主要的assembly (默认：uwsgi.dll)
 
 
 
@@ -10686,7 +10686,7 @@ mono-exec
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: exec the specified assembly just 在应用加载之前
+``help``: 在应用加载之前执行指定的assembly
 
 
 
@@ -10696,7 +10696,7 @@ mono-index
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an asp.net index file
+``help``: 添加一个asp.net index文件
 
 
 
@@ -10714,7 +10714,7 @@ nagios
 
 ``flags``: UWSGI_OPT_NO_INITIAL
 
-``help``: nagios check
+``help``: nagios检查
 
 
 
@@ -10727,7 +10727,7 @@ notfound-log
 
 ``parser``: uwsgi_opt_true
 
-``help``: log requests to the notfound plugin
+``help``: 记录请求到notfound插件
 
 
 
@@ -10743,7 +10743,7 @@ pam
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the pam service name to use
+``help``: 设置使用的pam服务名
 
 
 
@@ -10753,7 +10753,7 @@ pam-user
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置a fake user for pam
+``help``: 对pam设置一个假用户
 
 
 
@@ -10766,7 +10766,7 @@ php-ini
 
 ``parser``: uwsgi_opt_php_ini
 
-``help``: 设置php.ini path
+``help``: 设置php.ini路径
 
 
 
@@ -10776,7 +10776,7 @@ php-config
 
 ``parser``: uwsgi_opt_php_ini
 
-``help``: 设置php.ini path
+``help``: 设置php.ini路径
 
 
 
@@ -10786,7 +10786,7 @@ php-ini-append
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: 设置php.ini path (append mode)
+``help``: 设置php.ini路径 (append模式)
 
 
 
@@ -10796,7 +10796,7 @@ php-config-append
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: 设置php.ini path (append mode)
+``help``: 设置php.ini路径 (append模式)
 
 
 
@@ -10806,7 +10806,7 @@ php-set
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: 设置a php config directive
+``help``: 设置一个php配置指令
 
 
 
@@ -10816,7 +10816,7 @@ php-index
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: list the php index files
+``help``: 列出php index文件
 
 
 
@@ -10826,7 +10826,7 @@ php-docroot
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force php DOCUMENT_ROOT
+``help``: 强制使用php DOCUMENT_ROOT
 
 
 
@@ -10836,7 +10836,7 @@ php-allowed-docroot
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: list the allowed document roots
+``help``: 列出允许的document root
 
 
 
@@ -10846,7 +10846,7 @@ php-allowed-ext
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: list the allowed php file extensions
+``help``: 列出允许的php文件扩展名
 
 
 
@@ -10856,7 +10856,7 @@ php-allowed-script
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: list the allowed php scripts (require absolute path)
+``help``: 列出允许的php脚本 (要求绝对路径)
 
 
 
@@ -10866,7 +10866,7 @@ php-server-software
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force php SERVER_SOFTWARE
+``help``: 强制使用php SERVER_SOFTWARE
 
 
 
@@ -10876,7 +10876,7 @@ php-app
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: force the php file to run at each request
+``help``: 强制在每次请求时运行php文件
 
 
 
@@ -10886,7 +10886,7 @@ php-app-qs
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: when in app mode force QUERY_STRING to the specified value + REQUEST_URI
+``help``: 当处于app模式的时候，强制对QUERY_STRING使用指定值+REQUEST_URI
 
 
 
@@ -10896,7 +10896,7 @@ php-fallback
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: run the specified php script when the request one does not exist
+``help``: 当请求的那个不存在的时候，运行指定的php脚本
 
 
 
@@ -10906,7 +10906,7 @@ php-app-bypass
 
 ``parser``: uwsgi_opt_add_regexp_list
 
-``help``: if the regexp matches the uri the --php-app is bypassed
+``help``: 如果正则表达式匹配上uri，那么绕过--php-app
 
 
 
@@ -10916,7 +10916,7 @@ php-var
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add/overwrite a CGI variable at each request
+``help``: 在每个请求上添加/重写一个CGI变量
 
 
 
@@ -10926,7 +10926,7 @@ php-dump-config
 
 ``parser``: uwsgi_opt_true
 
-``help``: dump php config (if modified via --php-设置or append options)
+``help``: dump php配置 (如果通过--php-set或者附加选项)
 
 
 
@@ -10936,7 +10936,7 @@ php-exec-before
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run specified php code before the requested script
+``help``: 在已请求的脚本前运行指定php代码
 
 
 
@@ -10946,7 +10946,7 @@ php-exec-begin
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run specified php code before the requested script
+``help``: 在已请求的脚本前运行指定php代码
 
 
 
@@ -10956,7 +10956,7 @@ php-exec-after
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run specified php code after the requested script
+``help``: 在已请求的脚本后运行指定php代码
 
 
 
@@ -10966,7 +10966,7 @@ php-exec-end
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: run specified php code after the requested script
+``help``: 在已请求的脚本后运行指定php代码
 
 
 
@@ -10976,7 +10976,7 @@ php-sapi-name
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: hack the sapi name (required for enabling zend opcode cache)
+``help``: hack sapi的名字 (启用zend opcode缓存需要)
 
 
 
@@ -10988,7 +10988,7 @@ early-php
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: initialize an early perl interpreter shared by all loaders
+``help``: 初始化由所有加载器共享的早期perl解释器
 
 
 
@@ -11000,7 +11000,7 @@ early-php-sapi-name
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: hack the sapi name (required for enabling zend opcode cache)
+``help``: hack sapi的名字 (启用zend opcode缓存需要)
 
 
 
@@ -11015,7 +11015,7 @@ ping
 
 ``flags``: UWSGI_OPT_NO_INITIAL | UWSGI_OPT_NO_SERVER
 
-``help``: ping specified uwsgi host
+``help``: ping指定的uwsgi主机
 
 
 
@@ -11025,7 +11025,7 @@ ping-timeout
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置ping timeout
+``help``: 设置ping超时时间
 
 
 
@@ -11038,7 +11038,7 @@ psgi
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a psgi app
+``help``: 加载一个psgi应用
 
 
 
@@ -11048,7 +11048,7 @@ psgi-enable-psgix-io
 
 ``parser``: uwsgi_opt_true
 
-``help``: 启用psgix.io support
+``help``: 启用psgix.io支持
 
 
 
@@ -11058,7 +11058,7 @@ perl-no-die-catch
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not catch $SIG{__DIE__}
+``help``: 不要捕获$SIG{__DIE__}
 
 
 
@@ -11068,7 +11068,7 @@ perl-local-lib
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置perl locallib path
+``help``: 设置perl locallib路径
 
 
 
@@ -11090,7 +11090,7 @@ perl-args
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: add items (space separated) to @ARGV
+``help``: 添加多个项(用空格分隔)到@ARGV
 
 
 
@@ -11100,7 +11100,7 @@ perl-arg
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an item to @ARGV
+``help``: 添加一个项到@ARGV
 
 
 
@@ -11110,7 +11110,7 @@ perl-exec
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: exec the specified perl file before fork()
+``help``: fork()前执行指定perl文件
 
 
 
@@ -11120,7 +11120,7 @@ perl-exec-post-fork
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: exec the specified perl file after fork()
+``help``: fork()后执行指定perl文件
 
 
 
@@ -11132,7 +11132,7 @@ perl-auto-reload
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: 启用perl auto-reloader with the specified frequency
+``help``: 根据指定频率启用perl自动重载器
 
 
 
@@ -11144,7 +11144,7 @@ perl-auto-reload-ignore
 
 ``flags``: UWSGI_OPT_MASTER
 
-``help``: ignore the specified files when auto-reload is enabled
+``help``: 当自动重载启用的时候，忽略指定文件
 
 
 
@@ -11154,7 +11154,7 @@ plshell
 
 ``parser``: uwsgi_opt_plshell
 
-``help``: run a perl interactive shell
+``help``: 运行一个Perl交互式shell
 
 
 
@@ -11164,7 +11164,7 @@ plshell-oneshot
 
 ``parser``: uwsgi_opt_plshell
 
-``help``: run a perl interactive shell (one shot)
+``help``: 运行一个Perl交互式shell (一次性)
 
 
 
@@ -11174,7 +11174,7 @@ perl-no-plack
 
 ``parser``: uwsgi_opt_true
 
-``help``: force the use of do instead of Plack::Util::load_psgi
+``help``: 强制使用do，而不是 Plack::Util::load_psgi
 
 
 
@@ -11186,7 +11186,7 @@ early-perl
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: initialize an early perl interpreter shared by all loaders
+``help``: 初始化一个由所有加载器共享的早期perl解释器
 
 
 
@@ -11198,7 +11198,7 @@ early-psgi
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a psgi app soon after uWSGI initialization
+``help``: uWSGI初始化后立即加载一个psgi应用
 
 
 
@@ -11210,7 +11210,7 @@ early-perl-exec
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a perl script soon after uWSGI initialization
+``help``: uWSGI初始化后立即加载一个perl脚本
 
 
 
@@ -11223,7 +11223,7 @@ pty-socket
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: bind the pty server on the specified address
+``help``: 绑定pty服务器到指定的地址上
 
 
 
@@ -11233,7 +11233,7 @@ pty-log
 
 ``parser``: uwsgi_opt_true
 
-``help``: send stdout/stderr to the log engine too
+``help``: 也发送标准输出/标准错误到日志引擎
 
 
 
@@ -11243,7 +11243,7 @@ pty-input
 
 ``parser``: uwsgi_opt_true
 
-``help``: read from original stdin in addition to pty
+``help``: 除了pty外，从原始标准输入读取
 
 
 
@@ -11255,7 +11255,7 @@ pty-connect
 
 ``flags``: UWSGI_OPT_NO_INITIAL
 
-``help``: connect the current terminal to a pty server
+``help``: 连接当前终端到pty服务器
 
 
 
@@ -11267,7 +11267,7 @@ pty-uconnect
 
 ``flags``: UWSGI_OPT_NO_INITIAL
 
-``help``: connect the current terminal to a pty server (using uwsgi protocol)
+``help``: 连接当前终端到pty服务器 (使用uwsgi协议)
 
 
 
@@ -11277,7 +11277,7 @@ pty-no-isig
 
 ``parser``: uwsgi_opt_true
 
-``help``: disable ISIG terminal attribute in client mode
+``help``: 在client模式下禁用ISIG终端属性
 
 
 
@@ -11287,7 +11287,7 @@ pty-exec
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 运行指定命令 soon after the pty thread is spawned
+``help``: 在pty线程生成之后立即运行指定命令
 
 
 
@@ -11300,7 +11300,7 @@ pypy-lib
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the path/name of the pypy library
+``help``: 设置pypy库的路径/名称
 
 
 
@@ -11310,7 +11310,7 @@ pypy-setup
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the path of the python setup script
+``help``: 设置python setup脚本的路径
 
 
 
@@ -11320,7 +11320,7 @@ pypy-home
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the home of pypy library
+``help``: 设置pypy库的home
 
 
 
@@ -11330,7 +11330,7 @@ pypy-wsgi
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a WSGI module
+``help``: 加载一个WSGI模块
 
 
 
@@ -11340,7 +11340,7 @@ pypy-wsgi-file
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a WSGI/mod_wsgi file
+``help``: 加载一个WSGI/mod_wsgi文件
 
 
 
@@ -11352,7 +11352,7 @@ pypy-ini-paste
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a paste.deploy config file containing uwsgi section
+``help``: 加载一个包含uwsgi节的paste.deploy配置文件
 
 
 
@@ -11362,7 +11362,7 @@ pypy-paste
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a paste.deploy config file
+``help``: 加载一个paste.deploy配置文件
 
 
 
@@ -11372,7 +11372,7 @@ pypy-eval
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: evaluate pypy code before fork()
+``help``: fork()之前评估pypy代码
 
 
 
@@ -11382,7 +11382,7 @@ pypy-eval-post-fork
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: evaluate pypy code soon after fork()
+``help``: fork()之后立即评估pypy代码
 
 
 
@@ -11392,7 +11392,7 @@ pypy-exec
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: execute pypy code from file before fork()
+``help``: fork()之前执行文件中的pypy代码
 
 
 
@@ -11402,7 +11402,7 @@ pypy-exec-post-fork
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: execute pypy code from file soon after fork()
+``help``: fork()之后立即执行文件中的pypy代码
 
 
 
@@ -11412,7 +11412,7 @@ pypy-pp
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an item to the pythonpath
+``help``: 添加一个项到pythonpath
 
 
 
@@ -11422,7 +11422,7 @@ pypy-python-path
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an item to the pythonpath
+``help``: 添加一个项到pythonpath
 
 
 
@@ -11432,7 +11432,7 @@ pypy-pythonpath
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add an item to the pythonpath
+``help``: 添加一个项到pythonpath
 
 
 
@@ -11445,7 +11445,7 @@ wsgi-file
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load .wsgi file
+``help``: 加载.wsgi文件
 
 
 
@@ -11455,7 +11455,7 @@ file
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load .wsgi file
+``help``: 加载.wsgi文件
 
 
 
@@ -11465,7 +11465,7 @@ eval
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: eval python code
+``help``: eval python代码
 
 
 
@@ -11619,7 +11619,7 @@ pymodule-alias
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a python alias module
+``help``: 添加一个python别名模块
 
 
 
@@ -11629,7 +11629,7 @@ post-pymodule-alias
 
 ``parser``: uwsgi_opt_add_string_list
 
-``help``: add a python module alias after uwsgi module initialization
+``help``: uwsgi模块初始化hour，添加一个python模块别名
 
 
 
@@ -11719,7 +11719,7 @@ pyargv
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: manually 设置sys.argv
+``help``: 手工设置sys.argv
 
 
 
@@ -11731,7 +11731,7 @@ optimize
 
 ``parser``: uwsgi_opt_set_int
 
-``help``: 设置python optimization level
+``help``: 设置python优化级别
 
 
 
@@ -11741,7 +11741,7 @@ pecan
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a pecan config file
+``help``: 加载一个pecan配置文件
 
 
 
@@ -11751,7 +11751,7 @@ paste
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a paste.deploy config file
+``help``: 加载一个paste.deploy配置文件
 
 
 
@@ -11761,7 +11761,7 @@ paste-logger
 
 ``parser``: uwsgi_opt_true
 
-``help``: 启用paste fileConfig logger
+``help``: 启用paste文件Config记录器
 
 
 
@@ -11771,7 +11771,7 @@ web3
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a web3 app
+``help``: 加载一个web3应用
 
 
 
@@ -11781,7 +11781,7 @@ pump
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a pump app
+``help``: 加载一个pump应用
 
 
 
@@ -11791,7 +11791,7 @@ wsgi-lite
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: load a wsgi-lite app
+``help``: 加载一个wsgi-lite应用
 
 
 
@@ -11803,7 +11803,7 @@ ini-paste
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a paste.deploy config file containing uwsgi section
+``help``: 加载一个包含uwsgi节的paste.deploy配置文件
 
 
 
@@ -11815,7 +11815,7 @@ ini-paste-logged
 
 ``flags``: UWSGI_OPT_IMMEDIATE
 
-``help``: load a paste.deploy config file containing uwsgi section (load loggers too)
+``help``: 加载一个包含uwsgi节的paste.deploy配置文件 (也加载记录器)
 
 
 
@@ -11825,7 +11825,7 @@ reload-os-env
 
 ``parser``: uwsgi_opt_true
 
-``help``: force reload of os.environ at each request
+``help``: 每次请求时强制对os.environ重载
 
 
 
@@ -11835,7 +11835,7 @@ no-site
 
 ``parser``: uwsgi_opt_true
 
-``help``: do not import site module
+``help``: 不要导入site模块
 
 
 
@@ -11845,7 +11845,7 @@ pyshell
 
 ``parser``: uwsgi_opt_pyshell
 
-``help``: run an interactive python shell in the uWSGI environment
+``help``: 在uWSGI环境中运行一个python交互式python shell
 
 
 
@@ -11855,7 +11855,7 @@ pyshell-oneshot
 
 ``parser``: uwsgi_opt_pyshell
 
-``help``: run an interactive python shell in the uWSGI environment (one-shot variant)
+``help``: 在uWSGI环境中运行一个python交互式python shell (一次性变体)
 
 
 
@@ -11865,7 +11865,7 @@ python
 
 ``parser``: uwsgi_opt_pyrun
 
-``help``: run a python script in the uWSGI environment
+``help``: 在uWSGI环境中运行一个python脚本
 
 
 
@@ -11875,7 +11875,7 @@ py
 
 ``parser``: uwsgi_opt_pyrun
 
-``help``: run a python script in the uWSGI environment
+``help``: 在uWSGI环境中运行一个python脚本
 
 
 
@@ -11885,7 +11885,7 @@ pyrun
 
 ``parser``: uwsgi_opt_pyrun
 
-``help``: run a python script in the uWSGI environment
+``help``: 在uWSGI环境中运行一个python脚本
 
 
 
@@ -11897,7 +11897,7 @@ py-tracebacker
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: 启用the uWSGI python tracebacker
+``help``: 启用uWSGI python tracebacker
 
 
 
@@ -11909,7 +11909,7 @@ py-auto-reload
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: monitor python modules mtime to trigger reload (use only in development)
+``help``: 监控python模块mtime来触发重载 (只在开发时使用)
 
 
 
@@ -11921,7 +11921,7 @@ py-autoreload
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: monitor python modules mtime to trigger reload (use only in development)
+``help``: 监控python模块mtime来触发重载 (只在开发时使用)
 
 
 
@@ -11933,8 +11933,7 @@ python-auto-reload
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: monitor python modules mtime to trigger reload (use only in development)
-
+``help``: 监控python模块mtime来触发重载 (只在开发时使用)
 
 
 python-autoreload
@@ -11945,7 +11944,7 @@ python-autoreload
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: monitor python modules mtime to trigger reload (use only in development)
+``help``: 监控python模块mtime来触发重载 (只在开发时使用)
 
 
 
@@ -11957,7 +11956,7 @@ py-auto-reload-ignore
 
 ``flags``: UWSGI_OPT_THREADS|UWSGI_OPT_MASTER
 
-``help``: ignore the specified module during auto-reload scan (can be specified multiple times)
+``help``: 自动重载扫描期间，忽略指定的模块 (可以多次指定)
 
 
 
@@ -11967,7 +11966,7 @@ wsgi-env-behaviour
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the strategy for allocating/deallocating the WSGI env
+``help``: 设置分配/释放WSGI env的策略
 
 
 
@@ -11977,7 +11976,7 @@ wsgi-env-behavior
 
 ``parser``: uwsgi_opt_set_str
 
-``help``: 设置the strategy for allocating/deallocating the WSGI env
+``help``: 设置分配/释放WSGI env的策略
 
 
 
@@ -11987,7 +11986,7 @@ start_response-nodelay
 
 ``parser``: uwsgi_opt_true
 
-``help``: send WSGI http headers as soon as possible (PEP violation)
+``help``: 尽快发送WSGI http头部 (违反PEP)
 
 
 
@@ -11997,7 +11996,7 @@ wsgi-strict
 
 ``parser``: uwsgi_opt_true
 
-``help``: try to be fully PEP compliant disabling optimizations
+``help``: 试着完全服从PEP，禁用优化
 
 
 
