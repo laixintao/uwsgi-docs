@@ -10,7 +10,7 @@ uWSGI是用于 `systemd <http://www.freedesktop.org/wiki/Software/systemd>`_ 的
 添加Emperor到systemd
 *****************************
 
-将uWSGI应用与你的初始化系统集成的一个方法事使用 :doc:`Emperor<Emperor>` 。
+将uWSGI应用与你的初始化系统集成的一个方法是使用 :doc:`Emperor<Emperor>` 。
 
 你的初始化系统将只会与统治所有的应用的Emperor进行通信。
 
